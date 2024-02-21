@@ -16,6 +16,7 @@ export function Footer() {
               target="_blank"
               variant="h4"
               className="mb-6"
+              placeholder=""
             >
               Material Tailwind
             </Typography>
@@ -25,6 +26,7 @@ export function Footer() {
                   <Typography
                     as="a"
                     href="#"
+                    placeholder=""
                     className={`py-1 font-medium !text-gray-700 transition-colors hover:!text-gray-900 ${
                       idx === 0 ? "pr-3" : "px-3"
                     }`}
@@ -36,20 +38,28 @@ export function Footer() {
             </ul>
           </div>
           <div className="w-full sm:w-[24rem] sm:min-w-[24rem]">
-            <Typography variant="h6" color="blue-gray" className="mb-3">
+            <Typography
+              variant="h6"
+              color="blue-gray"
+              className="mb-3"
+              placeholder=""
+            >
               Our Newsletter
             </Typography>
             <div className="flex flex-col gap-3 sm:flex-row">
               {/* @ts-ignore */}
               <Input color="gray" label="Enter your email" />
-              <Button color="gray" className="flex-shrink-0">
+              <Button placeholder="" color="gray" className="flex-shrink-0">
                 subscribe
               </Button>
             </div>
           </div>
         </div>
         <div className="mt-16 flex flex-wrap items-center justify-center gap-y-4 gap-x-8 border-t border-blue-gray-50 py-6 md:justify-between">
-          <Typography className="text-center font-normal !text-gray-700">
+          <Typography
+            placeholder=""
+            className="text-center font-normal !text-gray-700"
+          >
             &copy; {CURRENT_YEAR} Made with{" "}
             <a href="https://www.material-tailwind.com" target="_blank">
               Material Tailwind
@@ -66,6 +76,7 @@ export function Footer() {
               <li key={link}>
                 <Typography
                   as="a"
+                  placeholder=""
                   href="#"
                   className={`py-1 font-normal !text-gray-700 transition-colors hover:!text-gray-900 ${
                     idx === SUB_LINKS.length - 1 ? "pl-2" : "px-2"
