@@ -69,6 +69,7 @@ export function Navbar() {
       placeholder={""}
       shadow={false}
       fullWidth
+      style={{ borderBottom: " 0.5px solid rgb(55, 0, 125)" }}
       className="border-0 sticky top-0 z-50"
     >
       <div className="container mx-auto flex items-center justify-between">
