@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { Typography, Carousel } from "@material-tailwind/react";
 
-
 export function CarouselFeatures() {
   return (
     <div className="px-8 py-56">

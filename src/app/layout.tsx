@@ -10,7 +10,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "NextJS Tailwind Campaign Page",
+  title: "NRC Team",
   description:
     "Introducing Tailwind Campaign Page, an all-inclusive and visually captivating campaign landing page template built on the foundation of Tailwind CSS and Material Tailwind.",
 };
@@ -23,7 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="shortcut icon" href="/favicon.png" type="image/png" />
+        <link rel="shortcut icon" href="/favicon.ico" type="image/png" />
       </head>
       <body className={roboto.className}>
         <Layout>
