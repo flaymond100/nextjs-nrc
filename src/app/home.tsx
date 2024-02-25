@@ -32,13 +32,13 @@ function Home() {
             </Button>
           </Link>
         </div>
-        <div className="mt-10 grid gap-6 lg:mt-0">
+        <div className=" mt-10 grid gap-6 lg:mt-0 ">
           <Image
             width={568}
             height={568}
             src="/image/France_Downhill_Kosta.jpg"
-            className="-mt-10 rounded-lg shadow-md"
-            alt="flowers"
+            className="animate-in fade-in zoom-in duration-600 -mt-10 rounded-lg shadow-md "
+            alt="cyclist in France"
           />
         </div>
       </div>

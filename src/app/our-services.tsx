@@ -42,7 +42,7 @@ const CATEGORIES = [
 export function OurServices() {
   return (
     <section className="container mx-auto px-8 pb-20 pt-20 lg:pt-0 ">
-      <div className="mb-20 grid place-items-center text-center ">
+      <div className="mb-12 grid place-items-center text-center ">
         <Typography
           placeholder=""
           variant="h2"
@@ -51,7 +51,7 @@ export function OurServices() {
         >
           Our Services
         </Typography>
-        <Typography
+        {/* <Typography
           placeholder=""
           variant="lead"
           className="!text-gray-500 lg:w-6/12"
@@ -59,7 +59,7 @@ export function OurServices() {
           We are not just a team - we are a community of athletes from all
           corners of the world, united by a shared love for endurance sports and
           become healthier people.
-        </Typography>
+        </Typography> */}
       </div>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card
@@ -75,11 +75,11 @@ export function OurServices() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
-          <CardBody placeholder="" className="relative w-full">
+          <CardBody placeholder="" className="relative  h-full  w-full">
             {/* <Typography
               placeholder=""
               color="white"
-              className="text-xs font-bold opacity-50"
+              className="text-xs font-bold opacity-70"
             >
               up to 40% OFF
             </Typography> */}
@@ -94,11 +94,11 @@ export function OurServices() {
             <Typography
               placeholder=""
               color="white"
-              className="mt-4 mb-14 font-normal opacity-50"
+              className="mt-4 mb-14 font-normal opacity-70"
             >
-              Explore our extensive collection of textbooks, workbooks, novels,
-              and more. From preschool to post-grad, we have books for every age
-              and academic level.
+              Elevate your running performance with our personalized training
+              plans tailored to your fitness level and goals. Our experienced
+              coaches provide support to help you reach new goals.
             </Typography>
             <Button placeholder="" size="sm" color="white">
               Read More
@@ -119,11 +119,11 @@ export function OurServices() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
-          <CardBody placeholder="" className="relative w-full">
+          <CardBody placeholder="" className="relative  h-full  w-full">
             {/* <Typography
               placeholder=""
               color="white"
-              className="text-xs font-bold opacity-50"
+              className="text-xs font-bold opacity-70"
             >
               up to 40% OFF
             </Typography> */}
@@ -138,11 +138,11 @@ export function OurServices() {
             <Typography
               placeholder=""
               color="white"
-              className="mt-4 mb-14 font-normal opacity-50"
+              className="mt-4 mb-14 font-normal opacity-70"
             >
-              Explore our extensive collection of textbooks, workbooks, novels,
-              and more. From preschool to post-grad, we have books for every age
-              and academic level.
+              Discover the world of cycling with our personalized plans. Whether
+              you are a beginner or an experienced athlete, we are here to help
+              you reach your full potential.
             </Typography>
             <Button placeholder="" size="sm" color="white">
               Read More
@@ -163,11 +163,11 @@ export function OurServices() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
-          <CardBody placeholder="" className="relative w-full">
+          <CardBody placeholder="" className="relative  h-full  w-full">
             {/* <Typography
               placeholder=""
               color="white"
-              className="text-xs font-bold opacity-50"
+              className="text-xs font-bold opacity-70"
             >
               up to 40% OFF
             </Typography> */}
@@ -182,27 +182,17 @@ export function OurServices() {
             <Typography
               placeholder=""
               color="white"
-              className="mt-4 mb-14 font-normal opacity-50"
+              className="mt-4 mb-14 font-normal opacity-70"
             >
-              Explore our extensive collection of textbooks, workbooks, novels,
-              and more. From preschool to post-grad, we have books for every age
-              and academic level.
+              Dive into the world of triathlon with us! Whether you are a newbie
+              or a seasoned triathlete, our presonalised plans will help you
+              complete triathlon disciplines with confidence.
             </Typography>
-            <Button placeholder="" size="sm" color="white">
+            <Button className="mb-4" placeholder="" size="sm" color="white">
               Read More
             </Button>
           </CardBody>
         </Card>
-        {/* <div className="col-span-1 flex flex-col gap-6">
-          {CATEGORIES.slice(0, 2).map((props, key) => (
-            <CategoryCard key={key} {...props} />
-          ))}
-        </div>
-        <div className="col-span-1 flex flex-col gap-6">
-          {CATEGORIES.slice(2, 4).map((props, key) => (
-            <CategoryCard key={key} {...props} />
-          ))}
-        </div> */}
       </div>
     </section>
   );

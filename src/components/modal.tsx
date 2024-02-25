@@ -6,10 +6,10 @@ import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
 
 const contactValidationSchema = Yup.object().shape({
+  name: Yup.string(),
   email: Yup.string()
     .email("Invalid email")
     .required("Please enter your email"),
-  phone: Yup.string(),
 });
 
 function Modal() {
@@ -19,11 +19,11 @@ function Modal() {
 
   const formik = useFormik<{
     email: string;
-    phone: string;
+    name: string;
   }>({
     initialValues: {
       email: "",
-      phone: "",
+      name: "",
     },
     onSubmit: (values, { resetForm }) => {
       console.log(values);
@@ -72,6 +72,33 @@ function Modal() {
                     </p>
                   </div>
                 </div>
+
+                <div className="mb-6">
+                  <label
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                    htmlFor="text"
+                  >
+                    Name
+                  </label>
+                  <input
+                    className={`shadow appearance-none border ${
+                      formik.errors.name && "border-red-500"
+                    } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                    id="username"
+                    type="text"
+                    name="name"
+                    placeholder="Your name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {formik.errors.name && (
+                    <div className="text-red-500 text-xs italic">
+                      {formik.errors.name}
+                    </div>
+                  )}
+                </div>
+
                 <div className="mb-4">
                   <label
                     className="block text-gray-700 text-sm font-bold mb-2"
@@ -97,36 +124,6 @@ function Modal() {
                     </p>
                   )}
                 </div>
-
-                <div className="mb-6">
-                  <label
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                    htmlFor="email"
-                  >
-                    Phone
-                  </label>
-                  <input
-                    className={`shadow appearance-none border ${
-                      formik.errors.phone && "border-red-500"
-                    } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
-                    id="username"
-                    type="phone"
-                    name="phone"
-                    placeholder="Your phone"
-                    value={formik.values.phone}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.errors.phone && (
-                    <div className="text-red-500 text-xs italic">
-                      {formik.errors.phone}
-                    </div>
-                  )}
-                </div>
-
-                {formik.errors.phone && (
-                  <p className="text-danger">{formik.errors.phone}</p>
-                )}
                 <div className="flex items-center start">
                   <button
                     className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"

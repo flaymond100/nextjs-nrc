@@ -14,6 +14,7 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/solid";
 import Image from "next/image";
+import Link from "next/link";
 
 const NAV_MENU = [
   {
@@ -91,14 +92,11 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          <Button placeholder={""} variant="text">
-            Log in
-          </Button>
-          <a href="https://www.material-tailwind.com/blocks" target="_blank">
+          <Link href="?modal=true">
             <Button placeholder={""} color="gray">
-              blocks
+              Join Us
             </Button>
-          </a>
+          </Link>
         </div>
         <IconButton
           placeholder={""}
@@ -125,14 +123,11 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            <Button placeholder={""} variant="text">
-              Log in
-            </Button>
-            <a href="https://www.material-tailwind.com/blocks" target="_blank">
+            <Link href="?modal=true">
               <Button placeholder={""} color="gray">
-                blocks
+                Join Us
               </Button>
-            </a>
+            </Link>
           </div>
         </div>
       </Collapse>

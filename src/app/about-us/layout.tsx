@@ -10,9 +10,9 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "NextJS Tailwind Campaign Page",
+  title: "About Us",
   description:
-    "Introducing Tailwind Campaign Page, an all-inclusive and visually captivating campaign landing page template built on the foundation of Tailwind CSS and Material Tailwind.",
+    "NRC Team is a community of athletes from all corners of the globe, united by a shared love for endurance sports and become healthier people.",
 };
 
 export default function RootLayout({
