@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { Button, Typography } from "@material-tailwind/react";
+import Link from "next/link";
 
 function Home() {
   return (
@@ -25,9 +26,11 @@ function Home() {
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
           </Typography>
-          <Button placeholder="" size="lg" color="gray">
-            See Plans
-          </Button>
+          <Link href="?modal=true">
+            <Button placeholder="" size="lg" color="gray">
+              See Plans
+            </Button>
+          </Link>
         </div>
         <div className="mt-10 grid gap-6 lg:mt-0">
           <Image
