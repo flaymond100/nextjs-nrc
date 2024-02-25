@@ -2,14 +2,14 @@
 import { Navbar, Footer } from "@/components";
 
 // sections
-import OtherBookOffers from "../other-book-offers";
+import Prices from "../prices";
 import Faq from "../faq";
 
 export default function Campaign() {
   return (
     <>
       <Navbar />
-      <OtherBookOffers />
+      <Prices />
       <Faq />
     </>
   );
