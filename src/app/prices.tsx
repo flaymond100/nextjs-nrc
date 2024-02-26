@@ -61,7 +61,7 @@ pricing component of the application. */
 
 export function Prices() {
   return (
-    <section style={{ background: "#edf2f6" }} className="px-8 pt-20 pb-20">
+    <section style={{ background: "#fac92c" }} className="px-8 pt-20 pb-20">
       <div className="container mx-auto mb-10 text-center">
         <Typography
           placeholder={""}
