@@ -7,7 +7,10 @@ import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 
 export function OurPrograms() {
   return (
-    <section style={{ background: "#edf2f6" }} className="px-8 pt-20 pb-20">
+    <section
+      style={{ background: "#edf2f6" }}
+      className="animate-in slide-in-from-bottom duration-1000 px-8 pt-20 pb-20"
+    >
       <div className="container mx-auto mb-10 mb-12 grid place-items-center text-center ">
         <Typography
           placeholder=""

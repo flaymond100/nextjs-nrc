@@ -8,7 +8,7 @@ function Home() {
   return (
     <header className="mt-12 bg-white px-8">
       <div className="container mx-auto grid h-full min-h-[65vh] w-full grid-cols-1 place-items-center gap-y-10 lg:grid-cols-2">
-        <div className="row-start-1 sm:-row-start-2 sm:-row-auto lg:-mt-40 text-center sm:text-start">
+        <div className="animate-in slide-in-from-left duration-1000 row-start-1 sm:-row-start-2 sm:-row-auto lg:-mt-40 text-center sm:text-start">
           <Typography
             placeholder=""
             variant="h1"
@@ -28,7 +28,7 @@ function Home() {
           </Typography>
           <Link href="?modal=true">
             <Button placeholder="" size="lg" color="gray">
-              See Plans
+              Join NRC Team
             </Button>
           </Link>
         </div>

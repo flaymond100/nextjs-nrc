@@ -5,7 +5,7 @@ import { Navbar, Footer } from "@/components";
 import Prices from "../prices";
 import Faq from "../faq";
 
-export default function Campaign() {
+export default function PricingPage() {
   return (
     <>
       <Navbar />

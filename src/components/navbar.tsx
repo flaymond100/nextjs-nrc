@@ -23,9 +23,9 @@ const NAV_MENU = [
     href: "/",
   },
   {
-    name: "About Us",
+    name: "Plans & Pricing",
     icon: UserCircleIcon,
-    href: "/about-us",
+    href: "/plans-and-pricing",
   },
 ];
 

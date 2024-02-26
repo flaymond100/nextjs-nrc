@@ -10,9 +10,9 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "Plans and Pricing",
   description:
-    "NRC Team is a community of athletes from all corners of the globe, united by a shared love for endurance sports and become healthier people.",
+    "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
 };
 
 export default function RootLayout({

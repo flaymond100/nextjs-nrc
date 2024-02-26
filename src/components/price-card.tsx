@@ -16,6 +16,7 @@ interface PriceCardProps {
   price: number;
   pricePerYear: number;
   offPrice?: number;
+  delay: number;
 }
 
 export function PriceCard({
@@ -24,10 +25,11 @@ export function PriceCard({
   price,
   offPrice,
   pricePerYear,
+  delay,
 }: PriceCardProps) {
   return (
     <Card
-      className="bg-white relative grid w-full "
+      className={`animate-in slide-in-from-bottom duration-1000 delay-${delay} bg-white relative grid w-full `}
       placeholder={""}
       color="transparent"
       shadow={true}
