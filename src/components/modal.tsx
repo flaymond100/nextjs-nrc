@@ -49,7 +49,10 @@ function Modal() {
   return (
     <>
       {modal && (
-        <dialog className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center">
+        <dialog
+          id="modal"
+          className="fixed left-0 top-0 w-full h-full bg-black bg-opacity-50 z-50 overflow-auto backdrop-blur flex justify-center items-center"
+        >
           <div className="sm:w-1/2 lg:w-96">
             <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 ">
               <form onSubmit={formik.handleSubmit}>
@@ -62,11 +65,11 @@ function Modal() {
                   </Link>
                 </div>
                 <div className="mb-4 mt-3 text-center sm:mt-0">
-                  <h3 className="text-base font-semibold leading-6 text-gray-900">
+                  <h3 className=" font-bold leading-6 text-gray-900 text-2xl">
                     You are one step closer to your goal
                   </h3>
                   <div className="mt-2">
-                    <p className="text-sm text-gray-500">
+                    <p className="text-md text-gray-500">
                       Leave a request and we will contact you back shortly and
                       tell you how to start training with us.
                     </p>
@@ -126,7 +129,7 @@ function Modal() {
                 </div>
                 <div className="flex items-center start">
                   <button
-                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className="w-full  bg-deep-purple-800 hover:bg-deep-purple-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                     type="submit"
                     value="Submit"
                   >

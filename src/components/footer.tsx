@@ -49,7 +49,12 @@ export function Footer() {
             <div className="flex flex-col gap-3 sm:flex-row">
               {/* @ts-ignore */}
               <Input color="gray" label="Enter your email" />
-              <Button placeholder="" color="gray" className="flex-shrink-0">
+              <Button
+                style={{ background: "#37007d" }}
+                placeholder=""
+                color="gray"
+                className="flex-shrink-0"
+              >
                 subscribe
               </Button>
             </div>

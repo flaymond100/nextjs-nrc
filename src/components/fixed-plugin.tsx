@@ -3,10 +3,13 @@ import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { ChatBubbleOvalLeftEllipsisIcon as Icon } from "@heroicons/react/24/solid";
+import { usePathname } from "next/navigation";
 
 export function FixedPlugin() {
+  const pathname = usePathname();
+
   return (
-    <Link href="?modal=true">
+    <Link href={pathname + "?modal=true"}>
       <Button
         placeholder=""
         color="white"

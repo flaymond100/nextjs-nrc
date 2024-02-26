@@ -53,7 +53,13 @@ const FEATURES = [
 
 export function OurServices() {
   return (
-    <section className="px-8 pt-20 pb-10">
+    <section
+      style={{
+        background:
+          "linear-gradient(to bottom, rgb(255 255 255), rgba(250 201 44))",
+      }}
+      className="px-8 pt-20 pb-10"
+    >
       <div className="container mx-auto mb-16 text-center">
         <Typography
           placeholder={""}

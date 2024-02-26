@@ -24,7 +24,7 @@ export function FeatureCard({ icon: Icon, title, children }: FeatureCardProps) {
         </Typography>
         <Typography
           placeholder={""}
-          className="lg:px-8 font-normal !text-gray-500"
+          className="lg:px-8 font-normal !text-gray-700"
         >
           {children}
         </Typography>

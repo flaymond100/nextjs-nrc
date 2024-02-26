@@ -17,7 +17,7 @@ export default function Campaign() {
       <OurPrograms />
       <OurServices />
       <Prices />
-      <CarouselFeatures />
+      {/* <CarouselFeatures /> */}
       <Faq />
       <Footer />
     </>

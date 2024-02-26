@@ -8,17 +8,20 @@ import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 export function OurPrograms() {
   return (
     <section
-      style={{ background: "#edf2f6" }}
-      className="animate-in slide-in-from-bottom duration-1000 px-8 pt-20 pb-20"
+      style={{
+        background:
+          "linear-gradient(to bottom, rgb(237 242 246), rgba(255 255 255))",
+      }}
+      className="px-8 pt-20 pb-20"
     >
-      <div className="container mx-auto mb-10 mb-12 grid place-items-center text-center ">
+      <div className="animate-in slide-in-from-bottom duration-1000  container mx-auto mb-10 mb-12 grid place-items-center text-center ">
         <Typography
           placeholder=""
           variant="h2"
           color="blue-gray"
           className="my-3"
         >
-          Our Programs
+          Training Plans
         </Typography>
         {/* <Typography
           placeholder=""
@@ -30,7 +33,7 @@ export function OurPrograms() {
           become healthier people.
         </Typography> */}
       </div>
-      <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className=" animate-in slide-in-from-bottom duration-1000  container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card
           placeholder=""
           color="gray"

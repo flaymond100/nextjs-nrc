@@ -62,26 +62,27 @@ pricing component of the application. */
 export function Prices() {
   return (
     <section style={{ background: "#fac92c" }} className="px-8 pt-20 pb-20">
-      <div className="container mx-auto mb-10 text-center">
+      <div className="container mx-auto mb-20 text-center">
         <Typography
           placeholder={""}
-          variant="h2"
+          variant="h1"
           color="blue-gray"
-          className="mb-2"
+          className="mb-2 leter-spacing-1"
         >
-          OUR PLANS & PRICING
+          Choose Our Plan
         </Typography>
-        <div className="flex justify-center">
+
+        {/* <div className="flex justify-center">
           <Typography
             placeholder={""}
             variant="lead"
-            className="w-full max-w-lg !text-gray-500 text-center"
+            className="w-full max-w-lg  text-center text-black"
           >
             We are not just a team - we are a community of athletes from all
             corners of the world, united by a shared love for endurance sports
             and become healthier people.
           </Typography>
-        </div>
+        </div> */}
       </div>
       <div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
         {OTHER_BOOKS.map((props, key) => (

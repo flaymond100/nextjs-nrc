@@ -9,6 +9,7 @@ import {
   Button,
 } from "@material-tailwind/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface PriceCardProps {
   title: string;
@@ -27,6 +28,7 @@ export function PriceCard({
   pricePerYear,
   delay,
 }: PriceCardProps) {
+  const pathname = usePathname();
   return (
     <Card
       className={`animate-in slide-in-from-bottom duration-1000 delay-${delay} bg-white relative grid w-full `}
@@ -99,8 +101,12 @@ export function PriceCard({
           )}
         </div>
 
-        <Link href="?modal=true">
-          <Button className="rounded-none" placeholder={""} color="gray">
+        <Link href={pathname + "?modal=true"}>
+          <Button
+            className="rounded-none"
+            placeholder={""}
+            style={{ background: "#37007d" }}
+          >
             Get Started
           </Button>
         </Link>

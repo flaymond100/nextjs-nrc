@@ -6,13 +6,19 @@ import Link from "next/link";
 
 function Home() {
   return (
-    <header className="mt-12 bg-white px-8">
+    <section
+      className="pt-12 px-8"
+      style={{
+        background:
+          "linear-gradient(to bottom, rgb(112 77 156), rgba(237 242 246))",
+      }}
+    >
       <div className="container mx-auto grid h-full min-h-[65vh] w-full grid-cols-1 place-items-center gap-y-10 lg:grid-cols-2">
         <div className="animate-in slide-in-from-left duration-1000 row-start-1 sm:-row-start-2 sm:-row-auto lg:-mt-40 text-center sm:text-start">
           <Typography
             placeholder=""
             variant="h1"
-            color="blue-gray"
+            color="black"
             className="mb-2 max-w-sm text-3xl !leading-snug lg:mb-3 lg:text-5xl text-center sm:text-start"
           >
             Running, Triathlon and Cycling Trainings
@@ -20,14 +26,14 @@ function Home() {
           <Typography
             placeholder=""
             variant="lead"
-            className="mb-6 font-normal !text-gray-500 md:pr-16 xl:pr-28 text-center sm:text-start"
+            className="mb-6 font-normal !text-gray-800 md:pr-16 xl:pr-28 text-center sm:text-start"
           >
             We are not just a team - we are a community of athletes from all
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
           </Typography>
           <Link href="?modal=true">
-            <Button placeholder="" size="lg" color="gray">
+            <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Join NRC Team
             </Button>
           </Link>
@@ -42,7 +48,7 @@ function Home() {
           />
         </div>
       </div>
-    </header>
+    </section>
   );
 }
 export default Home;

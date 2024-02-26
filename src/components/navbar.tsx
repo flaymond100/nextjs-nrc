@@ -6,26 +6,31 @@ import {
   IconButton,
   Typography,
 } from "@material-tailwind/react";
-import {
-  RectangleStackIcon,
-  UserCircleIcon,
-  CommandLineIcon,
-  XMarkIcon,
-  Bars3Icon,
-} from "@heroicons/react/24/solid";
+import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
 
 const NAV_MENU = [
   {
-    name: "Page",
-    icon: RectangleStackIcon,
+    name: "Home",
     href: "/",
   },
   {
+    name: "Training Plans",
+    href: "/plans",
+  },
+  {
     name: "Plans & Pricing",
-    icon: UserCircleIcon,
-    href: "/plans-and-pricing",
+    href: "/pricing",
+  },
+  {
+    name: "Our Trainers",
+    href: "/trainers",
+  },
+
+  {
+    name: "About Us",
+    href: "/about-us",
   },
 ];
 
@@ -42,9 +47,9 @@ function NavItem({ children, href }: NavItemProps) {
         as="a"
         href={href || "#"}
         // target={href ? "_blank" : "_self"}
-        variant="paragraph"
-        color="gray"
-        className="flex items-center gap-2 font-medium text-gray-900"
+        variant="h6"
+        color="black"
+        className="flex items-center gap-2 font-strong text-deep-purple-800"
       >
         {children}
       </Typography>
@@ -84,16 +89,19 @@ export function Navbar() {
           />
         </a>
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
-          {NAV_MENU.map(({ name, icon: Icon, href }) => (
+          {NAV_MENU.map(({ name, href }) => (
             <NavItem key={name} href={href}>
-              <Icon className="h-5 w-5" />
               {name}
             </NavItem>
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
           <Link href="?modal=true">
-            <Button placeholder={""} color="gray">
+            <Button
+              style={{ background: "#37007d" }}
+              placeholder={""}
+              color="gray"
+            >
               Join Us
             </Button>
           </Link>
@@ -115,16 +123,15 @@ export function Navbar() {
       <Collapse open={open}>
         <div className="container mx-auto mt-3 border-t border-gray-200 px-2 pt-4">
           <ul className="flex flex-col gap-4">
-            {NAV_MENU.map(({ name, icon: Icon, href }) => (
+            {NAV_MENU.map(({ name, href }) => (
               <NavItem key={name} href={href}>
-                <Icon className="h-5 w-5" />
                 {name}
               </NavItem>
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
             <Link href="?modal=true">
-              <Button placeholder={""} color="gray">
+              <Button style={{ background: "#37007d" }} placeholder={""}>
                 Join Us
               </Button>
             </Link>
