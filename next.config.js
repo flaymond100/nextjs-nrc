@@ -5,7 +5,7 @@
 const nextConfig = {
   output: "export",
   // Use the prefix for GitHub Pages
-  basePath: "/nextjs-nrc",
+  basePath: "/nextjs-nrc/",
   assetPrefix: "/nextjs-nrc/",
   // Enable static export
   trailingSlash: true,
