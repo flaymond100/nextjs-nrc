@@ -11,6 +11,7 @@ export default function PricingPage() {
       <Navbar />
       <Prices />
       <Faq />
+      <Footer />
     </>
   );
 }

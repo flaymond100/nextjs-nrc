@@ -47,41 +47,36 @@ export function PriceCard({
         placeholder={undefined}
       >
         <a href="#">
-          <Typography
-            placeholder={""}
-            variant="h4"
+          <h4
             color="blue-gray"
-            className="font-bold normal-case mb-8 tracking-tight"
+            className="font-bold text-2xl text-black normal-case mb-8 tracking-tight"
           >
             {title}
-          </Typography>
+          </h4>
         </a>
         <div className="mb-3 flex gap-2 items-end justify-center">
           {!offPrice && (
             <div className="flex-col">
-              <Typography
-                placeholder={""}
-                variant={offPrice ? "h6" : "h2"}
-                color="blue-gray"
+              <h2
                 className={
-                  offPrice ? "line-through tracking-tight" : "tracking-tight"
+                  offPrice
+                    ? "text-3xl text-black font-bold line-through tracking-tight"
+                    : "text-3xl text-black font-bold tracking-tight"
                 }
               >
                 €{price}
-              </Typography>
-              <Typography
-                placeholder={""}
-                variant={offPrice ? "h6" : "h6"}
+              </h2>
+              <h2
                 style={{ fontWeight: 500 }}
                 color="blue-gray"
-                className={offPrice ? "line-through" : "mb-8"}
+                className={offPrice ? "text-lg line-through" : "text-lg mb-8"}
               >
                 /month
-              </Typography>
+              </h2>
             </div>
           )}
 
-          <Typography placeholder={""} variant="h4" color="red">
+          {/* <Typography placeholder={""} variant="h4" color="red">
             {offPrice && (
               <>
                 €{offPrice}
@@ -98,7 +93,7 @@ export function PriceCard({
             >
               €{price}/month
             </Typography>
-          )}
+          )} */}
         </div>
 
         <Link href={pathname + "?modal=true"}>

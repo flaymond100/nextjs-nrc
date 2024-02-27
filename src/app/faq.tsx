@@ -54,14 +54,9 @@ export function Faq() {
     <section className="px-8 pt-20">
       <div className="container mx-auto">
         <div className="text-center">
-          <Typography
-            placeholder={""}
-            variant="h1"
-            color="blue-gray"
-            className="mb-4"
-          >
+          <h1 color="blue-gray" className="mb-4 text-5xl font-bold">
             Frequently Asked Questions
-          </Typography>
+          </h1>
           {/* <Typography
             placeholder={""}
             variant="lead"
@@ -86,13 +81,12 @@ export function Faq() {
                 {title}
               </AccordionHeader>
               <AccordionBody>
-                <Typography
-                  placeholder={""}
+                <p
                   color="blue-gray"
-                  className="font-normal text-gray-700"
+                  className="font-normal text-xl text-gray-700"
                 >
                   {desc}
-                </Typography>
+                </p>
               </AccordionBody>
             </Accordion>
           ))}

@@ -61,20 +61,9 @@ export function Footer() {
           </div>
         </div>
         <div className="mt-16 flex flex-wrap items-center justify-center gap-y-4 gap-x-8 border-t border-blue-gray-50 py-6 md:justify-between">
-          <Typography
-            placeholder=""
-            className="text-center font-normal !text-gray-700"
-          >
-            &copy; {CURRENT_YEAR} Made with{" "}
-            <a href="https://www.material-tailwind.com" target="_blank">
-              Material Tailwind
-            </a>{" "}
-            by{" "}
-            <a href="https://www.creative-tim.com" target="_blank">
-              Creative Tim
-            </a>
-            .
-          </Typography>
+          <p className="text-center font-normal !text-gray-700">
+            &copy; {CURRENT_YEAR} NRC Team
+          </p>
 
           <ul className="flex items-center">
             {SUB_LINKS.map((link, idx) => (
