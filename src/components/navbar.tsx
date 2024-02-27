@@ -46,7 +46,7 @@ function NavItem({ children, href }: NavItemProps) {
       <Link
         href={href || "#"}
         // target={href ? "_blank" : "_self"}
-        className="flex items-center gap-2 font-strong text-black"
+        className="flex items-center gap-2 font-bold text-black"
       >
         {children}
       </Link>
