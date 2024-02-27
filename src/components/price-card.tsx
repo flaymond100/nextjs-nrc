@@ -106,7 +106,7 @@ export function PriceCard({
         </Link>
       </CardHeader>
       <CardBody placeholder={""} className="lg:px-16 sm:px-8">
-        <ul className="mb-4 font-normal list-image-[url(/static/image/checkmark.svg)] ml-4">
+        <ul className="mb-4 font-normal list-image-[url( /image/checkmark.svg)] ml-4">
           {desc.map((item, index) => (
             <li className="mb-4 pl-2" key={index}>
               {item}

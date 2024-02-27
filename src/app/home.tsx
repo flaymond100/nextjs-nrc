@@ -36,7 +36,7 @@ function Home() {
           <Image
             width={568}
             height={568}
-            src="/static/image/France_Downhill_Kosta.jpg"
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.jpg`}
             className="animate-in fade-in zoom-in duration-1000 -mt-10 rounded-lg shadow-md "
             alt="cyclist in France"
           />

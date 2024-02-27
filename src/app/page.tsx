@@ -9,6 +9,7 @@ import CarouselFeatures from "./carousel-features";
 import OurServices from "./our-services";
 import Faq from "./faq";
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 export default function Campaign() {
   return (
     <>
