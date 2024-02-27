@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
+import Image from "next/static/image";
 
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import Link from "next/link";
@@ -39,8 +39,8 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={"/image/8716_20230423_144655_274310037_original.webp"}
-            alt={"/image/8716_20230423_144655_274310037_original.webp"}
+            src={"/static/image/8716_20230423_144655_274310037_original.webp"}
+            alt={"/static/image/8716_20230423_144655_274310037_original.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
@@ -86,8 +86,8 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={"/image/France_Downhill_Kosta.jpg"}
-            alt={"/image/France_Downhill_Kosta.jpg"}
+            src={"/static/image/France_Downhill_Kosta.jpg"}
+            alt={"/static/image/France_Downhill_Kosta.jpg"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
@@ -133,8 +133,8 @@ export function OurPrograms() {
             width={768}
             height={768}
             style={{ left: "-10px" }}
-            src={"/image/tri_1.webp"}
-            alt={"/image/tri_1.webp"}
+            src={"/static/image/tri_1.webp"}
+            alt={"/static/image/tri_1.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />

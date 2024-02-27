@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import Image from "next/static/image";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { ChatBubbleOvalLeftEllipsisIcon as Icon } from "@heroicons/react/24/solid";
