@@ -38,8 +38,8 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={"/static/image/8716_20230423_144655_274310037_original.webp"}
-            alt={"/static/image/8716_20230423_144655_274310037_original.webp"}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/8716_20230423_144655_274310037_original.webp`}
+            alt={"/image/8716_20230423_144655_274310037_original.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
@@ -85,8 +85,8 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={"/static/image/France_Downhill_Kosta.jpg"}
-            alt={"/static/image/France_Downhill_Kosta.jpg"}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.jpg`}
+            alt={" /image/France_Downhill_Kosta.jpg"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
@@ -132,8 +132,8 @@ export function OurPrograms() {
             width={768}
             height={768}
             style={{ left: "-10px" }}
-            src={"/static/image/tri_1.webp"}
-            alt={"/static/image/tri_1.webp"}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/tri_1.webp`}
+            alt={" /image/tri_1.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />

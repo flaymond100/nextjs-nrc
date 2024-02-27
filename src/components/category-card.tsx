@@ -18,7 +18,7 @@ function CategoryCard({ img, title, desc, icon: Icon }: CategoryCardProps) {
       <Image
         width={768}
         height={768}
-        src={img}
+        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${img}`}
         alt={title}
         className="absolute inset-0 h-full w-full object-cover object-center"
       />

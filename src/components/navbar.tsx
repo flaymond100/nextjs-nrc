@@ -83,8 +83,8 @@ export function Navbar() {
       <div className="container mx-auto flex items-center justify-between">
         <a href="/">
           <Image
-            src="/nextjs-nrc/favicon.ico"
-            alt="Material Tailwind"
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`}
+            alt="favicon Nrc Team"
             width={50}
             height={25}
           />

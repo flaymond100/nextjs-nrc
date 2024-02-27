@@ -6,7 +6,7 @@ import { Typography, Carousel } from "@material-tailwind/react";
 export function CarouselFeatures() {
   return (
     <div className="px-8 py-56">
-      <section className="container mx-auto !rounded-lg bg-[url('/static/image/Background.png')] bg-center py-10 lg:px-16">
+      <section className="container mx-auto !rounded-lg bg-[url(' /image/Background.png')] bg-center py-10 lg:px-16">
         <Carousel
           placeholder={""}
           transition={{ duration: 1 }}
@@ -59,7 +59,7 @@ export function CarouselFeatures() {
                 <Image
                   width={768}
                   height={768}
-                  src="/static/image/logos/logo-amazon 3.svg"
+                  src=" /image/logos/logo-amazon 3.svg"
                   alt="testimonial image"
                   className="h-full w-2/4 object-contain md:!w-2/3"
                 />
