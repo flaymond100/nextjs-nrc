@@ -9,6 +9,7 @@ import {
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const NAV_MENU = [
   {
@@ -16,7 +17,7 @@ const NAV_MENU = [
     href: "/",
   },
   {
-    name: "Training Plans",
+    name: "Our Trainings",
     href: "/plans",
   },
   {
@@ -49,7 +50,7 @@ function NavItem({ children, href }: NavItemProps) {
         // target={href ? "_blank" : "_self"}
         variant="h6"
         color="black"
-        className="flex items-center gap-2 font-strong text-deep-purple-800"
+        className="flex items-center gap-2 font-strong text-black"
       >
         {children}
       </Typography>
@@ -59,7 +60,7 @@ function NavItem({ children, href }: NavItemProps) {
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
-
+  const pathname = usePathname();
   function handleOpen() {
     setOpen((cur) => !cur);
   }
@@ -96,7 +97,7 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link href="?modal=true">
+          <Link href={pathname + "?modal=true"}>
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}
@@ -130,7 +131,7 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            <Link href="?modal=true">
+            <Link href={pathname + "?modal=true"}>
               <Button style={{ background: "#37007d" }} placeholder={""}>
                 Join Us
               </Button>

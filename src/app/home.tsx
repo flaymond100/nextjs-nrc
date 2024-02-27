@@ -8,10 +8,10 @@ function Home() {
   return (
     <section
       className="pt-12 px-8"
-      style={{
-        background:
-          "linear-gradient(to bottom, rgb(112 77 156), rgba(237 242 246))",
-      }}
+      // style={{
+      //   background:
+      //     "linear-gradient(to bottom, rgb(172 105 255), rgba(237 242 246))",
+      // }}
     >
       <div className="container mx-auto grid h-full min-h-[65vh] w-full grid-cols-1 place-items-center gap-y-10 lg:grid-cols-2">
         <div className="animate-in slide-in-from-left duration-1000 row-start-1 sm:-row-start-2 sm:-row-auto lg:-mt-40 text-center sm:text-start">

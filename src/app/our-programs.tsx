@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
+import Link from "next/link";
 
 export function OurPrograms() {
   return (
@@ -14,15 +15,10 @@ export function OurPrograms() {
       }}
       className="px-8 pt-20 pb-20"
     >
-      <div className="animate-in slide-in-from-bottom duration-1000  container mx-auto mb-10 mb-12 grid place-items-center text-center ">
-        <Typography
-          placeholder=""
-          variant="h2"
-          color="blue-gray"
-          className="my-3"
-        >
-          Training Plans
-        </Typography>
+      <div className="animate-in slide-in-from-bottom duration-1000 container mx-auto mb-10 grid place-items-center text-center ">
+        <h1 color="blue-gray" className="my-3 text-4xl font-bold">
+          Our Trainings
+        </h1>
         {/* <Typography
           placeholder=""
           variant="lead"
@@ -33,11 +29,12 @@ export function OurPrograms() {
           become healthier people.
         </Typography> */}
       </div>
-      <div className=" animate-in slide-in-from-bottom duration-1000  container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
+      <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card
+          id="running"
           placeholder=""
           color="gray"
-          className="relative grid h-full w-full place-items-center overflow-hidden text-center"
+          className="animate-in slide-in-from-left duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
           <Image
             width={768}
@@ -72,16 +69,19 @@ export function OurPrograms() {
               plans tailored to your fitness level and goals. Our experienced
               coaches provide support to help you reach new goals.
             </Typography>
-            <Button placeholder="" size="sm" color="white">
-              Read More
-            </Button>
+            <Link href="/plans/running-trainings">
+              <Button placeholder="" size="sm" color="white">
+                Read More
+              </Button>
+            </Link>
           </CardBody>
         </Card>
 
         <Card
+          id="cycling"
           placeholder=""
           color="gray"
-          className="relative grid h-full w-full place-items-center overflow-hidden text-center"
+          className="animate-in slide-in-from-bottom duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
           <Image
             width={768}
@@ -116,15 +116,18 @@ export function OurPrograms() {
               you are a beginner or an experienced athlete, we are here to help
               you reach your full potential.
             </Typography>
-            <Button placeholder="" size="sm" color="white">
-              Read More
-            </Button>
+            <Link href="/plans/cycling-trainings">
+              <Button placeholder="" size="sm" color="white">
+                Read More
+              </Button>
+            </Link>
           </CardBody>
         </Card>
         <Card
+          id="triathlon"
           placeholder=""
           color="gray"
-          className="relative grid h-full w-full place-items-center overflow-hidden text-center"
+          className="animate-in slide-in-from-right duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
           <Image
             width={768}
@@ -160,9 +163,11 @@ export function OurPrograms() {
               or a seasoned triathlete, our presonalised plans will help you
               complete triathlon disciplines with confidence.
             </Typography>
-            <Button className="mb-4" placeholder="" size="sm" color="white">
-              Read More
-            </Button>
+            <Link href="/plans/triathlon-trainings">
+              <Button className="mb-4" placeholder="" size="sm" color="white">
+                Read More
+              </Button>
+            </Link>
           </CardBody>
         </Card>
       </div>

@@ -54,30 +54,21 @@ const FEATURES = [
 export function OurServices() {
   return (
     <section
-      style={{
-        background:
-          "linear-gradient(to bottom, rgb(255 255 255), rgba(250 201 44))",
-      }}
-      className="px-8 pt-20 pb-10"
+      // style={{
+      //   background:
+      //     "linear-gradient(to bottom, rgb(255 255 255), rgba(250 201 44))",
+      // }}
+      className="px-8"
     >
       <div className="container mx-auto mb-16 text-center">
-        <Typography
-          placeholder={""}
-          variant="h2"
-          color="blue-gray"
-          className="mb-4"
-        >
+        <h2 color="blue-gray" className="mb-4 text-4xl ">
           How we will support you
-        </Typography>
-        <Typography
-          placeholder={""}
-          variant="lead"
-          className="mx-auto w-full px-4 !text-gray-500 lg:w-5/12"
-        >
+        </h2>
+        <h4 className="mx-auto w-full px-4 !text-gray-500 lg:w-5/12">
           We are not just a team - we are a community of athletes from all
           corners of the world, united by a shared love for endurance sports and
           become healthier people.
-        </Typography>
+        </h4>
       </div>
       <div className="container mx-auto grid grid-cols-1 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map(({ icon, title, description }) => (

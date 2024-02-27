@@ -61,16 +61,20 @@ pricing component of the application. */
 
 export function Prices() {
   return (
-    <section style={{ background: "#fac92c" }} className="px-8 pt-20 pb-20">
+    <section
+      // style={{
+      //   background:
+      //     "linear-gradient(to bottom, rgb(250, 201, 44), rgba(255 255 255))",
+      // }}
+      className="px-8 pt-20 pb-20"
+    >
       <div className="container mx-auto mb-20 text-center">
-        <Typography
-          placeholder={""}
-          variant="h1"
+        <h1
           color="blue-gray"
-          className="mb-2 leter-spacing-1"
+          className="mb-2 leter-spacing-1 text-5xl font-bold"
         >
           Choose Our Plan
-        </Typography>
+        </h1>
 
         {/* <div className="flex justify-center">
           <Typography
