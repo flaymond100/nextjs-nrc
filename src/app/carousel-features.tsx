@@ -8,6 +8,7 @@ export function CarouselFeatures() {
     <div className="px-8 py-56">
       <section className="container mx-auto !rounded-lg bg-[url('/image/Background.png')] bg-center py-10 lg:px-16">
         <Carousel
+          placeholder={""}
           transition={{ duration: 1 }}
           nextArrow={() => <></>}
           prevArrow={() => <></>}
@@ -32,6 +33,7 @@ export function CarouselFeatures() {
             >
               <div className="col-span-3 flex flex-col items-start justify-center">
                 <Typography
+                  placeholder={""}
                   variant="lead"
                   color="white"
                   className="mb-5 text-xl font-normal "
@@ -44,6 +46,7 @@ export function CarouselFeatures() {
                 <div className="flex items-center gap-2">
                   🚚
                   <Typography
+                    placeholder={""}
                     variant="small"
                     color="white"
                     className="font-medium uppercase"
