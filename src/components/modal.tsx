@@ -29,10 +29,10 @@ function Modal() {
       console.log(values);
       emailjs
         .send(
-          process.env.NEXT_PUBLIC_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_TEMPLATE_ID!,
+          process.env.SERVICE_ID!,
+          process.env.TEMPLATE_ID!,
           values,
-          process.env.NEXT_PUBLIC_PUBLIC_KEY!
+          process.env.PUBLIC_KEY!
         )
         .then(
           () => {
