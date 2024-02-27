@@ -4,8 +4,9 @@
 
 const nextConfig = {
   output: "export",
+  reactStrictMode: true,
   // Use the prefix for GitHub Pages
-  basePath: "/nextjs-nrc/",
+  basePath: "/nextjs-nrc",
   assetPrefix: "/nextjs-nrc/",
   // Enable static export
   trailingSlash: true,
