@@ -4,7 +4,14 @@
 
 const nextConfig = {
   output: "export",
-  distDir: "out",
+  // Use the prefix for GitHub Pages
+  basePath: "/nextjs-nrc",
+  assetPrefix: "/nextjs-nrc/",
+  // Enable static export
+  trailingSlash: true,
+  images: {
+    unoptimized: true,
+  },
 };
 
 module.exports = nextConfig;
