@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import Image from "next/static/image";
-
+import Image from "next/image";
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import Link from "next/link";
 

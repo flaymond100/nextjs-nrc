@@ -4,7 +4,7 @@ import { Navbar, Footer } from "@/components";
 // sections
 import Faq from "../../faq";
 import OurPrograms from "../../our-programs";
-import Image from "next/static/image";
+import Image from "next/image";
 import Link from "next/link";
 
 const RunningTrainings = () => {

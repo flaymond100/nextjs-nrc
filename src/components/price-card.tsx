@@ -1,6 +1,5 @@
 import React from "react";
-import Image from "next/static/image";
-
+import Image from "next/image";
 import {
   Typography,
   Card,

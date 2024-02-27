@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/static/image";
+import Image from "next/image";
 import { Typography, Carousel } from "@material-tailwind/react";
 
 export function CarouselFeatures() {

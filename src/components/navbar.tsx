@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
-import Image from "next/static/image";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
