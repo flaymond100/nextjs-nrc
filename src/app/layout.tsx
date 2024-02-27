@@ -24,7 +24,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="shortcut icon" href="/favicon.ico" />
+        <link
+          rel="shortcut icon"
+          href={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`}
+        />
       </head>
       <body className={roboto.className}>
         <Layout>
