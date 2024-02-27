@@ -1,9 +1,12 @@
 "use client";
-import { useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { Field, FieldProps, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
+import toast from "react-hot-toast";
+import React from "react";
+import { Loader } from "./loader";
 
 const contactValidationSchema = Yup.object().shape({
   name: Yup.string(),
@@ -16,6 +19,8 @@ function Modal() {
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
   const pathname = usePathname();
+  const router = useRouter();
+  const [disabled, setDisabled] = React.useState(false);
 
   const formik = useFormik<{
     email: string;
@@ -26,7 +31,7 @@ function Modal() {
       name: "",
     },
     onSubmit: (values, { resetForm }) => {
-      console.log(values);
+      setDisabled(true);
       emailjs
         .send(
           process.env.NEXT_PUBLIC_SERVICE_ID!,
@@ -36,12 +41,21 @@ function Modal() {
         )
         .then(
           () => {
+            toast.success("Your message was sent!", {
+              style: { color: "white", background: "green" },
+              duration: 4000,
+            });
+            router.back();
             resetForm();
           },
           (error: { text: any }) => {
+            toast.error("Error happened, please try again!");
             console.log(error.text);
           }
-        );
+        )
+        .finally(() => {
+          setDisabled(false);
+        });
     },
     validationSchema: contactValidationSchema,
   });
@@ -89,6 +103,7 @@ function Modal() {
                     } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                     id="username"
                     type="text"
+                    disabled={disabled}
                     name="name"
                     placeholder="Your name"
                     value={formik.values.name}
@@ -115,6 +130,7 @@ function Modal() {
                     } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                     id="username"
                     type="email"
+                    disabled={disabled}
                     name="email"
                     placeholder="Your email"
                     value={formik.values.email}
@@ -129,11 +145,16 @@ function Modal() {
                 </div>
                 <div className="flex items-center start">
                   <button
-                    className="w-full  bg-deep-purple-800 hover:bg-deep-purple-400 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className={`w-full  ${
+                      disabled
+                        ? "bg-gray-500"
+                        : "bg-deep-purple-800 hover:bg-deep-purple-400"
+                    } text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
                     type="submit"
                     value="Submit"
+                    disabled={disabled}
                   >
-                    Submit
+                    {disabled ? <Loader /> : "Submit"}
                   </button>
                 </div>
               </form>

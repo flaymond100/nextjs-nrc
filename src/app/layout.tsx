@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Questrial } from "next/font/google";
 import { Layout, FixedPlugin } from "@/components";
 import Modal from "@/components/modal";
+import { Toaster } from "react-hot-toast";
 
 const roboto = Questrial({
   subsets: ["latin"],
@@ -31,6 +32,7 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <Layout>
+          <Toaster position="top-right" />
           {children}
           <Modal />
           <FixedPlugin />
