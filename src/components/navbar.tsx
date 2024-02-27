@@ -43,17 +43,13 @@ interface NavItemProps {
 function NavItem({ children, href }: NavItemProps) {
   return (
     <li>
-      <Typography
-        placeholder={""}
-        as="a"
+      <Link
         href={href || "#"}
         // target={href ? "_blank" : "_self"}
-        variant="h6"
-        color="black"
         className="flex items-center gap-2 font-strong text-black"
       >
         {children}
-      </Typography>
+      </Link>
     </li>
   );
 }
