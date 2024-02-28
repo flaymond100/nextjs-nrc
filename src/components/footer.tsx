@@ -1,7 +1,10 @@
 import { Typography, Button, Input } from "@material-tailwind/react";
 
-const LINKS = ["About Us", "Careers", "Press", "Blog", "Pricing"];
-const SUB_LINKS = ["Claim", "Privacy", "Terms"];
+const LINKS = [
+  { title: "About Us", link: "/about-us" },
+  { title: "Pricing", link: "/pricing" },
+  { title: "Terms", link: "/terms-and-conditions" },
+];
 const CURRENT_YEAR = new Date().getFullYear();
 
 export function Footer() {
@@ -12,26 +15,25 @@ export function Footer() {
           <div className="text-center md:text-left">
             <Typography
               as="a"
-              href="https://www.material-tailwind.com"
-              target="_blank"
+              href="/"
               variant="h4"
               className="mb-6"
               placeholder=""
             >
-              Material Tailwind
+              NRC Team
             </Typography>
             <ul className="flex flex-wrap items-center justify-center md:justify-start">
-              {LINKS.map((link, idx) => (
-                <li key={link}>
+              {LINKS.map((data, idx) => (
+                <li key={data.link}>
                   <Typography
                     as="a"
-                    href="#"
+                    href={data.link}
                     placeholder=""
                     className={`py-1 font-medium !text-gray-700 transition-colors hover:!text-gray-900 ${
                       idx === 0 ? "pr-3" : "px-3"
                     }`}
                   >
-                    {link}
+                    {data.title}
                   </Typography>
                 </li>
               ))}
@@ -64,23 +66,6 @@ export function Footer() {
           <p className="text-center font-normal !text-gray-700">
             &copy; {CURRENT_YEAR} NRC Team
           </p>
-
-          <ul className="flex items-center">
-            {SUB_LINKS.map((link, idx) => (
-              <li key={link}>
-                <Typography
-                  as="a"
-                  placeholder=""
-                  href="#"
-                  className={`py-1 font-normal !text-gray-700 transition-colors hover:!text-gray-900 ${
-                    idx === SUB_LINKS.length - 1 ? "pl-2" : "px-2"
-                  }`}
-                >
-                  {link}
-                </Typography>
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
     </footer>

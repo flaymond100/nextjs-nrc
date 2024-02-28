@@ -3,7 +3,7 @@
 import { Typography } from "@material-tailwind/react";
 import PriceCard from "@/components/price-card";
 
-const OTHER_BOOKS = [
+const PRICES = [
   {
     category: "William Gibson",
     title: "Lite",
@@ -89,7 +89,7 @@ export function Prices() {
         </div> */}
       </div>
       <div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
-        {OTHER_BOOKS.map((props, key) => (
+        {PRICES.map((props, key) => (
           <PriceCard delay={key * 4000} key={key} {...props} />
         ))}
       </div>

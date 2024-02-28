@@ -45,14 +45,12 @@ export function PriceCard({
         className="mt-0 mr-0 mb-0 ml-0 bg-grey border-0 rounded-none rounded-t-lg"
         placeholder={undefined}
       >
-        <a href="#">
-          <h4
-            color="blue-gray"
-            className="font-bold text-2xl text-black normal-case mb-8 tracking-tight"
-          >
-            {title}
-          </h4>
-        </a>
+        <h4
+          color="blue-gray"
+          className="font-bold text-2xl text-black normal-case mb-8 tracking-tight"
+        >
+          {title}
+        </h4>
         <div className="mb-3 flex gap-2 items-end justify-center">
           {!offPrice && (
             <div className="flex-col">
@@ -106,7 +104,9 @@ export function PriceCard({
         </Link>
       </CardHeader>
       <CardBody placeholder={""} className="lg:px-16 sm:px-8">
-        <ul className="mb-4 font-normal list-image-[url( /image/checkmark.svg)] ml-4">
+        <ul
+          className={`mb-4 font-normal list-image-[url(/image/checkmark.svg)] ml-4`}
+        >
           {desc.map((item, index) => (
             <li className="mb-4 pl-2" key={index}>
               {item}

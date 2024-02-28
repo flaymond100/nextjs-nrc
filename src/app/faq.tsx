@@ -57,14 +57,6 @@ export function Faq() {
           <h1 color="blue-gray" className="mb-4 text-5xl font-bold">
             Frequently Asked Questions
           </h1>
-          {/* <Typography
-            placeholder={""}
-            variant="lead"
-            className="mx-auto mb-24 w-full max-w-2xl !text-gray-500"
-          >
-            The Back-to-School Campaign is a special promotion designed to make
-            your return to school as smooth as possible.
-          </Typography> */}
         </div>
         <div className="mx-auto lg:max-w-screen-lg lg:px-20">
           {FAQS.map(({ title, desc }, key) => (
