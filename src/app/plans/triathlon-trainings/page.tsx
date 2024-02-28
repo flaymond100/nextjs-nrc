@@ -47,7 +47,7 @@ const RunningTrainings = () => {
 
       <p
         style={{ borderColor: "red" }}
-        className="mb-6 rounded border-l-4 bg-red p-2"
+        className="mb-6 rounded border-l-4 bg-green p-2"
       >
         <strong>Note:</strong> At NRC Team we are offering an individual and
         flexible options, which will be suitable for everyone. Find more about
