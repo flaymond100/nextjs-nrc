@@ -45,6 +45,7 @@ function NavItem({ children, href }: NavItemProps) {
     <li>
       <Link
         href={href || "#"}
+        scroll={true}
         // target={href ? "_blank" : "_self"}
         className="flex items-center gap-2 font-bold text-black"
       >
