@@ -4,6 +4,8 @@ import { Questrial } from "next/font/google";
 import { Layout, FixedPlugin } from "@/components";
 import Modal from "@/components/modal";
 import { Toaster } from "react-hot-toast";
+import { useCallback, useEffect } from "react";
+import Scroll from "@/components/scroll";
 
 const roboto = Questrial({
   subsets: ["latin"],
@@ -32,6 +34,7 @@ export default function RootLayout({
       </head>
       <body className={roboto.className}>
         <Layout>
+          <Scroll />
           <Toaster position="top-right" />
           {children}
           <Modal />
