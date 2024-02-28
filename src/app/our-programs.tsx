@@ -19,8 +19,8 @@ export function OurPrograms() {
           Our Trainings
         </h1>
       </div>
-      <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Card
+      <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
+        {/* <Card
           id="running"
           placeholder=""
           color="gray"
@@ -60,7 +60,7 @@ export function OurPrograms() {
               </Button>
             </Link>
           </div>
-        </Card>
+        </Card> */}
 
         <Card
           id="cycling"
