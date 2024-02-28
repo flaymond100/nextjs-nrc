@@ -18,15 +18,6 @@ export function OurPrograms() {
         <h1 color="blue-gray" className="my-3 text-4xl font-bold">
           Our Trainings
         </h1>
-        {/* <Typography
-          placeholder=""
-          variant="lead"
-          className="!text-gray-500 lg:w-6/12"
-        >
-          We are not just a team - we are a community of athletes from all
-          corners of the world, united by a shared love for endurance sports and
-          become healthier people.
-        </Typography> */}
       </div>
       <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card
@@ -43,37 +34,32 @@ export function OurPrograms() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
-          <CardBody placeholder="" className="relative  h-full  w-full">
-            {/* <Typography
-              placeholder=""
-              color="white"
-              className="text-xs font-bold opacity-70"
-            >
-              up to 40% OFF
-            </Typography> */}
-            <Typography
-              placeholder=""
-              variant="h4"
-              className="mt-9"
-              color="white"
-            >
-              Running Trainings
-            </Typography>
-            <Typography
-              placeholder=""
-              color="white"
-              className="mt-4 mb-14 font-normal opacity-70"
-            >
-              Elevate your running performance with our personalized training
-              plans tailored to your fitness level and goals. Our experienced
-              coaches provide support to help you reach new goals.
-            </Typography>
-            <Link href="/plans/running-trainings">
-              <Button placeholder="" size="sm" color="white">
+          <div className="flex flex-col " style={{ zIndex: "1" }}>
+            <CardBody placeholder="" className="relative  h-full  w-full">
+              <Typography
+                placeholder=""
+                variant="h4"
+                className="mt-9"
+                color="white"
+              >
+                Running Trainings
+              </Typography>
+              <Typography
+                placeholder=""
+                color="white"
+                className="mt-4 mb-14 font-normal opacity-70"
+              >
+                Elevate your running performance with our personalized training
+                plans tailored to your fitness level and goals. Our experienced
+                coaches provide support to help you reach new goals.
+              </Typography>
+            </CardBody>
+            <Link style={{ zIndex: "1" }} href="/plans/running-trainings">
+              <Button placeholder="" className="mb-8" size="sm" color="white">
                 Read More
               </Button>
             </Link>
-          </CardBody>
+          </div>
         </Card>
 
         <Card
@@ -90,37 +76,32 @@ export function OurPrograms() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
-          <CardBody placeholder="" className="relative  h-full  w-full">
-            {/* <Typography
-              placeholder=""
-              color="white"
-              className="text-xs font-bold opacity-70"
-            >
-              up to 40% OFF
-            </Typography> */}
-            <Typography
-              placeholder=""
-              variant="h4"
-              className="mt-9"
-              color="white"
-            >
-              Cycling Trainings
-            </Typography>
-            <Typography
-              placeholder=""
-              color="white"
-              className="mt-4 mb-14 font-normal opacity-70"
-            >
-              Discover the world of cycling with our personalized plans. Whether
-              you are a beginner or an experienced athlete, we are here to help
-              you reach your full potential.
-            </Typography>
-            <Link href="/plans/cycling-trainings">
-              <Button placeholder="" size="sm" color="white">
+          <div className="flex flex-col " style={{ zIndex: "1" }}>
+            <CardBody placeholder="" className="relative  h-full  w-full">
+              <Typography
+                placeholder=""
+                variant="h4"
+                className="mt-9"
+                color="white"
+              >
+                Cycling Trainings
+              </Typography>
+              <Typography
+                placeholder=""
+                color="white"
+                className="mt-4 mb-14 font-normal opacity-70"
+              >
+                Discover the world of cycling with our personalized plans.
+                Whether you are a beginner or an experienced athlete, we are
+                here to help you reach your full potential.
+              </Typography>
+            </CardBody>
+            <Link style={{ zIndex: "1" }} href="/plans/cycling-trainings">
+              <Button placeholder="" className="mb-8" size="sm" color="white">
                 Read More
               </Button>
             </Link>
-          </CardBody>
+          </div>
         </Card>
         <Card
           id="triathlon"
@@ -137,37 +118,32 @@ export function OurPrograms() {
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
-          <CardBody placeholder="" className="relative  h-full  w-full">
-            {/* <Typography
-              placeholder=""
-              color="white"
-              className="text-xs font-bold opacity-70"
-            >
-              up to 40% OFF
-            </Typography> */}
-            <Typography
-              placeholder=""
-              variant="h4"
-              className="mt-9"
-              color="white"
-            >
-              Triathlon Trainings
-            </Typography>
-            <Typography
-              placeholder=""
-              color="white"
-              className="mt-4 mb-14 font-normal opacity-70"
-            >
-              Dive into the world of triathlon with us! Whether you are a newbie
-              or a seasoned triathlete, our presonalised plans will help you
-              complete triathlon disciplines with confidence.
-            </Typography>
-            <Link href="/plans/triathlon-trainings">
-              <Button className="mb-4" placeholder="" size="sm" color="white">
+          <div className="flex flex-col " style={{ zIndex: "1" }}>
+            <CardBody placeholder="" className="relative  h-full  w-full">
+              <Typography
+                placeholder=""
+                variant="h4"
+                className="mt-9"
+                color="white"
+              >
+                Triathlon Trainings
+              </Typography>
+              <Typography
+                placeholder=""
+                color="white"
+                className="mt-4 mb-14 font-normal opacity-70"
+              >
+                Dive into the world of triathlon with us! Whether you are a
+                newbie or a seasoned triathlete, our presonalised plans will
+                help you complete triathlon disciplines with confidence.
+              </Typography>
+            </CardBody>
+            <Link style={{ zIndex: "1" }} href="/plans/triathlon-trainings">
+              <Button placeholder="" className="mb-8" size="sm" color="white">
                 Read More
               </Button>
             </Link>
-          </CardBody>
+          </div>
         </Card>
       </div>
     </section>
