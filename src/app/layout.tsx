@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     description:
       "Individual training plans for triathlon, cycling and running.",
     images: {
-      width: 800,
-      height: 600,
-      url: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC_logo_web.jpg?alt=media&token=f9e70e4f-8c1b-4ecb-85d3-0a1b6df10aea",
+      width: "<generated>",
+      height: "<generated>",
+      url: "<generated>",
     },
   },
   title: "NRC Team",
