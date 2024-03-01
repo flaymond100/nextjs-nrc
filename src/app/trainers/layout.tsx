@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "About Us",
+  title: "Trainers",
   description:
-    "NRC Team is a community of athletes from all corners of the globe, united by a shared love for endurance sports and become healthier people.",
+    "Meet our coaching teem to help you reach your maximal potential.",
 };
 
 export default function RootLayout({
