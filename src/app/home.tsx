@@ -20,7 +20,7 @@ function Home() {
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
           </h4>
-          <Link href="?modal=true">
+          <Link aria-label="Join NRC Team" href="?modal=true">
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Join NRC Team
             </Button>
@@ -32,7 +32,7 @@ function Home() {
             height={568}
             src={`${
               process.env.NEXT_PUBLIC_BASE_URL ?? ""
-            }/image/France_Downhill_Kosta.jpg`}
+            }/image/France_Downhill_Kosta.webp`}
             className="animate-in fade-in zoom-in duration-1000 -mt-10 rounded-lg shadow-md "
             alt="cyclist in France"
           />
