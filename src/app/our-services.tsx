@@ -54,14 +54,13 @@ const FEATURES = [
 export function OurServices() {
   return (
     <section
-      // style={{
-      //   background:
-      //     "linear-gradient(to bottom, rgb(255 255 255), rgba(250 201 44))",
-      // }}
+      style={{
+        background: "rgba(237 242 246)",
+      }}
       className="px-8"
     >
       <div className="container mx-auto mb-16 text-center">
-        <h2 color="blue-gray" className="mb-4 text-4xl ">
+        <h2 color="blue-gray" className="mb-4 pt-16 text-4xl ">
           How we will support you
         </h2>
         <h4 className="mx-auto w-full px-4 !text-gray-500 lg:w-5/12">
