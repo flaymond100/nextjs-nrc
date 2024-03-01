@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function Home() {
+  const pathname = usePathname();
   return (
     <section className="pt-12 px-8 pb-20 md:pb-0">
       <div className="container mx-auto grid h-full min-h-[65vh] w-full grid-cols-1 place-items-center gap-y-10 lg:grid-cols-2">
@@ -20,7 +22,7 @@ function Home() {
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
           </h4>
-          <Link aria-label="Join NRC Team" href="?modal=true">
+          <Link aria-label="Join NRC Team" href={pathname + "?modal=true"}>
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Join NRC Team
             </Button>

@@ -94,7 +94,7 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link href={"?modal=true"}>
+          <Link href={pathname + "?modal=true"}>
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}

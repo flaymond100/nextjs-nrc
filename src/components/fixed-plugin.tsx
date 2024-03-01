@@ -9,7 +9,7 @@ export function FixedPlugin() {
   const pathname = usePathname();
 
   return (
-    <Link href={"?modal=true"}>
+    <Link href={pathname + "?modal=true"}>
       <Button
         placeholder=""
         color="white"
