@@ -48,7 +48,7 @@ const AboutUs = () => {
         </h3>
 
         <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div>
+          <div className="animate-in slide-in-from-left duration-1000">
             <h2 className="mb-4 text-3xl font-bold">Who are we?</h2>
             <h3 className="mb-4 text-lg">
               We are a community bonded by a passion for endurance sports and a
@@ -71,7 +71,7 @@ const AboutUs = () => {
             src={`${
               process.env.NEXT_PUBLIC_BASE_URL ?? ""
             }/image/about-us.webp`}
-            className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
+            className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""
           />
         </div>

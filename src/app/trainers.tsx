@@ -54,7 +54,7 @@ export function Trainers() {
       </div>
       <div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2">
         <Card
-          className={`animate-in slide-in-from-bottom duration-1000 bg-white relative grid w-full `}
+          className={`animate-in slide-in-from-bottom duration-500 bg-white relative grid w-full `}
           placeholder={""}
           color="transparent"
           shadow={true}
@@ -119,7 +119,7 @@ export function Trainers() {
           </CardBody>
         </Card>
         <Card
-          className={`animate-in slide-in-from-bottom duration-2000 bg-white relative grid w-full `}
+          className={`animate-in slide-in-from-bottom duration-1000 bg-white relative grid w-full `}
           placeholder={""}
           color="transparent"
           shadow={true}
