@@ -1,8 +1,12 @@
 import { Typography, Button, Input } from "@material-tailwind/react";
+import { BsStrava, BsInstagram, BsFacebook, BsTwitter } from "react-icons/bs";
+import Link from "next/link";
 
 const LINKS = [
   { title: "About Us", link: "/about-us" },
-  { title: "Pricing", link: "/pricing" },
+  { title: "Our Trainings", link: "/plans" },
+  { title: "Plans & Pricing", link: "/pricing" },
+  { title: "Our Trainers", link: "/trainers" },
   { title: "Terms", link: "/terms-and-conditions" },
 ];
 const CURRENT_YEAR = new Date().getFullYear();
@@ -43,22 +47,69 @@ export function Footer() {
             <Typography
               variant="h6"
               color="blue-gray"
-              className="mb-3"
+              className="mb-3 text-lg"
               placeholder=""
             >
-              Our Newsletter
+              Follow Us
             </Typography>
             <div className="flex flex-col gap-3 sm:flex-row">
-              {/* @ts-ignore */}
-              <Input color="gray" label="Enter your email" />
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder=""
-                color="gray"
-                className="flex-shrink-0"
+              <Link
+                aria-label="Go to strava"
+                target="_blank"
+                href="https://www.strava.com/clubs/nrc-tri-team"
               >
-                subscribe
-              </Button>
+                <Button
+                  placeholder={""}
+                  aria-label="Go to strava"
+                  size="sm"
+                  name="Strava"
+                >
+                  <BsStrava />
+                </Button>
+              </Link>
+              <Link
+                aria-label="Go to instagram"
+                target="_blank"
+                href="https://www.instagram.com/nrc.int.team/"
+              >
+                <Button
+                  placeholder={""}
+                  aria-label="Go to instagram"
+                  size="sm"
+                  name="Instagram"
+                >
+                  <BsInstagram />
+                </Button>
+              </Link>
+
+              <Link
+                aria-label="Go to facebook"
+                target="_blank"
+                href="https://www.facebook.com/nrcinternation"
+              >
+                <Button
+                  placeholder={""}
+                  aria-label="Go to facebook"
+                  size="sm"
+                  name="Facebook"
+                >
+                  <BsFacebook />
+                </Button>
+              </Link>
+              <Link
+                aria-label="Go to twitter"
+                target="_blank"
+                href="https://twitter.com/nrc_tri_team"
+              >
+                <Button
+                  placeholder={""}
+                  aria-label="Go to twitter"
+                  size="sm"
+                  name="Twitter"
+                >
+                  <BsTwitter />
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
