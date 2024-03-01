@@ -15,6 +15,7 @@
     "@emailjs/browser": "^4.1.0",
     "@heroicons/react": "2.0.18",
     "@material-tailwind/react": "2.1.2",
+    "@next/third-parties": "^14.1.0",
     "emailjs": "^4.0.3",
     "formik": "^2.4.5",
     "next": "13.4.0",
