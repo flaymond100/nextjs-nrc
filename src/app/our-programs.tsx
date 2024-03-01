@@ -71,8 +71,8 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.jpg`}
-            alt={" /image/France_Downhill_Kosta.jpg"}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.webp`}
+            alt={" /image/France_Downhill_Kosta.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
@@ -96,7 +96,11 @@ export function OurPrograms() {
                 here to help you reach your full potential.
               </Typography>
             </CardBody>
-            <Link style={{ zIndex: "1" }} href="/plans/cycling-trainings">
+            <Link
+              aria-label="Read more about cycling trainings"
+              style={{ zIndex: "1" }}
+              href="/plans/cycling-trainings"
+            >
               <Button placeholder="" className="mb-8" size="sm" color="white">
                 Read More
               </Button>
@@ -138,7 +142,11 @@ export function OurPrograms() {
                 help you complete triathlon disciplines with confidence.
               </Typography>
             </CardBody>
-            <Link style={{ zIndex: "1" }} href="/plans/triathlon-trainings">
+            <Link
+              aria-label="Read more about triathlon trainings"
+              style={{ zIndex: "1" }}
+              href="/plans/triathlon-trainings"
+            >
               <Button placeholder="" className="mb-8" size="sm" color="white">
                 Read More
               </Button>
