@@ -4,8 +4,7 @@ import { Layout } from "@/components";
 
 export const metadata: Metadata = {
   title: "Cycling Trainings",
-  description:
-    "Choose the most suitable progam for you - running training, cycling training or triathlon training.",
+  description: "Cycling training plans.",
 };
 
 export default function RootLayout({
