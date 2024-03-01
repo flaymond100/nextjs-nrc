@@ -25,7 +25,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ftri_1.webp?alt=media&token=b197cdcd-ba9f-4fd1-ab8d-40fcb6d59df9"
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_1.png`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -79,7 +79,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ftri_3.webp?alt=media&token=d2fb7306-d111-462a-b91e-dcbffd7cf1ce"
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_2.png`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -141,7 +141,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ftri_2.webp?alt=media&token=98a44ede-7e1b-4e55-bb52-563dcb4d898a"
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_3.png`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
