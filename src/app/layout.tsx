@@ -6,6 +6,7 @@ import Modal from "@/components/modal";
 import { Toaster } from "react-hot-toast";
 import { useCallback, useEffect } from "react";
 import Scroll from "@/components/scroll";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const roboto = Questrial({
   subsets: ["latin"],
@@ -62,6 +63,7 @@ export default function RootLayout({
           <FixedPlugin />
         </Layout>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
     </html>
   );
 }
