@@ -16,7 +16,7 @@ const roboto = Questrial({
 export const metadata: Metadata = {
   title: "NRC Team",
   description:
-    "Introducing Tailwind Campaign Page, an all-inclusive and visually captivating campaign landing page template built on the foundation of Tailwind CSS and Material Tailwind.",
+    "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
 };
 
 export default function RootLayout({
