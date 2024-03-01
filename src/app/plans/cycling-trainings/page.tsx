@@ -28,7 +28,7 @@ const CyclingTrainings = () => {
       <Image
         width={500}
         height={600}
-        src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Fphoto_2023-05-03_11-33-26.webp?alt=media&token=dc1a4b06-310a-4d42-96b3-68dc254f252e"
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_1.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -90,7 +90,7 @@ const CyclingTrainings = () => {
       <Image
         width={500}
         height={600}
-        src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2F9732_20230604_091611_287277784_original-min.webp?alt=media&token=ffe44f3e-0ae5-4622-b28c-d27b3c077a16"
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_2.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -128,7 +128,7 @@ const CyclingTrainings = () => {
       <Image
         width={500}
         height={600}
-        src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FScreenshot%202024-01-09%20at%2007.26.57.png?alt=media&token=4c92c402-8f77-4df6-a538-c7659b8849c2"
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_3.png`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />

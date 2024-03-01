@@ -64,10 +64,13 @@ const AboutUs = () => {
               experience, has a place in our family.
             </p>
           </div>
+
           <Image
             width={500}
             height={600}
-            src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ftri_1.webp?alt=media&token=b197cdcd-ba9f-4fd1-ab8d-40fcb6d59df9"
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+            }/image/about-us.webp`}
             className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""
           />
@@ -89,7 +92,9 @@ const AboutUs = () => {
           <Image
             width={500}
             height={600}
-            src="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ftri_1.webp?alt=media&token=b197cdcd-ba9f-4fd1-ab8d-40fcb6d59df9"
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+            }/image/ksu-running-min.webp`}
             className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""
           />
