@@ -25,7 +25,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_1.png`}
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_1.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -79,7 +79,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_2.png`}
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_2.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -141,7 +141,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_3.png`}
+        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_3.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
