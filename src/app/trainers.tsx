@@ -119,7 +119,7 @@ export function Trainers() {
           </CardBody>
         </Card>
         <Card
-          className={`animate-in slide-in-from-bottom duration-1000 delay-1000 bg-white relative grid w-full `}
+          className={`animate-in slide-in-from-bottom duration-2000 bg-white relative grid w-full `}
           placeholder={""}
           color="transparent"
           shadow={true}
