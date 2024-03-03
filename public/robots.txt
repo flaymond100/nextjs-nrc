@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://nrc-team.com/sitemap.xml
+Sitemap: https://www.nrc-team.com/sitemap.xml
