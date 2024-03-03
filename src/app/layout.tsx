@@ -57,7 +57,7 @@ export default function RootLayout({
       <body className={roboto.className}>
         {/* <Toaster position="top-right" /> */}
         {children}
-        <Modal />
+        {/* <Modal /> */}
         {/* <FixedPlugin /> */}
         {/* <Layout> */}
         {/* <Scroll />
