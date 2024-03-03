@@ -4,7 +4,7 @@ import { Questrial } from "next/font/google";
 import { Layout, FixedPlugin } from "@/components";
 import Modal from "@/components/modal";
 import { Toaster } from "react-hot-toast";
-import { useCallback, useEffect } from "react";
+import { Suspense, useCallback, useEffect } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
@@ -55,13 +55,15 @@ export default function RootLayout({
         <meta name="robots" content="all" />
       </head>
       <body className={roboto.className}>
-        <Layout>
-          <Scroll />
-          <Toaster position="top-right" />
-          {children}
-          <Modal />
-          <FixedPlugin />
-        </Layout>
+        <Suspense fallback={"Loading..."}>
+          <Layout>
+            <Scroll />
+            <Toaster position="top-right" />
+            {children}
+            <Modal />
+            <FixedPlugin />
+          </Layout>
+        </Suspense>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
     </html>
