@@ -55,13 +55,14 @@ export default function RootLayout({
         <meta name="robots" content="all" />
       </head>
       <body className={roboto.className}>
-        <Layout>
-          <Scroll />
+        {children}
+        {/* <Layout> */}
+        {/* <Scroll />
           <Toaster position="top-right" />
           {children}
           <Modal />
           <FixedPlugin />
-        </Layout>
+        </Layout> */}
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
     </html>
