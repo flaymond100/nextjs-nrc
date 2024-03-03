@@ -55,7 +55,10 @@ export default function RootLayout({
         <meta name="robots" content="all" />
       </head>
       <body className={roboto.className}>
+        <Toaster position="top-right" />
         {children}
+        <Modal />
+        <FixedPlugin />
         {/* <Layout> */}
         {/* <Scroll />
           <Toaster position="top-right" />
