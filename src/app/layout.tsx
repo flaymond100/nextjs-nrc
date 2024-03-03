@@ -25,9 +25,9 @@ export const metadata: Metadata = {
     description:
       "Individual training plans for triathlon, cycling and running.",
     images: {
-      width: "<generated>",
-      height: "<generated>",
-      url: "<generated>",
+      width: "500",
+      height: "500",
+      url: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicon.ico?alt=media&token=05c556ea-e2ff-4626-af20-69506cdea62b",
     },
   },
   title: "NRC Team",
@@ -35,27 +35,27 @@ export const metadata: Metadata = {
     "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
 };
 
-const addJsonLd = () => {
-  return {
-    __html: `
-    {
-      "@context": "http://schema.org",
-      "@type": "SportsTeam",
-      "name": "NRC Team",
-      "email": "contact@nrc-team.com",
-      "coach": "Konstantin Garbar",
-      "founder": "Konstantin Garbar",
-      "url": "https://www.nrc-team.com",
-      "logo": "https://www.nrc-team.com/logo.png",
-      "keywords": "Traithlon, Traithlon Coach, Traithlon Coaching, Cycling, Cycling Coaching, Germany, Berlin, Leipzig, Best Cycling Coach, Best Triathlon Coach, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks",
-      "sport": "triathlon",
-      "slogan": "We're here to help you achieve your goals.",
-      "description": "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
-      "sameAs": ["https://twitter.com/nrc_tri_team", "https://www.facebook.com/nrcinternation", "https://www.instagram.com/nrc.int.team", "https://www.strava.com/clubs/nrc-tri-team"]
-      }
-    `,
-  };
-};
+// const addJsonLd = () => {
+//   return {
+//     __html: `
+//     {
+//       "@context": "http://schema.org",
+//       "@type": "SportsTeam",
+//       "name": "NRC Team",
+//       "email": "contact@nrc-team.com",
+//       "coach": "Konstantin Garbar",
+//       "founder": "Konstantin Garbar",
+//       "url": "https://www.nrc-team.com",
+//       "logo": "https://www.nrc-team.com/logo.png",
+//       "keywords": "Traithlon, Traithlon Coach, Traithlon Coaching, Cycling, Cycling Coaching, Germany, Berlin, Leipzig, Best Cycling Coach, Best Triathlon Coach, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks",
+//       "sport": "triathlon",
+//       "slogan": "We're here to help you achieve your goals.",
+//       "description": "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
+//       "sameAs": ["https://twitter.com/nrc_tri_team", "https://www.facebook.com/nrcinternation", "https://www.instagram.com/nrc.int.team", "https://www.strava.com/clubs/nrc-tri-team"]
+//       }
+//     `,
+//   };
+// };
 export default function RootLayout({
   children,
 }: {
@@ -74,12 +74,6 @@ export default function RootLayout({
           content="Traithlon, Traithlon Coach, Traithlon Coaching, Cycling, Cycling Coaching, Germany, Berlin, Leipzig, Best Cycling Coach, Best Triathlon Coach, Endurance Sport, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks"
         />
         <meta name="robots" content="all" />
-
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={addJsonLd()}
-          key="item-jsonld"
-        />
       </head>
       <body className={roboto.className}>
         <Layout>
