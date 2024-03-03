@@ -40,8 +40,8 @@ const TermsAndConditions = () => {
           made via bank transfer. Payment details will be provided upon the
           conclusion of your free trial period. 4. Termination of Contract You
           may terminate your contract with us at any time by providing us with
-          one month's notice. Termination requests should be sent
-          toinfo@nrc-team.com 5. Health and Responsibility By using our training
+          one month's notice. Termination requests should be sent to
+          info@nrc-team.com 5. Health and Responsibility By using our training
           plans, you acknowledge and agree to the following: a. Health
           Awareness: You should be in good health and consult a medical
           professional before starting any exercise program. We are not
