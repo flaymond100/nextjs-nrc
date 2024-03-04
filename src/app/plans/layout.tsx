@@ -6,6 +6,9 @@ export const metadata: Metadata = {
   title: "Our Plans",
   description:
     "Choose the most suitable progam for you - running training, cycling training or triathlon training.",
+  alternates: {
+    canonical: `https://www.nrc-team.com/plans`,
+  },
 };
 
 export default function RootLayout({
