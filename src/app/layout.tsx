@@ -76,6 +76,7 @@ export default function RootLayout({
           property="og:title"
           content="NRC Team - Running, Cycling and Triathlon Trainings"
         />
+        <meta property="og:url" content="https://www.nrc-team.com" />
         <meta
           property="og:description"
           content="NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
