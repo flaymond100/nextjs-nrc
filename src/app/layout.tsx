@@ -17,7 +17,7 @@ const roboto = Questrial({
 export const metadata: Metadata = {
   title: "NRC Team",
   description:
-    "NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running.",
+    "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
   alternates: {
     canonical: `https://www.nrc-team.com`,
   },
@@ -63,35 +63,35 @@ export default function RootLayout({
         <meta
           property="title"
           content="NRC Team - Running, Cycling and Triathlon Trainings"
-        >
+        />
         <meta
           property="description"
           content="NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
-        >
+        />
         <meta
           property="image"
           content="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC_logo_web.jpg?alt=media&token=f9e70e4f-8c1b-4ecb-85d3-0a1b6df10aea"
-        >
+        />
         <meta
           property="og:title"
           content="NRC Team - Running, Cycling and Triathlon Trainings"
-        >
+        />
         <meta
           property="og:description"
           content="NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
-        >
+        />
         <meta
           property="og:image"
           content="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC_logo_web.jpg?alt=media&token=f9e70e4f-8c1b-4ecb-85d3-0a1b6df10aea"
-        >
-        <meta property="og:site_name" content="NRC Team" >
-        <meta property="og:type" content="website" >
-        <meta property="og:locale" content="en" >
+        />
+        <meta property="og:site_name" content="NRC Team" />
+        <meta property="og:type" content="website" />
+        <meta property="og:locale" content="en" />
         <meta
           name="keywords"
           content="Traithlon, Traithlon Coach, Traithlon Coaching, Cycling, Cycling Coaching, Germany, Berlin, Leipzig, Best Cycling Coach, Best Triathlon Coach, Endurance Sport, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks"
-        >
-        <meta name="robots" content="all" >
+        />
+        <meta name="robots" content="all" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
