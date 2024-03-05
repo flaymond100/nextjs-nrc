@@ -53,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" prefix="og: http://ogp.me/ns#">
       <head>
         <link
           rel="shortcut icon"
