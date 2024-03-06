@@ -121,7 +121,10 @@ export default function RootLayout({
           <Scroll />
           <Toaster position="top-right" />
           {children}
-          <Modal />
+          <Suspense fallback={<>modal</>}>
+            <Modal />
+          </Suspense>
+
           <FixedPlugin />
         </Layout>
       </body>
