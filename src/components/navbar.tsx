@@ -82,7 +82,7 @@ export function Navbar() {
           <Image
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/NRC_logo_web.png`}
             alt="favicon Nrc Team"
-            width={50}
+            width={60}
             height={25}
           />
         </a>
