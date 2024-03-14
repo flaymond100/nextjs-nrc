@@ -80,7 +80,7 @@ export function Navbar() {
       <div className="container mx-auto flex items-center justify-between">
         <a href="/">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/NRC_logo_web.png`}
             alt="favicon Nrc Team"
             width={50}
             height={25}
