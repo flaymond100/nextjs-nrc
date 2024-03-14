@@ -57,27 +57,23 @@ export default function RootLayout({
       <head>
         <link
           rel="shortcut icon"
-          href={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`}
+          sizes="32x32"
+          href={`https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicons%2Ffavicon.ico?alt=media&token=0ae2ab3d-0c35-4fd1-926f-12e7d29f5e5e`}
         />
         <link rel="canonical" href="https://www.nrc-team.com" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
+
         <link
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon-32x32.png"
+          href="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicons%2Ffavicon-32x32.png?alt=media&token=3540d4c4-3195-4135-8515-968d1000a454"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon-16x16.png"
+          href="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicons%2Ffavicon-16x16.png?alt=media&token=52fe5840-cd25-48f8-a687-297c7e6ee3f0"
         />
-        <link rel="manifest" href="/site.webmanifest"></link>
         <meta
           property="title"
           content="NRC Team - Running, Cycling and Triathlon Trainings"
