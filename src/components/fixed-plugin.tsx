@@ -9,10 +9,11 @@ export function FixedPlugin() {
   const pathname = usePathname();
 
   return (
-    <Link href={pathname + "?modal=true"}>
+    <Link aria-label="open-contact-modal" href={pathname + "?modal=true"}>
       <Button
         placeholder=""
         color="white"
+        aria-label="Open Menu"
         size="sm"
         className="!fixed bottom-4 right-4 flex p-6 items-center border rounded-full border-blue-gray-50"
       >
