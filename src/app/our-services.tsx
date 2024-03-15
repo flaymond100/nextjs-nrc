@@ -63,11 +63,11 @@ export function OurServices() {
         <h2 color="blue-gray" className="mb-4 pt-16 text-4xl ">
           How we will support you
         </h2>
-        <h4 className="mx-auto w-full px-4 !text-gray-500 lg:w-5/12">
+        <h3 className="mx-auto w-full px-4 !text-gray-500 lg:w-5/12">
           We are not just a team - we are a community of athletes from all
           corners of the world, united by a shared love for endurance sports and
           become healthier people.
-        </h4>
+        </h3>
       </div>
       <div className="container mx-auto grid grid-cols-1 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
         {FEATURES.map(({ icon, title, description }) => (

@@ -43,7 +43,7 @@ export function Footer() {
               ))}
             </ul>
           </div>
-          <div className="w-full sm:w-[24rem] sm:min-w-[24rem]">
+          <div className="text-center w-full sm:w-[24rem] sm:min-w-[24rem] md:text-left">
             <Typography
               variant="h6"
               color="blue-gray"
@@ -52,7 +52,7 @@ export function Footer() {
             >
               Follow Us
             </Typography>
-            <div className="flex flex-col gap-3 sm:flex-row">
+            <div className="flex flex-row justify-center md:justify-start gap-3">
               <Link
                 aria-label="Go to strava"
                 target="_blank"

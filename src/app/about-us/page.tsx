@@ -41,11 +41,11 @@ const AboutUs = () => {
     <>
       <section className="mb-20 container text-center md:text-left mt-6 md:mt-10 mx-auto px-6">
         <h1 className="mb-8 text-center text-4xl font-bold">About Us</h1>
-        <h3 className="mb-8 text-center text-xl w-50">
+        <h2 className="mb-8 text-center text-xl w-50">
           We are not just a team - we are a community of athletes from all
           corners of the world, united by a shared love for endurance sports and
           become healthier people.
-        </h3>
+        </h2>
 
         <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div className="animate-in slide-in-from-left duration-1000">
