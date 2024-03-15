@@ -18,6 +18,11 @@ export const metadata: Metadata = {
   title: "NRC Team",
   description:
     "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
+  icons: [
+    {
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`,
+    },
+  ],
   openGraph: {
     url: "https://www.nrc-team.com",
     title: "NRC Team - Running, Cycling and Triathlon Trainings",
@@ -73,11 +78,11 @@ export default function RootLayout({
     <html lang="en" prefix="og: http://ogp.me/ns#">
       <head>
         <link rel="canonical" href="https://www.nrc-team.com" />
-        <link
+        {/* <link
           rel="icon"
           type="image/png"
           href={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`}
-        />
+        /> */}
 
         <meta
           property="title"
