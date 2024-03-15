@@ -108,6 +108,7 @@ export function Navbar() {
           placeholder={""}
           variant="text"
           color="gray"
+          aria-label="Open Menu"
           onClick={handleOpen}
           className="ml-auto inline-block lg:hidden"
         >
@@ -128,7 +129,10 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            <Link href={pathname + "?modal=true"}>
+            <Link
+              aria-label="open-contact-modal"
+              href={pathname + "?modal=true"}
+            >
               <Button style={{ background: "#37007d" }} placeholder={""}>
                 Join Us
               </Button>

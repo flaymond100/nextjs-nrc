@@ -23,7 +23,7 @@ function Home() {
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
           </h4>
-          <Link aria-label="Join NRC Team" href={pathname + "?modal=true"}>
+          <Link aria-label="open-contact-modal" href={pathname + "?modal=true"}>
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Join NRC Team
             </Button>
