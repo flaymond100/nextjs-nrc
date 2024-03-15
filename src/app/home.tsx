@@ -18,11 +18,11 @@ function Home() {
           >
             Running, Triathlon and Cycling Trainings
           </h1>
-          <h4 className="mb-6 font-normal !text-gray-800 md:pr-16 xl:pr-28 text-center sm:text-start">
+          <h2 className="mb-6 font-normal !text-gray-800 md:pr-16 xl:pr-28 text-center sm:text-start">
             We are not just a team - we are a community of athletes from all
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
-          </h4>
+          </h2>
           <Link aria-label="open-contact-modal" href={pathname + "?modal=true"}>
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Join NRC Team
