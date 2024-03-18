@@ -74,11 +74,11 @@ export default function RootLayout({
     <html lang="en" prefix="og: http://ogp.me/ns#">
       <head>
         <link rel="canonical" href="https://www.nrc-team.com" />
-        {/* <link
+        <link
           rel="icon"
-          type="image/png"
-          href={`${process.env.NEXT_PUBLIC_BASE_URL}/favicon.ico`}
-        /> */}
+          type="image"
+          href={`https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicons%2Ffavicon.ico?alt=media&token=0ae2ab3d-0c35-4fd1-926f-12e7d29f5e5e`}
+        />
 
         <meta
           property="title"
