@@ -7,7 +7,7 @@ import OurPrograms from "../../our-programs";
 import Image from "next/image";
 import Link from "next/link";
 
-const RunningTrainings = () => {
+const TraithlonTrainings = () => {
   return (
     <section className="mb-20 container text-center md:text-left mt-6 md:mt-10 mx-auto px-6">
       <h1 className="mb-8 text-center text-4xl font-bold">
@@ -160,11 +160,11 @@ const RunningTrainings = () => {
   );
 };
 
-export default function PricingPage() {
+export default function TriathlonTrainingPage() {
   return (
     <>
       <Navbar />
-      <RunningTrainings />
+      <TraithlonTrainings />
       <OurPrograms />
       <Faq />
       <Footer />
