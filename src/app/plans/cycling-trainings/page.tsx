@@ -51,7 +51,7 @@ const CyclingTrainings = () => {
       </p>
 
       <p
-        style={{ borderColor: "red" }}
+        style={{ borderColor: "green" }}
         className="mb-6 rounded border-l-4 border-neutral-800 bg-green p-2 dark:border-neutral-200 dark:bg-neutral-700"
       >
         <strong>Note:</strong> At NRC Team we are offering an individual and
@@ -180,7 +180,7 @@ const CyclingTrainings = () => {
   );
 };
 
-export default function PricingPage() {
+export default function CyclingTrainingsPage() {
   return (
     <>
       <Navbar />

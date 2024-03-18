@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { Suspense, useCallback, useEffect } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { url } from "inspector";
 
 const roboto = Questrial({
   subsets: ["latin"],
@@ -18,9 +19,6 @@ export const metadata: Metadata = {
   title: "NRC Team",
   description:
     "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
-  icons: {
-    icon: "/icon.ico",
-  },
   openGraph: {
     url: "https://www.nrc-team.com",
     title: "NRC Team - Running, Cycling and Triathlon Trainings",
