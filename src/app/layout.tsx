@@ -76,8 +76,12 @@ export default function RootLayout({
         <link rel="canonical" href="https://www.nrc-team.com" />
         <link
           rel="icon"
-          type="image"
-          href={`https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicons%2Ffavicon.ico?alt=media&token=0ae2ab3d-0c35-4fd1-926f-12e7d29f5e5e`}
+          type="image/svg+xml"
+          href="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicon.png?alt=media&token=91430b85-b3f0-480d-a7b5-7a913e193803"
+        />
+        <link
+          rel="shortcut icon"
+          href="https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Ffavicon.ico?alt=media&token=05c556ea-e2ff-4626-af20-69506cdea62b"
         />
 
         <meta
