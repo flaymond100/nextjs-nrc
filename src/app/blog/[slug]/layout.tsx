@@ -1,5 +1,4 @@
 import { Layout } from "@/components";
-import "../globals.css";
 
 export const metadata = {
   title: "Blog",
