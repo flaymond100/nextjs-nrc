@@ -32,10 +32,10 @@ const NAV_MENU = [
     name: "About Us",
     href: "/about-us",
   },
-  {
-    name: "Blog",
-    href: "/blog",
-  },
+  // {
+  //   name: "Blog",
+  //   href: "/blog",
+  // },
 ];
 
 interface NavItemProps {
