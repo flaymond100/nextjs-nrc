@@ -6,9 +6,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase-config";
 
 // sections
-import Prices from "../prices";
-import Faq from "../faq";
-import OurPrograms from "../our-programs";
 import { useEffect, useState } from "react";
 import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
 import Link from "next/link";
