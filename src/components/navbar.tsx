@@ -28,10 +28,13 @@ const NAV_MENU = [
     name: "Our Trainers",
     href: "/trainers",
   },
-
   {
     name: "About Us",
     href: "/about-us",
+  },
+  {
+    name: "Blog",
+    href: "/blog",
   },
 ];
 

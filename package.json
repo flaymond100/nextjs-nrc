@@ -17,6 +17,7 @@
     "@material-tailwind/react": "2.1.2",
     "@next/third-parties": "^14.1.0",
     "emailjs": "^4.0.3",
+    "firebase": "^10.9.0",
     "formik": "^2.4.5",
     "next": "13.4.0",
     "react": "18",
