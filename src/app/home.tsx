@@ -5,6 +5,7 @@ import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
+import CarouselFeatures from "./carousel-features";
 
 function Home() {
   const pathname = usePathname();
@@ -23,7 +24,7 @@ function Home() {
             corners of the globe. We provide individual training plans for
             triathlon, cycling and running.
           </h2>
-          <Link aria-label="open-contact-modal" href={pathname + "?modal=true"}>
+          <Link aria-label="open-contact-modal" href="/join-us">
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Join NRC Team
             </Button>
@@ -33,10 +34,8 @@ function Home() {
           <Image
             width={568}
             height={568}
-            src={`${
-              process.env.NEXT_PUBLIC_BASE_URL ?? ""
-            }/image/France_Downhill_Kosta.webp`}
-            className="animate-in fade-in zoom-in duration-1000 -mt-10 rounded-lg shadow-md "
+            src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/IMG_9238.webp`}
+            className="animate-in fade-in zoom-in duration-1000  mb-10 rounded-lg shadow-md "
             alt="cyclist in France"
           />
         </div>

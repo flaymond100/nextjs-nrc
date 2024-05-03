@@ -96,10 +96,7 @@ export function Trainers() {
               </h4>
             </div>
 
-            <Link
-              aria-label="open-contact-modal"
-              href={pathname + "?modal=true"}
-            >
+            <Link aria-label="open-contact-modal" href="/join-us">
               <Button
                 className="rounded-none"
                 placeholder={""}
@@ -163,10 +160,7 @@ export function Trainers() {
                 Co-Founder, Coach
               </h4>
             </div>
-            <Link
-              aria-label="open-contact-modal"
-              href={pathname + "?modal=true"}
-            >
+            <Link aria-label="open-contact-modal" href="/join-us">
               <Button
                 className="rounded-none"
                 placeholder={""}
