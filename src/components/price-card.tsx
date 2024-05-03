@@ -93,7 +93,7 @@ export function PriceCard({
           )} */}
         </div>
 
-        <Link aria-label="open-contact-modal" href={pathname + "?modal=true"}>
+        <Link aria-label="open-contact-modal" href="/join-us">
           <Button
             className="rounded-none"
             placeholder={""}

@@ -9,12 +9,15 @@ const PRICES = [
     title: "Lite",
     desc: [
       "First discussion, sports history & analysis",
-      "Personalised training plan",
+      "Testing",
+      "Goal setting",
+      "Monthly training plan",
       "Training Peaks account",
+      "Zwift compatible workouts",
       "Personalised training zones",
       "Training plan adjustment up to 2x per month",
     ],
-    price: 60,
+    price: 70,
     pricePerYear: 600,
   },
   {
@@ -22,14 +25,19 @@ const PRICES = [
     title: "Premium",
     desc: [
       "First discussion, sports history & analysis",
+      "Testing",
+      "Goal setting",
       "Personalised training plan",
       "Training Peaks account",
+      "Zwift compatible workouts",
       "Personalised training zones",
       "Weekly training plan adjustment",
-      "Contact with coach available 24/7 by email, WhatsApp, and Training Peaks",
+      "Contact with coach by email, WhatsApp or Training Peaks",
       "Base nutrition support",
+      "Pre-race strategy review",
+      "Post-event review",
     ],
-    price: 90,
+    price: 100,
     pricePerYear: 1000,
     /* The `offPrice: 90` property in the `DELUXE` object within the `OTHER_BOOKS` array is defining a
 discounted price for that particular plan. In this case, the `DELUXE` plan has an `offPrice` of 90,
@@ -43,17 +51,21 @@ pricing component of the application. */
     title: "Deluxe",
     desc: [
       "First discussion, sports history & analysis",
+      "Testing",
+      "Goal setting",
       "Personalised training plan",
       "Training Peaks account",
       "Personalised training zones",
       "DAILY training plan adjustment",
       "Regular weekly video call",
       "Contact with coach available 24/7 by email, WhatsApp, and Training Peaks",
-      "Full nutrition support and analysis",
+      "Nutrition support and analysis",
       "Detailed planning of competitions",
+      "Metric/wearable monitoring",
+      "Post-event review",
       "Individual race day advices on nutrition, strategy and equipment",
     ],
-    price: 160,
+    price: 180,
     pricePerYear: 1700,
     // offPrice: 160,
   },
@@ -68,13 +80,20 @@ export function Prices() {
       // }}
       className="px-8 pt-20 pb-20"
     >
-      <div className="container mx-auto mb-20 text-center">
+      <div className="container mx-auto mb-10 text-center">
         <h1
           color="blue-gray"
-          className="mb-2 leter-spacing-1 text-5xl font-bold"
+          className="mb-4 leter-spacing-1 text-5xl font-bold"
         >
           Choose Our Plan
         </h1>
+
+        <div className="flex justify-center">
+          <p className="leter-spacing-1 text-xl max-w-3xl">
+            You are one step closer to your goal! Choose the plan that suits you
+            best and start training with us today.
+          </p>
+        </div>
 
         {/* <div className="flex justify-center">
           <Typography
