@@ -48,7 +48,7 @@ export function Trainers() {
             variant="lead"
             className="w-full max-w-lg  text-center text-gray-600"
           >
-            Meet our coaching teem to help you reach your maximal potential.
+            Meet our coaching team to help you reach your maximal potential.
           </Typography>
         </div>
       </div>
