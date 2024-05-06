@@ -5,7 +5,7 @@ import { Layout } from "@/components";
 export const metadata: Metadata = {
   title: "Trainers",
   description:
-    "Meet our coaching teem to help you reach your maximal potential.",
+    "Meet our coaching team to help you reach your maximal potential.",
   alternates: {
     canonical: `https://www.nrc-team.com/trainers`,
   },
