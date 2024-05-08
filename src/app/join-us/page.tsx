@@ -51,6 +51,8 @@ function FormSection() {
       textarea: null,
       trainingTime: null,
     },
+    validateOnBlur: false,
+    validateOnChange: false,
     onSubmit: (values, { resetForm }) => {
       setDisabled(true);
       emailjs
@@ -126,7 +128,7 @@ function FormSection() {
                   className="block   text-sm font-bold mb-2"
                   htmlFor="text"
                 >
-                  First Name
+                  First Name*
                 </label>
                 <input
                   className={`shadow appearance-none border ${
@@ -153,7 +155,7 @@ function FormSection() {
                   className="block   text-sm font-bold mb-2"
                   htmlFor="text"
                 >
-                  Last Name
+                  Last Name*
                 </label>
                 <input
                   className={`shadow appearance-none border ${
@@ -177,7 +179,7 @@ function FormSection() {
             </div>
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="email">
-                Email
+                Email*
               </label>
               <input
                 className={`shadow appearance-none border ${
@@ -223,7 +225,7 @@ function FormSection() {
 
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="email">
-                How many hours per week you can train?
+                How many hours per week you can train?*
               </label>
               <select
                 className={`shadow appearance-none border ${
