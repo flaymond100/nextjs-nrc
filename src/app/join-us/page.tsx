@@ -223,21 +223,50 @@ function FormSection() {
 
             <div className="mb-4">
               <label className="block text-sm font-bold mb-2" htmlFor="email">
-                Training Time
+                How many hours per week you can train?
               </label>
-              <input
+              <select
                 className={`shadow appearance-none border ${
                   formik.errors.trainingTime && "border-red-500"
                 } rounded w-full py-2 px-3   leading-tight focus:outline-none focus:shadow-outline`}
-                id="username"
-                type="trainingTime"
+                id="trainingTime"
                 disabled={disabled}
                 name="trainingTime"
-                placeholder="How many hours per week you can train?"
                 value={formik.values.trainingTime!}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-              />
+              >
+                <option onChange={formik.handleChange}>1</option>
+                <option onChange={formik.handleChange}>2</option>
+                <option onChange={formik.handleChange}>3</option>
+                <option onChange={formik.handleChange}>4</option>
+                <option onChange={formik.handleChange}>5</option>
+                <option onChange={formik.handleChange}>6</option>
+                <option onChange={formik.handleChange}>7</option>
+                <option onChange={formik.handleChange}>8</option>
+                <option onChange={formik.handleChange}>9</option>
+                <option onChange={formik.handleChange}>10</option>
+                <option onChange={formik.handleChange}>11</option>
+                <option onChange={formik.handleChange}>12</option>
+                <option onChange={formik.handleChange}>13</option>
+                <option onChange={formik.handleChange}>14</option>
+                <option onChange={formik.handleChange}>15</option>
+                <option onChange={formik.handleChange}>16</option>
+                <option onChange={formik.handleChange}>17</option>
+                <option onChange={formik.handleChange}>18</option>
+                <option onChange={formik.handleChange}>19</option>
+                <option onChange={formik.handleChange}>20</option>
+                <option onChange={formik.handleChange}>21</option>
+                <option onChange={formik.handleChange}>22</option>
+                <option onChange={formik.handleChange}>23</option>
+                <option onChange={formik.handleChange}>24</option>
+                <option onChange={formik.handleChange}>25</option>
+                <option onChange={formik.handleChange}>26</option>
+                <option onChange={formik.handleChange}>27</option>
+                <option onChange={formik.handleChange}>28</option>
+                <option onChange={formik.handleChange}>29</option>
+                <option onChange={formik.handleChange}>30</option>
+              </select>
               {formik.errors.trainingTime && (
                 <p className="text-red-500 text-xs italic">
                   {formik.errors.trainingTime}
