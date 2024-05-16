@@ -34,7 +34,9 @@ function Home() {
           <Image
             width={568}
             height={568}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/IMG_9238.webp`}
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+            }/image/nrc_kosta.webp`}
             className="animate-in fade-in zoom-in duration-1000  mb-10 rounded-lg shadow-md "
             alt="cyclist in France"
           />
