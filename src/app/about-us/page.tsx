@@ -9,7 +9,7 @@ import Link from "next/link";
 import { List } from "@material-tailwind/react";
 
 const OFFERS = [
-  "Personal Training Plans: Each plan is meticulously crafted to meet your unique goals, whether you're a beginner or a seasoned athlete. Our experienced coaches design these plans exclusively for you, focusing on your strengths, areas for improvement, and the goals you aim to achieve. Find out more information on our page. Join us and experience the power of personalized training, guiding you toward excellence in your chosen discipline.",
+  "Personal Training Plans: Each plan is meticulously crafted to meet your unique goals, whether you're a beginner or a seasoned athlete. Our experienced coaches design these plans exclusively for you, focusing on your strengths, areas for improvement, and the goals you aim to achieve. Find out more information on our page. Experience the power of personalized training, guiding you toward excellence in your chosen discipline.",
   "Triathlon Trainings: Dive into a comprehensive triathlon training experience that covers swimming, cycling, and running. Our structured programs cater to all levels, guiding you through the diverse disciplines of triathlon, helping you reach your peak performance on race day.",
   "Cycling Trainings: Train towards your cycling goals with personalized training plans. From boosting endurance to refining techniques, our cycling training programs are tailored to enhance your skills and enjoyment on two wheels.",
   "Running Trainings: Step up your running game with tailored training plans designed for beginners to seasoned marathoners. Whether you aim to conquer distances or improve your pace, our running training focuses on technique, endurance, and goal-specific progress.",
@@ -128,7 +128,7 @@ const AboutUs = () => {
         </ul>
 
         <p className="mb-6">
-          Join us in your journey to a healthier, more active life.
+          Get started your journey to a healthier, more active life.
           International NRC Team is your partner in making fitness a sustainable
           part of your daily routine. Whether you're a seasoned athlete or
           someone taking their first steps toward a more active lifestyle, we're
