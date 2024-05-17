@@ -97,13 +97,13 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link href="/join-us">
+          <Link href="/get-started">
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}
               color="gray"
             >
-              Join Us
+              Get Started
             </Button>
           </Link>
         </div>
@@ -132,9 +132,9 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            <Link aria-label="open-contact-modal" href="/join-us">
+            <Link aria-label="open-contact-modal" href="/get-started">
               <Button style={{ background: "#37007d" }} placeholder={""}>
-                Join Us
+                Get Started
               </Button>
             </Link>
           </div>

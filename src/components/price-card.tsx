@@ -93,7 +93,7 @@ export function PriceCard({
           )} */}
         </div>
 
-        <Link aria-label="open-contact-modal" href="/join-us">
+        <Link aria-label="open-contact-modal" href="/get-started">
           <Button
             className="rounded-none"
             placeholder={""}

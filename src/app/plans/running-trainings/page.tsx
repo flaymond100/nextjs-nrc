@@ -282,7 +282,7 @@ const RunningTrainings = () => {
       </p>
 
       <p>
-        Join us on this journey, and let's make your running dreams come true
+        Get started this journey, and let's make your running dreams come true
         together. With our guidance, expertise, and supportive community, you'll
         not only achieve your running goals but also discover a newfound passion
         for running that will enrich your life both on and off the track.

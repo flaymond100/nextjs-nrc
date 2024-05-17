@@ -90,7 +90,7 @@ function FormSection() {
           color="blue-gray"
           className="mb-4 leter-spacing-1 text-5xl font-bold"
         >
-          Join Us Today
+          Get Started Today
         </h1>
 
         <div className="flex-row justify-center align-middle">
@@ -116,7 +116,7 @@ function FormSection() {
             height={568}
             src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/join-us.jpg`}
             className="animate-in fade-in zoom-in duration-1000  mb-10 rounded-lg shadow-md "
-            alt="Join Us Today"
+            alt="Get Started Today"
           />
         </div>
         {/* <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4  ml-16 w-full"> */}

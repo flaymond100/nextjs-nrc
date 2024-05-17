@@ -24,9 +24,9 @@ function Home() {
             not just a team - we are a community of athletes from all corners of
             the globe.
           </h2>
-          <Link aria-label="open-contact-modal" href="/join-us">
+          <Link aria-label="open-contact-modal" href="/get-started">
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
-              Join NRC Team
+              Get Started
             </Button>
           </Link>
         </div>
