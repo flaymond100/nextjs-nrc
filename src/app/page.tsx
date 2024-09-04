@@ -7,6 +7,7 @@ import OurPrograms from "./our-programs";
 import Prices from "./prices";
 import OurServices from "./our-services";
 import Faq from "./faq";
+import CarouselFeatures from "./carousel-features";
 
 export default function Campaign() {
   return (
@@ -16,7 +17,7 @@ export default function Campaign() {
       <OurPrograms />
       <OurServices />
       <Prices />
-      {/* <CarouselFeatures /> */}
+      <CarouselFeatures />
       <Faq />
       <Footer />
     </>

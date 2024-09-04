@@ -4,8 +4,6 @@ import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Suspense } from "react";
-import CarouselFeatures from "./carousel-features";
 
 function Home() {
   const pathname = usePathname();
