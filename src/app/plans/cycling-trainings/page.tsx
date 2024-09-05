@@ -8,6 +8,7 @@ import Faq from "../../faq";
 import OurPrograms from "../../our-programs";
 import Image from "next/image";
 import Link from "next/link";
+import CarouselFeatures from "@/app/carousel-features";
 
 const CyclingTrainings = () => {
   return (
@@ -186,6 +187,7 @@ export default function CyclingTrainingsPage() {
       <Navbar />
       <CyclingTrainings />
       <OurPrograms />
+      <CarouselFeatures />
       <Faq />
       <Footer />
     </>

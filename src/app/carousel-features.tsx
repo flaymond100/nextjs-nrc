@@ -78,9 +78,9 @@ export function CarouselFeatures() {
         }}
         className="flex p-8 justify-center items-center w-screen"
       >
-        <div className=" rounded-2xl w-4/5">
-          <Marquee className="rounded-2xl overflow-hidden grid">
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+        <div>
+          <Marquee speed={50} delay={0} className="overflow-hidden grid">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -89,7 +89,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -98,7 +98,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={170}
@@ -107,7 +107,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center   mx-8 ">
+            <div className=" flex flex-col justify-center items-center   mx-16 ">
               <Image
                 width={150}
                 height={170}
@@ -116,7 +116,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -125,7 +125,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -133,7 +133,7 @@ export function CarouselFeatures() {
                 alt="polar logo"
               />
             </div>
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -142,7 +142,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -151,7 +151,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={170}
@@ -160,7 +160,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center   mx-8 ">
+            <div className=" flex flex-col justify-center items-center   mx-16 ">
               <Image
                 width={150}
                 height={170}
@@ -169,7 +169,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}
@@ -178,7 +178,7 @@ export function CarouselFeatures() {
               />
             </div>
 
-            <div className=" flex flex-col justify-center items-center    mx-8 ">
+            <div className=" flex flex-col justify-center items-center    mx-16 ">
               <Image
                 width={150}
                 height={150}

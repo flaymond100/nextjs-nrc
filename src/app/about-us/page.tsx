@@ -7,6 +7,7 @@ import Faq from "../faq";
 import Image from "next/image";
 import Link from "next/link";
 import { List } from "@material-tailwind/react";
+import CarouselFeatures from "../carousel-features";
 
 const OFFERS = [
   "Personal Training Plans: Each plan is meticulously crafted to meet your unique goals, whether you're a beginner or a seasoned athlete. Our experienced coaches design these plans exclusively for you, focusing on your strengths, areas for improvement, and the goals you aim to achieve. Find out more information on our page. Experience the power of personalized training, guiding you toward excellence in your chosen discipline.",
@@ -30,6 +31,7 @@ export default function AboutUsPage() {
     <>
       <Navbar />
       <AboutUs />
+      <CarouselFeatures />
       <Faq />
       <Footer />
     </>
