@@ -11,12 +11,14 @@ import React from "react";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import CarouselFeatures from "../carousel-features";
 
 export default function PricingPage() {
   return (
     <>
       <Navbar />
       <FormSection />
+      <CarouselFeatures />
       <Faq />
       <Footer />
     </>

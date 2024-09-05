@@ -6,6 +6,7 @@ import Faq from "../../faq";
 import OurPrograms from "../../our-programs";
 import Image from "next/image";
 import Link from "next/link";
+import CarouselFeatures from "@/app/carousel-features";
 
 const TraithlonTrainings = () => {
   return (
@@ -166,6 +167,7 @@ export default function TriathlonTrainingPage() {
       <Navbar />
       <TraithlonTrainings />
       <OurPrograms />
+      <CarouselFeatures />
       <Faq />
       <Footer />
     </>
