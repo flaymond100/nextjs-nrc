@@ -294,11 +294,25 @@ const TimelineWithIcon = () => {
       </Timeline>
 
       <div className="animate-in slide-in-from-bottom duration-2000 container mx-auto mt-10 mb-10 grid place-items-center text-center ">
-        <div
-          style={{ color: "white" }}
-          className="animate-bounce p-2 mb-10 w-10 h-10 ring-1 ring-purple-900 shadow-lg rounded-full flex items-center justify-center"
-        >
-          <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
+        <div style={{ display: "flex" }}>
+          <div
+            style={{ color: "white", marginRight: "20px" }}
+            className="animate-bounce p-2 mb-10 w-10 h-10 ring-1 ring-transparent rounded-full flex items-center justify-center"
+          >
+            <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
+          </div>
+          <div
+            style={{ color: "white", marginRight: "20px" }}
+            className="animate-bounce p-2 mb-10 w-10 h-10 ring-1 ring-transparent  rounded-full flex items-center justify-center"
+          >
+            <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
+          </div>
+          <div
+            style={{ color: "white" }}
+            className="animate-bounce p-2 mb-10 w-10 h-10 ring-1 ring-transparent  rounded-full flex items-center justify-center"
+          >
+            <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
+          </div>
         </div>
         <Link aria-label="sing-up-form" href="/get-started">
           <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
