@@ -2,10 +2,32 @@
 
 import React from "react";
 import Image from "next/image";
-import { Card, CardBody, Typography, Button } from "@material-tailwind/react";
+import {
+  Card,
+  CardBody,
+  Timeline,
+  TimelineItem,
+  TimelineConnector,
+  TimelineHeader,
+  TimelineIcon,
+  TimelineBody,
+  Typography,
+  Button,
+} from "@material-tailwind/react";
+import {
+  PaperAirplaneIcon,
+  DocumentCheckIcon,
+  CalendarDaysIcon,
+  CheckIcon,
+  ChevronDownIcon,
+} from "@heroicons/react/24/solid";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export function OurPrograms() {
+  const pathname = usePathname();
+  const homePage = pathname === "/";
   return (
     <section
       style={{
@@ -14,8 +36,10 @@ export function OurPrograms() {
       }}
       className="px-8 pt-20 pb-20"
     >
+      {homePage && <TimelineWithIcon />}
+
       <div className="animate-in slide-in-from-bottom duration-1000 container mx-auto mb-10 grid place-items-center text-center ">
-        <h1 color="blue-gray" className="my-3 text-4xl font-bold">
+        <h1 color="blue-gray" className=" my-3 text-4xl font-bold">
           Our Trainings
         </h1>
       </div>
@@ -154,8 +178,136 @@ export function OurPrograms() {
           </div>
         </Card>
       </div>
+
+      {!homePage && <TimelineWithIcon />}
     </section>
   );
 }
+
+const TimelineWithIcon = () => {
+  return (
+    <div className="mx-auto w-4/5 lg:w-[32rem]">
+      <div className="animate-in slide-in-from-bottom duration-2000 container mx-auto mb-10 grid place-items-center text-center ">
+        <h1 color="blue-gray" className=" text-4xl font-bold">
+          How it Works
+        </h1>
+      </div>
+      <Timeline>
+        <TimelineItem className="animate-in slide-in-from-left duration-2000">
+          <TimelineConnector />
+          <TimelineHeader>
+            <TimelineIcon className="p-2">
+              <PaperAirplaneIcon className="h-4 w-4" />
+            </TimelineIcon>
+            <Typography placeholder="" variant="h5" color="blue-gray">
+              Sign Up and Get in Touch
+            </Typography>
+          </TimelineHeader>
+          <TimelineBody className="pb-8">
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600"
+            >
+              Begin by filling out our quick{" "}
+              <Link
+                className="underline"
+                style={{ fontWeight: "bold", color: "black" }}
+                aria-label="sign-up-form"
+                href="/get-started"
+              >
+                sign-up form
+              </Link>
+              . Leave your contact details, and we’ll reach out to you shortly
+              to get started on your journey.
+            </Typography>
+          </TimelineBody>
+        </TimelineItem>
+        <TimelineItem className="animate-in slide-in-from-right duration-3000">
+          <TimelineConnector />
+          <TimelineHeader>
+            <TimelineIcon className="p-2">
+              <DocumentCheckIcon className="h-4 w-4" />
+            </TimelineIcon>
+            <Typography placeholder="" variant="h5" color="blue-gray">
+              Complete the Athlete Questionnaire
+            </Typography>
+          </TimelineHeader>
+          <TimelineBody className="pb-8">
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600"
+            >
+              To help us better understand your sport background, training
+              history, and future goals, we will send you over email our athlete
+              questionnaire. Please send it back to us once you have filled it
+              out. This will give us valuable insights to create a plan tailored
+              just for you.
+            </Typography>
+          </TimelineBody>
+        </TimelineItem>
+        <TimelineItem className="animate-in slide-in-from-left duration-4000">
+          <TimelineConnector />
+          <TimelineHeader>
+            <TimelineIcon className="p-2">
+              <CalendarDaysIcon className="h-4 w-4" />
+            </TimelineIcon>
+            <Typography placeholder="" variant="h5" color="blue-gray">
+              Schedule a Personal Call
+            </Typography>
+          </TimelineHeader>
+          <TimelineBody>
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600 pb-8"
+            >
+              Let’s get to know each other! We'll set up a call to discuss your
+              goals, preferences, and any specific requirements you have. It’s a
+              chance for us to align on how we can best work together.
+            </Typography>
+          </TimelineBody>
+        </TimelineItem>
+        <TimelineItem className="animate-in slide-in-from-right duration-5000">
+          <TimelineHeader>
+            <TimelineIcon className="p-2">
+              <CheckIcon className="h-4 w-4" />
+            </TimelineIcon>
+            <Typography placeholder="" variant="h5" color="blue-gray">
+              Receive Your Customized Training Plan
+            </Typography>
+          </TimelineHeader>
+          <TimelineBody>
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600"
+            >
+              Once we've gathered all the details, you’ll receive a personalized
+              training plan via TrainingPeaks. Follow your plan, track your
+              progress, and start your journey toward achieving your cycling
+              goals.
+            </Typography>
+          </TimelineBody>
+        </TimelineItem>
+      </Timeline>
+
+      <div className="animate-in slide-in-from-bottom duration-2000 container mx-auto mt-10 mb-10 grid place-items-center text-center ">
+        <div
+          style={{ color: "white" }}
+          className="animate-bounce p-2 mb-10 w-10 h-10 ring-1 ring-purple-900 shadow-lg rounded-full flex items-center justify-center"
+        >
+          <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
+        </div>
+        <Link aria-label="sing-up-form" href="/get-started">
+          <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
+            Get Started
+          </Button>
+        </Link>
+      </div>
+    </div>
+  );
+};
 
 export default OurPrograms;

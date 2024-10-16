@@ -1,12 +1,5 @@
 import React from "react";
-import Image from "next/image";
-import {
-  Typography,
-  Card,
-  CardBody,
-  CardHeader,
-  Button,
-} from "@material-tailwind/react";
+import { Card, CardBody, CardHeader, Button } from "@material-tailwind/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
