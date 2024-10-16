@@ -8,7 +8,7 @@ import Faq from "../faq";
 import Image from "next/image";
 import { Stepper, Step, Typography } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { FC, use, useEffect } from "react";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -19,6 +19,8 @@ import {
   DocumentCheckIcon,
   PaperAirplaneIcon,
 } from "@heroicons/react/24/solid";
+import { TimelineWithIcon } from "../our-programs";
+import { useWindowSize } from "../use-window-size";
 
 export default function PricingPage() {
   return (
@@ -42,9 +44,10 @@ const contactValidationSchema = Yup.object().shape({
   trainingTime: Yup.number().required("Please enter your training time"),
 });
 
-function FormSection() {
+export function FormSection() {
   const router = useRouter();
   const [disabled, setDisabled] = React.useState(false);
+  const [formSubmitted, setFormSubmitted] = React.useState(false);
 
   const formik = useFormik<{
     email: string;
@@ -73,11 +76,15 @@ function FormSection() {
         )
         .then(
           () => {
-            toast.success("Your message was sent!", {
-              style: { color: "white", background: "green" },
-              duration: 4000,
-            });
-            router.back();
+            toast.success(
+              "You're all set! We'll email you within 24 hours, so keep an eye on your inbox.",
+              {
+                style: { color: "white", background: "green" },
+                duration: 40000,
+              }
+            );
+            // router.back();
+            setFormSubmitted(true);
             resetForm();
           },
           (error: { text: any }) => {
@@ -92,9 +99,13 @@ function FormSection() {
     validationSchema: contactValidationSchema,
   });
 
+  const size = useWindowSize();
+  console.log(size);
+  const isMobile = size.width! < 768;
+
   return (
     <section className="px-8 pt-20 pb-20">
-      <div className="container mx-auto mb-10 text-center">
+      <div className="container mx-auto text-center">
         <h1
           color="blue-gray"
           className="mb-4 leter-spacing-1 text-5xl font-bold"
@@ -116,13 +127,22 @@ function FormSection() {
           </p> */}
         </div>
       </div>
-      {/* <StepperWithIcon /> */}
-      <div className="flex-row md:container md:mx-auto md:flex items-center justify-between">
+      {isMobile ? (
+        <TimelineWithIcon />
+      ) : (
+        <StepperWithIcon formSubmitted={formSubmitted} />
+      )}
+      <div
+        style={{ alignItems: "flex-start" }}
+        className="flex-row md:container md:mx-auto md:flex items-center justify-between"
+      >
         <div className=" mt-10 grid gap-6 lg:mt-0 w-full">
           <Image
             width={568}
             height={568}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/join-us.jpg`}
+            src={`${
+              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+            }/image/join-us-2.JPG`}
             className="animate-in fade-in zoom-in duration-1000  mb-10 rounded-lg shadow-md "
             alt="Get Started Today"
           />
@@ -304,20 +324,24 @@ function FormSection() {
   );
 }
 
-const StepperWithIcon = () => {
+const StepperWithIcon: FC<{ formSubmitted: boolean }> = ({ formSubmitted }) => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [isLastStep, setIsLastStep] = React.useState(false);
   const [isFirstStep, setIsFirstStep] = React.useState(false);
+
+  useEffect(() => {
+    setActiveStep(formSubmitted ? 1 : 0);
+  }, [formSubmitted]);
 
   const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
   return (
-    <div className="mx-auto hidden lg:block lg:w-[56rem] mb-20">
+    <div className="mx-auto lg:w-[56rem] mb-20">
       <div className="w-full py-4 px-8">
         <Stepper
           placeholder=""
-          activeStep={0}
+          activeStep={activeStep}
           isLastStep={(value) => setIsLastStep(value)}
           isFirstStep={(value) => setIsFirstStep(value)}
         >
@@ -328,7 +352,7 @@ const StepperWithIcon = () => {
                 Step 1
               </Typography>
               <Typography placeholder="" color="black" className="font-normal">
-                Sign up the form and get in touch.
+                Sign up the form.
               </Typography>
             </div>
           </Step>
@@ -339,7 +363,7 @@ const StepperWithIcon = () => {
                 Step 2
               </Typography>
               <Typography placeholder="" color="black" className="font-normal">
-                Complete the athlete questionnaire.
+                Recieve our email.
               </Typography>
             </div>
           </Step>
@@ -350,7 +374,7 @@ const StepperWithIcon = () => {
                 Step 3
               </Typography>
               <Typography placeholder="" color="black" className="font-normal">
-                Schedule a personal call.
+                Schedule a call.
               </Typography>
             </div>
           </Step>
@@ -361,7 +385,7 @@ const StepperWithIcon = () => {
                 Step 4
               </Typography>
               <Typography placeholder="" color="black" className="font-normal">
-                Receive your customized training plan.
+                Start Training.
               </Typography>
             </div>
           </Step>
