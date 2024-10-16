@@ -1,7 +1,7 @@
 "use client";
 
-import { Typography } from "@material-tailwind/react";
 import PriceCard from "@/components/price-card";
+import React from "react";
 
 const PRICES = [
   {
@@ -94,18 +94,6 @@ export function Prices() {
             best and start training with us today.
           </p>
         </div>
-
-        {/* <div className="flex justify-center">
-          <Typography
-            placeholder={""}
-            variant="lead"
-            className="w-full max-w-lg  text-center text-black"
-          >
-            We are not just a team - we are a community of athletes from all
-            corners of the world, united by a shared love for endurance sports
-            and become healthier people.
-          </Typography>
-        </div> */}
       </div>
       <div className="container mx-auto grid grid-cols-1 items-start gap-x-6 gap-y-20 md:grid-cols-2 xl:grid-cols-3">
         {PRICES.map((props, key) => (

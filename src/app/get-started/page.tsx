@@ -6,12 +6,19 @@ import { Navbar, Footer, Loader } from "@/components";
 import emailjs from "@emailjs/browser";
 import Faq from "../faq";
 import Image from "next/image";
+import { Stepper, Step, Typography } from "@material-tailwind/react";
 import { useRouter } from "next/navigation";
 import React from "react";
 import toast from "react-hot-toast";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import CarouselFeatures from "../carousel-features";
+import {
+  CalendarDaysIcon,
+  CheckIcon,
+  DocumentCheckIcon,
+  PaperAirplaneIcon,
+} from "@heroicons/react/24/solid";
 
 export default function PricingPage() {
   return (
@@ -98,19 +105,18 @@ function FormSection() {
         <div className="flex-row justify-center align-middle">
           <div className="flex justify-center mb-6">
             <p className="leter-spacing-1 text-xl max-w-3xl">
-              We are here to help you reach your maximum potential and encourage
-              you to maintain a healthy lifestyle. We are more than just that -
-              we are the ones who will support and keep you motivated throughout
-              your journey to become a better version of yourself!
+              Leave a request and we will contact you back shortly and tell you
+              how to start training with us.
             </p>
           </div>
           <br />
-          <p className=" leter-spacing-1 text-md">
+          {/* <p className=" leter-spacing-1 text-md">
             Leave a request and we will contact you back shortly and tell you
             how to start training with us.
-          </p>
+          </p> */}
         </div>
       </div>
+      {/* <StepperWithIcon /> */}
       <div className="flex-row md:container md:mx-auto md:flex items-center justify-between">
         <div className=" mt-10 grid gap-6 lg:mt-0 w-full">
           <Image
@@ -297,3 +303,78 @@ function FormSection() {
     </section>
   );
 }
+
+const StepperWithIcon = () => {
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [isLastStep, setIsLastStep] = React.useState(false);
+  const [isFirstStep, setIsFirstStep] = React.useState(false);
+
+  const handleNext = () => !isLastStep && setActiveStep((cur) => cur + 1);
+  const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
+
+  return (
+    <div className="mx-auto hidden lg:block lg:w-[56rem] mb-20">
+      <div className="w-full py-4 px-8">
+        <Stepper
+          placeholder=""
+          activeStep={0}
+          isLastStep={(value) => setIsLastStep(value)}
+          isFirstStep={(value) => setIsFirstStep(value)}
+        >
+          <Step placeholder="" onClick={() => setActiveStep(0)}>
+            <PaperAirplaneIcon className="h-5 w-5" />
+            <div className="absolute -bottom-[4.5rem] w-max text-center">
+              <Typography placeholder="" variant="h6" color="black">
+                Step 1
+              </Typography>
+              <Typography placeholder="" color="black" className="font-normal">
+                Sign up the form and get in touch.
+              </Typography>
+            </div>
+          </Step>
+          <Step placeholder="" onClick={() => setActiveStep(1)}>
+            <DocumentCheckIcon className="h-5 w-5" />
+            <div className="absolute -bottom-[4.5rem] w-max text-center">
+              <Typography placeholder="" variant="h6" color="black">
+                Step 2
+              </Typography>
+              <Typography placeholder="" color="black" className="font-normal">
+                Complete the athlete questionnaire.
+              </Typography>
+            </div>
+          </Step>
+          <Step placeholder="" onClick={() => setActiveStep(2)}>
+            <CalendarDaysIcon className="h-5 w-5" />
+            <div className="absolute -bottom-[4.5rem] w-max text-center">
+              <Typography placeholder="" variant="h6" color="black">
+                Step 3
+              </Typography>
+              <Typography placeholder="" color="black" className="font-normal">
+                Schedule a personal call.
+              </Typography>
+            </div>
+          </Step>
+          <Step placeholder="" onClick={() => setActiveStep(3)}>
+            <CheckIcon className="h-5 w-5" />
+            <div className="absolute -bottom-[4.5rem] w-max text-center">
+              <Typography placeholder="" variant="h6" color="black">
+                Step 4
+              </Typography>
+              <Typography placeholder="" color="black" className="font-normal">
+                Receive your customized training plan.
+              </Typography>
+            </div>
+          </Step>
+        </Stepper>
+        {/* <div className="mt-16 flex justify-between">
+        <Button placeholder="" onClick={handlePrev} disabled={isFirstStep}>
+          Prev
+        </Button>
+        <Button placeholder="" onClick={handleNext} disabled={isLastStep}>
+          Next
+        </Button>
+      </div> */}
+      </div>
+    </div>
+  );
+};

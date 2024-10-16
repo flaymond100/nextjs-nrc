@@ -79,8 +79,15 @@ export function CarouselFeatures() {
         className="flex p-8 justify-center items-center w-screen"
       >
         <div>
-          <Marquee speed={50} delay={0} className="overflow-hidden grid">
-            <div className=" flex flex-col justify-center items-center    mx-16 ">
+          <Marquee
+            style={{
+              maxWidth: "100vw",
+            }}
+            speed={50}
+            delay={0}
+            className="overflow-hidden grid"
+          >
+            <div className=" flex flex-col justify-center items-center mx-16 ">
               <Image
                 width={150}
                 height={150}
