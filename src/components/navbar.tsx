@@ -83,10 +83,10 @@ export function Navbar() {
       <div className="container mx-auto flex items-center justify-between">
         <a href="/">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/NRC_logo_web.png`}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
             alt="favicon Nrc Team"
-            width={60}
-            height={25}
+            width={80}
+            height={45}
           />
         </a>
         <ul className="ml-10 hidden items-center gap-8 lg:flex">

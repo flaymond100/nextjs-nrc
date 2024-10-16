@@ -10,7 +10,7 @@ function Home() {
   return (
     <section className="pt-12 px-8 pb-20 md:pb-0">
       <div className="container mx-auto grid h-full min-h-[65vh] w-full grid-cols-1 place-items-center gap-y-10 lg:grid-cols-2">
-        <div className="animate-in slide-in-from-left duration-1000 row-start-1 sm:-row-start-2 sm:-row-auto lg:-mt-40 text-center sm:text-start">
+        <div className="animate-in slide-in-from-left duration-2000 row-start-1 sm:-row-start-2 sm:-row-auto lg:-mt-40 text-center sm:text-start">
           <h1
             color="black"
             className="mb-2 max-w-sm text-3xl !leading-snug lg:mb-3 lg:text-6xl text-center sm:text-start font-bold"
@@ -22,7 +22,7 @@ function Home() {
             not just a team - we are a community of athletes from all corners of
             the globe.
           </h2>
-          <Link aria-label="open-contact-modal" href="/get-started">
+          <Link aria-label="sing-up-form" href="/get-started">
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>
