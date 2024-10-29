@@ -15,7 +15,7 @@ function Home() {
             color="black"
             className="mb-2 max-w-sm text-3xl !leading-snug lg:mb-3 lg:text-6xl text-center sm:text-start font-bold"
           >
-            Running, Triathlon and Cycling Trainings
+            Cycling, Triathlon and Running Trainings
           </h1>
           <h2 className="mb-6 font-normal !text-gray-800 md:pr-16 xl:pr-28 text-center sm:text-start">
             Individual training plans for triathlon, cycling and running. We are
