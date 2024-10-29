@@ -22,7 +22,7 @@ function Home() {
             not just a team - we are a community of athletes from all corners of
             the globe.
           </h2>
-          <Link aria-label="sing-up-form" href="/get-started">
+          <Link aria-label="sing-up-form" href="/pricing">
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>

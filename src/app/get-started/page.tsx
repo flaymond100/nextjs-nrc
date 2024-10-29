@@ -21,12 +21,13 @@ import {
 } from "@heroicons/react/24/solid";
 import { TimelineWithIcon } from "../our-programs";
 import { useWindowSize } from "../use-window-size";
+import { StripePricingTable } from "../prices";
 
 export default function PricingPage() {
   return (
     <>
       <Navbar />
-      <FormSection />
+      <StripePricingTable />
       <CarouselFeatures />
       <Faq />
       <Footer />
@@ -127,11 +128,11 @@ export function FormSection() {
           </p> */}
         </div>
       </div>
-      {isMobile ? (
+      {/* {isMobile ? (
         <TimelineWithIcon />
       ) : (
         <StepperWithIcon formSubmitted={formSubmitted} />
-      )}
+      )} */}
       <div
         style={{ alignItems: "flex-start" }}
         className="flex-row md:container md:mx-auto md:flex items-center justify-between"

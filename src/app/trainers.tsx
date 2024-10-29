@@ -96,12 +96,8 @@ export function Trainers() {
               </h4>
             </div>
 
-            <Link aria-label="open-contact-modal" href="/get-started">
-              <Button
-                className="rounded-none"
-                placeholder={""}
-                style={{ background: "#37007d" }}
-              >
+            <Link aria-label="open-contact-modal" href="/pricing">
+              <Button placeholder={""} style={{ background: "#37007d" }}>
                 Get Started
               </Button>
             </Link>
@@ -160,12 +156,8 @@ export function Trainers() {
                 Co-Founder, Coach
               </h4>
             </div>
-            <Link aria-label="open-contact-modal" href="/get-started">
-              <Button
-                className="rounded-none"
-                placeholder={""}
-                style={{ background: "#37007d" }}
-              >
+            <Link aria-label="open-contact-modal" href="/pricing">
+              <Button placeholder={""} style={{ background: "#37007d" }}>
                 Get Started
               </Button>
             </Link>

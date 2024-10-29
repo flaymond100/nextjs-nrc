@@ -37,8 +37,6 @@ export function OurPrograms() {
       }}
       className="px-8 pt-20"
     >
-      {homePage && <TimelineWithIcon />}
-
       <div className="animate-in slide-in-from-bottom duration-1000 container mx-auto mb-10 grid place-items-center text-center ">
         <h1 color="blue-gray" className=" my-3 text-4xl font-bold">
           Our Trainings
@@ -179,25 +177,22 @@ export function OurPrograms() {
           </div>
         </Card>
       </div>
-
-      {!homePage && <TimelineWithIcon />}
     </section>
   );
 }
 
 export const TimelineWithIcon = () => {
   const pathname = usePathname();
-  const form = pathname === "/get-started/";
+  const form = pathname === "/pricing/";
 
   return (
     <div className="mx-auto w-4/5 lg:w-[32rem]">
-      {!form && (
-        <div className="animate-in slide-in-from-bottom duration-2000 container mx-auto mb-10 grid place-items-center text-center ">
-          <h1 color="blue-gray" className=" text-4xl font-bold">
-            How it Works
-          </h1>
-        </div>
-      )}
+      <div className="animate-in slide-in-from-bottom duration-2000 container mx-auto mb-10 grid place-items-center text-center ">
+        <h1 color="blue-gray" className=" text-4xl font-bold">
+          How it Works
+        </h1>
+      </div>
+
       <Timeline>
         <TimelineItem className="animate-in slide-in-from-left duration-2000">
           <TimelineConnector />
@@ -206,29 +201,18 @@ export const TimelineWithIcon = () => {
               <PaperAirplaneIcon className="h-4 w-4" />
             </TimelineIcon>
             <Typography placeholder="" variant="h5" color="blue-gray">
-              Sign Up the Form
+              Start Your Free Trial
             </Typography>
           </TimelineHeader>
           <TimelineBody className="pb-8">
-            {!form && (
-              <Typography
-                placeholder=""
-                color="gray"
-                className="font-normal text-gray-600"
-              >
-                Begin by filling out our quick{" "}
-                <Link
-                  className="underline"
-                  style={{ fontWeight: "bold", color: "black" }}
-                  aria-label="sign-up-form"
-                  href="/get-started"
-                >
-                  sign-up form
-                </Link>
-                . Leave your contact details, and we’ll reach out to you shortly
-                to get started on your journey.
-              </Typography>
-            )}
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600"
+            >
+              Secure your 7-day free trial with an easy online payment. Begin
+              your journey immediately and explore what’s possible!
+            </Typography>
           </TimelineBody>
         </TimelineItem>
         <TimelineItem className="animate-in slide-in-from-right duration-3000">
@@ -238,24 +222,21 @@ export const TimelineWithIcon = () => {
               <DocumentCheckIcon className="h-4 w-4" />
             </TimelineIcon>
             <Typography placeholder="" variant="h5" color="blue-gray">
-              Recieve Our Email
+              Check Your Email
             </Typography>
           </TimelineHeader>
 
           <TimelineBody className="pb-8">
-            {!form && (
-              <Typography
-                placeholder=""
-                color="gray"
-                className="font-normal text-gray-600"
-              >
-                To help us better understand your sport background, training
-                history, and future goals, we will send you over email our
-                athlete questionnaire. Please send it back to us once you have
-                filled it out. This will give us valuable insights to create a
-                plan tailored just for you.
-              </Typography>
-            )}
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600"
+            >
+              Within 24 hours, you’ll receive an email from us with a link to
+              TrainingPeaks and an athlete questionnaire. Fill it out to share
+              your sport background, training history, and goals, so we can
+              create a training plan that’s right for you.
+            </Typography>
           </TimelineBody>
         </TimelineItem>
         <TimelineItem className="animate-in slide-in-from-left duration-4000">
@@ -265,22 +246,20 @@ export const TimelineWithIcon = () => {
               <CalendarDaysIcon className="h-4 w-4" />
             </TimelineIcon>
             <Typography placeholder="" variant="h5" color="blue-gray">
-              Schedule a Call
+              Schedule a Call (optional)
             </Typography>
           </TimelineHeader>
 
           <TimelineBody className="pb-8">
-            {!form && (
-              <Typography
-                placeholder=""
-                color="gray"
-                className="font-normal text-gray-600 pb-8"
-              >
-                Let’s get to know each other! We'll set up a call to discuss
-                your goals, preferences, and any specific requirements you have.
-                It’s a chance for us to align on how we can best work together.
-              </Typography>
-            )}
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600 pb-8"
+            >
+              Let’s get to know each other! We'll set up a call to discuss your
+              goals, preferences, and any specific requirements you have. It’s a
+              chance for us to align on how we can best work together.
+            </Typography>
           </TimelineBody>
         </TimelineItem>
         <TimelineItem className="animate-in slide-in-from-right duration-5000">
@@ -289,23 +268,20 @@ export const TimelineWithIcon = () => {
               <CheckIcon className="h-4 w-4" />
             </TimelineIcon>
             <Typography placeholder="" variant="h5" color="blue-gray">
-              Start Training
+              Begin Your Training
             </Typography>
           </TimelineHeader>
 
           <TimelineBody>
-            {!form && (
-              <Typography
-                placeholder=""
-                color="gray"
-                className="font-normal text-gray-600"
-              >
-                Once we've gathered all the details, you’ll receive a
-                personalized training plan via TrainingPeaks. Follow your plan,
-                track your progress, and start your journey toward achieving
-                your cycling goals.
-              </Typography>
-            )}
+            <Typography
+              placeholder=""
+              color="gray"
+              className="font-normal text-gray-600"
+            >
+              Once we've gathered all the details, you’ll receive a personalized
+              training plan via TrainingPeaks. Follow your plan, track your
+              progress, and start your journey toward achieving your goals.
+            </Typography>
           </TimelineBody>
         </TimelineItem>
       </Timeline>
@@ -339,7 +315,7 @@ export const TimelineWithIcon = () => {
           </div>
         </div>
         {!form && (
-          <Link className="mb-10" aria-label="sing-up-form" href="/get-started">
+          <Link className="mb-10" aria-label="sing-up-form" href="/pricing">
             <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>
