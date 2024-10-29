@@ -118,11 +118,11 @@ const TermsAndConditions = () => {
           regulatory reasons. We will notify you of any material changes through
           email or by posting a notice on our website. 9. Contact Us If you have
           any questions or concerns about this Privacy Policy or our data
-          practices, please contact us at info@nrc-team.com. By using our online
-          coaching services, you agree to the terms of this Privacy Policy and
-          the collection and use of your personal information as described
-          herein. Your continued use of our services constitutes your acceptance
-          of this policy.
+          practices, please contact us at contact@nrc-team.com. By using our
+          online coaching services, you agree to the terms of this Privacy
+          Policy and the collection and use of your personal information as
+          described herein. Your continued use of our services constitutes your
+          acceptance of this policy.
         </p>
       </section>
     </>
