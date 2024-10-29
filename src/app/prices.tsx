@@ -5,7 +5,7 @@ import React, { useEffect } from "react";
 export function Prices() {
   return (
     <section className="px-8 pt-20 pb-10">
-      <div className="container mx-auto mb-10 text-center">
+      <div className="container mx-auto mb-0 sm:mb-10 text-center">
         <h1
           color="blue-gray"
           className="mb-4 leter-spacing-1 text-5xl font-bold"
@@ -15,15 +15,14 @@ export function Prices() {
 
         <div className="flex flex-col items-center	 justify-center">
           <p className="leter-spacing-1 text-xl max-w-3xl">
-            Start your free trial today, and within 24 hours, you’ll receive a
-            welcome email from us with an invitation link to TrainingPeaks,
-            along with a questionnaire to complete your athlete profile.
+            Start your free trial and and you’ll be set to train within 24
+            hours.
           </p>
-          <br />
+          {/* <br />
           <p className="leter-spacing-1 text-xl max-w-3xl">
             This information helps us create a training plan precisely to your
             needs, ensuring the best possible experience and results.
-          </p>
+          </p> */}
         </div>
       </div>
       <StripePricingTable />
