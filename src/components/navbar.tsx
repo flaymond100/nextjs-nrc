@@ -97,7 +97,7 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link href="/get-started">
+          <Link href="/pricing">
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}
@@ -132,7 +132,7 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            <Link aria-label="open-contact-modal" href="/get-started">
+            <Link aria-label="open-contact-modal" href="/pricing">
               <Button style={{ background: "#37007d" }} placeholder={""}>
                 Get Started
               </Button>

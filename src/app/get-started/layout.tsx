@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
   alternates: {
-    canonical: `https://www.nrc-team.com/get-started`,
+    canonical: `https://www.nrc-team.com/pricing`,
   },
 };
 
