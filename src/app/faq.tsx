@@ -2,11 +2,12 @@
 import React from "react";
 
 import {
-  Typography,
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { useState } from "react";
+
 const FAQS = [
   {
     title: "Are the training plans suitable for beginners?",
@@ -47,7 +48,7 @@ const FAQS = [
 ];
 
 export function Faq() {
-  const [open, setOpen] = React.useState(1);
+  const [open, setOpen] = useState(1);
   const handleOpen = (value: number) => setOpen(open === value ? 0 : value);
 
   return (

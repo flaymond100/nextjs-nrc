@@ -23,7 +23,7 @@ function Home() {
             the globe.
           </h2>
           <Link aria-label="sing-up-form" href="/pricing">
-            <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
+            <Button size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>
           </Link>
