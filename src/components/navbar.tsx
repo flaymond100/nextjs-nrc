@@ -98,10 +98,10 @@ export function Navbar() {
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
           <Link href="/pricing">
-            <Button
-              style={{ background: "#37007d" }}
-              placeholder={""}
-              color="gray"
+          <Button
+            style={{ background: "#37007d" }}
+            placeholder={""}
+            color="gray"
             >
               Get Started
             </Button>
