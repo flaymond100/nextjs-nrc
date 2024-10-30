@@ -8,6 +8,7 @@ import Prices from "./prices";
 import OurServices from "./our-services";
 import Faq from "./faq";
 import CarouselFeatures from "./carousel-features";
+import { CalendlyWidget } from "@/components/widget";
 
 export default function Campaign() {
   return (
@@ -18,6 +19,7 @@ export default function Campaign() {
       <Prices />
       <OurServices />
       <CarouselFeatures />
+      <CalendlyWidget />
       <Faq />
       <Footer />
     </>

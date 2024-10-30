@@ -7,6 +7,7 @@ import OurPrograms from "../../our-programs";
 import Image from "next/image";
 import Link from "next/link";
 import CarouselFeatures from "@/app/carousel-features";
+import { CalendlyWidget } from "@/components/widget";
 
 const desc = [
   {
@@ -299,6 +300,7 @@ export default function RunningTrainingPage() {
       <RunningTrainings />
       <OurPrograms />
       <CarouselFeatures />
+      <CalendlyWidget />
       <Faq />
       <Footer />
     </>

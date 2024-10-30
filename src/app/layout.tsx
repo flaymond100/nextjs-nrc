@@ -7,6 +7,7 @@ import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import { PopupWidget } from "react-calendly";
 
 const roboto = Questrial({
   subsets: ["latin"],
@@ -120,8 +121,6 @@ export default function RootLayout({
           <Suspense fallback={<>modal</>}>
             <Modal />
           </Suspense>
-
-          <FixedPlugin />
         </Layout>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
