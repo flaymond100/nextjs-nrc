@@ -2,11 +2,8 @@
 import { Navbar, Footer } from "@/components";
 
 // sections
-import Prices from "../prices";
 import Faq from "../faq";
 import Image from "next/image";
-import Link from "next/link";
-import { List } from "@material-tailwind/react";
 import CarouselFeatures from "../carousel-features";
 import { CalendlyWidget } from "@/components/widget";
 
