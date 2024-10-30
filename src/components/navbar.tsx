@@ -81,14 +81,14 @@ export function Navbar() {
       className="border-0 sticky top-0 z-50"
     >
       <div className="container mx-auto flex items-center justify-between">
-        <a href="/">
+        <Link href="/">
           <Image
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
             alt="favicon Nrc Team"
             width={80}
             height={45}
           />
-        </a>
+        </Link>
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, href }) => (
             <NavItem key={name} href={href}>
