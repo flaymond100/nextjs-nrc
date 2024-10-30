@@ -7,7 +7,6 @@ import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { PopupWidget } from "react-calendly";
 
 const roboto = Questrial({
   subsets: ["latin"],
