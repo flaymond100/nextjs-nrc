@@ -10,7 +10,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  distDir: "out",
+  distDir: "dist",
   trailingSlash: true,
 };
 
