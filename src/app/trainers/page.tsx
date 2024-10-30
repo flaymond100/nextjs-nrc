@@ -5,6 +5,7 @@ import { Navbar, Footer } from "@/components";
 import Trainers from "../trainers";
 import Faq from "../faq";
 import CarouselFeatures from "../carousel-features";
+import { CalendlyWidget } from "@/components/widget";
 
 export default function PricingPage() {
   return (
@@ -12,6 +13,7 @@ export default function PricingPage() {
       <Navbar />
       <Trainers />
       <CarouselFeatures />
+      <CalendlyWidget />
       <Faq />
       <Footer />
     </>
