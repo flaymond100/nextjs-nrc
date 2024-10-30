@@ -17,13 +17,7 @@ export function Footer() {
       <div className="container mx-auto">
         <div className="flex flex-wrap items-end justify-center gap-8 md:justify-between">
           <div className="text-center md:text-left">
-            <Typography
-              as="a"
-              href="/"
-              variant="h4"
-              className="mb-6"
-              placeholder=""
-            >
+            <Typography as="a" href="/" variant="h4" className="mb-6">
               NRC Team
             </Typography>
             <ul className="flex flex-wrap items-center justify-center md:justify-start">
@@ -32,7 +26,6 @@ export function Footer() {
                   <Typography
                     as="a"
                     href={data.link}
-                    placeholder=""
                     className={`py-1 font-medium !text-gray-700 transition-colors hover:!text-gray-900 ${
                       idx === 0 ? "pr-3" : "px-3"
                     }`}
@@ -44,12 +37,7 @@ export function Footer() {
             </ul>
           </div>
           <div className="text-center w-full sm:w-[24rem] sm:min-w-[24rem] md:text-left">
-            <Typography
-              variant="h6"
-              color="blue-gray"
-              className="mb-3 text-lg"
-              placeholder=""
-            >
+            <Typography variant="h6" color="blue-gray" className="mb-3 text-lg">
               Follow Us
             </Typography>
             <div className="flex flex-row justify-center md:justify-start gap-3">

@@ -11,7 +11,6 @@ export function FixedPlugin() {
   return (
     <Link aria-label="open-contact-modal" href={pathname + "?modal=true"}>
       <Button
-        placeholder=""
         color="white"
         aria-label="Open Menu"
         size="sm"

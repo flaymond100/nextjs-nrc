@@ -16,7 +16,7 @@ export function CarouselFeatures() {
         <div className="container mx-auto grid grid-cols-1 gap-y-12 md:grid-cols-2 lg:grid-cols-2">
           <div className="px-8 text-center">
             <Typography
-              placeholder=""
+               
               variant="h3"
               color="white"
               className="mb-6 font-medium"
@@ -26,7 +26,7 @@ export function CarouselFeatures() {
               making it feel like I'm never training alone.&quot;
             </Typography>
             <Typography
-              placeholder=""
+               
               color="white"
               variant="h4"
               className="mt-4"
@@ -34,17 +34,17 @@ export function CarouselFeatures() {
               Oleg
             </Typography>
             <Typography
-              placeholder=""
+               
               color="white"
               className="mb-4 font-normal"
             >
               Software Developer
             </Typography>
-            <Rating placeholder="" value={5} readonly />
+            <Rating   value={5} readonly />
           </div>
           <div className="px-8 text-center">
             <Typography
-              placeholder=""
+               
               variant="h3"
               color="white"
               className="mb-6 font-medium"
@@ -54,7 +54,7 @@ export function CarouselFeatures() {
               without feeling overwhelmed.&quot;
             </Typography>
             <Typography
-              placeholder=""
+               
               color="white"
               variant="h4"
               className="mt-4"
@@ -62,13 +62,13 @@ export function CarouselFeatures() {
               Anna
             </Typography>
             <Typography
-              placeholder=""
+               
               color="white"
               className="mb-4 font-normal"
             >
               Marketing Specialist
             </Typography>
-            <Rating placeholder="" value={5} readonly />
+            <Rating   value={5} readonly />
           </div>
         </div>
       </section> */}

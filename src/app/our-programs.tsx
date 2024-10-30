@@ -45,7 +45,6 @@ export function OurPrograms() {
       <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
         <Card
           id="running"
-          placeholder=""
           color="gray"
           className="animate-in slide-in-from-left duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
@@ -58,17 +57,11 @@ export function OurPrograms() {
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
           <div className="flex flex-col " style={{ zIndex: "1" }}>
-            <CardBody placeholder="" className="relative  h-full  w-full">
-              <Typography
-                placeholder=""
-                variant="h4"
-                className="mt-9"
-                color="white"
-              >
+            <CardBody className="relative  h-full  w-full">
+              <Typography variant="h4" className="mt-9" color="white">
                 Running Trainings
               </Typography>
               <Typography
-                placeholder=""
                 color="white"
                 className="mt-4 mb-14 font-normal opacity-70"
               >
@@ -78,7 +71,7 @@ export function OurPrograms() {
               </Typography>
             </CardBody>
             <Link style={{ zIndex: "1" }} href="/plans/running-trainings">
-              <Button placeholder="" className="mb-8" size="sm" color="white">
+              <Button className="mb-8" size="sm" color="white">
                 Read More
               </Button>
             </Link>
@@ -87,7 +80,6 @@ export function OurPrograms() {
 
         <Card
           id="cycling"
-          placeholder=""
           color="gray"
           className="animate-in slide-in-from-bottom duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
@@ -100,17 +92,11 @@ export function OurPrograms() {
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
           <div className="flex flex-col " style={{ zIndex: "1" }}>
-            <CardBody placeholder="" className="relative  h-full  w-full">
-              <Typography
-                placeholder=""
-                variant="h4"
-                className="mt-9"
-                color="white"
-              >
+            <CardBody className="relative  h-full  w-full">
+              <Typography variant="h4" className="mt-9" color="white">
                 Cycling Trainings
               </Typography>
               <Typography
-                placeholder=""
                 color="white"
                 className="mt-4 mb-14 font-normal opacity-70"
               >
@@ -124,7 +110,7 @@ export function OurPrograms() {
               style={{ zIndex: "1" }}
               href="/plans/cycling-trainings"
             >
-              <Button placeholder="" className="mb-8" size="sm" color="white">
+              <Button className="mb-8" size="sm" color="white">
                 Read More
               </Button>
             </Link>
@@ -132,7 +118,6 @@ export function OurPrograms() {
         </Card>
         <Card
           id="triathlon"
-          placeholder=""
           color="gray"
           className="animate-in slide-in-from-right duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
@@ -146,17 +131,11 @@ export function OurPrograms() {
           />
           <div className="absolute inset-0 h-full w-full bg-gray-900/75" />
           <div className="flex flex-col " style={{ zIndex: "1" }}>
-            <CardBody placeholder="" className="relative  h-full  w-full">
-              <Typography
-                placeholder=""
-                variant="h4"
-                className="mt-9"
-                color="white"
-              >
+            <CardBody className="relative  h-full  w-full">
+              <Typography variant="h4" className="mt-9" color="white">
                 Triathlon Trainings
               </Typography>
               <Typography
-                placeholder=""
                 color="white"
                 className="mt-4 mb-14 font-normal opacity-70"
               >
@@ -170,7 +149,7 @@ export function OurPrograms() {
               style={{ zIndex: "1" }}
               href="/plans/triathlon-trainings"
             >
-              <Button placeholder="" className="mb-8" size="sm" color="white">
+              <Button className="mb-8" size="sm" color="white">
                 Read More
               </Button>
             </Link>
@@ -200,16 +179,12 @@ export const TimelineWithIcon = () => {
             <TimelineIcon className="p-2">
               <PaperAirplaneIcon className="h-4 w-4" />
             </TimelineIcon>
-            <Typography placeholder="" variant="h5" color="blue-gray">
+            <Typography variant="h5" color="blue-gray">
               Start Your Free Trial
             </Typography>
           </TimelineHeader>
           <TimelineBody className="pb-8">
-            <Typography
-              placeholder=""
-              color="gray"
-              className="font-normal text-gray-600"
-            >
+            <Typography color="gray" className="font-normal text-gray-600">
               Secure your 7-day free trial with an easy online payment. Begin
               your journey immediately and explore what’s possible!
             </Typography>
@@ -221,17 +196,13 @@ export const TimelineWithIcon = () => {
             <TimelineIcon className="p-2">
               <DocumentCheckIcon className="h-4 w-4" />
             </TimelineIcon>
-            <Typography placeholder="" variant="h5" color="blue-gray">
+            <Typography variant="h5" color="blue-gray">
               Check Your Email
             </Typography>
           </TimelineHeader>
 
           <TimelineBody className="pb-8">
-            <Typography
-              placeholder=""
-              color="gray"
-              className="font-normal text-gray-600"
-            >
+            <Typography color="gray" className="font-normal text-gray-600">
               Within 24 hours, you’ll receive an email from us with a link to
               TrainingPeaks and an athlete questionnaire. Fill it out to share
               your sport background, training history, and goals, so we can
@@ -245,17 +216,13 @@ export const TimelineWithIcon = () => {
             <TimelineIcon className="p-2">
               <CalendarDaysIcon className="h-4 w-4" />
             </TimelineIcon>
-            <Typography placeholder="" variant="h5" color="blue-gray">
+            <Typography variant="h5" color="blue-gray">
               Schedule a Call (optional)
             </Typography>
           </TimelineHeader>
 
           <TimelineBody className="pb-8">
-            <Typography
-              placeholder=""
-              color="gray"
-              className="font-normal text-gray-600 pb-8"
-            >
+            <Typography color="gray" className="font-normal text-gray-600 pb-8">
               Let’s get to know each other! We'll set up a call to discuss your
               goals, preferences, and any specific requirements you have. It’s a
               chance for us to align on how we can best work together.
@@ -267,17 +234,13 @@ export const TimelineWithIcon = () => {
             <TimelineIcon className="p-2">
               <CheckIcon className="h-4 w-4" />
             </TimelineIcon>
-            <Typography placeholder="" variant="h5" color="blue-gray">
+            <Typography variant="h5" color="blue-gray">
               Begin Your Training
             </Typography>
           </TimelineHeader>
 
           <TimelineBody>
-            <Typography
-              placeholder=""
-              color="gray"
-              className="font-normal text-gray-600"
-            >
+            <Typography color="gray" className="font-normal text-gray-600">
               Once we've gathered all the details, you’ll receive a personalized
               training plan via TrainingPeaks. Follow your plan, track your
               progress, and start your journey toward achieving your goals.
@@ -316,7 +279,7 @@ export const TimelineWithIcon = () => {
         </div>
         {!form && (
           <Link className="mb-10" aria-label="sing-up-form" href="/pricing">
-            <Button placeholder="" size="lg" style={{ background: "#37007d" }}>
+            <Button size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>
           </Link>
