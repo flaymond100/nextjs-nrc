@@ -1,5 +1,6 @@
+"use client";
 // components
-import { Navbar, Footer } from "@/components";
+import { Navbar } from "@/components";
 
 // sections
 import Prices from "../prices";
@@ -13,6 +14,7 @@ export default function PricingPage() {
     <>
       <Navbar />
       <OurPrograms />
+      <Prices />
       <CarouselFeatures />
       <CalendlyWidget />
       <Faq />

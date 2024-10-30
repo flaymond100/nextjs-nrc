@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import { Button } from "@material-tailwind/react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 function Home() {
-  const pathname = usePathname();
+  const scrollToStripeTable = () => {
+    const element = document.getElementById("stripe-pricing");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
   return (
     <section className="pt-12 px-8 pb-20 md:pb-0">
       <div className="container mx-auto grid h-full min-h-[65vh] w-full grid-cols-1 place-items-center gap-y-10 lg:grid-cols-2">
@@ -22,11 +25,14 @@ function Home() {
             not just a team - we are a community of athletes from all corners of
             the globe.
           </h2>
-          <Link aria-label="sing-up-form" href="/pricing">
-            <Button size="lg" style={{ background: "#37007d" }}>
-              Get Started
-            </Button>
-          </Link>
+
+          <Button
+            onClick={scrollToStripeTable}
+            size="lg"
+            style={{ background: "#37007d" }}
+          >
+            Get Started
+          </Button>
         </div>
         <div className=" mt-10 grid gap-6 lg:mt-0 ">
           <Image
