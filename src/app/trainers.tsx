@@ -7,9 +7,7 @@ import {
   CardHeader,
   Button,
 } from "@material-tailwind/react";
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
 const KOSTA = [
   "My coaching philosophy focuses on creating personalized training plans according to your specific needs and goals.",
@@ -24,7 +22,12 @@ const KSU = [
   "Don't hesitate to take the first step toward reaching your triathlon goals. I'm excited to help you along every leg of the race. Get started today!",
 ];
 export function Trainers() {
-  const pathname = usePathname();
+  const scrollToStripeTable = () => {
+    const element = document.getElementById("stripe-pricing");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <section
@@ -96,11 +99,13 @@ export function Trainers() {
               </h4>
             </div>
 
-            <Link aria-label="open-contact-modal" href="/pricing">
-              <Button placeholder={""} style={{ background: "#37007d" }}>
-                Get Started
-              </Button>
-            </Link>
+            <Button
+              placeholder={""}
+              style={{ background: "#37007d" }}
+              onClick={scrollToStripeTable}
+            >
+              Get Started
+            </Button>
           </CardHeader>
           <CardBody placeholder={""} className="lg:px-16 sm:px-8">
             <ul
@@ -156,11 +161,13 @@ export function Trainers() {
                 Co-Founder, Coach
               </h4>
             </div>
-            <Link aria-label="open-contact-modal" href="/pricing">
-              <Button placeholder={""} style={{ background: "#37007d" }}>
-                Get Started
-              </Button>
-            </Link>
+            <Button
+              placeholder={""}
+              style={{ background: "#37007d" }}
+              onClick={scrollToStripeTable}
+            >
+              Get Started
+            </Button>
           </CardHeader>
           <CardBody placeholder={""} className="lg:px-16 sm:px-8">
             <ul

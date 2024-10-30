@@ -1,10 +1,9 @@
-import React from "react";
+import React, { use } from "react";
 import {
   Navbar as MTNavbar,
   Collapse,
   Button,
   IconButton,
-  Typography,
 } from "@material-tailwind/react";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
@@ -32,10 +31,6 @@ const NAV_MENU = [
     name: "About Us",
     href: "/about-us",
   },
-  // {
-  //   name: "Blog",
-  //   href: "/blog",
-  // },
 ];
 
 interface NavItemProps {
@@ -60,10 +55,19 @@ function NavItem({ children, href }: NavItemProps) {
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
-  const pathname = usePathname();
+  const scrollToStripeTable = () => {
+    const element = document.getElementById("stripe-pricing");
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setTimeout(() => setOpen(false), 700);
+  };
   function handleOpen() {
     setOpen((cur) => !cur);
   }
+  const pathname = usePathname();
+
+  console.log(pathname);
 
   React.useEffect(() => {
     window.addEventListener(
@@ -97,15 +101,28 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          <Link href="/pricing">
-          <Button
-            style={{ background: "#37007d" }}
-            placeholder={""}
-            color="gray"
+          {pathname === "/plans/running-trainings/" ||
+          pathname === "/plans/triathlon-trainings/" ||
+          pathname === "/plans/cycling-trainings/" ? (
+            <Link href="/pricing">
+              <Button
+                style={{ background: "#37007d" }}
+                placeholder={""}
+                color="gray"
+              >
+                Get Started
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              style={{ background: "#37007d" }}
+              placeholder={""}
+              color="gray"
+              onClick={scrollToStripeTable}
             >
               Get Started
             </Button>
-          </Link>
+          )}
         </div>
         <IconButton
           placeholder={""}
@@ -132,11 +149,28 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            <Link aria-label="open-contact-modal" href="/pricing">
-              <Button style={{ background: "#37007d" }} placeholder={""}>
+            {pathname === "/plans/running-trainings/" ||
+            pathname === "/plans/triathlon-trainings/" ||
+            pathname === "/plans/cycling-trainings/" ? (
+              <Link href="/pricing">
+                <Button
+                  style={{ background: "#37007d" }}
+                  placeholder={""}
+                  color="gray"
+                >
+                  Get Started
+                </Button>
+              </Link>
+            ) : (
+              <Button
+                style={{ background: "#37007d" }}
+                placeholder={""}
+                color="gray"
+                onClick={scrollToStripeTable}
+              >
                 Get Started
               </Button>
-            </Link>
+            )}
           </div>
         </div>
       </Collapse>

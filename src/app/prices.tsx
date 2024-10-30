@@ -4,7 +4,7 @@ import React, { useEffect } from "react";
 
 export function Prices() {
   return (
-    <section className="px-8 pt-20 pb-10">
+    <section className="px-8 pt-20 pb-10" id="stripe-pricing">
       <div className="container mx-auto mb-0 sm:mb-10 text-center">
         <h1
           color="blue-gray"
@@ -25,7 +25,9 @@ export function Prices() {
           </p> */}
         </div>
       </div>
-      <StripePricingTable />
+      <div>
+        <StripePricingTable />
+      </div>
     </section>
   );
 }
