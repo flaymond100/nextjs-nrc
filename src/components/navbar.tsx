@@ -31,6 +31,10 @@ const NAV_MENU = [
     name: "About Us",
     href: "/about-us",
   },
+  {
+    name: "Contact Us",
+    href: "/contact-us",
+  },
 ];
 
 interface NavItemProps {
