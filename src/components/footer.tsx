@@ -3,10 +3,11 @@ import { BsStrava, BsInstagram, BsFacebook, BsTwitter } from "react-icons/bs";
 import Link from "next/link";
 
 const LINKS = [
-  { title: "About Us", link: "/about-us" },
-  { title: "Our Trainings", link: "/plans" },
   { title: "Plans & Pricing", link: "/pricing" },
+  { title: "Our Trainings", link: "/plans" },
   { title: "Our Trainers", link: "/trainers" },
+  { title: "About", link: "/about" },
+  { title: "Contact", link: "/contact-us" },
   { title: "Terms", link: "/terms-and-conditions" },
 ];
 const CURRENT_YEAR = new Date().getFullYear();
