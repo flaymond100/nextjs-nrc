@@ -16,7 +16,7 @@ const NAV_MENU = [
     href: "/",
   },
   {
-    name: "Our Trainings",
+    name: "Trainings",
     href: "/plans",
   },
   {
@@ -28,8 +28,8 @@ const NAV_MENU = [
     href: "/trainers",
   },
   {
-    name: "About Us",
-    href: "/about-us",
+    name: "About",
+    href: "/about",
   },
   {
     name: "Contact Us",
