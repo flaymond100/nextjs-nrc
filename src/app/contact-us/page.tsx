@@ -33,7 +33,8 @@ const contactValidationSchema = Yup.object().shape({
     .required("Please enter your email"),
   textarea: Yup.string().nullable().required("Please enter a message"),
 });
-export function FormSection() {
+
+const FormSection = () => {
   const [disabled, setDisabled] = React.useState(false);
   const [formSubmitted, setFormSubmitted] = React.useState(false);
   const formik = useFormik<{
@@ -238,4 +239,4 @@ export function FormSection() {
       </div>
     </section>
   );
-}
+};
