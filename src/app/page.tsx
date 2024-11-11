@@ -16,7 +16,7 @@ export default function Campaign() {
     <>
       <Navbar />
       <Home />
-      <SocialRides />
+      {/* <SocialRides /> */}
       <OurPrograms />
       <Prices />
       <OurServices />
