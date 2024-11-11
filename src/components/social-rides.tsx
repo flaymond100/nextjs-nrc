@@ -66,7 +66,7 @@ export const SocialRides = () => {
           width={300}
           height={400}
           src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/poster.png`}
-          className="animate-in slide-in-from-right duration-1000 mb-6 w-70 rounded-lg shadow-lg dark:shadow-black/20  "
+          className="animate-in slide-in-from-right duration-1000 mb-6 w-80 rounded-lg shadow-lg dark:shadow-black/20  "
           alt=""
         />
       </div>
