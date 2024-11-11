@@ -17,7 +17,7 @@ const NAV_MENU = [
   },
   {
     name: "Trainings",
-    href: "/plans",
+    href: "/trainings",
   },
   {
     name: "Plans & Pricing",
@@ -105,9 +105,9 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          {pathname === "/plans/running-trainings/" ||
-          pathname === "/plans/triathlon-trainings/" ||
-          pathname === "/plans/cycling-trainings/" ? (
+          {pathname === "/trainings/running-trainings/" ||
+          pathname === "/trainings/triathlon-trainings/" ||
+          pathname === "/trainings/cycling-trainings/" ? (
             <Link href="/pricing">
               <Button
                 style={{ background: "#37007d" }}
@@ -153,9 +153,9 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            {pathname === "/plans/running-trainings/" ||
-            pathname === "/plans/triathlon-trainings/" ||
-            pathname === "/plans/cycling-trainings/" ? (
+            {pathname === "/trainings/running-trainings/" ||
+            pathname === "/trainings/triathlon-trainings/" ||
+            pathname === "/trainings/cycling-trainings/" ? (
               <Link href="/pricing">
                 <Button
                   style={{ background: "#37007d" }}
