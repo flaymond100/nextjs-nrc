@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Choose the most suitable progam for you - running training, cycling training or triathlon training.",
   alternates: {
-    canonical: `https://www.nrc-team.com/plans`,
+    canonical: `https://www.nrc-team.com/trainings`,
   },
 };
 

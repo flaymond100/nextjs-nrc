@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const LINKS = [
   { title: "Plans & Pricing", link: "/pricing" },
-  { title: "Our Trainings", link: "/plans" },
+  { title: "Our Trainings", link: "/trainings" },
   { title: "Our Trainers", link: "/trainers" },
   { title: "About", link: "/about" },
   { title: "Contact", link: "/contact-us" },

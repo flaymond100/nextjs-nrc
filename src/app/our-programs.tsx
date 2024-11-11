@@ -70,7 +70,7 @@ export function OurPrograms() {
                 coaches provide support to help you reach new goals.
               </Typography>
             </CardBody>
-            <Link style={{ zIndex: "1" }} href="/plans/running-trainings">
+            <Link style={{ zIndex: "1" }} href="/trainings/running-trainings">
               <Button className="mb-8" size="sm" color="white">
                 Read More
               </Button>
@@ -108,7 +108,7 @@ export function OurPrograms() {
             <Link
               aria-label="Read more about cycling trainings"
               style={{ zIndex: "1" }}
-              href="/plans/cycling-trainings"
+              href="/trainings/cycling-trainings"
             >
               <Button className="mb-8" size="sm" color="white">
                 Read More
@@ -147,7 +147,7 @@ export function OurPrograms() {
             <Link
               aria-label="Read more about triathlon trainings"
               style={{ zIndex: "1" }}
-              href="/plans/triathlon-trainings"
+              href="/trainings/triathlon-trainings"
             >
               <Button className="mb-8" size="sm" color="white">
                 Read More

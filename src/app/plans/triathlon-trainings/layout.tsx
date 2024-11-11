@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   title: "Triathlon Trainings",
   description: "Triathlon training plans.",
   alternates: {
-    canonical: `https://www.nrc-team.com/plans/triathlon-trainings`,
+    canonical: `https://www.nrc-team.com/trainings/triathlon-trainings`,
   },
 };
 
