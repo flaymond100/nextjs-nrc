@@ -55,6 +55,7 @@ export const SocialRides = () => {
               style={{ background: "#37007d" }}
               placeholder={""}
               color="gray"
+              size="lg"
             >
               Sign Up
             </Button>
