@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "Cycling Team",
   description:
-    "NRC Team is a community of athletes from all corners of the globe, united by a shared love for endurance sports and become healthier people.",
+    "Join our international cycling team from any part of the world.",
   alternates: {
-    canonical: `https://www.nrc-team.com/about`,
+    canonical: `https://www.nrc-team.com/cycling-team`,
   },
 };
 

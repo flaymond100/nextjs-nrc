@@ -92,7 +92,7 @@ const RunningTrainings = () => {
         what we{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
-          href="/pricing"
+          href="/personal-coaching"
         >
           offer
         </Link>{" "}
@@ -267,7 +267,7 @@ const RunningTrainings = () => {
         plans with a full 24/7 support. Find our{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
-          href="/pricing"
+          href="/personal-coaching"
         >
           training plans
         </Link>{" "}

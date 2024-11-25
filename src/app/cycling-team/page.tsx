@@ -14,8 +14,6 @@ export default function PricingPage() {
   return (
     <>
       <Navbar />
-      <OurPrograms />
-      <Prices />
       <SocialRides />
       <CarouselFeatures />
       <CalendlyWidget />

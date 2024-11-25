@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Get Started",
+  title: "Plans and Pricing",
   description:
     "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
   alternates: {
