@@ -18,13 +18,14 @@ function Home() {
             color="black"
             className="mb-2 max-w-sm text-3xl !leading-snug lg:mb-3 lg:text-6xl text-center sm:text-start font-bold"
           >
-            Cycling, Triathlon and Running Trainings
+            Cycling and Triathlon Coaching
           </h1>
-          <h2 className="mb-6 font-normal !text-gray-800 md:pr-16 xl:pr-28 text-center sm:text-start">
-            Individual training plans for triathlon, cycling and running. We are
-            not just a team - we are a community of athletes from all corners of
-            the globe.
-          </h2>
+          <p className="leter-spacing-1 text-xl max-w-3xl mb-5">
+            Choose between your personalized training plan to unlock your
+            potential and achieve peak performance or simply join our cycling
+            team for free. We’re more than just a team—we’re a global community
+            of athletes striving to become the best versions of ourselves.
+          </p>
 
           <Button
             onClick={scrollToStripeTable}
