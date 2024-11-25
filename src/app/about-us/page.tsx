@@ -42,7 +42,12 @@ const AboutUs = () => {
   return (
     <>
       <section className="mb-20 container text-center md:text-left mt-6 md:mt-10 mx-auto px-6">
-        <h1 className="mb-8 text-center text-4xl font-bold">About Us</h1>
+        <h1
+          color="blue-gray"
+          className="mb-4 leter-spacing-1 text-5xl font-bold text-center"
+        >
+          About Us
+        </h1>
         <h2 className="mb-8 text-center text-xl w-50">
           We are not just a team - we are a community of athletes from all
           corners of the world, united by a shared love for endurance sports and

@@ -10,19 +10,21 @@ export function Prices() {
           color="blue-gray"
           className="mb-4 leter-spacing-1 text-5xl font-bold"
         >
-          Choose Your Plan
+          Individual Training Plans
         </h1>
 
-        <div className="flex flex-col items-center	 justify-center">
+        <div className="flex flex-col items-center justify-center">
           <p className="leter-spacing-1 text-xl max-w-3xl">
-            Start your free trial and and you’ll be set to train within 24
-            hours.
+            There are 3 distinct plans to choose from, each designed to meet
+            your specific needs. Every option is fully personalized to help you
+            unlock your potential and achieve your best performance.
           </p>
-          {/* <br />
+          <br />
           <p className="leter-spacing-1 text-xl max-w-3xl">
-            This information helps us create a training plan precisely to your
-            needs, ensuring the best possible experience and results.
-          </p> */}
+            Sign up for a free 7-day trial, and we’ll connect with you within 24
+            hours for a personal chat to set up everything you need to start
+            training.
+          </p>
         </div>
       </div>
       <div>
