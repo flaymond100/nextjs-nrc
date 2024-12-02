@@ -38,8 +38,11 @@ export function OurPrograms() {
       className="px-8 pt-20"
     >
       <div className="animate-in slide-in-from-bottom duration-1000 container mx-auto mb-10 grid place-items-center text-center ">
-        <h1 color="blue-gray" className=" my-3 text-4xl font-bold">
-          Our Trainings
+        <h1
+          color="blue-gray"
+          className="mb-4 leter-spacing-1 text-5xl font-bold text-center"
+        >
+          Trainings
         </h1>
       </div>
       <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -70,7 +73,7 @@ export function OurPrograms() {
                 coaches provide support to help you reach new goals.
               </Typography>
             </CardBody>
-            <Link style={{ zIndex: "1" }} href="/plans/running-trainings">
+            <Link style={{ zIndex: "1" }} href="/trainings/running-trainings">
               <Button className="mb-8" size="sm" color="white">
                 Read More
               </Button>
@@ -108,7 +111,7 @@ export function OurPrograms() {
             <Link
               aria-label="Read more about cycling trainings"
               style={{ zIndex: "1" }}
-              href="/plans/cycling-trainings"
+              href="/trainings/cycling-trainings"
             >
               <Button className="mb-8" size="sm" color="white">
                 Read More
@@ -147,7 +150,7 @@ export function OurPrograms() {
             <Link
               aria-label="Read more about triathlon trainings"
               style={{ zIndex: "1" }}
-              href="/plans/triathlon-trainings"
+              href="/trainings/triathlon-trainings"
             >
               <Button className="mb-8" size="sm" color="white">
                 Read More
@@ -162,7 +165,7 @@ export function OurPrograms() {
 
 export const TimelineWithIcon = () => {
   const pathname = usePathname();
-  const form = pathname === "/pricing/";
+  const form = pathname === "/personal-coaching/";
 
   return (
     <div className="mx-auto w-4/5 lg:w-[32rem]">
@@ -278,7 +281,11 @@ export const TimelineWithIcon = () => {
           </div>
         </div>
         {!form && (
-          <Link className="mb-10" aria-label="sing-up-form" href="/pricing">
+          <Link
+            className="mb-10"
+            aria-label="sing-up-form"
+            href="/personal-coaching"
+          >
             <Button size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>
