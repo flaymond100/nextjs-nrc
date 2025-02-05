@@ -3,10 +3,10 @@ import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Cycling Trainings",
-  description: "Cycling training plans.",
+  title: "Cycling Team Roster",
+  description: "Meet our riders.",
   alternates: {
-    canonical: `https://www.nrc-team.com/plans/cycling-trainings`,
+    canonical: `https://www.nrc-team.com/cycling-team/roster`,
   },
 };
 

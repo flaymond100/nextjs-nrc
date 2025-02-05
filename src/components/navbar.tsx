@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import {
   Navbar as MTNavbar,
   Collapse,
@@ -17,23 +17,27 @@ const NAV_MENU = [
   },
   {
     name: "Trainings",
-    href: "/plans",
+    href: "/trainings",
   },
   {
-    name: "Plans & Pricing",
-    href: "/pricing",
+    name: "Personal Coaching",
+    href: "/personal-coaching",
+  },
+  {
+    name: "Cycling Team",
+    href: "/cycling-team",
   },
   {
     name: "Our Trainers",
     href: "/trainers",
   },
   {
-    name: "About",
-    href: "/about",
+    name: "About Us",
+    href: "/about-us",
   },
   {
-    name: "Contact Us",
-    href: "/contact-us",
+    name: "Contact",
+    href: "/contact",
   },
 ];
 
@@ -71,8 +75,6 @@ export function Navbar() {
   }
   const pathname = usePathname();
 
-  console.log(pathname);
-
   React.useEffect(() => {
     window.addEventListener(
       "resize",
@@ -105,10 +107,11 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          {pathname === "/plans/running-trainings/" ||
-          pathname === "/plans/triathlon-trainings/" ||
-          pathname === "/plans/cycling-trainings/" ? (
-            <Link href="/pricing">
+          {pathname === "/trainings/running-trainings/" ||
+          pathname === "/trainings/triathlon-trainings/" ||
+          pathname === "/cycling-team/" ||
+          pathname === "/trainings/cycling-trainings/" ? (
+            <Link href="/personal-coaching">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
@@ -153,10 +156,10 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            {pathname === "/plans/running-trainings/" ||
-            pathname === "/plans/triathlon-trainings/" ||
-            pathname === "/plans/cycling-trainings/" ? (
-              <Link href="/pricing">
+            {pathname === "/trainings/running-trainings/" ||
+            pathname === "/trainings/triathlon-trainings/" ||
+            pathname === "/trainings/cycling-trainings/" ? (
+              <Link href="/personal-coaching">
                 <Button
                   style={{ background: "#37007d" }}
                   placeholder={""}
