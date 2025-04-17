@@ -22,12 +22,14 @@ function Home() {
             className="animate-in fade-in zoom-in duration-1000  mb-10 "
             alt="logo"
           />
-          <p className="leter-spacing-1 text-xl max-w-3xl mb-5">
+          <p className="leter-spacing-1 text-2xl max-w-3xl mb-5">
+            We're more than just a team — we're a community of athletes striving
+            to become the best versions of ourselves.
+          </p>
+          <p className="leter-spacing-1 text-2xl max-w-3xl mb-5">
             Choose between your personalized training plan to unlock your
             potential and achieve peak performance or simply join our cycling
-            team for free. We're more than just a team — we're a global
-            community of athletes striving to become the best versions of
-            ourselves.
+            team for free.
           </p>
 
           <div className="flex justify-center sm:justify-start gap-2">
@@ -40,6 +42,7 @@ function Home() {
                 placeholder={""}
                 color="gray"
                 size="lg"
+                className="w-40 h-12"
               >
                 Join Team
               </Button>
@@ -48,6 +51,7 @@ function Home() {
               onClick={scrollToStripeTable}
               size="lg"
               style={{ background: "#37007d" }}
+              className="flex justify-center items-center w-40 h-12"
             >
               Personal Coaching
             </Button>
