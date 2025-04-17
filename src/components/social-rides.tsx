@@ -26,8 +26,8 @@ export const SocialRides = () => {
       <div className="flex flex-col items-center justify-center mb-10">
         <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
           Joining the team is easy and completely free. The only commitment is
-          purchasing our team jersey for €60, which represents our shared spirit
-          and identity.
+          purchasing our team jersey, which represents our shared spirit and
+          identity.
         </p>
         <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
           Once you have it, you’re officially part of the team and ready to ride
@@ -46,12 +46,12 @@ export const SocialRides = () => {
             color="gray"
             size="lg"
           >
-            Join Us
+            Join Team
           </Button>
         </Link>
       </div>
 
-      <h1 className="mb-8 text-center text-4xl font-bold">
+      {/* <h1 className="mb-8 text-center text-4xl font-bold">
         {" "}
         Open Social Rides in Leipzig
       </h1>
@@ -121,7 +121,7 @@ export const SocialRides = () => {
           className="animate-in slide-in-from-right duration-1000 mb-6 w-80 rounded-lg shadow-lg dark:shadow-black/20  "
           alt=""
         />
-      </div>
+      </div> */}
     </section>
   );
 };

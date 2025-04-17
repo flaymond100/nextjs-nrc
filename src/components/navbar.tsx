@@ -15,26 +15,26 @@ const NAV_MENU = [
     name: "Home",
     href: "/",
   },
-  {
-    name: "Trainings",
-    href: "/trainings",
-  },
-  {
-    name: "Personal Coaching",
-    href: "/personal-coaching",
-  },
+  // {
+  //   name: "Trainings",
+  //   href: "/trainings",
+  // },
   {
     name: "Cycling Team",
     href: "/cycling-team",
   },
   {
-    name: "Our Trainers",
-    href: "/trainers",
+    name: "Personal Coaching",
+    href: "/personal-coaching",
   },
-  {
-    name: "About Us",
-    href: "/about-us",
-  },
+  // {
+  //   name: "Our Trainers",
+  //   href: "/trainers",
+  // },
+  // {
+  //   name: "About Us",
+  //   href: "/about-us",
+  // },
   {
     name: "Contact",
     href: "/contact",

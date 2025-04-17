@@ -28,6 +28,8 @@ import { usePathname } from "next/navigation";
 export function OurPrograms() {
   const pathname = usePathname();
   const homePage = pathname === "/";
+
+  return null;
   return (
     <section
       style={{

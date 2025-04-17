@@ -21,9 +21,10 @@ export function Prices() {
           </p>
           <br /> */}
           <p className="leter-spacing-1 text-xl max-w-3xl">
-            Sign up for a free 7-day trial, and we’ll connect with you within 24
-            hours for a personal chat to set up everything you need to start
-            training.
+            We also offer personalized training plans to match your goals in
+            cycling. Sign up for a free 7-day trial, and we’ll connect with you
+            within 24 hours for a personal chat to set up everything you need to
+            start training.
           </p>
         </div>
       </div>
