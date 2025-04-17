@@ -1,12 +1,13 @@
-import "../../globals.css";
+import "../globals.css";
 import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Triathlon Trainings",
-  description: "Triathlon training plans.",
+  title: "About",
+  description:
+    "NRC Team is a community of athletes from all corners of the globe, united by a shared love for endurance sports and become healthier people.",
   alternates: {
-    canonical: `https://www.nrc-team.com/plans/triathlon-trainings`,
+    canonical: `https://www.nrc-team.com/about-us`,
   },
 };
 
