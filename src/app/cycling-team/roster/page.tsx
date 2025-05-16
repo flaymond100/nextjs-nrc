@@ -25,7 +25,7 @@ const Roster = () => {
   const riders = [
     {
       id: 1,
-      name: "Jane Doe",
+      name: "Jan",
       role: "Sprinter",
       // photoUrl: "/image/riders/jane-doe.jpg",
       bio: "Jane is a fierce competitor who specializes in high-power sprints.",

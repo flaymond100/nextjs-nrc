@@ -18,7 +18,7 @@ export const SocialRides = () => {
         height={800}
         src={`${
           process.env.NEXT_PUBLIC_BASE_URL ?? ""
-        }/image/NRC-Team-Jersey.png`}
+        }/image/team-picture-white.webp`}
         className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20  "
         alt=""
       />
