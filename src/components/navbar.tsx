@@ -24,6 +24,10 @@ const NAV_MENU = [
     href: "/cycling-team",
   },
   {
+    name: "Social Rides",
+    href: "/social-rides",
+  },
+  {
     name: "Personal Coaching",
     href: "/personal-coaching",
   },
@@ -110,6 +114,7 @@ export function Navbar() {
           {pathname === "/trainings/running-trainings/" ||
           pathname === "/trainings/triathlon-trainings/" ||
           pathname === "/cycling-team/" ||
+          pathname === "/social-rides/" ||
           pathname === "/trainings/cycling-trainings/" ? (
             <Link href="/personal-coaching">
               <Button

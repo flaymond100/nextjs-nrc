@@ -3,59 +3,15 @@
 import Link from "next/link";
 import { Button } from "@material-tailwind/react";
 import Image from "next/image";
+import { BsInstagram } from "react-icons/bs";
 
 export const SocialRides = () => {
   return (
-    <section className="mb-20 container text-center md:text-left mt-6 md:mt-20 mx-auto px-6">
-      <h1
-        color="blue-gray"
-        className="mb-4 leter-spacing-1 text-5xl font-bold text-center"
-      >
-        Join NRC Cycling Team
-      </h1>
-      <Image
-        width={800}
-        height={800}
-        src={`${
-          process.env.NEXT_PUBLIC_BASE_URL ?? ""
-        }/image/team-picture-white.webp`}
-        className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20  "
-        alt=""
-      />
-
-      <div className="flex flex-col items-center justify-center mb-10">
-        <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
-          Joining the team is easy and completely free. The only commitment is
-          purchasing our team jersey, which represents our shared spirit and
-          identity.
-        </p>
-        <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
-          Once you have it, you’re officially part of the team and ready to ride
-          with us both online and offline. You can join us on Zwift, where we
-          ride virtually as a team, train, and compete—all from the comfort of
-          your home.
-        </p>
-
-        <Link
-          target="_blank"
-          href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-        >
-          <Button
-            style={{ background: "#37007d" }}
-            placeholder={""}
-            color="gray"
-            size="lg"
-          >
-            Join Team
-          </Button>
-        </Link>
-      </div>
-
-      {/* <h1 className="mb-8 text-center text-4xl font-bold">
+    <div className="container text-center md:text-left mt-6 mb-10 md:mt-10 mx-auto">
+      <h1 className="mb-8 mt-10 text-center text-4xl font-bold">
         {" "}
         Open Social Rides in Leipzig
       </h1>
-
       <div className="container mx-auto  grid grid-cols-1 gap-6 lg:grid-cols-2 justify-items-center md:justify-items-end">
         <div className="animate-in slide-in-from-left duration-1000">
           <p className="leter-spacing-1 text-xl max-w-3xl mb-5">
@@ -73,7 +29,7 @@ export const SocialRides = () => {
             everyone feels welcome. No one gets left behind—we wait for
             everyone! 🌟
           </p>
-          <p className="mb-6">
+          <p className="mb-4">
             🇩🇪 Offene Gruppenausfahrt für alle! 🚴‍♀️ <br />
             📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 10:00 - 12:30 <br />
             📍 Treffpunkt: Eventpalast Leipzig <br />
@@ -82,34 +38,23 @@ export const SocialRides = () => {
             warten auf jeden! 🌟
           </p>
           <br />
-          <h3 className="mb-4 text-lg">
-            If you want to join the team for free, sign up through the form and
-            let's get started together!
+          <h3 className="mb-2 text-2xl font-bold text-red-600">
+            ⚠️ Be aware that starting point might change! Please follow us on
+            Instagram for updates. ⚠️
           </h3>
           <Link
+            aria-label="Go to instagram"
             target="_blank"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
+            href="https://www.instagram.com/nrc.int.team/"
           >
             <Button
-              style={{ background: "#37007d", marginRight: "20px" }}
               placeholder={""}
-              color="gray"
+              aria-label="Go to instagram"
               size="lg"
+              name="Instagram"
+              className="bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-700 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
             >
-              Join Us
-            </Button>
-          </Link>
-          <Link
-            target="_blank"
-            href="https://www.zwift.com/clubs/6a08d729-8add-4088-ad16-7af3316f440f/home"
-          >
-            <Button
-              style={{ background: "#f06723" }}
-              placeholder={""}
-              color="gray"
-              size="lg"
-            >
-              Zwift Club
+              <BsInstagram className="text-white text-xl" />
             </Button>
           </Link>
         </div>
@@ -121,7 +66,7 @@ export const SocialRides = () => {
           className="animate-in slide-in-from-right duration-1000 mb-6 w-80 rounded-lg shadow-lg dark:shadow-black/20  "
           alt=""
         />
-      </div> */}
-    </section>
+      </div>
+    </div>
   );
 };
