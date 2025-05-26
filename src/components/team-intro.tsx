@@ -5,15 +5,9 @@ import { Button } from "@material-tailwind/react";
 export const TeamIntro = () => {
   return (
     <div className="container text-center md:text-left mt-6 md:mt-10 mx-auto">
-      <h1
-        color="blue-gray"
-        className="mb-10 mt-10 leter-spacing-1 text-5xl font-bold text-center"
-      >
-        NRC Cycling Team
-      </h1>
       <Image
-        width={800}
-        height={800}
+        width={600}
+        height={600}
         src={`${
           process.env.NEXT_PUBLIC_BASE_URL ?? ""
         }/image/team-picture-white.webp`}

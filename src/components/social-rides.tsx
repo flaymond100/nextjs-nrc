@@ -19,6 +19,25 @@ export const SocialRides = () => {
             Leipzig, creating opportunities to connect and grow together in
             person.
           </p>
+          <h3 className="mb-2 text-2xl font-bold text-red-600">
+            ⚠️ Be aware that starting point might change! Please follow us on
+            Instagram for updates. ⚠️
+          </h3>
+          <Link
+            aria-label="Go to instagram"
+            target="_blank"
+            href="https://www.instagram.com/nrc.int.team/"
+          >
+            <Button
+              placeholder={""}
+              aria-label="Go to instagram"
+              size="lg"
+              name="Instagram"
+              className="bg-gradient-to-tr mb-10 from-yellow-500 via-pink-600 to-purple-700 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
+            >
+              <BsInstagram className="text-white text-xl" />
+            </Button>
+          </Link>
           <p className="mb-6">
             🇬🇧 Join us for an open group ride! 🚴‍♀️
             <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 10:00 - 12:30 <br />
@@ -38,25 +57,6 @@ export const SocialRides = () => {
             warten auf jeden! 🌟
           </p>
           <br />
-          <h3 className="mb-2 text-2xl font-bold text-red-600">
-            ⚠️ Be aware that starting point might change! Please follow us on
-            Instagram for updates. ⚠️
-          </h3>
-          <Link
-            aria-label="Go to instagram"
-            target="_blank"
-            href="https://www.instagram.com/nrc.int.team/"
-          >
-            <Button
-              placeholder={""}
-              aria-label="Go to instagram"
-              size="lg"
-              name="Instagram"
-              className="bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-700 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
-            >
-              <BsInstagram className="text-white text-xl" />
-            </Button>
-          </Link>
         </div>
 
         <Image
