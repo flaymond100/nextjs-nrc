@@ -5,7 +5,7 @@ import { Button } from "@material-tailwind/react";
 export const TeamIntro = () => {
   return (
     <div className="container text-center md:text-left mt-6 md:mt-10 mx-auto">
-      <Image
+      {/* <Image
         width={600}
         height={600}
         src={`${
@@ -13,7 +13,7 @@ export const TeamIntro = () => {
         }/image/team-picture-white.webp`}
         className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20  "
         alt=""
-      />
+      /> */}
 
       <div className="flex flex-col items-center justify-center mb-10">
         <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
