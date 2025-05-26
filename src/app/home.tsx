@@ -25,14 +25,14 @@ function Home() {
           <div className="text-white rounded-lg p-4 bg-gray-900/80 mb-10 z-10">
             <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
               Welcome to NRC International Team. Whether you're preparing for
-              races or simply want to become a part of open minded community, we
-              have monthly training plans, regular social rides, and we all
-              assist one other improve.
+              races or simply want to become a part of open minded community
+              come and join us! We have regular social rides, monthly training
+              plans and we all assist each other to improve.
             </p>
             <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
               To become part of the team, just fill out our short sign-up form
-              and we’ll get in touch with the next steps, including access to
-              our group rides and training plans. Let’s ride stronger, together.
+              and we’ll get in touch with the next steps. Let’s ride stronger,
+              together.
             </p>
           </div>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-2 z-50">
