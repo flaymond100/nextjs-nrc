@@ -35,7 +35,7 @@ function Home() {
               our group rides and training plans. Let’s ride stronger, together.
             </p>
           </div>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-2 z-50">
             <Link
               target="_blank"
               href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
