@@ -17,11 +17,11 @@ function Home() {
     // <section className="container text-center md:text-left mt-6 md:mt-10 mx-auto">
 
     // </section>
-    <section className="pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-screen flex items-end">
+    <section className=" pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-screen flex items-end">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-400 to-white mix-blend-multiply"></div>
 
       <div className="w-full">
-        <div className="flex flex-col items-center justify-end mb-10">
+        <div className="animate-in slide-in-from-bottom duration-1000 flex flex-col items-center justify-end mb-10">
           <div className="text-white rounded-lg p-4 bg-gray-900/80 mb-10 z-10">
             <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
               Welcome to NRC International Team. Whether you're preparing for
