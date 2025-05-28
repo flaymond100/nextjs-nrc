@@ -228,8 +228,10 @@ export const Roster = () => {
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <section className="container mx-auto py-10 px-6">
-      <h1 className="mb-10 text-center text-5xl font-bold">Team Squad</h1>
+    <section className="container mx-auto  ">
+      <h1 className="mb-14 mt-10 text-center text-5xl font-bold">
+        Team Riders
+      </h1>
 
       <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
         {riders.map((rider) => (

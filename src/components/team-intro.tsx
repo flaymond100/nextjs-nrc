@@ -4,7 +4,7 @@ import { Button } from "@material-tailwind/react";
 
 export const TeamIntro = () => {
   return (
-    <div className="container text-center md:text-left mt-6 md:mt-10 mx-auto">
+    <div className="container text-center md:text-left mt-6  mx-auto">
       {/* <Image
         width={600}
         height={600}
