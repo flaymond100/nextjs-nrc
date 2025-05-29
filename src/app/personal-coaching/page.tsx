@@ -33,8 +33,8 @@ const PersonalCoaching = () => {
       </div>
       <div className="container mx-auto grid grid-cols-1 gap-6 lg:grid-cols-2 lg:pl-44 lg:pr-44 lg:mb-20">
         <div
-          className="overflow-hidden "
-          style={{ height: "466px", zIndex: 2 }}
+          className="overflow-hidden h-[466px] md:h-[560px]"
+          style={{ zIndex: 2 }}
         >
           <Image
             width={370}
