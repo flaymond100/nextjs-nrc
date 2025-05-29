@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+.flip-card-1 {
+  background-color: #36007d1a;
+}
+.flip-card-2 {
+  background-color: rgb(55 0 125 / 10%);
+}
+
+.flip-card-1:hover {
+  background-color: #36007d99;
+  cursor: pointer;
+}
+        
+.flip-card-2:hover {
+          background-color: rgba(118, 14, 253, 0.83);
+          cursor: pointer;
+}
+
+.center-section {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh; /* Full viewport height */
+          
+          background: linear-gradient(to bottom, #DA22FF, #9733EE); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+                    min-height: 100vh;
+        }

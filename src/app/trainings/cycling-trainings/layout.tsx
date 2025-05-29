@@ -1,13 +1,12 @@
-import "../globals.css";
+import "../../globals.css";
 import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Get Started",
-  description:
-    "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
+  title: "Cycling Trainings",
+  description: "Cycling training plans.",
   alternates: {
-    canonical: `https://www.nrc-team.com/personal-coaching`,
+    canonical: `https://www.nrc-team.com/trainings/cycling-trainings`,
   },
 };
 

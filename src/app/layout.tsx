@@ -1,6 +1,13 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Questrial } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Hanken_Grotesk,
+  Questrial,
+  Rubik,
+  Schibsted_Grotesk,
+  Space_Grotesk,
+} from "next/font/google";
 import { Layout, FixedPlugin } from "@/components";
 import Modal from "@/components/modal";
 import { Toaster } from "react-hot-toast";
@@ -8,10 +15,11 @@ import { Suspense } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-const roboto = Questrial({
+const rubik = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -112,7 +120,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       </head>
-      <body className={roboto.className}>
+      <body className={rubik.className}>
         <Layout>
           <Scroll />
           <Toaster position="top-right" />
