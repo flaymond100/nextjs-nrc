@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description:
     "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
   alternates: {
-    canonical: `https://www.nrc-team.com/coaching`,
+    canonical: `https://www.nrc-team.com/personal-coaching`,
   },
 };
 
@@ -16,6 +16,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  console.log("personal-coaching");
   redirect("/coaching");
   return null;
 }
