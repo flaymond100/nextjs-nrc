@@ -30,13 +30,13 @@ export const metadata: Metadata = {
     url: "https://www.nrc-team.com",
     title: "NRC International Team",
     description:
-      "NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running.",
+      "NRC International Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running.",
     images: [
       {
         url: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Fpure_name.png?alt=media&token=5d922826-6e93-427b-9580-ff2430ead2cc",
         width: 800,
         height: 600,
-        alt: "NRC Team Logo",
+        alt: "NRC International Team Logo",
       },
     ],
     type: "website",
@@ -103,13 +103,17 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
         <meta property="title" content="NRC International Team" />
+        <meta name="city" content="Leipzig" />
+        <meta name="country" content="Germany" />
+        <meta name="page-topic" content="Sport" />
+        <meta name="identifier-URL" content="https://nrc-team.com/" />
         <meta
           property="description"
           content="NRC InternationalTeam is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
         />
         <meta
           name="keywords"
-          content=" Cycling, Cycling Coaching, Cycling Team, Germany, Leipzig Team, Traithlon, Traithlon Coach, Traithlon Coaching, Best Cycling Coach, Best Triathlon Coach, Endurance Sport, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks"
+          content="Cycling, Cycling Coaching, Cycling Team, Germany, Cycling Team Leipzig, Traithlon, Traithlon Coach, Traithlon Coaching, Best Cycling Coach, Best Triathlon Coach, Endurance Sport, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks"
         />
         <meta name="robots" content="all" />
         <script
