@@ -3,7 +3,7 @@ import { BsStrava, BsInstagram, BsFacebook, BsTwitter } from "react-icons/bs";
 import Link from "next/link";
 
 const LINKS = [
-  { title: "Personal Coaching", link: "/personal-coaching" },
+  { title: "Coaching", link: "/coaching" },
   { title: "Cycling Team", link: "/cycling-team" },
   // { title: "Our Trainings", link: "/trainings" },
   // { title: "Our Trainers", link: "/trainers" },

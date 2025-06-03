@@ -167,7 +167,7 @@ export function OurPrograms() {
 
 export const TimelineWithIcon = () => {
   const pathname = usePathname();
-  const form = pathname === "/personal-coaching/";
+  const form = pathname === "/coaching/";
 
   return (
     <div className="mx-auto w-4/5 lg:w-[32rem]">
@@ -283,11 +283,7 @@ export const TimelineWithIcon = () => {
           </div>
         </div>
         {!form && (
-          <Link
-            className="mb-10"
-            aria-label="sing-up-form"
-            href="/personal-coaching"
-          >
+          <Link className="mb-10" aria-label="sing-up-form" href="/coaching">
             <Button size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>

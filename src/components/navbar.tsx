@@ -28,8 +28,8 @@ const NAV_MENU = [
     href: "/social-rides",
   },
   {
-    name: "Personal Coaching",
-    href: "/personal-coaching",
+    name: "Coaching",
+    href: "/coaching",
   },
   // {
   //   name: "Our Trainers",
@@ -116,7 +116,7 @@ export function Navbar() {
           pathname === "/cycling-team/" ||
           pathname === "/social-rides/" ||
           pathname === "/trainings/cycling-trainings/" ? (
-            <Link href="/personal-coaching">
+            <Link href="/coaching">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
@@ -164,7 +164,7 @@ export function Navbar() {
             {pathname === "/trainings/running-trainings/" ||
             pathname === "/trainings/triathlon-trainings/" ||
             pathname === "/trainings/cycling-trainings/" ? (
-              <Link href="/personal-coaching">
+              <Link href="/coaching">
                 <Button
                   style={{ background: "#37007d" }}
                   placeholder={""}

@@ -1,9 +1,9 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { redirect, usePathname } from "next/navigation";
+import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Plans and Pricing",
+  title: "Coaching",
   description:
     "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
   alternates: {
@@ -16,6 +16,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  redirect("/coaching");
-  return null;
+  return <Layout>{children}</Layout>;
 }

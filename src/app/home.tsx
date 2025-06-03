@@ -50,14 +50,14 @@ function Home() {
                 Join Team
               </Button>
             </Link>
-            <Link href="/personal-coaching">
+            <Link href="/coaching">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
                 color="gray"
                 size="lg"
               >
-                Personal Coaching
+                Coaching
               </Button>
             </Link>
             <Link
