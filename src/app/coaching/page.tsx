@@ -150,7 +150,7 @@ export const FormSection = () => {
   });
 
   return (
-    <section className="px-8 ">
+    <section className="px-8 relative z-100">
       <div className="container mx-auto text-center">
         {/* <h1
           color="blue-gray"
