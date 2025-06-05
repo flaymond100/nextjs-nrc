@@ -12,13 +12,13 @@ export const SocialRides = () => {
         {" "}
         Open Social Rides in Leipzig
       </h1>
-      <h1 className="mb-8 mt-10 text-center text-2xl font-bold text-red-600">
+      {/* <h1 className="mb-8 mt-10 text-center text-2xl font-bold text-red-600">
         {" "}
         <strong>NO Social Ride on 31 May!</strong> The team will be in Magdeburg
         for the race.
         <br />
         We will be back on 7 June.
-      </h1>
+      </h1> */}
       <div className="container mx-auto  grid grid-cols-1 gap-6 lg:grid-cols-2 justify-items-center md:justify-items-end">
         <div className="animate-in slide-in-from-left duration-1000">
           <p className="leter-spacing-1 text-xl max-w-3xl mb-5">
