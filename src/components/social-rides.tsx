@@ -47,8 +47,8 @@ export const SocialRides = () => {
           </Link>
           <p className="mb-6">
             🇬🇧 Join us for an open group ride! 🚴‍♀️
-            <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 10:00 - 12:30 <br />
-            📍 Starting Point: Eventpalast Leipzig
+            <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 10:00 - 13:00 <br />
+            📍 Starting Point: 7 Shots Coffee
             <br />
             <br />
             We'll ride at a steady, moderated pace (around 27-29 km/h) to ensure
@@ -57,8 +57,8 @@ export const SocialRides = () => {
           </p>
           <p className="mb-4">
             🇩🇪 Offene Gruppenausfahrt für alle! 🚴‍♀️ <br />
-            📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 10:00 - 12:30 <br />
-            📍 Treffpunkt: Eventpalast Leipzig <br />
+            📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 10:00 - 13:00 <br />
+            📍 Treffpunkt: 7 Shots Coffee <br />
             <br /> Wir fahren in einem moderaten Tempo (ca. 27-29 km/h), damit
             sich alle willkommen fühlen. Niemand wird zurückgelassen – wir
             warten auf jeden! 🌟
