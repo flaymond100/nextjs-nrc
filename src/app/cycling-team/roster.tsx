@@ -137,6 +137,17 @@ export const Roster = () => {
       instagramUrl: "https://www.instagram.com/smcolor",
     },
     {
+      id: 20,
+      name: "Sven",
+      role: "All-rounder",
+      photoUrl: `${
+        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+      }/image/team-pictures/Sven.webp`,
+      bio: "All-rounder with a racing mindset. I combine tactical awareness with team commitment - driven by performance, Energy Drinks, sweets and loud music.",
+      stravaUrl: "https://www.strava.com/athletes/100549976",
+      instagramUrl: "https://www.instagram.com/svenferres/",
+    },
+    {
       id: 5,
       name: "Tina",
       role: "All-rounder",
