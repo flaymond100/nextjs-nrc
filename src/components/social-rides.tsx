@@ -5,22 +5,27 @@ import { Button } from "@material-tailwind/react";
 import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 
+const komoot: { date: string; url: string } | null = {
+  date: "21 June",
+  url: "https://www.komoot.com/de-de/tour/2335614096?share_token=aZrwK1I7mQQLveYDYjrAzBeSZzcOuMU81NoPV2hGBp3qFUU9xk&ref=wtd",
+};
+
 export const SocialRides = () => {
-  const komootUrl =
-    "https://www.komoot.com/de-de/tour/2335614096?share_token=aZrwK1I7mQQLveYDYjrAzBeSZzcOuMU81NoPV2hGBp3qFUU9xk&ref=wtd";
   return (
     <div className="container text-center md:text-left mt-6 mb-10 md:mt-10 mx-auto">
       <h1 className="mb-8 mt-10 text-center text-4xl font-bold">
         {" "}
         Open Social Rides in Leipzig
       </h1>
-      {/* <h1 className="mb-8 mt-10 text-center text-2xl font-bold text-red-600">
-        {" "}
-        <strong>NO Social Ride on 14 June!</strong> The team will be on the
-        race.
-        <br />
-        We will be back on 21 June.
-      </h1> */}
+      {!komoot && (
+        <h1 className="mb-8 mt-10 text-center text-2xl font-bold text-red-600">
+          {" "}
+          <strong>NO Social Ride this weekend!</strong> The team will be on the
+          race.
+          <br />
+          We will be back soon!
+        </h1>
+      )}
       <div className="container mx-auto  grid grid-cols-1 gap-6 lg:grid-cols-2 justify-items-center md:justify-items-end">
         <div className="animate-in slide-in-from-left duration-1000">
           <p className="leter-spacing-1 text-xl max-w-3xl mb-5">
@@ -28,33 +33,35 @@ export const SocialRides = () => {
             Leipzig, creating opportunities to connect and grow together in
             person.
           </p>
-          <div className="flex items-center gap-2">
-            <Link aria-label="Go to komoot" target="_blank" href={komootUrl}>
-              <Button
-                placeholder={""}
-                aria-label="Go to komoot"
-                size="lg"
-                name="Komoot"
-                style={{ background: "#447c00" }}
-                className="bg-gradient-to-tr from-#8acb3c via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
+          {komoot && (
+            <div className="flex items-center gap-2">
+              <Link aria-label="Go to komoot" target="_blank" href={komoot.url}>
+                <Button
+                  placeholder={""}
+                  aria-label="Go to komoot"
+                  size="lg"
+                  name="Komoot"
+                  style={{ background: "#447c00" }}
+                  className="bg-gradient-to-tr from-#8acb3c via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
+                >
+                  <Image
+                    src={`${
+                      process.env.NEXT_PUBLIC_BASE_URL ?? ""
+                    }/image/komoot.png`}
+                    alt="Komoot"
+                    width={20}
+                    height={20}
+                  />
+                </Button>
+              </Link>
+              <h3
+                className="mb-2 text-2xl font-bold "
+                style={{ color: "#447c00" }}
               >
-                <Image
-                  src={`${
-                    process.env.NEXT_PUBLIC_BASE_URL ?? ""
-                  }/image/komoot.png`}
-                  alt="Komoot"
-                  width={20}
-                  height={20}
-                />
-              </Button>
-            </Link>
-            <h3
-              className="mb-2 text-2xl font-bold "
-              style={{ color: "#447c00" }}
-            >
-              Komoot Track for 21 June
-            </h3>
-          </div>
+                Komoot Track for {komoot.date}
+              </h3>
+            </div>
+          )}
           <br />
           <p className="mb-6">
             🇬🇧 Join us for an open group ride! 🚴‍♀️
