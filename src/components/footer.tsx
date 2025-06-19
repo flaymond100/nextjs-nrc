@@ -3,11 +3,12 @@ import { BsStrava, BsInstagram, BsFacebook, BsTwitter } from "react-icons/bs";
 import Link from "next/link";
 
 const LINKS = [
-  { title: "Plans & Pricing", link: "/pricing" },
-  { title: "Our Trainings", link: "/plans" },
-  { title: "Our Trainers", link: "/trainers" },
-  { title: "About", link: "/about" },
-  { title: "Contact", link: "/contact-us" },
+  { title: "Coaching", link: "/coaching" },
+  { title: "Cycling Team", link: "/cycling-team" },
+  // { title: "Our Trainings", link: "/trainings" },
+  // { title: "Our Trainers", link: "/trainers" },
+  // { title: "About", link: "/about-us" },
+  { title: "Contact", link: "/contact" },
   { title: "Terms", link: "/terms-and-conditions" },
 ];
 const CURRENT_YEAR = new Date().getFullYear();
