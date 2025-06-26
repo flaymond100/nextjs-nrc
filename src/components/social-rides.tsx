@@ -34,7 +34,13 @@ export const SocialRides = () => {
             having a great coffee after the ride.
           </p>
           {komoot && (
-            <div className="flex items-center gap-2">
+            <>
+              <h3
+                className="mb-2 text-2xl font-bold "
+                style={{ color: "#447c00" }}
+              >
+                Komoot Track for {komoot.date}
+              </h3>
               <Link aria-label="Go to komoot" target="_blank" href={komoot.url}>
                 <Button
                   placeholder={""}
@@ -42,7 +48,7 @@ export const SocialRides = () => {
                   size="lg"
                   name="Komoot"
                   style={{ background: "#447c00" }}
-                  className="bg-gradient-to-tr from-#8acb3c via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
+                  className="bg-gradient-to-tr from-#8acb3c mb-5 via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
                 >
                   <Image
                     src={`${
@@ -54,13 +60,7 @@ export const SocialRides = () => {
                   />
                 </Button>
               </Link>
-              <h3
-                className="mb-2 text-2xl font-bold "
-                style={{ color: "#447c00" }}
-              >
-                Komoot Track for {komoot.date}
-              </h3>
-            </div>
+            </>
           )}
           <br />
           <p className="mb-6">
