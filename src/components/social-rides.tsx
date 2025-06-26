@@ -6,8 +6,8 @@ import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 
 const komoot: { date: string; url: string } | null = {
-  date: "21 June",
-  url: "https://www.komoot.com/de-de/tour/2335614096?share_token=aZrwK1I7mQQLveYDYjrAzBeSZzcOuMU81NoPV2hGBp3qFUU9xk&ref=wtd",
+  date: "28 June",
+  url: "https://www.komoot.com/de-de/tour/2322045261?share_token=aPAUKFpQgpAWaQ4aCfpsK4ULZpj9f2J5NHCu63Qhoy9whtueCG&ref=wtd",
 };
 
 export const SocialRides = () => {
@@ -65,7 +65,7 @@ export const SocialRides = () => {
           <br />
           <p className="mb-6">
             🇬🇧 Join us for an open group ride! 🚴‍♀️
-            <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 10:00 - 13:00 <br />
+            <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 08:00 - 11:00 <br />
             📍 Starting Point: 7 Shots Coffee
             <br />
             <br />
@@ -75,7 +75,7 @@ export const SocialRides = () => {
           </p>
           <p className="mb-4">
             🇩🇪 Offene Gruppenausfahrt für alle! 🚴‍♀️ <br />
-            📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 10:00 - 13:00 <br />
+            📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 08:00 - 11:00 <br />
             📍 Treffpunkt: 7 Shots Coffee <br />
             <br /> Wir fahren in einem moderaten Tempo (ca. 27-29 km/h), damit
             sich alle willkommen fühlen. Niemand wird zurückgelassen – wir
