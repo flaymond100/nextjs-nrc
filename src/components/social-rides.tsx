@@ -30,8 +30,8 @@ export const SocialRides = () => {
         <div className="animate-in slide-in-from-left duration-1000">
           <p className="leter-spacing-1 text-xl max-w-3xl mb-5">
             For those nearby, we host regular rides and training sessions in
-            Leipzig, creating opportunities to connect and grow together in
-            person.
+            Leipzig, creating opportunities to connect with each other and
+            having a great coffee after the ride.
           </p>
           {komoot && (
             <div className="flex items-center gap-2">
