@@ -106,7 +106,9 @@ export const SocialRides = () => {
         <Image
           width={300}
           height={400}
-          src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/poster.png`}
+          src={`${
+            process.env.NEXT_PUBLIC_BASE_URL ?? ""
+          }/image/social-ride.jpg`}
           className="animate-in slide-in-from-right duration-1000 mb-6 w-80 rounded-lg shadow-lg dark:shadow-black/20  "
           alt=""
         />
