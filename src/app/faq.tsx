@@ -17,10 +17,10 @@ const FAQS = [
     title: "How often do you update the training plans?",
     desc: "We regularly review and update our training plans to incorporate the latest training methodologies and ensure they remain effective and aligned with current best practices.",
   },
-  {
-    title: "How long do you need to prepare for a triathlon?",
-    desc: "Generally, a 12 to 16-week training plan is recommended forbeginners tackling a sprint distance. The ideal preparation time fora triathlon varies based on your current fitness level, experience, and the specific distance of the triathlon. Adequate time allows for a gradual increase in intensity, endurance, and skill development, reducing the risk of injury and enhancing overall performance on race day.",
-  },
+  // {
+  //   title: "How long do you need to prepare for a triathlon?",
+  //   desc: "Generally, a 12 to 16-week training plan is recommended forbeginners tackling a sprint distance. The ideal preparation time fora triathlon varies based on your current fitness level, experience, and the specific distance of the triathlon. Adequate time allows for a gradual increase in intensity, endurance, and skill development, reducing the risk of injury and enhancing overall performance on race day.",
+  // },
   {
     title: "What makes your online training plans different?",
     desc: "Our training plans are personalized to fit your specific needs, integrating a holistic approach that considers your fitness level, goals, and available time for training. We focus on tailored guidance rather than generic programs.",

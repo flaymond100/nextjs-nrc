@@ -9,14 +9,14 @@ import OurServices from "./our-services";
 import Faq from "./faq";
 import CarouselFeatures from "./carousel-features";
 import { CalendlyWidget } from "@/components/widget";
-import { SocialRides } from "@/components/social-rides";
+import { FormSection } from "./coaching/page";
 
 export default function Campaign() {
   return (
     <>
       <Navbar />
       <Home />
-      <SocialRides />
+      <FormSection />
       <OurPrograms />
       <Prices />
       <OurServices />
