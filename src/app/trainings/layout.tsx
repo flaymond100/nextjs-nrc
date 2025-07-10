@@ -3,11 +3,11 @@ import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Get Started",
+  title: "Trainings",
   description:
-    "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
+    "Choose the most suitable progam for you - running training, cycling training or triathlon training.",
   alternates: {
-    canonical: `https://www.nrc-team.com/coaching`,
+    canonical: `https://www.nrc-team.com/trainings`,
   },
 };
 
