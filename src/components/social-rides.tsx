@@ -41,7 +41,7 @@ export const SocialRides = () => {
           href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
         >
           <Button
-            style={{ background: "#ecd06f" }}
+            style={{ background: "#37007d" }}
             placeholder={""}
             color="gray"
             size="lg"
@@ -91,7 +91,7 @@ export const SocialRides = () => {
             href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
           >
             <Button
-              style={{ background: "#ecd06f", marginRight: "20px" }}
+              style={{ background: "#37007d", marginRight: "20px" }}
               placeholder={""}
               color="gray"
               size="lg"

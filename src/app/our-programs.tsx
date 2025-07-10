@@ -261,7 +261,7 @@ export const TimelineWithIcon = () => {
             }}
             className="animate-bounce p-2 w-10 h-10 ring-1 ring-transparent rounded-full flex items-center justify-center"
           >
-            <ChevronDownIcon className="h-4 w-4" style={{ color: "#ecd06f" }} />
+            <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
           </div>
           <div
             style={{
@@ -271,13 +271,13 @@ export const TimelineWithIcon = () => {
             }}
             className="animate-bounce p-2 w-10 h-10 ring-1 ring-transparent  rounded-full flex items-center justify-center"
           >
-            <ChevronDownIcon className="h-4 w-4" style={{ color: "#ecd06f" }} />
+            <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
           </div>
           <div
             style={{ color: "white", marginBottom: form ? "0" : "20px" }}
             className="animate-bounce p-2 w-10 h-10 ring-1 ring-transparent  rounded-full flex items-center justify-center"
           >
-            <ChevronDownIcon className="h-4 w-4" style={{ color: "#ecd06f" }} />
+            <ChevronDownIcon className="h-4 w-4" style={{ color: "#37007d" }} />
           </div>
         </div>
         {!form && (
@@ -286,7 +286,7 @@ export const TimelineWithIcon = () => {
             aria-label="sing-up-form"
             href="/personal-coaching"
           >
-            <Button size="lg" style={{ background: "#ecd06f" }}>
+            <Button size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>
           </Link>

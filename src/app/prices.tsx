@@ -4,52 +4,31 @@ import React, { useEffect } from "react";
 
 export function Prices() {
   return (
-    <section className="pt-40 px-8 pb-20 md:pb-0 list-item bg-[url('/ben-guernsey.jpeg')] bg-cover bg-center bg-no-repeat relative min-h-screen">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/30 to-gray-900/50 mix-blend-multiply"></div>
+    <section className="px-8 pt-10 pb-10" id="stripe-pricing">
+      <div className="container mx-auto mb-0 sm:mb-10 text-center">
+        <h1
+          color="blue-gray"
+          className="mb-4 leter-spacing-1 text-5xl font-bold"
+        >
+          Individual Training Plans
+        </h1>
 
-      {/* Dotted grid overlay */}
-      <div
-        className="absolute inset-0 z-10"
-        style={
-          {
-            "--dot-bg": "rgba(66 66 66 / 10%))",
-            "--dot-color": "transparent",
-            "--dot-size": "1px",
-            "--dot-space": "22px",
-            background: `
-            linear-gradient(90deg, var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-            linear-gradient(var(--dot-bg) calc(var(--dot-space) - var(--dot-size)), transparent 1%) center / var(--dot-space) var(--dot-space),
-            var(--dot-color)
-          `,
-          } as React.CSSProperties
-        }
-      ></div>
-      <div className="relative z-20">
-        <div className="container mx-auto mb-0 sm:mb-10 text-center">
-          <h1
-            color="blue-gray"
-            className="mb-4 leter-spacing-1 text-5xl font-bold"
-          >
-            Individual Training Plans
-          </h1>
-
-          <div className="flex flex-col items-center justify-center">
-            {/* <p className="leter-spacing-1 text-xl max-w-3xl">
-              There are 3 distinct plans to choose from, each designed to meet
-              your specific needs. Every option is fully personalized to help you
-              unlock your potential and achieve your best performance.
-            </p>
-            <br /> */}
-            <p className="leter-spacing-1 text-xl max-w-3xl">
-              Sign up for a free 7-day trial, and we'll connect with you within
-              24 hours for a personal chat to set up everything you need to
-              start training.
-            </p>
-          </div>
+        <div className="flex flex-col items-center justify-center">
+          {/* <p className="leter-spacing-1 text-xl max-w-3xl">
+            There are 3 distinct plans to choose from, each designed to meet
+            your specific needs. Every option is fully personalized to help you
+            unlock your potential and achieve your best performance.
+          </p>
+          <br /> */}
+          <p className="leter-spacing-1 text-xl max-w-3xl">
+            Sign up for a free 7-day trial, and we’ll connect with you within 24
+            hours for a personal chat to set up everything you need to start
+            training.
+          </p>
         </div>
-        <div>
-          <StripePricingTable />
-        </div>
+      </div>
+      <div>
+        <StripePricingTable />
       </div>
     </section>
   );

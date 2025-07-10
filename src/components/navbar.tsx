@@ -11,27 +11,26 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_MENU = [
-  // {
-  //   name: "Home",
-  //   href: "/",
-  // },
-
+  {
+    name: "Home",
+    href: "/",
+  },
+  {
+    name: "Trainings",
+    href: "/trainings",
+  },
   {
     name: "Personal Coaching",
     href: "/personal-coaching",
   },
   {
-    name: "Team Coaching",
+    name: "Cycling Team",
     href: "/cycling-team",
   },
   {
-    name: "FTP Calculator",
-    href: "/ftp-calculator",
+    name: "Our Trainers",
+    href: "/trainers",
   },
-  // {
-  //   name: "Our Trainers",
-  //   href: "/trainers",
-  // },
   {
     name: "About Us",
     href: "/about-us",
@@ -53,7 +52,8 @@ function NavItem({ children, href }: NavItemProps) {
       <Link
         href={href || "#"}
         scroll={true}
-        className="flex items-center text-xl gap-2 font-normal text-white pb-1 hover:text-[#ecd06f] transition-all duration-300 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:bg-[#ecd06f] after:transition-all duration-300 hover:after:w-full"
+        // target={href ? "_blank" : "_self"}
+        className="flex items-center gap-2 font-bold text-black"
       >
         {children}
       </Link>
@@ -85,22 +85,18 @@ export function Navbar() {
   return (
     <MTNavbar
       placeholder={""}
-      shadow={true}
+      shadow={false}
       fullWidth
-      style={{
-        backgroundColor: open ? "rgba(0, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.3)",
-        backdropFilter: "blur(1px)",
-        transition: "background-color 0.3s, backdrop-filter 0.3s",
-      }}
-      className="border-0 absolute top-0 z-50 w-full"
+      style={{ borderBottom: " 0.5px solid rgb(55, 0, 125)" }}
+      className="border-0 sticky top-0 z-50"
     >
-      <div className="container max-w-full mx-auto flex items-center justify-between  ">
+      <div className="container mx-auto flex items-center justify-between">
         <Link href="/">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/black-logo.png`}
-            alt="favicon Ventro Coaching"
-            width={400}
-            height={50}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
+            alt="favicon Nrc Team"
+            width={80}
+            height={45}
           />
         </Link>
         <ul className="ml-10 hidden items-center gap-8 lg:flex">
@@ -110,10 +106,35 @@ export function Navbar() {
             </NavItem>
           ))}
         </ul>
+        <div className="hidden items-center gap-2 lg:flex">
+          {pathname === "/trainings/running-trainings/" ||
+          pathname === "/trainings/triathlon-trainings/" ||
+          pathname === "/cycling-team/" ||
+          pathname === "/trainings/cycling-trainings/" ? (
+            <Link href="/personal-coaching">
+              <Button
+                style={{ background: "#37007d" }}
+                placeholder={""}
+                color="gray"
+              >
+                Get Started
+              </Button>
+            </Link>
+          ) : (
+            <Button
+              style={{ background: "#37007d" }}
+              placeholder={""}
+              color="gray"
+              onClick={scrollToStripeTable}
+            >
+              Get Started
+            </Button>
+          )}
+        </div>
         <IconButton
           placeholder={""}
           variant="text"
-          color="white"
+          color="gray"
           aria-label="Open Menu"
           onClick={handleOpen}
           className="ml-auto inline-block lg:hidden"
@@ -139,14 +160,19 @@ export function Navbar() {
             pathname === "/trainings/triathlon-trainings/" ||
             pathname === "/trainings/cycling-trainings/" ? (
               <Link href="/personal-coaching">
-                <Button style={{ background: "#ecd06f" }} placeholder={""}>
+                <Button
+                  style={{ background: "#37007d" }}
+                  placeholder={""}
+                  color="gray"
+                >
                   Get Started
                 </Button>
               </Link>
             ) : (
               <Button
-                style={{ background: "#ecd06f" }}
+                style={{ background: "#37007d" }}
                 placeholder={""}
+                color="gray"
                 onClick={scrollToStripeTable}
               >
                 Get Started
