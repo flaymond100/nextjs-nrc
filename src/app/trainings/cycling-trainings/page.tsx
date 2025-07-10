@@ -61,7 +61,7 @@ const CyclingTrainings = () => {
         what we{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
-          href="/personal-coaching"
+          href="/coaching"
         >
           offer
         </Link>{" "}

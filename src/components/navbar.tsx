@@ -15,26 +15,30 @@ const NAV_MENU = [
     name: "Home",
     href: "/",
   },
-  {
-    name: "Trainings",
-    href: "/trainings",
-  },
-  {
-    name: "Personal Coaching",
-    href: "/personal-coaching",
-  },
+  // {
+  //   name: "Trainings",
+  //   href: "/trainings",
+  // },
   {
     name: "Cycling Team",
     href: "/cycling-team",
   },
   {
-    name: "Our Trainers",
-    href: "/trainers",
+    name: "Social Rides",
+    href: "/social-rides",
   },
   {
-    name: "About Us",
-    href: "/about-us",
+    name: "Coaching",
+    href: "/coaching",
   },
+  // {
+  //   name: "Our Trainers",
+  //   href: "/trainers",
+  // },
+  // {
+  //   name: "About Us",
+  //   href: "/about-us",
+  // },
   {
     name: "Contact",
     href: "/contact",
@@ -53,7 +57,7 @@ function NavItem({ children, href }: NavItemProps) {
         href={href || "#"}
         scroll={true}
         // target={href ? "_blank" : "_self"}
-        className="flex items-center gap-2 font-bold text-black"
+        className="flex items-center gap-2 text-lg  text-black"
       >
         {children}
       </Link>
@@ -110,8 +114,9 @@ export function Navbar() {
           {pathname === "/trainings/running-trainings/" ||
           pathname === "/trainings/triathlon-trainings/" ||
           pathname === "/cycling-team/" ||
+          pathname === "/social-rides/" ||
           pathname === "/trainings/cycling-trainings/" ? (
-            <Link href="/personal-coaching">
+            <Link href="/coaching">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
@@ -159,7 +164,7 @@ export function Navbar() {
             {pathname === "/trainings/running-trainings/" ||
             pathname === "/trainings/triathlon-trainings/" ||
             pathname === "/trainings/cycling-trainings/" ? (
-              <Link href="/personal-coaching">
+              <Link href="/coaching">
                 <Button
                   style={{ background: "#37007d" }}
                   placeholder={""}
