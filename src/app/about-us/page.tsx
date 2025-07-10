@@ -108,9 +108,9 @@ const AboutUs = () => {
           <div>
             <h2 className="mb-4 text-3xl font-bold">Our Mission</h2>
             <h3 className="mb-4 text-lg">
-              At the heart of the International NRC Team is our mission to
-              empower individuals, regardless of their sporting background, to
-              lead healthier lives, one step at a time.
+              At the heart of the International Ventro Coaching is our mission
+              to empower individuals, regardless of their sporting background,
+              to lead healthier lives, one step at a time.
             </h3>
             <p className="mb-6">
               At NRC, we're not just a team; we're a community of athletes from
@@ -136,14 +136,14 @@ const AboutUs = () => {
 
         <p className="mb-6">
           Get started your journey to a healthier, more active life.
-          International NRC Team is your partner in making fitness a sustainable
-          part of your daily routine. Whether you're a seasoned athlete or
-          someone taking their first steps toward a more active lifestyle, we're
-          here to help you achieve your goals.
+          International Ventro Coaching is your partner in making fitness a
+          sustainable part of your daily routine. Whether you're a seasoned
+          athlete or someone taking their first steps toward a more active
+          lifestyle, we're here to help you achieve your goals.
         </p>
         <p>
-          Ready to embark on this journey with us? the International NRC Team
-          and take the first step toward a healthier, more active you.
+          Ready to embark on this journey with us? the International Ventro
+          Coaching and take the first step toward a healthier, more active you.
         </p>
       </section>
       <Prices />

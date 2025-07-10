@@ -14,14 +14,13 @@ import { SocialRides } from "@/components/social-rides";
 export default function Campaign() {
   return (
     <>
-      <Navbar />
       <Home />
-      <SocialRides />
-      <OurPrograms />
+      {/* <SocialRides /> */}
+      {/* <OurPrograms />
       <Prices />
       <OurServices />
       <CarouselFeatures />
-      <CalendlyWidget />
+      <CalendlyWidget /> */}
       <Faq />
       <Footer />
     </>

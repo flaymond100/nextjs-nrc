@@ -101,7 +101,7 @@ export function Trainers() {
 
             <Button
               placeholder={""}
-              style={{ background: "#37007d" }}
+              style={{ background: "#ecd06f" }}
               onClick={scrollToStripeTable}
             >
               Get Started
@@ -163,7 +163,7 @@ export function Trainers() {
             </div>
             <Button
               placeholder={""}
-              style={{ background: "#37007d" }}
+              style={{ background: "#ecd06f" }}
               onClick={scrollToStripeTable}
             >
               Get Started

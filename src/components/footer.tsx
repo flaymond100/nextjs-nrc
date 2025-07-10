@@ -14,12 +14,12 @@ const CURRENT_YEAR = new Date().getFullYear();
 
 export function Footer() {
   return (
-    <footer className="mt-10 px-8 pt-20">
-      <div className="container mx-auto">
+    <footer className="mt-10  p-20">
+      <div className="container max-w-full mx-auto">
         <div className="flex flex-wrap items-end justify-center gap-8 md:justify-between">
           <div className="text-center md:text-left">
             <Typography as="a" href="/" variant="h4" className="mb-6">
-              NRC Team
+              Ventro Coaching
             </Typography>
             <ul className="flex flex-wrap items-center justify-center md:justify-start">
               {LINKS.map((data, idx) => (
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
         <div className="mt-16 flex flex-wrap items-center justify-center gap-y-4 gap-x-8 border-t border-blue-gray-50 py-6 md:justify-between">
           <p className="text-center font-normal !text-gray-700">
-            &copy; {CURRENT_YEAR} NRC Team
+            &copy; {CURRENT_YEAR} Ventro Coaching
           </p>
         </div>
       </div>

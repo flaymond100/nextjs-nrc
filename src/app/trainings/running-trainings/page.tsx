@@ -87,9 +87,9 @@ const RunningTrainings = () => {
         style={{ borderColor: "green" }}
         className="mb-6 rounded border-l-4 bg-green p-2"
       >
-        <strong>Note:</strong> At NRC Team we are offering an individual and
-        flexible options, which will be suitable for everyone. Find more about
-        what we{" "}
+        <strong>Note:</strong> At Ventro Coaching we are offering an individual
+        and flexible options, which will be suitable for everyone. Find more
+        about what we{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
           href="/personal-coaching"
@@ -263,8 +263,8 @@ const RunningTrainings = () => {
         style={{ borderColor: "green" }}
         className="mb-6 rounded border-l-4 bg-green p-2"
       >
-        <strong>Note:</strong> At NRC Team we are offering an individual running
-        plans with a full 24/7 support. Find our{" "}
+        <strong>Note:</strong> At Ventro Coaching we are offering an individual
+        running plans with a full 24/7 support. Find our{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
           href="/personal-coaching"
