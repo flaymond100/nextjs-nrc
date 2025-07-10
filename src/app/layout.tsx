@@ -1,6 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Questrial } from "next/font/google";
+import { Rubik } from "next/font/google";
 import { Layout, FixedPlugin } from "@/components";
 import Modal from "@/components/modal";
 import { Toaster } from "react-hot-toast";
@@ -8,32 +8,33 @@ import { Suspense } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
 
-const roboto = Questrial({
+const rubik = Rubik({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
+  variable: "--font-rubik",
 });
 
 export const metadata: Metadata = {
-  title: "NRC Team",
+  title: "Ventro Coaching",
   description:
-    "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
+    "Ventro Coaching is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
   openGraph: {
     url: "https://www.nrc-team.com",
-    title: "NRC Team - Running, Cycling and Triathlon Trainings",
+    title: "Ventro Coaching - Running, Cycling and Triathlon Trainings",
     description:
-      "NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running.",
+      "Ventro Coaching is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running.",
     images: [
       {
         url: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC_logo_web.jpg?alt=media&token=f9e70e4f-8c1b-4ecb-85d3-0a1b6df10aea",
         width: 800,
         height: 600,
-        alt: "NRC Team Logo",
+        alt: "Ventro Coaching Logo",
       },
     ],
     type: "website",
     locale: "en",
-    siteName: "NRC Team",
+    siteName: "Ventro Coaching",
   },
   alternates: {
     canonical: `https://www.nrc-team.com`,
@@ -43,7 +44,7 @@ export const metadata: Metadata = {
 const schema = {
   "@context": "http://schema.org",
   "@type": "SportsTeam",
-  name: "NRC Team",
+  name: "Ventro Coaching",
   email: "contact@nrc-team.com",
   coach: "Konstantin Garbar",
   start_url: "/",
@@ -55,7 +56,7 @@ const schema = {
   sport: "triathlon",
   slogan: "We're here to help you achieve your goals.",
   description:
-    "NRC Team is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
+    "Ventro Coaching is a community of athletes from all corners of the globe, we provide individual training plans for triathlon, cycling and running.",
   sameAs: [
     "https://twitter.com/nrc_tri_team",
     "https://www.facebook.com/nrcinternation",
@@ -73,6 +74,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="canonical" href="https://www.nrc-team.com" />
+
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -94,13 +96,10 @@ export default function RootLayout({
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
         <meta name="msapplication-TileColor" content="#da532c" />
         <meta name="theme-color" content="#ffffff" />
-        <meta
-          property="title"
-          content="NRC Team - Running, Cycling and Triathlon Trainings"
-        />
+        <meta property="title" content="Ventro - Cycling Trainings" />
         <meta
           property="description"
-          content="NRC Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
+          content="Ventro Coaching is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
         />
         <meta
           name="keywords"
@@ -112,7 +111,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
         />
       </head>
-      <body className={roboto.className}>
+      <body className={`${rubik.variable} font-rubik`}>
         <Layout>
           <Scroll />
           <Toaster position="top-right" />

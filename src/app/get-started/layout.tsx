@@ -5,7 +5,7 @@ import { Layout } from "@/components";
 export const metadata: Metadata = {
   title: "Get Started",
   description:
-    "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
+    "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International Ventro Coaching.",
   alternates: {
     canonical: `https://www.nrc-team.com/personal-coaching`,
   },
