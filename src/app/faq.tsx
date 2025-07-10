@@ -69,12 +69,15 @@ export function Faq() {
             >
               <AccordionHeader
                 placeholder={""}
-                className="text-left text-white"
+                className="text-left text-gray-900"
               >
                 {title}
               </AccordionHeader>
               <AccordionBody>
-                <p color="blue-gray" className="font-normal text-xl text-white">
+                <p
+                  color="blue-gray"
+                  className="font-normal text-xl text-gray-700"
+                >
                   {desc}
                 </p>
               </AccordionBody>

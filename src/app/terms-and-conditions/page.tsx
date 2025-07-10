@@ -27,24 +27,24 @@ const TermsAndConditions = () => {
 
         <p className="mb-6">
           These Terms and Conditions ("Terms") govern your use of the online
-          coaching services provided by Ventro Coaching ("we," "us," or "our")
-          for triathlon, cycling, running, and swimming training plans. By
-          accessing and using our services, you agree to abide by these Terms.
-          Please read them carefully. 1. Service Description and Packages We
-          offer online training plans for triathlon, cycling, running, and
-          swimming. We provide three packages: Lite Package - €70, Premium
-          Package - €100 and Deluxe Package - €200. 2. Free Trial Period Your
-          first 7 days of training are provided for free to allow you to
-          evaluate our services. After the free trial period, you must pay for
-          the selected package via bank transfer. 3. Payment Payment for the
-          selected package must be made via bank transfer. Payment details will
-          be provided upon the conclusion of your free trial period. 4.
-          Termination of Contract You may terminate your contract with us at any
-          time by providing us with one month's notice. Termination requests
-          should be sent to info@nrc-team.com 5. Health and Responsibility By
-          using our training plans, you acknowledge and agree to the following:
-          a. Health Awareness: You should be in good health and consult a
-          medical professional before starting any exercise program. We are not
+          coaching services provided by NRC Team ("we," "us," or "our") for
+          triathlon, cycling, running, and swimming training plans. By accessing
+          and using our services, you agree to abide by these Terms. Please read
+          them carefully. 1. Service Description and Packages We offer online
+          training plans for triathlon, cycling, running, and swimming. We
+          provide three packages: Lite Package - €70, Premium Package - €100 and
+          Deluxe Package - €200. 2. Free Trial Period Your first 7 days of
+          training are provided for free to allow you to evaluate our services.
+          After the free trial period, you must pay for the selected package via
+          bank transfer. 3. Payment Payment for the selected package must be
+          made via bank transfer. Payment details will be provided upon the
+          conclusion of your free trial period. 4. Termination of Contract You
+          may terminate your contract with us at any time by providing us with
+          one month's notice. Termination requests should be sent to
+          info@nrc-team.com 5. Health and Responsibility By using our training
+          plans, you acknowledge and agree to the following: a. Health
+          Awareness: You should be in good health and consult a medical
+          professional before starting any exercise program. We are not
           responsible for any health issues that may arise during your training.
           b. Advisory Nature: Our training plans are advisory in nature and
           should be considered recommendations and support. They are not a

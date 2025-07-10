@@ -4,7 +4,7 @@ import { Layout } from "@/components";
 
 export const metadata: Metadata = {
   title: "Terms and Conditions",
-  description: "Terms and Conditions of Ventro Coaching.",
+  description: "Terms and Conditions of NRC Team.",
   alternates: {
     canonical: `https://www.nrc-team.com/terms-and-conditions`,
   },
