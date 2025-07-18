@@ -7,12 +7,14 @@ const sponsors = [
     image: "/sponsors/vittoria.webp",
     description:
       "Vittoria Tyres is a leading manufacturer of high-performance cycling tires, providing superior grip, durability, and performance for cyclists of all levels.",
+    url: "https://www.vittoria.com",
   },
   {
     name: "Ventro Coaching",
     image: "/sponsors/ventro.webp",
     description:
       "Ventro Coaching is a cycling coaching services, helping cyclists of all levels improve their performance and achieve their goals.",
+    url: "https://ventrocycling.com/",
   },
 ];
 export const Sponsors = () => {
@@ -46,7 +48,18 @@ export const Sponsors = () => {
               />
             </div>
             <h2 className="text-xl font-semibold mb-2">{sponsor.name}</h2>
-            <p className="text-sm text-gray-600">{sponsor.description}</p>
+            <p className="text-sm text-gray-600 mb-4">{sponsor.description}</p>
+            <Link href={sponsor.url} target="_blank" rel="noopener noreferrer">
+              <button
+                className="px-4 py-2 bg-gray-200 text-sm font-semibold rounded-lg hover:bg-gray-300 transition-colors duration-200 border"
+                style={{
+                  borderColor: "#37007d",
+                  color: "#37007d",
+                }}
+              >
+                Visit Website
+              </button>
+            </Link>
           </div>
         ))}
         <div

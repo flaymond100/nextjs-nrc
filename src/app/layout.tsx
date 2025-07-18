@@ -33,7 +33,7 @@ export const metadata: Metadata = {
       "NRC International Team is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running.",
     images: [
       {
-        url: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2Fpure_name.png?alt=media&token=5d922826-6e93-427b-9580-ff2430ead2cc",
+        url: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC-Logo-Transparent.png?alt=media&token=1d22df1e-b692-4edc-bc27-fec3cdefe29c",
         width: 800,
         height: 600,
         alt: "NRC International Team Logo",
@@ -57,7 +57,7 @@ const schema = {
   start_url: "/",
   founder: "Konstantin Garbar",
   url: "https://www.nrc-team.com",
-  logo: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC_logo_web.jpg?alt=media&token=f9e70e4f-8c1b-4ecb-85d3-0a1b6df10aea",
+  logo: "https://firebasestorage.googleapis.com/v0/b/nrc-team.appspot.com/o/files%2FNRC-Logo-Transparent.png?alt=media&token=1d22df1e-b692-4edc-bc27-fec3cdefe29c",
   keywords:
     "Traithlon, Traithlon Coach, Traithlon Coaching, Cycling, Cycling Coaching, Germany, Berlin, Leipzig, Best Cycling Coach, Best Triathlon Coach, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks",
   sport: "cycling",
