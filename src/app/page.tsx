@@ -9,7 +9,7 @@ import OurServices from "./our-services";
 import Faq from "./faq";
 import CarouselFeatures from "./carousel-features";
 import { CalendlyWidget } from "@/components/widget";
-import { FormSection } from "./coaching/page";
+import { FormSection } from "@/components/contact-form";
 
 export default function Campaign() {
   return (
