@@ -5,7 +5,10 @@ import { Button } from "@material-tailwind/react";
 import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 
-const komoot = null as { date: string; url: string } | null;
+const komoot = {
+  date: "20.07.2025",
+  url: null,
+} as { date: string; url: string | null };
 
 export const SocialRides = () => {
   return (
@@ -14,7 +17,7 @@ export const SocialRides = () => {
         {" "}
         Open Social Rides in Leipzig
       </h1>
-      {!komoot && (
+      {komoot.url === null && (
         <h1 className="mb-8 mt-10 text-center text-2xl font-bold text-red-600">
           {" "}
           <strong>NO Social Ride this weekend!</strong> The team will be on the
@@ -30,19 +33,15 @@ export const SocialRides = () => {
             Leipzig, creating opportunities to connect with each other and
             having a great coffee after the ride.
           </p>
-          {komoot && (
+          {komoot.url !== null && (
             <>
               <h3
                 className="mb-2 text-2xl font-bold "
                 style={{ color: "#447c00" }}
               >
-                Komoot Track for {komoot!.date}
+                Komoot Track for {komoot.date}
               </h3>
-              <Link
-                aria-label="Go to komoot"
-                target="_blank"
-                href={komoot!.url}
-              >
+              <Link aria-label="Go to komoot" target="_blank" href={komoot.url}>
                 <Button
                   placeholder={""}
                   aria-label="Go to komoot"
