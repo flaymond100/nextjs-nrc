@@ -27,7 +27,7 @@ export default function PricingPage() {
   );
 }
 
-export const PersonalCoaching = () => {
+export function PersonalCoaching() {
   return (
     <section className="px-8 pt-10 pb-10" id="stripe-pricing">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-400/50 via-gray-100/60 to-white mix-blend-multiply"></div>
@@ -87,7 +87,7 @@ export const PersonalCoaching = () => {
       <StripePricingTable />
     </section>
   );
-};
+}
 
 const contactValidationSchema = Yup.object().shape({
   firstName: Yup.string().required("Please enter your first name"),
@@ -98,7 +98,7 @@ const contactValidationSchema = Yup.object().shape({
   textarea: Yup.string().nullable().required("Please enter a message"),
 });
 
-export const FormSection = () => {
+const FormSection = () => {
   const [disabled, setDisabled] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const formik = useFormik<{
