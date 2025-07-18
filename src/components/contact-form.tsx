@@ -1,3 +1,4 @@
+"use client";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
