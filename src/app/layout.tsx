@@ -1,14 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import {
-  Bricolage_Grotesque,
-  Hanken_Grotesk,
-  Questrial,
-  Rubik,
-  Schibsted_Grotesk,
-  Space_Grotesk,
-} from "next/font/google";
-import { Layout, FixedPlugin } from "@/components";
+import { Bricolage_Grotesque } from "next/font/google";
+import { Layout } from "@/components";
 import Modal from "@/components/modal";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
