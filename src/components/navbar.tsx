@@ -10,7 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV_MENU = [
+export const NAV_MENU = [
   {
     name: "Home",
     href: "/",
@@ -30,6 +30,10 @@ const NAV_MENU = [
   {
     name: "Coaching",
     href: "/coaching",
+  },
+  {
+    name: "Sponsors",
+    href: "/sponsors",
   },
   // {
   //   name: "Our Trainers",
