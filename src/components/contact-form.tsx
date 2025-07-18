@@ -17,7 +17,7 @@ const contactValidationSchema = Yup.object().shape({
 
 export const FormSection = () => {
   const [disabled, setDisabled] = useState(false);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [_, setFormSubmitted] = useState(false);
   const formik = useFormik<{
     email: string;
     firstName: string;
