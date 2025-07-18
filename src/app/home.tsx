@@ -1,22 +1,9 @@
 "use client";
-
-import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
-import { BsInstagram } from "react-icons/bs";
-import { TeamIntro } from "@/components/team-intro";
-import { SocialRides } from "@/components/social-rides";
-function Home() {
-  const scrollToStripeTable = () => {
-    const element = document.getElementById("stripe-pricing");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-  return (
-    // <section className="container text-center md:text-left mt-6 md:mt-10 mx-auto">
 
-    // </section>
+function Home() {
+  return (
     <section className="mb-10 pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-screen flex items-end">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-400 to-white mix-blend-multiply"></div>
 
