@@ -68,7 +68,7 @@ export const FormSection = () => {
   });
 
   return (
-    <section className="  list-item bg-cover bg-center bg-no-repeat relative">
+    <section className=" bg-cover bg-center bg-no-repeat relative">
       <div className=" px-8 container mx-auto text-center">
         <h1
           color="blue-gray"
