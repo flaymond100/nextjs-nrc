@@ -31,7 +31,7 @@ export const Sponsors = () => {
         {sponsors.map((sponsor, index) => (
           <div
             key={index}
-            className="rounded-2xl shadow-lg dark:shadow-black/20 hover:shadow-xl align-middle justify-center transition-shadow p-4 text-center"
+            className="rounded-2xl shadow-lg dark:shadow-black/20 hover:shadow-xl transition-shadow p-4 text-center flex flex-col h-full"
             style={{
               backgroundColor: "#f3f2f0",
             }}
@@ -48,7 +48,9 @@ export const Sponsors = () => {
               />
             </div>
             <h2 className="text-xl font-semibold mb-2">{sponsor.name}</h2>
-            <p className="text-sm text-gray-600 mb-4">{sponsor.description}</p>
+            <p className="text-sm text-gray-600 mb-4 flex-grow">
+              {sponsor.description}
+            </p>
             <Link href={sponsor.url} target="_blank" rel="noopener noreferrer">
               <button
                 className="px-4 py-2 bg-gray-200 text-sm font-semibold rounded-lg hover:bg-gray-300 transition-colors duration-200 border"
@@ -63,18 +65,20 @@ export const Sponsors = () => {
           </div>
         ))}
         <div
-          className="rounded-2xl shadow-lg dark:shadow-black/20 hover:shadow-xl align-middle justify-center transition-shadow p-4 text-center"
+          className="rounded-2xl shadow-lg dark:shadow-black/20 hover:shadow-xl transition-shadow p-4 text-center flex flex-col h-full"
           style={{
             backgroundColor: "#f3f2f0",
           }}
         >
-          <div className="text-center mt-20">
+          <div className="text-center pt-36">
             <h2 className="text-4xl font-semibold mb-2">
               Want to support our team?
             </h2>
             <p className="text-gray-600 mb-6">
               Partner with us and become part of our journey.
             </p>
+          </div>
+          <div className="mt-auto">
             <Link href="/contact">
               <button className="px-6 py-3 bg-[#37007d] text-white font-semibold rounded-lg hover:bg-[#2a005f] transition-colors duration-200">
                 BECOME A SPONSOR
