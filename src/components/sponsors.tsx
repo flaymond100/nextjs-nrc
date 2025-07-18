@@ -18,7 +18,7 @@ const sponsors = [
 export const Sponsors = () => {
   return (
     <div>
-      <h1 className="text-4xl font-bold text-center mb-6">Our Sponsors</h1>
+      <h1 className="text-5xl font-bold text-center mb-6">Our Sponsors</h1>
       <p className="max-w-2xl mx-auto text-center text-gray-700 text-base mb-10">
         We’re incredibly grateful for the support of our amazing sponsors. Their
         contributions empower our team to train harder, race faster, and bring
