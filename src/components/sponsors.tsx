@@ -12,7 +12,7 @@ const sponsors = [
     name: "Ventro Coaching",
     image: "/sponsors/ventro.webp",
     description:
-      "Ventro Coaching is a leading provider of cycling coaching services, helping cyclists of all levels improve their performance and achieve their goals.",
+      "Ventro Coaching is a cycling coaching services, helping cyclists of all levels improve their performance and achieve their goals.",
   },
 ];
 export const Sponsors = () => {
