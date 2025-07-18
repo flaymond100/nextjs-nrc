@@ -6,7 +6,7 @@ import Faq from "../faq";
 import CarouselFeatures from "../carousel-features";
 import { CalendlyWidget } from "@/components/widget";
 import { SocialRides } from "@/components/social-rides";
-import { PersonalCoaching } from "../coaching/page";
+import { PersonalCoaching } from "@/components/personal-coaching";
 
 export default function SocialRidesPage() {
   return (
