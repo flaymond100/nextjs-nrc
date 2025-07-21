@@ -16,7 +16,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  console.log("personal-coaching");
-  redirect("/coaching");
+  redirect("https://ventrocycling.com/plans-and-pricing/");
   return null;
 }
