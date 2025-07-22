@@ -3,9 +3,6 @@ import { Navbar, Footer } from "@/components";
 
 // sections
 import Home from "./home";
-import Faq from "./faq";
-import CarouselFeatures from "./carousel-features";
-import { CalendlyWidget } from "@/components/widget";
 import { FormSection } from "@/components/contact-form";
 import { Sponsors } from "@/components/sponsors";
 
