@@ -1,6 +1,5 @@
 "use client";
 // components
-import { Footer, Navbar } from "@/components";
 
 // sections
 import {
@@ -13,7 +12,7 @@ import {
 } from "@material-tailwind/react";
 import Image from "next/image";
 import Link from "next/link";
-import { BsCompass, BsInstagram, BsStrava } from "react-icons/bs";
+import { BsInstagram, BsStrava } from "react-icons/bs";
 export const Roster = () => {
   const riders = [
     {
@@ -192,6 +191,7 @@ export const Roster = () => {
       }/image/team-pictures/Noah.webp`,
       bio: "I love tackling short, steep climbs with explosive power and launching strong attacks to shake off my rivals and help my team.",
       stravaUrl: "https://strava.app.link/u0dNM7B5CTb",
+      instagramUrl: "https://www.instagram.com/noah_nrc_international/",
     },
     {
       id: 16,
