@@ -1,13 +1,13 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { Layout } from "@/components";
+import { redirect, usePathname } from "next/navigation";
 
 export const metadata: Metadata = {
-  title: "Get Started",
+  title: "Plans and Pricing",
   description:
     "Choose the plan that suits your goals and embark on your journey to a healthier, more active you with the International NRC Team.",
   alternates: {
-    canonical: `https://www.nrc-team.com/coaching`,
+    canonical: `https://www.nrc-team.com/personal-coaching`,
   },
 };
 
@@ -16,5 +16,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <Layout>{children}</Layout>;
+  redirect("https://ventrocycling.com/plans-and-pricing/");
+  return null;
 }
