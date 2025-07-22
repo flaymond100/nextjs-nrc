@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { Typography } from "@material-tailwind/react";
 import FeatureCard from "@/components/feature-card";
 import {
   ClipboardDocumentListIcon,
