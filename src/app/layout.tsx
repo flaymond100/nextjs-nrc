@@ -102,11 +102,11 @@ export default function RootLayout({
         <meta name="identifier-URL" content="https://nrc-team.com/" />
         <meta
           property="description"
-          content="NRC InternationalTeam is a community of athletes from all corners of the globe, we connect people and provide individual training plans for triathlon, cycling and running."
+          content="NRC International Team is amatuer cycling team based in Leipzig, Germany. We bring together dedicated cyclists of all levels to train, race, and progress as a team."
         />
         <meta
           name="keywords"
-          content="Cycling, Cycling Coaching, Cycling Team, Germany, Cycling Team Leipzig, Traithlon, Traithlon Coach, Traithlon Coaching, Best Cycling Coach, Best Triathlon Coach, Endurance Sport, Training Camps, Racing, Triathlon, Cycling Germany, Triathlon Germany, Best Coach Germany, Best Coach Dubai, Trainin Plans, Triathlon Training Plan, Individual Triathlon Training Plan, Triathlon Training Plan, Ironman, Half Ironman, Sprint Triathlon, Bikes, Hour Record, Indoor Training, Zwift, Wahoo, Today's Plan, Training Peaks"
+          content="Cycling, Cycling team, cycling team leipzig, Germany, Leipzig, amateur cycling team Leipzig, international cycling club Germany, cycling team Leipzig Germany, road cycling team Leipzig, social cycling rides Leipzig, amateur road racing Germany, cycling community Leipzig, NRC International cycling, join cycling club Leipzig, race and train cycling team"
         />
         <meta name="robots" content="all" />
         <script
