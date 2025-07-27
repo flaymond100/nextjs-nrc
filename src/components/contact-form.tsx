@@ -21,12 +21,14 @@ export const FormSection = () => {
   const [_, setFormSubmitted] = useState(false);
   const formik = useFormik<{
     email: string;
+    companyName: string | null;
     firstName: string | null;
     lastName: string | null;
     textarea: string | null;
   }>({
     initialValues: {
       email: "",
+      companyName: "NRC International Team",
       firstName: null,
       lastName: null,
       textarea: null,
