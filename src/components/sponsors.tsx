@@ -10,6 +10,13 @@ const sponsors = [
     url: "https://www.vittoria.com",
   },
   {
+    name: "4 Endurance",
+    image: "/sponsors/4endurance-logo.png",
+    description:
+      "4 Endurance provides you with everything you need for cycling, running, swimming, and other sports: energy gels, isotonic sports drinks, recovery drinks!",
+    url: "https://4endurance.de/",
+  },
+  {
     name: "Ventro Coaching",
     image: "/sponsors/ventro.webp",
     description:
@@ -68,6 +75,7 @@ export const Sponsors = () => {
           className="rounded-2xl shadow-lg dark:shadow-black/20 hover:shadow-xl transition-shadow p-4 text-center flex flex-col h-full"
           style={{
             backgroundColor: "#f3f2f0",
+            minHeight: "500px",
           }}
         >
           <div className="text-center pt-36">
