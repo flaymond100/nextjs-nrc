@@ -1,4 +1,4 @@
-import { Typography, Button, Input } from "@material-tailwind/react";
+import { Typography, Button } from "@material-tailwind/react";
 import { BsStrava, BsInstagram, BsFacebook, BsTwitter } from "react-icons/bs";
 import Link from "next/link";
 import { NAV_MENU } from "./navbar";

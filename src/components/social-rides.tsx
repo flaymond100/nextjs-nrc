@@ -7,7 +7,7 @@ import { BsInstagram } from "react-icons/bs";
 
 const komoot = {
   date: "20.07.2025",
-  url: "https://www.komoot.com/de-de/tour/2399183346?share_token=a8kcLUeoR7sR2BTxGOyKWmVLKJQVQxyqIy48rWr7edMCl8uGN8&ref=wtd",
+  url: null,
 } as { date: string; url: string | null };
 
 export const SocialRides = () => {
@@ -20,8 +20,7 @@ export const SocialRides = () => {
       {komoot.url === null && (
         <h1 className="mb-8 mt-10 text-center text-2xl font-bold text-red-600">
           {" "}
-          <strong>NO Social Ride this weekend!</strong> The team will be on the
-          race.
+          <strong>NO Social Ride this weekend!</strong> Stay tuned for updates!
           <br />
           We will be back soon!
         </h1>
