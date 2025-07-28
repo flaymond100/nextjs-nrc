@@ -2,10 +2,8 @@
 import { Navbar, Footer } from "@/components";
 
 // sections
-import Faq from "../faq";
 import Image from "next/image";
 import CarouselFeatures from "../carousel-features";
-import { CalendlyWidget } from "@/components/widget";
 import Prices from "../prices";
 
 const OFFERS = [
@@ -31,8 +29,6 @@ export default function AboutUsPage() {
       <Navbar />
       <AboutUs />
       <CarouselFeatures />
-      <CalendlyWidget />
-      <Faq />
       <Footer />
     </>
   );
