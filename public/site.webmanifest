@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "short_name": "",
+  "name": "NRC Cycling Team",
+  "short_name": "NRC Cycling Team",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -15,5 +15,8 @@
   ],
   "theme_color": "#ffffff",
   "background_color": "#ffffff",
-  "display": "standalone"
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "description": "NRC Cycling Team is a community of cyclists from all over the world, united by a shared love for cycling and a desire to improve their skills."
 }
