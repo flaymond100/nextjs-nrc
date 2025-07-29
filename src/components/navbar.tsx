@@ -120,24 +120,32 @@ export function Navbar() {
           pathname === "/cycling-team/" ||
           pathname === "/social-rides/" ||
           pathname === "/trainings/cycling-trainings/" ? (
-            <Link href="/coaching">
+            <Link
+              target="_blank"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
+            >
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
                 color="gray"
               >
-                Get Started
+                Join Team
               </Button>
             </Link>
           ) : (
-            <Button
-              style={{ background: "#37007d" }}
-              placeholder={""}
-              color="gray"
-              onClick={scrollToStripeTable}
+            <Link
+              target="_blank"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
             >
-              Get Started
-            </Button>
+              <Button
+                style={{ background: "#37007d" }}
+                placeholder={""}
+                color="gray"
+                onClick={scrollToStripeTable}
+              >
+                Join Team
+              </Button>
+            </Link>
           )}
         </div>
         <IconButton
@@ -168,7 +176,10 @@ export function Navbar() {
             {pathname === "/trainings/running-trainings/" ||
             pathname === "/trainings/triathlon-trainings/" ||
             pathname === "/trainings/cycling-trainings/" ? (
-              <Link href="/coaching">
+              <Link
+                target="_blank"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
+              >
                 <Button
                   style={{ background: "#37007d" }}
                   placeholder={""}
@@ -178,14 +189,19 @@ export function Navbar() {
                 </Button>
               </Link>
             ) : (
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-                onClick={scrollToStripeTable}
+              <Link
+                target="_blank"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
               >
-                Get Started
-              </Button>
+                <Button
+                  style={{ background: "#37007d" }}
+                  placeholder={""}
+                  color="gray"
+                  onClick={scrollToStripeTable}
+                >
+                  Get Started
+                </Button>
+              </Link>
             )}
           </div>
         </div>
