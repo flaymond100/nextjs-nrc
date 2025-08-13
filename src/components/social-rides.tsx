@@ -65,7 +65,7 @@ export const SocialRides = () => {
           <p className="mb-6">
             🇬🇧 Join us for an open group ride! 🚴‍♀️
             <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 08:00 - 11:00 <br />
-            📍 Starting Point: 7 Shots Coffee
+            📍 Starting Point: Alte Messe
             <br />
             <br />
             We'll ride at a steady, moderated pace (around 27-29 km/h) to ensure
@@ -75,7 +75,7 @@ export const SocialRides = () => {
           <p className="mb-4">
             🇩🇪 Offene Gruppenausfahrt für alle! 🚴‍♀️ <br />
             📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 08:00 - 11:00 <br />
-            📍 Treffpunkt: 7 Shots Coffee <br />
+            📍 Treffpunkt: Alte Messe <br />
             <br /> Wir fahren in einem moderaten Tempo (ca. 27-29 km/h), damit
             sich alle willkommen fühlen. Niemand wird zurückgelassen – wir
             warten auf jeden! 🌟
