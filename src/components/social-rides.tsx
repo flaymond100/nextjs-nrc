@@ -6,8 +6,8 @@ import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 
 const komoot = {
-  date: "16.08.2025",
-  url: null,
+  date: "13.09.2025",
+  url: "https://www.komoot.com/tour/2566997811?ref=itd&share_token=aZfKErlKKDpqwZgk50hMvDbPQnrZyAOuz159VDSPaXwi6wEgBj&ref=its",
 } as { date: string; url: string | null };
 
 export const SocialRides = () => {
