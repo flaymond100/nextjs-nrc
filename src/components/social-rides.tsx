@@ -7,7 +7,7 @@ import { BsInstagram } from "react-icons/bs";
 
 const komoot = {
   date: "13.09.2025",
-  url: "https://www.komoot.com/tour/2566997811?ref=itd&share_token=aZfKErlKKDpqwZgk50hMvDbPQnrZyAOuz159VDSPaXwi6wEgBj&ref=its",
+  url: null,
 } as { date: string; url: string | null };
 
 export const SocialRides = () => {
