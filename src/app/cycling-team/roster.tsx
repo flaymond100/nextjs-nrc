@@ -242,7 +242,7 @@ export const Roster = () => {
       role: "Puncheur",
       photoUrl: `${
         process.env.NEXT_PUBLIC_BASE_URL ?? ""
-      }/image/team-pictures/Robin.jpg`,
+      }/image/team-pictures/Robin.jpeg`,
       bio: "The French! 🇫🇷",
       stravaUrl: "https://strava.app.link/66iVLAUuVWb",
     },
