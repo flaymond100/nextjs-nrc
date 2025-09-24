@@ -1,20 +1,9 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 
 export const TeamIntro = () => {
   return (
     <div className="container text-center md:text-left mt-6  mx-auto">
-      {/* <Image
-        width={600}
-        height={600}
-        src={`${
-          process.env.NEXT_PUBLIC_BASE_URL ?? ""
-        }/image/team-picture-white.webp`}
-        className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20  "
-        alt=""
-      /> */}
-
       <div className="flex flex-col items-center justify-center mb-10">
         <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
           Joining the team is easy and completely free. The only commitment is
