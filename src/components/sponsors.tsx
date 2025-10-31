@@ -10,10 +10,10 @@ const sponsors = [
     url: "https://www.vittoria.com",
   },
   {
-    name: "4 Endurance",
+    name: "4Endurance",
     image: "/sponsors/4endurance-logo.png",
     description:
-      "4 Endurance provides you with everything you need for cycling, running, swimming, and other sports: energy gels, isotonic sports drinks, recovery drinks!",
+      "4 ndurance provides you with everything you need for cycling, running, swimming, and other sports: energy gels, isotonic sports drinks, recovery drinks!",
     url: "https://4endurance.de/",
   },
   {
@@ -22,6 +22,13 @@ const sponsors = [
     description:
       "Ventro Coaching is a cycling coaching services, helping cyclists of all levels improve their performance and achieve their goals.",
     url: "https://ventrocycling.com/",
+  },
+  {
+    name: "KOLOSSA Wirtschaftskanzlei",
+    image: "/sponsors/KOLOSSA.webp",
+    description:
+      "KOLOSSA Wirtschaftskanzlei provides international tax and business consulting that blends precision with partnership—supporting companies and entrepreneurs with services from cross-border tax optimization to succession planning.",
+    url: "https://kanzlei-kolossa.com",
   },
 ];
 export const Sponsors = () => {
