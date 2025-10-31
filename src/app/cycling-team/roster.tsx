@@ -247,13 +247,22 @@ export const Roster = () => {
       stravaUrl: "https://strava.app.link/66iVLAUuVWb",
     },
     {
-      id: 21,
+      id: 22,
       name: "Lisa",
       role: "All-rounder",
       photoUrl: `${
         process.env.NEXT_PUBLIC_BASE_URL ?? ""
       }/image/team-pictures/lisa.jpeg`,
       bio: "Wether it's on a mountainbike, roadbike, fixed gear or in my running shoes - I love racing!",
+    },
+    {
+      id: 23,
+      name: "Oksana",
+      role: "All-rounder",
+      photoUrl: `${
+        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+      }/image/team-pictures/Oksana.jpeg`,
+      bio: "I'm a cyclist and traithlete. I love to race and push myself to the limit. I'm also a swimming coach and I love to help others achieve their goals.",
     },
   ].sort((a, b) => a.name.localeCompare(b.name));
 
