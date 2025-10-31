@@ -252,7 +252,7 @@ export const Roster = () => {
       role: "All-rounder",
       photoUrl: `${
         process.env.NEXT_PUBLIC_BASE_URL ?? ""
-      }/image/team-pictures/Lisa.jpeg`,
+      }/image/team-pictures/lisa.jpeg`,
       bio: "Wether it's on a mountainbike, roadbike, fixed gear or in my running shoes - I love racing!",
     },
   ].sort((a, b) => a.name.localeCompare(b.name));
