@@ -246,6 +246,15 @@ export const Roster = () => {
       bio: "The French! 🇫🇷",
       stravaUrl: "https://strava.app.link/66iVLAUuVWb",
     },
+    {
+      id: 21,
+      name: "Lisa",
+      role: "All-rounder",
+      photoUrl: `${
+        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+      }/image/team-pictures/Lisa.jpeg`,
+      bio: "Wether it's on a mountainbike, roadbike, fixed gear or in my running shoes - I love racing!",
+    },
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
