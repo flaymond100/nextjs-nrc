@@ -263,7 +263,8 @@ export const Roster = () => {
         process.env.NEXT_PUBLIC_BASE_URL ?? ""
       }/image/team-pictures/Oksana.jpeg`,
       bio: "I'm a cyclist and traithlete. I love to race and push myself to the limit. I'm also a swimming coach and I love to help others achieve their goals.",
-    },
+      stravaUrl: "https://www.strava.com/athletes/46189841",
+      instagramUrl: "https://www.instagram.com/oksana__garbar/",    },
   ].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
