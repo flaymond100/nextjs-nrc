@@ -34,9 +34,9 @@ const sponsors = [
 export const Sponsors = () => {
   return (
     <div>
-      <h1 className="text-5xl font-bold text-center mb-6">Our Sponsors</h1>
+      <h1 className="text-5xl font-bold text-center mb-6">Our Partners</h1>
       <p className="max-w-2xl mx-auto text-center text-gray-700 text-base mb-10">
-        We’re incredibly grateful for the support of our amazing sponsors. Their
+        We’re incredibly grateful for the support of our amazing partners. Their
         contributions empower our team to train harder, race faster, and bring
         the cycling community together. Thank you for being part of our journey.
       </p>
@@ -96,7 +96,7 @@ export const Sponsors = () => {
           <div className="mt-auto">
             <Link href="/contact">
               <button className="px-6 py-3 bg-[#37007d] text-white font-semibold rounded-lg hover:bg-[#2a005f] transition-colors duration-200">
-                BECOME A SPONSOR
+                BECOME A PARTNER
               </button>
             </Link>
           </div>
