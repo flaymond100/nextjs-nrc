@@ -32,8 +32,8 @@ export const NAV_MENU = [
     href: "/coaching",
   },
   {
-    name: "Sponsors",
-    href: "/sponsors",
+    name: "Partners",
+    href: "/partners",
   },
   // {
   //   name: "Our Trainers",
