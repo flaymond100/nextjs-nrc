@@ -6,8 +6,8 @@ import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 
 const komoot = {
-  date: "13.09.2025",
-  url: null,
+  date: "09.11.2025",
+  url:'https://www.komoot.com/invite-tour/2666700262?code=eh6jog-FrY-C66WFbbwEU4Xq4pYZR76ex8eaoR_vn6WPOssxNg&share_token=aEaKp45FHTUNovxIHcs6dNdjQYtqVQqRI7RbpgEkhYWnqsk6ZV&ref=itp'
 } as { date: string; url: string | null };
 
 export const SocialRides = () => {
@@ -64,7 +64,7 @@ export const SocialRides = () => {
           <br />
           <p className="mb-6">
             🇬🇧 Join us for an open group ride! 🚴‍♀️
-            <br /> 📅 Date: Every Saturday <br /> ⏰ Time: 08:00 - 11:00 <br />
+            <br /> 📅 Date: Sunday <br /> ⏰ Time: 10:00 - 12:30 <br />
             📍 Starting Point: Alte Messe
             <br />
             <br />
@@ -74,7 +74,7 @@ export const SocialRides = () => {
           </p>
           <p className="mb-4">
             🇩🇪 Offene Gruppenausfahrt für alle! 🚴‍♀️ <br />
-            📅 Datum: Jeden Samstag <br />⏰ Uhrzeit: 08:00 - 11:00 <br />
+            📅 Datum: Sonntag <br />⏰ Uhrzeit: 10:00 - 12:00 <br />
             📍 Treffpunkt: Alte Messe <br />
             <br /> Wir fahren in einem moderaten Tempo (ca. 27-29 km/h), damit
             sich alle willkommen fühlen. Niemand wird zurückgelassen – wir
@@ -107,7 +107,7 @@ export const SocialRides = () => {
           height={400}
           src={`${
             process.env.NEXT_PUBLIC_BASE_URL ?? ""
-          }/image/social-ride.jpg`}
+          }/image/social-ride-specific.jpeg`}
           className="animate-in slide-in-from-right duration-1000 mb-6 w-80 rounded-lg shadow-lg dark:shadow-black/20  "
           alt=""
         />
