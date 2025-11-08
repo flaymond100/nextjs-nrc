@@ -251,7 +251,8 @@ export const Roster = () => {
       name: "Lisa",
       role: "All-rounder",
       stravaUrl: "https://strava.app.link/Li8ZwoFtVXb",
-      instagramUrl: "https://www.instagram.com/lisatreffur?igsh=MWlrbjZlanVtOXY5aQ==",
+      instagramUrl:
+        "https://www.instagram.com/lisatreffur?igsh=MWlrbjZlanVtOXY5aQ==",
       photoUrl: `${
         process.env.NEXT_PUBLIC_BASE_URL ?? ""
       }/image/team-pictures/lisa.jpeg`,
@@ -264,7 +265,7 @@ export const Roster = () => {
       photoUrl: `${
         process.env.NEXT_PUBLIC_BASE_URL ?? ""
       }/image/team-pictures/Oksana.jpeg`,
-      bio: "I'm a cyclist and triathlete. I love to race and push myself to the limit. I'm also a swimming coach and I love to help others achieve their goals.",
+      bio: "I’m a swimmer and triathlete who also competes in Ironman events. Cycling is a key part of my training — and thanks to my husband’s passion for the sport, it’s quickly becoming mine too.",
       stravaUrl: "https://www.strava.com/athletes/46189841",
       instagramUrl: "https://www.instagram.com/oksana__garbar/",
     },
@@ -277,7 +278,8 @@ export const Roster = () => {
       }/image/team-pictures/Nick.webp`,
       bio: "Hills, long climbs, and short sprints — that's my thing. I can keep up the pace on flat stretches and ride tactically smart. Team spirit always included.",
       stravaUrl: "https://strava.app.link/vXsbwlYmYXb",
-      instagramUrl: "https://www.instagram.com/berni9.0?igsh=ZXJmd3EwaGt6cmcx&utm_source=qr",
+      instagramUrl:
+        "https://www.instagram.com/berni9.0?igsh=ZXJmd3EwaGt6cmcx&utm_source=qr",
     },
   ].sort((a, b) => a.name.localeCompare(b.name));
 
