@@ -1,8 +1,29 @@
 "use client";
 import { Button } from "@material-tailwind/react";
 import Link from "next/link";
+import { useEffect } from "react";
+import { supabase } from "@/utils/supabase";
 
 function Home() {
+  useEffect(() => {
+    async function getRiders() {
+      try {
+        const { data, error } = await supabase.from("riders").select();
+
+        if (error) {
+          console.error("Error fetching riders:", error);
+          return;
+        }
+
+        console.log("Riders data:", data);
+      } catch (err) {
+        console.error("Unexpected error:", err);
+      }
+    }
+
+    getRiders();
+  }, []);
+
   return (
     <section className="mb-10 pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-screen flex items-end">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-400 to-white mix-blend-multiply"></div>
