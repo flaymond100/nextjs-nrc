@@ -1,4 +1,4 @@
-import React, { use } from "react";
+import React from "react";
 import {
   Navbar as MTNavbar,
   Collapse,
@@ -10,30 +10,42 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const NAV_MENU = [
+export const NAV_MENU = [
   {
     name: "Home",
     href: "/",
   },
+  // {
+  //   name: "Trainings",
+  //   href: "/trainings",
+  // },
   {
-    name: "Trainings",
-    href: "/plans",
+    name: "Cycling Team",
+    href: "/cycling-team",
   },
   {
-    name: "Plans & Pricing",
-    href: "/pricing",
+    name: "Social Rides",
+    href: "/social-rides",
   },
   {
-    name: "Our Trainers",
-    href: "/trainers",
+    name: "Coaching",
+    href: "/coaching",
   },
   {
-    name: "About",
-    href: "/about",
+    name: "Partners",
+    href: "/partners",
   },
+  // {
+  //   name: "Our Trainers",
+  //   href: "/trainers",
+  // },
+  // {
+  //   name: "About Us",
+  //   href: "/about-us",
+  // },
   {
-    name: "Contact Us",
-    href: "/contact-us",
+    name: "Contact",
+    href: "/contact",
   },
 ];
 
@@ -49,7 +61,7 @@ function NavItem({ children, href }: NavItemProps) {
         href={href || "#"}
         scroll={true}
         // target={href ? "_blank" : "_self"}
-        className="flex items-center gap-2 font-bold text-black"
+        className="flex items-center gap-2 text-lg  text-black"
       >
         {children}
       </Link>
@@ -70,8 +82,6 @@ export function Navbar() {
     setOpen((cur) => !cur);
   }
   const pathname = usePathname();
-
-  console.log(pathname);
 
   React.useEffect(() => {
     window.addEventListener(
@@ -105,27 +115,37 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
-          {pathname === "/plans/running-trainings/" ||
-          pathname === "/plans/triathlon-trainings/" ||
-          pathname === "/plans/cycling-trainings/" ? (
-            <Link href="/pricing">
+          {pathname === "/trainings/running-trainings/" ||
+          pathname === "/trainings/triathlon-trainings/" ||
+          pathname === "/cycling-team/" ||
+          pathname === "/social-rides/" ||
+          pathname === "/trainings/cycling-trainings/" ? (
+            <Link
+              target="_blank"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
+            >
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
                 color="gray"
               >
-                Get Started
+                Join Team
               </Button>
             </Link>
           ) : (
-            <Button
-              style={{ background: "#37007d" }}
-              placeholder={""}
-              color="gray"
-              onClick={scrollToStripeTable}
+            <Link
+              target="_blank"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
             >
-              Get Started
-            </Button>
+              <Button
+                style={{ background: "#37007d" }}
+                placeholder={""}
+                color="gray"
+                onClick={scrollToStripeTable}
+              >
+                Join Team
+              </Button>
+            </Link>
           )}
         </div>
         <IconButton
@@ -153,10 +173,13 @@ export function Navbar() {
             ))}
           </ul>
           <div className="mt-6 mb-4 flex items-center gap-2">
-            {pathname === "/plans/running-trainings/" ||
-            pathname === "/plans/triathlon-trainings/" ||
-            pathname === "/plans/cycling-trainings/" ? (
-              <Link href="/pricing">
+            {pathname === "/trainings/running-trainings/" ||
+            pathname === "/trainings/triathlon-trainings/" ||
+            pathname === "/trainings/cycling-trainings/" ? (
+              <Link
+                target="_blank"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
+              >
                 <Button
                   style={{ background: "#37007d" }}
                   placeholder={""}
@@ -166,14 +189,19 @@ export function Navbar() {
                 </Button>
               </Link>
             ) : (
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-                onClick={scrollToStripeTable}
+              <Link
+                target="_blank"
+                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
               >
-                Get Started
-              </Button>
+                <Button
+                  style={{ background: "#37007d" }}
+                  placeholder={""}
+                  color="gray"
+                  onClick={scrollToStripeTable}
+                >
+                  Get Started
+                </Button>
+              </Link>
             )}
           </div>
         </div>
