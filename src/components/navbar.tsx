@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Navbar as MTNavbar,
@@ -8,7 +9,8 @@ import {
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
 
 export const NAV_MENU = [
   {
@@ -71,6 +73,10 @@ function NavItem({ children, href }: NavItemProps) {
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut, loading } = useAuth();
+
   const scrollToStripeTable = () => {
     const element = document.getElementById("stripe-pricing");
     if (element) {
@@ -78,10 +84,23 @@ export function Navbar() {
     }
     setTimeout(() => setOpen(false), 700);
   };
+  
   function handleOpen() {
     setOpen((cur) => !cur);
   }
-  const pathname = usePathname();
+
+  const handleLogin = () => {
+    router.push(`${pathname}?login=true`);
+  };
+
+  const handleLogout = async () => {
+    await signOut();
+    router.push("/");
+  };
+
+  const handleProfile = () => {
+    router.push("/profile");
+  };
 
   React.useEffect(() => {
     window.addEventListener(
@@ -115,6 +134,39 @@ export function Navbar() {
           ))}
         </ul>
         <div className="hidden items-center gap-2 lg:flex">
+          {!loading && (
+            <>
+              {user ? (
+                <>
+                  <Button
+                    style={{ background: "#37007d" }}
+                    placeholder={""}
+                    color="gray"
+                    onClick={handleProfile}
+                  >
+                    Profile
+                  </Button>
+                  <Button
+                    style={{ background: "#6b7280" }}
+                    placeholder={""}
+                    color="gray"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  style={{ background: "#37007d" }}
+                  placeholder={""}
+                  color="gray"
+                  onClick={handleLogin}
+                >
+                  Login
+                </Button>
+              )}
+            </>
+          )}
           {pathname === "/trainings/running-trainings/" ||
           pathname === "/trainings/triathlon-trainings/" ||
           pathname === "/cycling-team/" ||
@@ -172,7 +224,49 @@ export function Navbar() {
               </NavItem>
             ))}
           </ul>
-          <div className="mt-6 mb-4 flex items-center gap-2">
+          <div className="mt-6 mb-4 flex flex-col gap-2">
+            {!loading && (
+              <>
+                {user ? (
+                  <>
+                    <Button
+                      style={{ background: "#37007d" }}
+                      placeholder={""}
+                      color="gray"
+                      onClick={() => {
+                        handleProfile();
+                        setOpen(false);
+                      }}
+                    >
+                      Profile
+                    </Button>
+                    <Button
+                      style={{ background: "#6b7280" }}
+                      placeholder={""}
+                      color="gray"
+                      onClick={() => {
+                        handleLogout();
+                        setOpen(false);
+                      }}
+                    >
+                      Logout
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    style={{ background: "#37007d" }}
+                    placeholder={""}
+                    color="gray"
+                    onClick={() => {
+                      handleLogin();
+                      setOpen(false);
+                    }}
+                  >
+                    Login
+                  </Button>
+                )}
+              </>
+            )}
             {pathname === "/trainings/running-trainings/" ||
             pathname === "/trainings/triathlon-trainings/" ||
             pathname === "/trainings/cycling-trainings/" ? (

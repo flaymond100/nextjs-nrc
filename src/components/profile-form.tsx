@@ -1,0 +1,364 @@
+"use client";
+import { useFormik } from "formik";
+import { useState, useEffect } from "react";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { Loader } from "@/components/loader";
+import { Button } from "@material-tailwind/react";
+import { useAuth } from "@/contexts/auth-context";
+import { supabase } from "@/utils/supabase";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+
+interface RiderData {
+  firstName: string | null;
+  lastName: string | null;
+  ftp: string | null;
+  weight: string | null;
+  instagram: string | null;
+  strava: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+}
+
+const profileValidationSchema = Yup.object().shape({
+  firstName: Yup.string().nullable(),
+  lastName: Yup.string().nullable(),
+  ftp: Yup.string().nullable(),
+  weight: Yup.string().nullable(),
+  instagram: Yup.string().url("Invalid Instagram URL").nullable(),
+  strava: Yup.string().url("Invalid Strava URL").nullable(),
+  bio: Yup.string().nullable(),
+});
+
+export const ProfileSection = () => {
+  const [disabled, setDisabled] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const { user } = useAuth();
+  const router = useRouter();
+
+  const formik = useFormik<RiderData>({
+    initialValues: {
+      firstName: null,
+      lastName: null,
+      ftp: null,
+      weight: null,
+      instagram: null,
+      strava: null,
+      bio: null,
+      avatarUrl: null,
+    },
+    validationSchema: profileValidationSchema,
+    onSubmit: async (values) => {
+      if (!user) {
+        toast.error("You must be logged in to update your profile");
+        router.push("/?login=true");
+        return;
+      }
+
+      setDisabled(true);
+      try {
+        const { error } = await supabase
+          .from("riders")
+          .upsert(
+            {
+              uuid: user.id,
+              firstName: values.firstName || null,
+              lastName: values.lastName || null,
+              ftp: values.ftp || null,
+              weight: values.weight || null,
+              instagram: values.instagram || null,
+              strava: values.strava || null,
+              bio: values.bio || null,
+              avatarUrl: values.avatarUrl || null,
+              updateAt: new Date().toISOString(),
+            },
+            {
+              onConflict: "uuid",
+            }
+          );
+
+        if (error) {
+          toast.error(error.message || "Failed to update profile");
+        } else {
+          toast.success("Profile updated successfully!");
+        }
+      } catch (err: any) {
+        toast.error("An unexpected error occurred");
+        console.error(err);
+      } finally {
+        setDisabled(false);
+      }
+    },
+  });
+
+  useEffect(() => {
+    if (!user) {
+      router.push("/?login=true");
+      return;
+    }
+
+    async function fetchRiderData() {
+      setLoading(true);
+      try {
+        const { data, error } = await supabase
+          .from("riders")
+          .select("*")
+          .eq("uuid", user.id)
+          .single();
+
+        if (error && error.code !== "PGRST116") {
+          // PGRST116 is "no rows returned" which is fine for new users
+          console.error("Error fetching rider data:", error);
+        } else if (data) {
+          formik.setValues({
+            firstName: data.firstName || null,
+            lastName: data.lastName || null,
+            ftp: data.ftp || null,
+            weight: data.weight || null,
+            instagram: data.instagram || null,
+            strava: data.strava || null,
+            bio: data.bio || null,
+            avatarUrl: data.avatarUrl || null,
+          });
+        }
+      } catch (err: any) {
+        console.error("Unexpected error:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchRiderData();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <section className="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+        <Loader />
+      </section>
+    );
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  return (
+    <section className="container mx-auto px-4 py-12 min-h-screen">
+      <div className="text-center mb-8">
+        <h1 className="mb-4 leter-spacing-1 text-5xl font-bold">
+          My Profile
+        </h1>
+        <p className="leter-spacing-1 text-xl max-w-3xl mx-auto">
+          Manage your rider profile information
+        </p>
+      </div>
+
+      <div className="flex justify-center">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="min-w-[300px] md:min-w-[700px] bg-white rounded-lg shadow-lg p-8"
+        >
+          {formik.values.avatarUrl && (
+            <div className="mb-6 flex justify-center">
+              <Image
+                src={formik.values.avatarUrl}
+                alt="Profile Avatar"
+                width={120}
+                height={120}
+                className="rounded-full object-cover"
+              />
+            </div>
+          )}
+
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="avatarUrl"
+            >
+              Avatar URL
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="avatarUrl"
+              type="text"
+              name="avatarUrl"
+              placeholder="https://example.com/avatar.jpg"
+              value={formik.values.avatarUrl || ""}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="firstName"
+              >
+                First Name
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="firstName"
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+                value={formik.values.firstName || ""}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="lastName"
+              >
+                Last Name
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="lastName"
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+                value={formik.values.lastName || ""}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="ftp"
+              >
+                FTP (Functional Threshold Power)
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="ftp"
+                type="text"
+                name="ftp"
+                placeholder="e.g., 250"
+                value={formik.values.ftp || ""}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="weight"
+              >
+                Weight (kg)
+              </label>
+              <input
+                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                id="weight"
+                type="text"
+                name="weight"
+                placeholder="e.g., 70"
+                value={formik.values.weight || ""}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="instagram"
+              >
+                Instagram URL
+              </label>
+              <input
+                className={`shadow appearance-none border ${
+                  formik.errors.instagram && "border-red-500"
+                } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                id="instagram"
+                type="text"
+                name="instagram"
+                placeholder="https://instagram.com/username"
+                value={formik.values.instagram || ""}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.errors.instagram && (
+                <p className="text-red-500 text-xs italic mt-1">
+                  {formik.errors.instagram}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="strava"
+              >
+                Strava URL
+              </label>
+              <input
+                className={`shadow appearance-none border ${
+                  formik.errors.strava && "border-red-500"
+                } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                id="strava"
+                type="text"
+                name="strava"
+                placeholder="https://strava.com/athletes/username"
+                value={formik.values.strava || ""}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.errors.strava && (
+                <p className="text-red-500 text-xs italic mt-1">
+                  {formik.errors.strava}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="bio"
+            >
+              Bio
+            </label>
+            <textarea
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="bio"
+              name="bio"
+              rows={6}
+              placeholder="Tell us about yourself..."
+              value={formik.values.bio || ""}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <Button
+              type="submit"
+              style={{ background: "#37007d" }}
+              placeholder={""}
+              color="gray"
+              disabled={disabled}
+              className="w-full md:w-auto px-8"
+            >
+              {disabled ? <Loader /> : "Save Profile"}
+            </Button>
+          </div>
+        </form>
+      </div>
+    </section>
+  );
+};
+
