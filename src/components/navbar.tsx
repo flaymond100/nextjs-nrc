@@ -125,8 +125,8 @@ export function Navbar() {
           />
         </Link>
 
-        {/* Desktop Navigation Menu */}
-        <ul className="ml-10 hidden items-center gap-8 lg:flex flex-1">
+        {/* Desktop Navigation Menu - Centered */}
+        <ul className="absolute left-1/2 transform -translate-x-1/2 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, href }) => (
             <NavItem key={name} href={href}>
               {name}
@@ -135,7 +135,7 @@ export function Navbar() {
         </ul>
 
         {/* Desktop: Avatar/Login buttons - Right */}
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 lg:flex ml-auto">
           {!loading && (
             <>
               {user ? (
@@ -144,24 +144,26 @@ export function Navbar() {
                   onLogoutClick={handleLogout}
                 />
               ) : (
-                <>
-                  <Button
-                    style={{ background: "#37007d" }}
-                    placeholder={""}
-                    color="gray"
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    style={{ background: "#f06723" }}
-                    placeholder={""}
-                    color="gray"
-                    onClick={handleSignUp}
-                  >
-                    Sign Up
-                  </Button>
-                </>
+                !pathname?.startsWith("/register") && (
+                  <>
+                    <Button
+                      style={{ background: "#37007d" }}
+                      placeholder={""}
+                      color="gray"
+                      onClick={handleLogin}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      style={{ background: "#f06723" }}
+                      placeholder={""}
+                      color="gray"
+                      onClick={handleSignUp}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )
               )}
             </>
           )}
@@ -177,26 +179,28 @@ export function Navbar() {
                   onLogoutClick={handleLogout}
                 />
               ) : (
-                <>
-                  <Button
-                    style={{ background: "#37007d" }}
-                    placeholder={""}
-                    color="gray"
-                    size="sm"
-                    onClick={handleLogin}
-                  >
-                    Login
-                  </Button>
-                  <Button
-                    style={{ background: "#f06723" }}
-                    placeholder={""}
-                    color="gray"
-                    size="sm"
-                    onClick={handleSignUp}
-                  >
-                    Sign Up
-                  </Button>
-                </>
+                !pathname?.startsWith("/register") && (
+                  <>
+                    <Button
+                      style={{ background: "#37007d" }}
+                      placeholder={""}
+                      color="gray"
+                      size="sm"
+                      onClick={handleLogin}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      style={{ background: "#f06723" }}
+                      placeholder={""}
+                      color="gray"
+                      size="sm"
+                      onClick={handleSignUp}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )
               )}
             </>
           )}
