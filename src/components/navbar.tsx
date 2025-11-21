@@ -11,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import { AvatarDropdown } from "./avatar-dropdown";
 
 export const NAV_MENU = [
   {
@@ -77,20 +78,16 @@ export function Navbar() {
   const router = useRouter();
   const { user, signOut, loading } = useAuth();
 
-  const scrollToStripeTable = () => {
-    const element = document.getElementById("stripe-pricing");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-    setTimeout(() => setOpen(false), 700);
-  };
-  
   function handleOpen() {
     setOpen((cur) => !cur);
   }
 
   const handleLogin = () => {
     router.push(`${pathname}?login=true`);
+  };
+
+  const handleSignUp = () => {
+    router.push("/register");
   };
 
   const handleLogout = async () => {
@@ -117,8 +114,9 @@ export function Navbar() {
       style={{ borderBottom: " 0.5px solid rgb(55, 0, 125)" }}
       className="border-0 sticky top-0 z-50"
     >
-      <div className="container mx-auto flex items-center justify-between">
-        <Link href="/">
+      <div className="container mx-auto flex items-center justify-between relative">
+        {/* Logo - Left */}
+        <Link href="/" className="flex-shrink-0">
           <Image
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
             alt="favicon Nrc Team"
@@ -126,87 +124,92 @@ export function Navbar() {
             height={45}
           />
         </Link>
-        <ul className="ml-10 hidden items-center gap-8 lg:flex">
+
+        {/* Desktop Navigation Menu */}
+        <ul className="ml-10 hidden items-center gap-8 lg:flex flex-1">
           {NAV_MENU.map(({ name, href }) => (
             <NavItem key={name} href={href}>
               {name}
             </NavItem>
           ))}
         </ul>
+
+        {/* Desktop: Avatar/Login buttons - Right */}
         <div className="hidden items-center gap-2 lg:flex">
           {!loading && (
             <>
               {user ? (
+                <AvatarDropdown
+                  onProfileClick={handleProfile}
+                  onLogoutClick={handleLogout}
+                />
+              ) : (
                 <>
                   <Button
                     style={{ background: "#37007d" }}
                     placeholder={""}
                     color="gray"
-                    onClick={handleProfile}
+                    onClick={handleLogin}
                   >
-                    Profile
+                    Login
                   </Button>
                   <Button
-                    style={{ background: "#6b7280" }}
+                    style={{ background: "#f06723" }}
                     placeholder={""}
                     color="gray"
-                    onClick={handleLogout}
+                    onClick={handleSignUp}
                   >
-                    Logout
+                    Sign Up
                   </Button>
                 </>
-              ) : (
-                <Button
-                  style={{ background: "#37007d" }}
-                  placeholder={""}
-                  color="gray"
-                  onClick={handleLogin}
-                >
-                  Login
-                </Button>
               )}
             </>
           )}
-          {pathname === "/trainings/running-trainings/" ||
-          pathname === "/trainings/triathlon-trainings/" ||
-          pathname === "/cycling-team/" ||
-          pathname === "/social-rides/" ||
-          pathname === "/trainings/cycling-trainings/" ? (
-            <Link
-              target="_blank"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-            >
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-              >
-                Join Team
-              </Button>
-            </Link>
-          ) : (
-            <Link
-              target="_blank"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-            >
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-                onClick={scrollToStripeTable}
-              >
-                Join Team
-              </Button>
-            </Link>
+        </div>
+
+        {/* Mobile: Avatar/Login buttons - Center */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 lg:hidden">
+          {!loading && (
+            <>
+              {user ? (
+                <AvatarDropdown
+                  onProfileClick={handleProfile}
+                  onLogoutClick={handleLogout}
+                />
+              ) : (
+                <>
+                  <Button
+                    style={{ background: "#37007d" }}
+                    placeholder={""}
+                    color="gray"
+                    size="sm"
+                    onClick={handleLogin}
+                  >
+                    Login
+                  </Button>
+                  <Button
+                    style={{ background: "#f06723" }}
+                    placeholder={""}
+                    color="gray"
+                    size="sm"
+                    onClick={handleSignUp}
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              )}
+            </>
           )}
         </div>
+
+        {/* Hamburger Menu - Right */}
         <IconButton
           placeholder={""}
           variant="text"
           color="gray"
           aria-label="Open Menu"
           onClick={handleOpen}
-          className="ml-auto inline-block lg:hidden"
+          className="flex-shrink-0 inline-block lg:hidden"
         >
           {open ? (
             <XMarkIcon strokeWidth={2} className="h-6 w-6" />
@@ -224,80 +227,7 @@ export function Navbar() {
               </NavItem>
             ))}
           </ul>
-          <div className="mt-6 mb-4 flex flex-col gap-2">
-            {!loading && (
-              <>
-                {user ? (
-                  <>
-                    <Button
-                      style={{ background: "#37007d" }}
-                      placeholder={""}
-                      color="gray"
-                      onClick={() => {
-                        handleProfile();
-                        setOpen(false);
-                      }}
-                    >
-                      Profile
-                    </Button>
-                    <Button
-                      style={{ background: "#6b7280" }}
-                      placeholder={""}
-                      color="gray"
-                      onClick={() => {
-                        handleLogout();
-                        setOpen(false);
-                      }}
-                    >
-                      Logout
-                    </Button>
-                  </>
-                ) : (
-                  <Button
-                    style={{ background: "#37007d" }}
-                    placeholder={""}
-                    color="gray"
-                    onClick={() => {
-                      handleLogin();
-                      setOpen(false);
-                    }}
-                  >
-                    Login
-                  </Button>
-                )}
-              </>
-            )}
-            {pathname === "/trainings/running-trainings/" ||
-            pathname === "/trainings/triathlon-trainings/" ||
-            pathname === "/trainings/cycling-trainings/" ? (
-              <Link
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-              >
-                <Button
-                  style={{ background: "#37007d" }}
-                  placeholder={""}
-                  color="gray"
-                >
-                  Get Started
-                </Button>
-              </Link>
-            ) : (
-              <Link
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-              >
-                <Button
-                  style={{ background: "#37007d" }}
-                  placeholder={""}
-                  color="gray"
-                  onClick={scrollToStripeTable}
-                >
-                  Get Started
-                </Button>
-              </Link>
-            )}
-          </div>
+          {/* Removed auth buttons from mobile menu since they're now in the header */}
         </div>
       </Collapse>
     </MTNavbar>

@@ -38,20 +38,24 @@ function LoginModal() {
     onSubmit: async (values, { resetForm }) => {
       setDisabled(true);
       try {
-        const { error } = isSignUp
-          ? await signUp(values.email, values.password)
-          : await signIn(values.email, values.password);
-
-        if (error) {
-          toast.error(error.message || "Authentication failed");
+        if (isSignUp) {
+          const { error } = await signUp(values.email, values.password);
+          if (error) {
+            toast.error(error.message || "Authentication failed");
+          } else {
+            toast.success("Account created! Please check your email to verify.");
+            router.back();
+            resetForm();
+          }
         } else {
-          toast.success(
-            isSignUp
-              ? "Account created! Please check your email to verify."
-              : "Successfully logged in!"
-          );
-          router.back();
-          resetForm();
+          const { error } = await signIn(values.email, values.password);
+          if (error) {
+            toast.error(error.message || "Authentication failed");
+          } else {
+            toast.success("Successfully logged in!");
+            router.back();
+            resetForm();
+          }
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");

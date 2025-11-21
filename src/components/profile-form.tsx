@@ -58,25 +58,23 @@ export const ProfileSection = () => {
 
       setDisabled(true);
       try {
-        const { error } = await supabase
-          .from("riders")
-          .upsert(
-            {
-              uuid: user.id,
-              firstName: values.firstName || null,
-              lastName: values.lastName || null,
-              ftp: values.ftp || null,
-              weight: values.weight || null,
-              instagram: values.instagram || null,
-              strava: values.strava || null,
-              bio: values.bio || null,
-              avatarUrl: values.avatarUrl || null,
-              updateAt: new Date().toISOString(),
-            },
-            {
-              onConflict: "uuid",
-            }
-          );
+        const { error } = await supabase.from("riders").upsert(
+          {
+            uuid: user.id,
+            firstName: values.firstName || null,
+            lastName: values.lastName || null,
+            ftp: values.ftp || null,
+            weight: values.weight || null,
+            instagram: values.instagram || null,
+            strava: values.strava || null,
+            bio: values.bio || null,
+            avatarUrl: values.avatarUrl || null,
+            updateAt: new Date().toISOString(),
+          },
+          {
+            onConflict: "uuid",
+          }
+        );
 
         if (error) {
           toast.error(error.message || "Failed to update profile");
@@ -104,7 +102,7 @@ export const ProfileSection = () => {
         const { data, error } = await supabase
           .from("riders")
           .select("*")
-          .eq("uuid", user.id)
+          .eq("uuid", user!.id)
           .single();
 
         if (error && error.code !== "PGRST116") {
@@ -147,9 +145,7 @@ export const ProfileSection = () => {
   return (
     <section className="container mx-auto px-4 py-12 min-h-screen">
       <div className="text-center mb-8">
-        <h1 className="mb-4 leter-spacing-1 text-5xl font-bold">
-          My Profile
-        </h1>
+        <h1 className="mb-4 leter-spacing-1 text-5xl font-bold">My Profile</h1>
         <p className="leter-spacing-1 text-xl max-w-3xl mx-auto">
           Manage your rider profile information
         </p>
@@ -361,4 +357,3 @@ export const ProfileSection = () => {
     </section>
   );
 };
-
