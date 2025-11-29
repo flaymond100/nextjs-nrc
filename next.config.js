@@ -3,7 +3,7 @@
  */
 
 const nextConfig = {
-  output: "export",
+  output: "standalone",
   reactStrictMode: true,
   // Use the prefix for GitHub Pages
   // assetPrefix: "/nextjs-nrc/",

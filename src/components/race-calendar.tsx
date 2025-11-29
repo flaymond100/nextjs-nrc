@@ -152,9 +152,12 @@ export function RaceCalendarTable() {
           {races.map((race) => (
             <tr key={race.id} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm font-medium text-gray-900">
+                <Link
+                  href={`/calendar/${race.id}`}
+                  className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline"
+                >
                   {race.name}
-                </div>
+                </Link>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">
