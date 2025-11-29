@@ -23,8 +23,12 @@ export const NAV_MENU = [
   //   href: "/trainings",
   // },
   {
-    name: "Cycling Team",
+    name: "Team",
     href: "/cycling-team",
+  },
+  {
+    name: "Calendar",
+    href: "/calendar",
   },
   {
     name: "Social Rides",
@@ -38,6 +42,7 @@ export const NAV_MENU = [
     name: "Partners",
     href: "/partners",
   },
+
   // {
   //   name: "Our Trainers",
   //   href: "/trainers",

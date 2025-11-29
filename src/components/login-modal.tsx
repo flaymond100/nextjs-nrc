@@ -7,7 +7,6 @@ import toast from "react-hot-toast";
 import React, { useState } from "react";
 import { Loader } from "./loader";
 import { useAuth } from "@/contexts/auth-context";
-import { Button } from "@material-tailwind/react";
 
 const loginValidationSchema = Yup.object().shape({
   email: Yup.string()
@@ -43,7 +42,9 @@ function LoginModal() {
           if (error) {
             toast.error(error.message || "Authentication failed");
           } else {
-            toast.success("Account created! Please check your email to verify.");
+            toast.success(
+              "Account created! Please check your email to verify."
+            );
             router.back();
             resetForm();
           }
@@ -185,4 +186,3 @@ function LoginModal() {
 }
 
 export default LoginModal;
-
