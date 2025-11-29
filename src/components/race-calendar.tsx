@@ -4,12 +4,19 @@ import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { Loader } from "./loader";
 import Link from "next/link";
+import { useAuth } from "@/contexts/auth-context";
+import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function RaceCalendarTable() {
   const [races, setRaces] = useState<RaceCalendar[]>([]);
   const [riders, setRiders] = useState<Map<string, Rider>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updatingRaces, setUpdatingRaces] = useState<Set<string>>(new Set());
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     async function fetchData() {
@@ -117,6 +124,78 @@ export function RaceCalendarTable() {
       .filter((name): name is string => name !== null && name !== "");
   };
 
+  const isRegistered = (race: RaceCalendar) => {
+    return user && race.participants?.includes(user.id);
+  };
+
+  const handleToggleRegistration = async (race: RaceCalendar) => {
+    if (!user) {
+      toast.error("Please log in to register for races");
+      router.push("/?login=true");
+      return;
+    }
+
+    setUpdatingRaces((prev) => new Set(prev).add(race.id));
+    try {
+      const currentParticipants = race.participants || [];
+      const registered = isRegistered(race);
+      let newParticipants: string[];
+
+      if (registered) {
+        // Unregister: remove user from participants
+        newParticipants = currentParticipants.filter((id) => id !== user.id);
+      } else {
+        // Register: add user to participants
+        newParticipants = [...currentParticipants, user.id];
+      }
+
+      const { error: updateError } = await supabase
+        .from("race_calendar")
+        .update({ participants: newParticipants })
+        .eq("id", race.id);
+
+      if (updateError) {
+        toast.error(updateError.message || "Failed to update registration");
+        console.error("Error updating race:", updateError);
+      } else {
+        // Update local state
+        setRaces((prevRaces) =>
+          prevRaces.map((r) =>
+            r.id === race.id ? { ...r, participants: newParticipants } : r
+          )
+        );
+
+        // If registering, fetch the new rider's data if not already loaded
+        if (!registered && user && !riders.has(user.id)) {
+          const { data: newRider } = await supabase
+            .from("riders")
+            .select("*")
+            .eq("uuid", user.id)
+            .single();
+
+          if (newRider) {
+            setRiders((prev) => new Map(prev).set(user.id, newRider));
+          }
+        }
+
+        toast.success(
+          registered
+            ? "Successfully unregistered from race"
+            : "Successfully registered for race"
+        );
+      }
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+    } finally {
+      setUpdatingRaces((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(race.id);
+        return newSet;
+      });
+    }
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -146,6 +225,11 @@ export function RaceCalendarTable() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Participants
             </th>
+            {user && (
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                Participation
+              </th>
+            )}
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
@@ -216,6 +300,32 @@ export function RaceCalendarTable() {
                   <span className="text-gray-400">-</span>
                 )}
               </td>
+              {user && (
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <button
+                    onClick={() => handleToggleRegistration(race)}
+                    disabled={updatingRaces.has(race.id)}
+                    className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
+                      isRegistered(race)
+                        ? "bg-red-100 text-red-700 hover:bg-red-200"
+                        : "bg-green-100 text-green-700 hover:bg-green-200"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    title={
+                      isRegistered(race)
+                        ? "Unregister from race"
+                        : "Register for race"
+                    }
+                  >
+                    {updatingRaces.has(race.id) ? (
+                      <Loader />
+                    ) : isRegistered(race) ? (
+                      <MinusIcon className="h-5 w-5" />
+                    ) : (
+                      <PlusIcon className="h-5 w-5" />
+                    )}
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
