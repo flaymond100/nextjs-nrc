@@ -25,7 +25,7 @@ function Home() {
   }, []);
 
   return (
-    <section className="mb-10 pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-screen flex items-end">
+    <section className="mb-10 pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-[calc(100vh-100px)] flex items-end">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-400 to-white mix-blend-multiply"></div>
 
       <div className="w-full">

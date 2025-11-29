@@ -1,23 +1,25 @@
 "use client";
 // components
 import { Navbar, Footer } from "@/components";
-import { CreateRaceForm } from "@/components/create-race-form";
+import { EditRaceForm } from "@/components/edit-race-form";
 import { useAdmin } from "@/hooks/use-admin";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
 
-export default function CreateRacePage() {
+export default function EditRacePage() {
+  const params = useParams();
+  const raceId = params?.id as string;
   const { isAdmin, loading } = useAdmin();
   const router = useRouter();
 
   useEffect(() => {
     if (!loading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/calendar");
+      router.push(raceId ? `/calendar/${raceId}` : "/calendar");
     }
-  }, [isAdmin, loading, router]);
+  }, [isAdmin, loading, router, raceId]);
 
   // Show loading while checking admin status
   if (loading) {
@@ -42,7 +44,7 @@ export default function CreateRacePage() {
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
               Access Denied
             </h2>
-            <p className="text-gray-600">Redirecting to calendar...</p>
+            <p className="text-gray-600">Redirecting...</p>
           </div>
         </div>
         <Footer />
@@ -53,8 +55,9 @@ export default function CreateRacePage() {
   return (
     <>
       <Navbar />
-      <CreateRaceForm />
+      <EditRaceForm raceId={raceId} />
       <Footer />
     </>
   );
 }
+

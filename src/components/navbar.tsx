@@ -8,10 +8,11 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import { useNavigation } from "@/contexts/navigation-context";
 import { AvatarDropdown } from "./avatar-dropdown";
+import { NavigationLink } from "./navigation-link";
 
 export const NAV_MENU = [
   {
@@ -29,10 +30,6 @@ export const NAV_MENU = [
   {
     name: "Calendar",
     href: "/calendar",
-  },
-  {
-    name: "Social Rides",
-    href: "/social-rides",
   },
   {
     name: "Coaching",
@@ -63,16 +60,25 @@ interface NavItemProps {
 }
 
 function NavItem({ children, href }: NavItemProps) {
+  if (!href || href === "#") {
+    return (
+      <li>
+        <span className="flex items-center gap-2 text-lg text-black">
+          {children}
+        </span>
+      </li>
+    );
+  }
+
   return (
     <li>
-      <Link
-        href={href || "#"}
+      <NavigationLink
+        href={href}
         scroll={true}
-        // target={href ? "_blank" : "_self"}
-        className="flex items-center gap-2 text-lg  text-black"
+        className="flex items-center gap-2 text-lg text-black"
       >
         {children}
-      </Link>
+      </NavigationLink>
     </li>
   );
 }
@@ -82,6 +88,7 @@ export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const { user, signOut, loading } = useAuth();
+  const { setNavigating } = useNavigation();
 
   function handleOpen() {
     setOpen((cur) => !cur);
@@ -92,15 +99,31 @@ export function Navbar() {
   };
 
   const handleSignUp = () => {
+    setNavigating(true);
     router.push("/register");
   };
 
   const handleLogout = async () => {
-    await signOut();
-    router.push("/");
+    try {
+      await signOut();
+      // Only set navigating if we're not already on the home page
+      if (pathname !== "/") {
+        setNavigating(true);
+        router.push("/");
+      } else {
+        // If already on home, refresh to clear auth state
+        // Don't set navigating since we're not changing routes
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // Ensure navigation state is reset even if there's an error
+      setNavigating(false);
+    }
   };
 
   const handleProfile = () => {
+    setNavigating(true);
     router.push("/profile");
   };
 
@@ -121,14 +144,14 @@ export function Navbar() {
     >
       <div className="container mx-auto flex items-center justify-between relative">
         {/* Logo - Left */}
-        <Link href="/" className="flex-shrink-0">
+        <NavigationLink href="/" className="flex-shrink-0">
           <Image
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
             alt="favicon Nrc Team"
             width={80}
             height={45}
           />
-        </Link>
+        </NavigationLink>
 
         {/* Desktop Navigation Menu - Centered */}
         <ul className="absolute left-1/2 transform -translate-x-1/2 hidden items-center gap-8 lg:flex">
