@@ -51,6 +51,7 @@ export interface Rider {
   bio: string | null;
   avatarUrl: string | null;
   updateAt: string | null;
+  is_admin?: boolean | null;
 }
 
 export interface RaceCalendar {
