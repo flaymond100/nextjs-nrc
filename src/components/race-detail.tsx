@@ -5,6 +5,9 @@ import { RaceCalendar, Rider } from "@/utils/types";
 import { Loader } from "./loader";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
+import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
+import toast from "react-hot-toast";
 
 interface RaceDetailSectionProps {
   raceId: string;
@@ -15,7 +18,11 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   const [riders, setRiders] = useState<Map<string, Rider>>(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [updating, setUpdating] = useState(false);
+  const { user } = useAuth();
   const router = useRouter();
+
+  const isRegistered = user && race?.participants?.includes(user.id);
 
   useEffect(() => {
     async function fetchRaceData() {
@@ -131,6 +138,67 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
       .filter((item) => item.name);
   };
 
+  const handleToggleRegistration = async () => {
+    if (!user) {
+      toast.error("Please log in to register for races");
+      router.push("/?login=true");
+      return;
+    }
+
+    if (!race) return;
+
+    setUpdating(true);
+    try {
+      const currentParticipants = race.participants || [];
+      let newParticipants: string[];
+
+      if (isRegistered) {
+        // Unregister: remove user from participants
+        newParticipants = currentParticipants.filter((id) => id !== user.id);
+      } else {
+        // Register: add user to participants
+        newParticipants = [...currentParticipants, user.id];
+      }
+
+      const { error: updateError } = await supabase
+        .from("race_calendar")
+        .update({ participants: newParticipants })
+        .eq("id", raceId);
+
+      if (updateError) {
+        toast.error(updateError.message || "Failed to update registration");
+        console.error("Error updating race:", updateError);
+      } else {
+        // Update local state
+        setRace({ ...race, participants: newParticipants });
+
+        // If registering, fetch the new rider's data
+        if (!isRegistered && user) {
+          const { data: newRider } = await supabase
+            .from("riders")
+            .select("*")
+            .eq("uuid", user.id)
+            .single();
+
+          if (newRider) {
+            setRiders((prev) => new Map(prev).set(user.id, newRider));
+          }
+        }
+
+        toast.success(
+          isRegistered
+            ? "Successfully unregistered from race"
+            : "Successfully registered for race"
+        );
+      }
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
   return (
     <section className="container mx-auto px-4 py-12 min-h-screen">
       <div className="mb-6">
@@ -145,9 +213,41 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-lg shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="mb-4 leter-spacing-1 text-5xl font-bold">
-              {race.name}
-            </h1>
+            <div className="flex items-start justify-between mb-4">
+              <h1 className="leter-spacing-1 text-5xl font-bold">
+                {race.name}
+              </h1>
+              {user && (
+                <button
+                  onClick={handleToggleRegistration}
+                  disabled={updating}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
+                    isRegistered
+                      ? "bg-red-100 text-red-700 hover:bg-red-200"
+                      : "bg-green-100 text-green-700 hover:bg-green-200"
+                  } disabled:opacity-50 disabled:cursor-not-allowed`}
+                  title={
+                    isRegistered
+                      ? "Unregister from race"
+                      : "Register for race"
+                  }
+                >
+                  {updating ? (
+                    <Loader />
+                  ) : isRegistered ? (
+                    <>
+                      <MinusIcon className="h-5 w-5" />
+                      <span>Unregister</span>
+                    </>
+                  ) : (
+                    <>
+                      <PlusIcon className="h-5 w-5" />
+                      <span>Register</span>
+                    </>
+                  )}
+                </button>
+              )}
+            </div>
             <div className="flex items-center gap-4 text-gray-600">
               <span className="text-lg">{formatDate(race.event_date)}</span>
               <span className="px-3 py-1 rounded-full bg-purple-100 text-purple-800 font-semibold text-sm">
