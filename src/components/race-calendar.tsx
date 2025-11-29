@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { NavigationLink } from "./navigation-link";
 
 export function RaceCalendarTable() {
   const [races, setRaces] = useState<RaceCalendar[]>([]);
@@ -236,12 +237,12 @@ export function RaceCalendarTable() {
           {races.map((race) => (
             <tr key={race.id} className="hover:bg-gray-50">
               <td className="px-6 py-4 whitespace-nowrap">
-                <Link
+                <NavigationLink
                   href={`/calendar/${race.id}`}
                   className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline"
                 >
                   {race.name}
-                </Link>
+                </NavigationLink>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">

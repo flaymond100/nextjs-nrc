@@ -7,7 +7,9 @@ import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/navigation";
-import { RaceType, Rider } from "@/utils/types";
+import { RaceType, Rider, RaceCalendar } from "@/utils/types";
+import { NavigationLink } from "./navigation-link";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 
 interface RaceFormData {
   name: string;
@@ -32,11 +34,73 @@ const raceValidationSchema = Yup.object().shape({
     .required("Race type is required"),
 });
 
-export const CreateRaceForm = () => {
+interface EditRaceFormProps {
+  raceId: string;
+}
+
+export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
   const [disabled, setDisabled] = useState(false);
   const [riders, setRiders] = useState<Rider[]>([]);
   const [loadingRiders, setLoadingRiders] = useState(true);
+  const [loadingRace, setLoadingRace] = useState(true);
+  const [race, setRace] = useState<RaceCalendar | null>(null);
   const router = useRouter();
+
+  const getInitialValues = (raceData: RaceCalendar | null): RaceFormData => {
+    if (!raceData) {
+      return {
+        name: "",
+        event_date: "",
+        url: "",
+        profile: "",
+        distance_km: "",
+        elevation_m: "",
+        race_type: "road",
+        participants: [],
+      };
+    }
+
+    return {
+      name: raceData.name || "",
+      event_date: raceData.event_date ? raceData.event_date.split("T")[0] : "",
+      url: raceData.url || "",
+      profile: raceData.profile || "",
+      distance_km: raceData.distance_km?.toString() || "",
+      elevation_m: raceData.elevation_m?.toString() || "",
+      race_type: raceData.race_type || "road",
+      participants: raceData.participants || [],
+    };
+  };
+
+  useEffect(() => {
+    async function fetchRace() {
+      try {
+        const { data, error } = await supabase
+          .from("race_calendar")
+          .select("*")
+          .eq("id", raceId)
+          .single();
+
+        if (error) {
+          toast.error("Failed to load race data");
+          console.error("Error fetching race:", error);
+          router.push("/calendar");
+          return;
+        }
+
+        if (data) {
+          setRace(data);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        toast.error("An unexpected error occurred");
+      } finally {
+        setLoadingRace(false);
+      }
+    }
+
+    fetchRace();
+  }, [raceId, router]);
 
   useEffect(() => {
     async function fetchRiders() {
@@ -57,17 +121,9 @@ export const CreateRaceForm = () => {
   }, []);
 
   const formik = useFormik<RaceFormData>({
-    initialValues: {
-      name: "",
-      event_date: "",
-      url: "",
-      profile: "",
-      distance_km: "",
-      elevation_m: "",
-      race_type: "road",
-      participants: [],
-    },
+    initialValues: getInitialValues(race),
     validationSchema: raceValidationSchema,
+    enableReinitialize: true,
     onSubmit: async (values) => {
       setDisabled(true);
       try {
@@ -85,13 +141,16 @@ export const CreateRaceForm = () => {
             values.participants.length > 0 ? values.participants : null,
         };
 
-        const { error } = await supabase.from("race_calendar").insert(raceData);
+        const { error } = await supabase
+          .from("race_calendar")
+          .update(raceData)
+          .eq("id", raceId);
 
         if (error) {
-          toast.error(error.message || "Failed to create race");
+          toast.error(error.message || "Failed to update race");
         } else {
-          toast.success("Race created successfully!");
-          router.push("/calendar");
+          toast.success("Race updated successfully!");
+          router.push(`/calendar/${raceId}`);
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");
@@ -102,14 +161,50 @@ export const CreateRaceForm = () => {
     },
   });
 
+  if (loadingRace) {
+    return (
+      <section className="container mx-auto px-4 py-6 md:py-12 min-h-screen flex items-center justify-center">
+        <Loader />
+      </section>
+    );
+  }
+
+  if (!race) {
+    return (
+      <section className="container mx-auto px-4 py-6 md:py-12 min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">Race not found</h2>
+          <NavigationLink href="/calendar">
+            <Button variant="text" placeholder={""} className="text-purple-600">
+              Back to Calendar
+            </Button>
+          </NavigationLink>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="container mx-auto px-4 py-6 md:py-12 min-h-screen">
+      <div className="mb-4 md:mb-6">
+        <NavigationLink href={`/calendar/${raceId}`}>
+          <Button
+            variant="text"
+            placeholder={""}
+            className="flex items-center gap-2 text-purple-600 hover:text-purple-800 p-0"
+          >
+            <ArrowLeftIcon className="h-5 w-5" />
+            <span className="text-sm md:text-base">Back to Race</span>
+          </Button>
+        </NavigationLink>
+      </div>
+
       <div className="text-center mb-6 md:mb-8">
         <h1 className="mb-2 md:mb-4 leter-spacing-1 text-3xl md:text-5xl font-bold">
-          Create New Race
+          Edit Race
         </h1>
         <p className="leter-spacing-1 text-base md:text-xl max-w-3xl mx-auto px-2">
-          Add a new race to the calendar
+          Update race information
         </p>
       </div>
 
@@ -361,7 +456,7 @@ export const CreateRaceForm = () => {
               disabled={disabled}
               className="w-full md:w-auto px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
             >
-              {disabled ? <Loader /> : "Create Race"}
+              {disabled ? <Loader /> : "Update Race"}
             </Button>
           </div>
         </form>
@@ -369,3 +464,4 @@ export const CreateRaceForm = () => {
     </section>
   );
 };
+

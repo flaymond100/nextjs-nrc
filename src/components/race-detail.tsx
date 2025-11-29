@@ -6,8 +6,16 @@ import { Loader } from "./loader";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
+import {
+  PlusIcon,
+  MinusIcon,
+  ArrowLeftIcon,
+  PencilIcon,
+} from "@heroicons/react/24/solid";
 import toast from "react-hot-toast";
+import { NavigationLink } from "./navigation-link";
+import { Button } from "@material-tailwind/react";
+import { useAdmin } from "@/hooks/use-admin";
 
 interface RaceDetailSectionProps {
   raceId: string;
@@ -20,6 +28,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const router = useRouter();
 
   const isRegistered = user && race?.participants?.includes(user.id);
@@ -120,7 +129,9 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
       .join(" ");
   };
 
-  const getParticipantNames = (participantUuids: string[] | null | undefined) => {
+  const getParticipantNames = (
+    participantUuids: string[] | null | undefined
+  ) => {
     if (!participantUuids || participantUuids.length === 0) {
       return [];
     }
@@ -200,14 +211,18 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   };
 
   return (
-    <section className="container mx-auto px-4 py-12 min-h-screen">
-      <div className="mb-6">
-        <Link
-          href="/calendar"
-          className="text-purple-600 hover:text-purple-800 hover:underline"
-        >
-          ← Back to Calendar
-        </Link>
+    <section className="container mx-auto px-4 py-6 md:py-12 min-h-screen">
+      <div className="mb-4 md:mb-6">
+        <NavigationLink href="/calendar">
+          <Button
+            variant="text"
+            placeholder={""}
+            className="flex items-center gap-2 text-purple-600 hover:text-purple-800 p-0"
+          >
+            <ArrowLeftIcon className="h-5 w-5" />
+            <span className="text-sm md:text-base">Back to Calendar</span>
+          </Button>
+        </NavigationLink>
       </div>
 
       <div className="max-w-4xl mx-auto">
@@ -217,36 +232,50 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
               <h1 className="leter-spacing-1 text-5xl font-bold">
                 {race.name}
               </h1>
-              {user && (
-                <button
-                  onClick={handleToggleRegistration}
-                  disabled={updating}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
-                    isRegistered
-                      ? "bg-red-100 text-red-700 hover:bg-red-200"
-                      : "bg-green-100 text-green-700 hover:bg-green-200"
-                  } disabled:opacity-50 disabled:cursor-not-allowed`}
-                  title={
-                    isRegistered
-                      ? "Unregister from race"
-                      : "Register for race"
-                  }
-                >
-                  {updating ? (
-                    <Loader />
-                  ) : isRegistered ? (
-                    <>
-                      <MinusIcon className="h-5 w-5" />
-                      <span>Unregister</span>
-                    </>
-                  ) : (
-                    <>
-                      <PlusIcon className="h-5 w-5" />
-                      <span>Register</span>
-                    </>
-                  )}
-                </button>
-              )}
+              <div className="flex items-center gap-2">
+                {isAdmin && (
+                  <NavigationLink href={`/calendar/${raceId}/edit`}>
+                    <Button
+                      variant="outlined"
+                      placeholder={""}
+                      className="flex items-center gap-2 border-purple-600 text-purple-600 hover:bg-purple-50"
+                    >
+                      <PencilIcon className="h-4 w-4" />
+                      <span className="hidden sm:inline">Edit</span>
+                    </Button>
+                  </NavigationLink>
+                )}
+                {user && (
+                  <button
+                    onClick={handleToggleRegistration}
+                    disabled={updating}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
+                      isRegistered
+                        ? "bg-red-100 text-red-700 hover:bg-red-200"
+                        : "bg-green-100 text-green-700 hover:bg-green-200"
+                    } disabled:opacity-50 disabled:cursor-not-allowed`}
+                    title={
+                      isRegistered
+                        ? "Unregister from race"
+                        : "Register for race"
+                    }
+                  >
+                    {updating ? (
+                      <Loader />
+                    ) : isRegistered ? (
+                      <>
+                        <MinusIcon className="h-5 w-5" />
+                        <span>Unregister</span>
+                      </>
+                    ) : (
+                      <>
+                        <PlusIcon className="h-5 w-5" />
+                        <span>Register</span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-4 text-gray-600">
               <span className="text-lg">{formatDate(race.event_date)}</span>
@@ -330,4 +359,3 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
     </section>
   );
 }
-

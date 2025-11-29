@@ -4,11 +4,13 @@ import { Bricolage_Grotesque } from "next/font/google";
 import { Layout } from "@/components";
 import Modal from "@/components/modal";
 import LoginModal from "@/components/login-modal";
+import { GlobalLoader } from "@/components/global-loader";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AuthProvider } from "@/contexts/auth-context";
+import { NavigationProvider } from "@/contexts/navigation-context";
 
 const rubik = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -118,15 +120,18 @@ export default function RootLayout({
       </head>
       <body className={rubik.className}>
         <AuthProvider>
-          <Layout>
-            <Scroll />
-            <Toaster position="top-right" />
-            {children}
-            <Suspense fallback={<>modal</>}>
-              <Modal />
-              <LoginModal />
-            </Suspense>
-          </Layout>
+          <NavigationProvider>
+            <Layout>
+              <GlobalLoader />
+              <Scroll />
+              <Toaster position="top-right" />
+              {children}
+              <Suspense fallback={<>modal</>}>
+                <Modal />
+                <LoginModal />
+              </Suspense>
+            </Layout>
+          </NavigationProvider>
         </AuthProvider>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
