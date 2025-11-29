@@ -37,3 +37,31 @@ export interface User {
   )[];
   deleted_at?: string;
 }
+
+export type RaceType = "road" | "crit" | "tt" | "triathlon";
+
+export interface Rider {
+  uuid: string;
+  firstName: string | null;
+  lastName: string | null;
+  ftp: string | null;
+  weight: string | null;
+  instagram: string | null;
+  strava: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+  updateAt: string | null;
+}
+
+export interface RaceCalendar {
+  id: string;
+  name: string;
+  event_date: string;
+  url?: string | null;
+  profile?: string | null;
+  distance_km?: number | null;
+  elevation_m?: number | null;
+  race_type: RaceType;
+  created_at: string;
+  participants?: string[] | null;
+}
