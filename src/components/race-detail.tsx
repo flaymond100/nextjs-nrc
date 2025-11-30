@@ -11,11 +11,13 @@ import {
   MinusIcon,
   ArrowLeftIcon,
   PencilIcon,
+  TrashIcon,
 } from "@heroicons/react/24/solid";
 import toast from "react-hot-toast";
 import { NavigationLink } from "./navigation-link";
 import { Button } from "@material-tailwind/react";
 import { useAdmin } from "@/hooks/use-admin";
+import { ConfirmModal } from "./confirm-modal";
 
 interface RaceDetailSectionProps {
   raceId: string;
@@ -27,6 +29,8 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
   const router = useRouter();
@@ -210,6 +214,46 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
     }
   };
 
+  const handleDeleteClick = () => {
+    if (!race || !isAdmin) return;
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!race) return;
+
+    setDeleting(true);
+    try {
+      const { error: deleteError } = await supabase
+        .from("race_calendar")
+        .delete()
+        .eq("id", raceId);
+
+      if (deleteError) {
+        toast.error(deleteError.message || "Failed to delete race");
+        console.error("Error deleting race:", deleteError);
+        setShowDeleteModal(false);
+      } else {
+        toast.success("Race deleted successfully!");
+        setShowDeleteModal(false);
+        // Redirect to calendar page after a short delay
+        setTimeout(() => {
+          router.push("/calendar");
+        }, 1000);
+      }
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+      setShowDeleteModal(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+  };
+
   return (
     <section className="container mx-auto px-4 py-6 md:py-12 min-h-screen">
       <div className="mb-4 md:mb-6">
@@ -234,16 +278,28 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
               </h1>
               <div className="flex items-center gap-2">
                 {isAdmin && (
-                  <NavigationLink href={`/calendar/${raceId}/edit`}>
+                  <>
+                    <NavigationLink href={`/calendar/${raceId}/edit`}>
+                      <Button
+                        variant="outlined"
+                        placeholder={""}
+                        className="flex items-center gap-2 border-purple-600 text-purple-600 hover:bg-purple-50"
+                      >
+                        <PencilIcon className="h-4 w-4" />
+                        <span className="hidden sm:inline">Edit</span>
+                      </Button>
+                    </NavigationLink>
                     <Button
                       variant="outlined"
                       placeholder={""}
-                      className="flex items-center gap-2 border-purple-600 text-purple-600 hover:bg-purple-50"
+                      onClick={handleDeleteClick}
+                      disabled={deleting}
+                      className="flex items-center gap-2 border-red-600 text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <PencilIcon className="h-4 w-4" />
-                      <span className="hidden sm:inline">Edit</span>
+                      <TrashIcon className="h-4 w-4" />
+                      <span className="hidden sm:inline">Delete</span>
                     </Button>
-                  </NavigationLink>
+                  </>
                 )}
                 {user && (
                   <button
@@ -356,6 +412,19 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
           )}
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Race"
+        message={`Are you sure you want to delete "${race?.name}"? This action cannot be undone and all associated data will be permanently removed.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmColor="red"
+        loading={deleting}
+      />
     </section>
   );
 }
