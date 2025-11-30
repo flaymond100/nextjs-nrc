@@ -8,6 +8,8 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  isAdmin: boolean | null; // null = not checked yet, boolean = checked
+  adminLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (
     email: string,
@@ -22,13 +24,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const [adminLoading, setAdminLoading] = useState(false);
+
+  const checkAdminStatus = async (userId: string) => {
+    setAdminLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("riders")
+        .select("is_admin")
+        .eq("uuid", userId)
+        .single();
+
+      if (error) {
+        console.error("Error fetching rider admin status:", error);
+        setIsAdmin(false);
+      } else {
+        setIsAdmin(data?.is_admin === true);
+      }
+    } catch (err) {
+      console.error("Unexpected error checking admin status:", err);
+      setIsAdmin(false);
+    } finally {
+      setAdminLoading(false);
+    }
+  };
 
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
-      setUser((session?.user as User) ?? null);
+      const currentUser = (session?.user as User) ?? null;
+      setUser(currentUser);
       setLoading(false);
+      
+      // Check admin status if user exists
+      if (currentUser?.id) {
+        checkAdminStatus(currentUser.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     // Listen for auth changes
@@ -36,8 +71,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      setUser((session?.user as User) ?? null);
+      const currentUser = (session?.user as User) ?? null;
+      setUser(currentUser);
       setLoading(false);
+      
+      // Check admin status if user exists
+      if (currentUser?.id) {
+        checkAdminStatus(currentUser.id);
+      } else {
+        setIsAdmin(false);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -65,7 +108,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, session, loading, signIn, signUp, signOut }}
+      value={{ user, session, loading, isAdmin, adminLoading, signIn, signUp, signOut }}
     >
       {children}
     </AuthContext.Provider>

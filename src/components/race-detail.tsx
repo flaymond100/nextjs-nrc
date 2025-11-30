@@ -183,8 +183,8 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
         // Update local state
         setRace({ ...race, participants: newParticipants });
 
-        // If registering, fetch the new rider's data
-        if (!isRegistered && user) {
+        // If registering, only fetch the new rider's data if not already loaded
+        if (!isRegistered && user && !riders.has(user.id)) {
           const { data: newRider } = await supabase
             .from("riders")
             .select("*")

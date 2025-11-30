@@ -34,6 +34,9 @@ const profileValidationSchema = Yup.object().shape({
 export const ProfileSection = () => {
   const [disabled, setDisabled] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { user } = useAuth();
   const router = useRouter();
 
@@ -156,35 +159,132 @@ export const ProfileSection = () => {
           onSubmit={formik.handleSubmit}
           className="min-w-[300px] md:min-w-[700px] bg-white rounded-lg shadow-lg p-8"
         >
-          {formik.values.avatarUrl && (
+          {/* Avatar Preview */}
+          {(previewUrl || formik.values.avatarUrl) && (
             <div className="mb-6 flex justify-center">
-              <Image
-                src={formik.values.avatarUrl}
-                alt="Profile Avatar"
-                width={120}
-                height={120}
-                className="rounded-full object-cover"
-              />
+              <div className="relative">
+                <Image
+                  src={previewUrl || formik.values.avatarUrl || ""}
+                  alt="Profile Avatar"
+                  width={120}
+                  height={120}
+                  className="rounded-full object-cover border-2 border-gray-300"
+                />
+                {uploading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+                    <Loader />
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
+          {/* Avatar Upload */}
           <div className="mb-6">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="avatarUrl"
+              htmlFor="avatarUpload"
             >
-              Avatar URL
+              Profile Picture
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="avatarUrl"
-              type="text"
-              name="avatarUrl"
-              placeholder="https://example.com/avatar.jpg"
-              value={formik.values.avatarUrl || ""}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              id="avatarUpload"
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                // Validate file size (max 5MB)
+                if (file.size > 5 * 1024 * 1024) {
+                  toast.error("Image size must be less than 5MB");
+                  return;
+                }
+
+                // Validate file type
+                if (!file.type.startsWith("image/")) {
+                  toast.error("Please select a valid image file");
+                  return;
+                }
+
+                setSelectedFile(file);
+
+                // Create preview
+                const reader = new FileReader();
+                reader.onloadend = () => {
+                  setPreviewUrl(reader.result as string);
+                };
+                reader.readAsDataURL(file);
+
+                // Upload to Supabase Storage
+                if (!user) {
+                  toast.error("You must be logged in to upload images");
+                  return;
+                }
+
+                setUploading(true);
+                try {
+                  // Delete old avatar if exists
+                  if (formik.values.avatarUrl && formik.values.avatarUrl.includes("supabase.co/storage")) {
+                    try {
+                      const urlParts = formik.values.avatarUrl.split("/");
+                      const fileName = urlParts[urlParts.length - 1];
+                      await supabase.storage
+                        .from("avatars")
+                        .remove([fileName]);
+                    } catch (deleteErr) {
+                      // Ignore delete errors (file might not exist)
+                      console.log("Could not delete old avatar:", deleteErr);
+                    }
+                  }
+
+                  const fileExt = file.name.split(".").pop();
+                  const fileName = `${user.id}-${Date.now()}.${fileExt}`;
+                  // Path is relative to bucket root, so just use the filename
+                  const filePath = fileName;
+
+                  // Upload file
+                  const { error: uploadError } = await supabase.storage
+                    .from("avatars")
+                    .upload(filePath, file, {
+                      cacheControl: "3600",
+                      upsert: false,
+                    });
+
+                  if (uploadError) {
+                    console.error("Upload error:", uploadError);
+                    toast.error("Failed to upload image. Please try again.");
+                    setSelectedFile(null);
+                    setPreviewUrl(null);
+                    return;
+                  }
+
+                  // Get public URL
+                  const {
+                    data: { publicUrl },
+                  } = supabase.storage.from("avatars").getPublicUrl(filePath);
+
+                  // Update form value
+                  formik.setFieldValue("avatarUrl", publicUrl);
+                  toast.success("Image uploaded successfully!");
+                } catch (err: any) {
+                  console.error("Unexpected error:", err);
+                  toast.error("An unexpected error occurred");
+                } finally {
+                  setUploading(false);
+                }
+              }}
+              disabled={uploading || !user}
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Upload a profile picture (max 5MB, JPG/PNG/GIF)
+            </p>
+            {formik.values.avatarUrl && !previewUrl && (
+              <p className="text-xs text-blue-600 mt-1">
+                Current avatar URL: {formik.values.avatarUrl}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

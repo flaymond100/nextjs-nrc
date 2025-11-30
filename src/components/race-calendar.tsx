@@ -24,22 +24,23 @@ export function RaceCalendarTable() {
       try {
         setLoading(true);
 
-        // Fetch race calendar
-        const { data: raceData, error: raceError } = await supabase
-          .from("race_calendar")
-          .select("*")
-          .order("event_date", { ascending: true });
+        // Fetch race calendar and riders in parallel
+        const [raceResult, riderResult] = await Promise.all([
+          supabase
+            .from("race_calendar")
+            .select("*")
+            .order("event_date", { ascending: true }),
+          supabase.from("riders").select("*"),
+        ]);
+
+        const { data: raceData, error: raceError } = raceResult;
+        const { data: riderData, error: riderError } = riderResult;
 
         if (raceError) {
           setError(raceError.message);
           console.error("Error fetching race calendar:", raceError);
           return;
         }
-
-        // Fetch all riders
-        const { data: riderData, error: riderError } = await supabase
-          .from("riders")
-          .select("*");
 
         if (riderError) {
           console.error("Error fetching riders:", riderError);
@@ -166,7 +167,7 @@ export function RaceCalendarTable() {
           )
         );
 
-        // If registering, fetch the new rider's data if not already loaded
+        // If registering, only fetch the new rider's data if not already loaded
         if (!registered && user && !riders.has(user.id)) {
           const { data: newRider } = await supabase
             .from("riders")
