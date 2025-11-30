@@ -2,45 +2,12 @@
 // components
 import { Navbar, Footer } from "@/components";
 import { RaceCalendarTable } from "@/components/race-calendar";
-import { useAuth } from "@/contexts/auth-context";
-import { supabase } from "@/utils/supabase";
+import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@material-tailwind/react";
 import { NavigationLink } from "@/components/navigation-link";
-import { useEffect, useState } from "react";
 
 export default function CalendarPage() {
-  const { user } = useAuth();
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
-  useEffect(() => {
-    async function checkAdminStatus() {
-      if (!user?.id) {
-        setIsAdmin(false);
-        return;
-      }
-
-      try {
-        const { data, error } = await supabase
-          .from("riders")
-          .select("is_admin")
-          .eq("uuid", user.id)
-          .single();
-
-        if (error) {
-          console.error("Error fetching rider admin status:", error);
-          setIsAdmin(false);
-          return;
-        }
-
-        setIsAdmin(data?.is_admin === true);
-      } catch (err) {
-        console.error("Unexpected error:", err);
-        setIsAdmin(false);
-      }
-    }
-
-    checkAdminStatus();
-  }, [user]);
+  const { isAdmin } = useAdmin();
 
   return (
     <>

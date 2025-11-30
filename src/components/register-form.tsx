@@ -45,6 +45,9 @@ const registerValidationSchema = Yup.object().shape({
 
 export const RegisterSection = () => {
   const [disabled, setDisabled] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { signUp } = useAuth();
   const router = useRouter();
 
@@ -84,7 +87,43 @@ export const RegisterSection = () => {
           return;
         }
 
-        // Step 2: Create the rider profile
+        // Step 2: Upload avatar image if selected
+        let avatarUrl = values.avatarUrl;
+        if (selectedFile && authData.user.id) {
+          setUploading(true);
+          try {
+            const fileExt = selectedFile.name.split(".").pop();
+            const fileName = `${authData.user.id}-${Date.now()}.${fileExt}`;
+            // Path is relative to bucket root, so just use the filename
+            const filePath = fileName;
+
+            // Upload file
+            const { error: uploadError } = await supabase.storage
+              .from("avatars")
+              .upload(filePath, selectedFile, {
+                cacheControl: "3600",
+                upsert: false,
+              });
+
+            if (uploadError) {
+              console.error("Upload error:", uploadError);
+              toast.error("Failed to upload image, but account was created.");
+            } else {
+              // Get public URL
+              const {
+                data: { publicUrl },
+              } = supabase.storage.from("avatars").getPublicUrl(filePath);
+              avatarUrl = publicUrl;
+            }
+          } catch (err: any) {
+            console.error("Error uploading image:", err);
+            toast.error("Failed to upload image, but account was created.");
+          } finally {
+            setUploading(false);
+          }
+        }
+
+        // Step 3: Create the rider profile
         const { error: riderError } = await supabase.from("riders").insert({
           uuid: authData.user.id,
           firstName: values.firstName || null,
@@ -94,7 +133,7 @@ export const RegisterSection = () => {
           instagram: values.instagram || null,
           strava: values.strava || null,
           bio: values.bio || null,
-          avatarUrl: values.avatarUrl || null,
+          avatarUrl: avatarUrl || null,
           updateAt: new Date().toISOString(),
         });
 
@@ -241,23 +280,69 @@ export const RegisterSection = () => {
               profile.
             </p>
 
+            {/* Avatar Preview */}
+            {previewUrl && (
+              <div className="mb-6 flex justify-center">
+                <div className="relative">
+                  <img
+                    src={previewUrl}
+                    alt="Profile Avatar Preview"
+                    className="w-32 h-32 rounded-full object-cover border-2 border-gray-300"
+                  />
+                  {uploading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
+                      <div className="text-white text-sm">Uploading...</div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Avatar Upload */}
             <div className="mb-6">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="avatarUrl"
+                htmlFor="avatarUpload"
               >
-                Avatar URL
+                Profile Picture
               </label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="avatarUrl"
-                type="text"
-                name="avatarUrl"
-                placeholder="https://example.com/avatar.jpg"
-                value={formik.values.avatarUrl || ""}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                id="avatarUpload"
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+
+                  // Validate file size (max 5MB)
+                  if (file.size > 5 * 1024 * 1024) {
+                    toast.error("Image size must be less than 5MB");
+                    return;
+                  }
+
+                  // Validate file type
+                  if (!file.type.startsWith("image/")) {
+                    toast.error("Please select a valid image file");
+                    return;
+                  }
+
+                  setSelectedFile(file);
+
+                  // Create preview
+                  const reader = new FileReader();
+                  reader.onloadend = () => {
+                    setPreviewUrl(reader.result as string);
+                  };
+                  reader.readAsDataURL(file);
+
+                  // Note: Image will be uploaded after account creation
+                }}
+                disabled={uploading}
               />
+              <p className="text-xs text-gray-500 mt-1">
+                Upload a profile picture (max 5MB, JPG/PNG/GIF). Image will be uploaded after account creation.
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

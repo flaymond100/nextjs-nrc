@@ -73,52 +73,48 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
   };
 
   useEffect(() => {
-    async function fetchRace() {
+    async function fetchData() {
       try {
-        const { data, error } = await supabase
-          .from("race_calendar")
-          .select("*")
-          .eq("id", raceId)
-          .single();
+        // Fetch race and riders in parallel
+        const [raceResult, riderResult] = await Promise.all([
+          supabase
+            .from("race_calendar")
+            .select("*")
+            .eq("id", raceId)
+            .single(),
+          supabase.from("riders").select("*"),
+        ]);
 
-        if (error) {
+        const { data: raceData, error: raceError } = raceResult;
+        const { data: riderData, error: riderError } = riderResult;
+
+        if (raceError) {
           toast.error("Failed to load race data");
-          console.error("Error fetching race:", error);
+          console.error("Error fetching race:", raceError);
           router.push("/calendar");
           return;
         }
 
-        if (data) {
-          setRace(data);
+        if (raceData) {
+          setRace(raceData);
+        }
+
+        if (riderError) {
+          console.error("Error fetching riders:", riderError);
+        } else {
+          setRiders(riderData || []);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
         toast.error("An unexpected error occurred");
       } finally {
         setLoadingRace(false);
-      }
-    }
-
-    fetchRace();
-  }, [raceId, router]);
-
-  useEffect(() => {
-    async function fetchRiders() {
-      try {
-        const { data, error } = await supabase.from("riders").select("*");
-        if (error) {
-          console.error("Error fetching riders:", error);
-        } else {
-          setRiders(data || []);
-        }
-      } catch (err) {
-        console.error("Unexpected error:", err);
-      } finally {
         setLoadingRiders(false);
       }
     }
-    fetchRiders();
-  }, []);
+
+    fetchData();
+  }, [raceId, router]);
 
   const formik = useFormik<RaceFormData>({
     initialValues: getInitialValues(race),
