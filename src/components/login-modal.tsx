@@ -23,8 +23,7 @@ function LoginModal() {
   const pathname = usePathname();
   const router = useRouter();
   const [disabled, setDisabled] = useState(false);
-  const [isSignUp, setIsSignUp] = useState(false);
-  const { signIn, signUp } = useAuth();
+  const { signIn } = useAuth();
 
   const formik = useFormik<{
     email: string;
@@ -37,26 +36,13 @@ function LoginModal() {
     onSubmit: async (values, { resetForm }) => {
       setDisabled(true);
       try {
-        if (isSignUp) {
-          const { error } = await signUp(values.email, values.password);
-          if (error) {
-            toast.error(error.message || "Authentication failed");
-          } else {
-            toast.success(
-              "Account created! Please check your email to verify."
-            );
-            router.back();
-            resetForm();
-          }
+        const { error } = await signIn(values.email, values.password);
+        if (error) {
+          toast.error(error.message || "Authentication failed");
         } else {
-          const { error } = await signIn(values.email, values.password);
-          if (error) {
-            toast.error(error.message || "Authentication failed");
-          } else {
-            toast.success("Successfully logged in!");
-            router.back();
-            resetForm();
-          }
+          toast.success("Successfully logged in!");
+          router.back();
+          resetForm();
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");
@@ -88,13 +74,11 @@ function LoginModal() {
             </div>
             <div className="mb-4 mt-3 text-center sm:mt-0">
               <h3 className="font-bold leading-6 text-gray-900 text-2xl">
-                {isSignUp ? "Create Account" : "Login"}
+                Login
               </h3>
               <div className="mt-2">
                 <p className="text-md text-gray-500">
-                  {isSignUp
-                    ? "Sign up to access your rider profile"
-                    : "Sign in to access your rider profile"}
+                  Sign in to access your rider profile
                 </p>
               </div>
             </div>
@@ -163,20 +147,18 @@ function LoginModal() {
                 type="submit"
                 disabled={disabled}
               >
-                {disabled ? <Loader /> : isSignUp ? "Sign Up" : "Login"}
+                {disabled ? <Loader /> : "Login"}
               </button>
             </div>
 
             <div className="text-center">
-              <button
-                type="button"
-                onClick={() => setIsSignUp(!isSignUp)}
+              <Link
+                href="/register"
                 className="text-sm text-deep-purple-800 hover:text-deep-purple-600"
+                onClick={() => router.back()}
               >
-                {isSignUp
-                  ? "Already have an account? Login"
-                  : "Don't have an account? Sign up"}
-              </button>
+                Don't have an account? Sign up
+              </Link>
             </div>
           </form>
         </div>

@@ -6,22 +6,23 @@ export const TeamIntro = () => {
     <div className="container text-center md:text-left mt-6  mx-auto">
       <div className="flex flex-col items-center justify-center mb-10">
         <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
-          Joining the team is easy and completely free. The only commitment is
-          purchasing our team jersey, which represents our shared spirit and
-          identity.
+          Our team is open to everyone who wants to join and wear our official
+          jersey with pride. You become part of who we are on the road and
+          online.
         </p>
         <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
-          Once you have it, you’re officially part of the team and ready to ride
-          with us both online and offline. You can join us on Zwift, where we
-          ride virtually as a team, train, and compete—all from the comfort of
-          your home.
+          As a member, you will enjoy an international community that is
+          friendly and helpful. We also have a special deals from our partners.
+        </p>
+        <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
+          In addition, we have group rides and races on Zwift and in the real
+          world. Along the way, there will be special events, challenges and
+          other perks. There is a place for you on our team if you like bikes,
+          good vibes and riding with others.
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-          <Link
-            target="_blank"
-            href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-          >
+          <Link target="_blank" href="/register/">
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}

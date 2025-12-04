@@ -38,7 +38,7 @@ export interface User {
   deleted_at?: string;
 }
 
-export type RaceType = "road" | "crit" | "tt" | "triathlon";
+export type RaceType = "road" | "crit" | "tt" | "triathlon" | "social";
 
 export interface Rider {
   uuid: string;

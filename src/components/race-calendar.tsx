@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
+import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
@@ -99,12 +100,6 @@ export function RaceCalendarTable() {
     });
   };
 
-  const formatRaceType = (type: string) => {
-    return type
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
 
   const getParticipantNames = (
     participantUuids: string[] | null | undefined
@@ -251,7 +246,7 @@ export function RaceCalendarTable() {
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-purple-100 text-purple-800">
+                <span className={`inline-flex text-xs leading-5 ${getRaceTypeBadgeClasses(race.race_type)}`}>
                   {formatRaceType(race.race_type)}
                 </span>
               </td>
