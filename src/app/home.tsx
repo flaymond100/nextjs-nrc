@@ -34,16 +34,7 @@ function Home() {
                 Join Team
               </Button>
             </Link>
-            <Link href="/coaching">
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-                size="lg"
-              >
-                Coaching
-              </Button>
-            </Link>
+
             <Link
               target="_blank"
               href="https://www.zwift.com/clubs/6a08d729-8add-4088-ad16-7af3316f440f/home"
