@@ -1,6 +1,6 @@
 import "../globals.css";
 import type { Metadata } from "next";
-import { redirect, usePathname } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Plans and Pricing",
