@@ -28,7 +28,7 @@ const raceValidationSchema = Yup.object().shape({
   distance_km: Yup.number().positive("Distance must be positive").nullable(),
   elevation_m: Yup.number().integer("Elevation must be an integer").nullable(),
   race_type: Yup.string()
-    .oneOf(["road", "crit", "tt", "triathlon"], "Invalid race type")
+    .oneOf(["road", "crit", "tt", "triathlon", "social"], "Invalid race type")
     .required("Race type is required"),
 });
 
@@ -191,6 +191,7 @@ export const CreateRaceForm = () => {
                 <option value="crit">Criterium</option>
                 <option value="tt">Time Trial</option>
                 <option value="triathlon">Triathlon</option>
+                <option value="social">Social</option>
               </select>
               {formik.errors.race_type && (
                 <p className="text-red-500 text-xs italic mt-1">

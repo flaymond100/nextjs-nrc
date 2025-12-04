@@ -3,8 +3,6 @@ import { Button } from "@material-tailwind/react";
 import Link from "next/link";
 
 function Home() {
- 
-
   return (
     <section className="mb-10 pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-[calc(100vh-100px)] flex items-end">
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900/70 via-gray-400 to-white mix-blend-multiply"></div>
@@ -25,10 +23,7 @@ function Home() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-2 z-10">
-            <Link
-              target="_blank"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-            >
+            <Link target="_blank" href="/register/">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}

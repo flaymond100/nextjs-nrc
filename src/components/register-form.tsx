@@ -14,8 +14,9 @@ interface RegisterData {
   email: string;
   password: string;
   confirmPassword: string;
-  firstName: string | null;
-  lastName: string | null;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string | null;
   ftp: string | null;
   weight: string | null;
   instagram: string | null;
@@ -34,8 +35,13 @@ const registerValidationSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords must match")
     .required("Please confirm your password"),
-  firstName: Yup.string().nullable(),
-  lastName: Yup.string().nullable(),
+  firstName: Yup.string()
+    .required("First name is required")
+    .min(1, "First name is required"),
+  lastName: Yup.string()
+    .required("Last name is required")
+    .min(1, "Last name is required"),
+  dateOfBirth: Yup.string().nullable(),
   ftp: Yup.string().nullable(),
   weight: Yup.string().nullable(),
   instagram: Yup.string().url("Invalid Instagram URL").nullable(),
@@ -56,8 +62,9 @@ export const RegisterSection = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      firstName: null,
-      lastName: null,
+      firstName: "",
+      lastName: "",
+      dateOfBirth: null,
       ftp: null,
       weight: null,
       instagram: null,
@@ -81,7 +88,7 @@ export const RegisterSection = () => {
           return;
         }
 
-        if (!authData.user) {
+        if (!authData || !authData.user) {
           toast.error("Account creation failed");
           setDisabled(false);
           return;
@@ -126,8 +133,9 @@ export const RegisterSection = () => {
         // Step 3: Create the rider profile
         const { error: riderError } = await supabase.from("riders").insert({
           uuid: authData.user.id,
-          firstName: values.firstName || null,
-          lastName: values.lastName || null,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          dateOfBirth: values.dateOfBirth || null,
           ftp: values.ftp || null,
           weight: values.weight || null,
           instagram: values.instagram || null,
@@ -351,18 +359,25 @@ export const RegisterSection = () => {
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="firstName"
                 >
-                  First Name
+                  First Name <span className="text-red-500">*</span>
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className={`shadow appearance-none border ${
+                    formik.errors.firstName && "border-red-500"
+                  } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                   id="firstName"
                   type="text"
                   name="firstName"
                   placeholder="First Name"
-                  value={formik.values.firstName || ""}
+                  value={formik.values.firstName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+                {formik.errors.firstName && (
+                  <p className="text-red-500 text-xs italic mt-1">
+                    {formik.errors.firstName}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -370,19 +385,54 @@ export const RegisterSection = () => {
                   className="block text-gray-700 text-sm font-bold mb-2"
                   htmlFor="lastName"
                 >
-                  Last Name
+                  Last Name <span className="text-red-500">*</span>
                 </label>
                 <input
-                  className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  className={`shadow appearance-none border ${
+                    formik.errors.lastName && "border-red-500"
+                  } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
                   id="lastName"
                   type="text"
                   name="lastName"
                   placeholder="Last Name"
-                  value={formik.values.lastName || ""}
+                  value={formik.values.lastName}
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
+                {formik.errors.lastName && (
+                  <p className="text-red-500 text-xs italic mt-1">
+                    {formik.errors.lastName}
+                  </p>
+                )}
               </div>
+            </div>
+
+            <div className="mb-6">
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="dateOfBirth"
+              >
+                Date of Birth
+              </label>
+              <input
+                className={`shadow appearance-none border ${
+                  formik.errors.dateOfBirth && "border-red-500"
+                } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                id="dateOfBirth"
+                type="date"
+                name="dateOfBirth"
+                value={formik.values.dateOfBirth || ""}
+                onChange={(e) => {
+                  formik.setFieldValue("dateOfBirth", e.target.value || null);
+                }}
+                onBlur={formik.handleBlur}
+                max={new Date().toISOString().split("T")[0]}
+              />
+              {formik.errors.dateOfBirth && (
+                <p className="text-red-500 text-xs italic mt-1">
+                  {formik.errors.dateOfBirth}
+                </p>
+              )}
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">

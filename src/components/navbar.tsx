@@ -32,10 +32,6 @@ export const NAV_MENU = [
     href: "/calendar",
   },
   {
-    name: "Coaching",
-    href: "/coaching",
-  },
-  {
     name: "Partners",
     href: "/partners",
   },
