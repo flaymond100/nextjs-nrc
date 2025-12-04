@@ -121,6 +121,7 @@ export function RaceCalendarTable() {
       .filter((name): name is string => name !== null && name !== "");
   };
 
+
   const isRegistered = (race: RaceCalendar) => {
     return user && race.participants?.includes(user.id);
   };
@@ -281,18 +282,7 @@ export function RaceCalendarTable() {
               </td>
               <td className="px-6 py-4 text-sm text-gray-900">
                 {race.participants && race.participants.length > 0 ? (
-                  <div className="flex flex-wrap gap-1">
-                    {getParticipantNames(race.participants).map(
-                      (name, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
-                        >
-                          {name}
-                        </span>
-                      )
-                    )}
-                  </div>
+                  <ParticipantsDisplay participants={race.participants} riders={riders} />
                 ) : (
                   <span className="text-gray-400">-</span>
                 )}
@@ -327,6 +317,83 @@ export function RaceCalendarTable() {
           ))}
         </tbody>
       </table>
+    </div>
+  );
+}
+
+interface ParticipantsDisplayProps {
+  participants: string[];
+  riders: Map<string, Rider>;
+}
+
+function ParticipantsDisplay({ participants, riders }: ParticipantsDisplayProps) {
+  const [showTooltip, setShowTooltip] = useState(false);
+
+  const getParticipantNames = (participantUuids: string[]): string[] => {
+    return participantUuids
+      .map((uuid) => {
+        const rider = riders.get(uuid);
+        if (rider) {
+          const firstName = rider.firstName || "";
+          const lastName = rider.lastName || "";
+          return `${firstName} ${lastName}`.trim();
+        }
+        return null;
+      })
+      .filter((name): name is string => name !== null && name !== "");
+  };
+
+  const shuffleArray = <T,>(array: T[]): T[] => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+
+  const allNames = getParticipantNames(participants);
+  const shuffled = shuffleArray(allNames);
+  const displayed = shuffled.slice(0, 4);
+  const remaining = shuffled.slice(4);
+  const remainingCount = remaining.length;
+
+  return (
+    <div className="flex flex-wrap gap-1 items-center relative">
+      {displayed.map((name, index) => (
+        <span
+          key={index}
+          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
+        >
+          {name}
+        </span>
+      ))}
+      {remainingCount > 0 && (
+        <div
+          className="relative inline-block"
+          onMouseEnter={() => setShowTooltip(true)}
+          onMouseLeave={() => setShowTooltip(false)}
+        >
+          <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700 cursor-help">
+            +{remainingCount}
+          </span>
+          {showTooltip && (
+            <div className="absolute z-50 left-0 mt-2 w-48 bg-gray-900 text-white text-xs rounded-lg shadow-lg p-3">
+              <div className="font-semibold mb-2 pb-2 border-b border-gray-700">
+                Remaining Participants ({remainingCount})
+              </div>
+              <div className="max-h-48 overflow-y-auto">
+                {remaining.map((name, index) => (
+                  <div key={index} className="py-1">
+                    {name}
+                  </div>
+                ))}
+              </div>
+              <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
