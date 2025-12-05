@@ -33,6 +33,10 @@ export const NAV_MENU = [
     href: "/calendar",
   },
   {
+    name: "News",
+    href: "/news",
+  },
+  {
     name: "Partners",
     href: "/partners",
   },
