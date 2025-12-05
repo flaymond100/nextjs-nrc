@@ -78,7 +78,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
   };
 
   return (
-    <section className="pt-8 px-8 pb-20 md:pb-0 relative  flex items-center justify-center">
+    <section className="pt-8 px-8  md:pb-0 relative  flex items-center justify-center">
       <div className="w-full max-w-4xl">
         <div className="animate-in slide-in-from-bottom duration-1000 flex flex-col items-center justify-center mb-10">
           <div className="w-full max-w-2xl mb-4">
@@ -150,7 +150,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
                 placeholder={""}
                 color="gray"
                 size="lg"
-                className="w-48 h-12"
+                className="w-48 h-18"
               >
                 Go to Dashboard
               </Button>
