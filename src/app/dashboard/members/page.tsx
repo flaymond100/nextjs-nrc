@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import { Rider } from "@/utils/types";
 import { Loader } from "@/components/loader";
@@ -12,7 +13,15 @@ export default function MembersPage() {
   const [members, setMembers] = useState<Rider[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { isAdmin } = useAdmin();
+  const { isAdmin, loading: adminLoading } = useAdmin();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!adminLoading && !isAdmin) {
+      toast.error("Access denied. Admin privileges required.");
+      router.push("/dashboard/profile");
+    }
+  }, [isAdmin, adminLoading, router]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<Rider | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -133,10 +142,23 @@ export default function MembersPage() {
     }
   };
 
-  if (loading) {
+  if (adminLoading || loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader />
+      </div>
+    );
+  }
+
+  if (!isAdmin) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Access Denied
+          </h2>
+          <p className="text-gray-600">Redirecting...</p>
+        </div>
       </div>
     );
   }

@@ -9,6 +9,8 @@ import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { NavigationLink } from "./navigation-link";
 
 interface RiderData {
   firstName: string | null;
@@ -36,7 +38,6 @@ export const ProfileSection = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 
@@ -83,6 +84,7 @@ export const ProfileSection = () => {
           toast.error(error.message || "Failed to update profile");
         } else {
           toast.success("Profile updated successfully!");
+          router.push("/profile");
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");
@@ -155,10 +157,24 @@ export const ProfileSection = () => {
 
   return (
     <section className="container mx-auto px-4 py-12 min-h-screen">
+      <div className="mb-6">
+        <NavigationLink href="/profile">
+          <Button
+            variant="text"
+            placeholder={""}
+            className="flex items-center gap-2 text-purple-600 hover:text-purple-800 p-0"
+          >
+            <ArrowLeftIcon className="h-5 w-5" />
+            <span className="text-sm md:text-base">Back to Profile</span>
+          </Button>
+        </NavigationLink>
+      </div>
       <div className="text-center mb-8">
-        <h1 className="mb-4 leter-spacing-1 text-5xl font-bold">My Profile</h1>
+        <h1 className="mb-4 leter-spacing-1 text-5xl font-bold">
+          Edit Profile
+        </h1>
         <p className="leter-spacing-1 text-xl max-w-3xl mx-auto">
-          Manage your rider profile information
+          Update your rider profile information
         </p>
       </div>
 
@@ -216,8 +232,6 @@ export const ProfileSection = () => {
                   return;
                 }
 
-                setSelectedFile(file);
-
                 // Create preview
                 const reader = new FileReader();
                 reader.onloadend = () => {
@@ -264,7 +278,6 @@ export const ProfileSection = () => {
                   if (uploadError) {
                     console.error("Upload error:", uploadError);
                     toast.error("Failed to upload image. Please try again.");
-                    setSelectedFile(null);
                     setPreviewUrl(null);
                     return;
                   }

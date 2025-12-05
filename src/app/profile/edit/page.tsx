@@ -1,13 +1,13 @@
 "use client";
 // components
 import { Navbar, Footer } from "@/components";
-import { ProfileView } from "@/components/profile-view";
+import { ProfileSection } from "@/components/profile-form";
 
-export default function ProfilePage() {
+export default function EditProfilePage() {
   return (
     <>
       <Navbar />
-      <ProfileView />
+      <ProfileSection />
       <Footer />
     </>
   );
