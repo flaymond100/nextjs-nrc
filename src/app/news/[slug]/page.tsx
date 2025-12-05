@@ -4,16 +4,18 @@ import { createClient } from "@supabase/supabase-js";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 
-// Disable dynamic params for static export
+// Disable dynamic params for static export - all routes must be pre-generated
 export const dynamicParams = false;
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  // Use service role key to bypass RLS and fetch ALL articles (including drafts)
-  // This is necessary for static generation to include all routes
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+
+  // Prefer service role key to bypass RLS and fetch ALL articles (including drafts)
+  // Fall back to anon key but only fetch published articles (RLS will filter)
+  const supabaseKey = serviceRoleKey || anonKey;
+  const useServiceRole = !!serviceRoleKey;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase credentials not found, returning empty params");
@@ -27,26 +29,53 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
         persistSession: false,
       },
     });
-    // Fetch ALL news articles (including drafts/unpublished) for static generation
-    // Using service role key bypasses RLS to ensure all routes are generated at build time
-    // RLS policies will control access at runtime when users visit the pages
-    const { data: news, error } = await supabase.from("news").select("slug");
+
+    // Build query based on available key
+    let query = supabase.from("news").select("slug");
+
+    // If using anon key, only fetch published articles (RLS will enforce this anyway)
+    // If using service role key, fetch all articles
+    if (!useServiceRole) {
+      query = query.eq("is_published", true);
+      console.log(
+        "Using anon key - only fetching published articles for static generation"
+      );
+    } else {
+      console.log(
+        "Using service role key - fetching all articles (including drafts) for static generation"
+      );
+    }
+
+    const { data: news, error } = await query;
 
     if (error) {
-      console.error("Error fetching news for static params:", error);
+      console.error("Error fetching news for static params:", {
+        error: error.message,
+        code: error.code,
+        details: error.details,
+        usingServiceRole: useServiceRole,
+      });
+      // Return empty array - this will cause routes to not be generated
+      // But this is better than crashing the build
       return [];
     }
 
     if (!news || news.length === 0) {
+      console.warn("No news articles found for static generation");
       return [];
     }
 
     // Filter out any articles without slugs and ensure slug is a valid string
-    return news
+    const validSlugs = news
       .filter((article) => article.slug && typeof article.slug === "string")
       .map((article) => ({
         slug: String(article.slug),
       }));
+
+    console.log(
+      `Generated ${validSlugs.length} static params for news articles`
+    );
+    return validSlugs;
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];
@@ -61,40 +90,62 @@ interface NewsDetailPageProps {
 
 async function getNewsArticle(slug: string) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  // Use service role key to bypass RLS for server-side rendering
-  // This allows fetching draft articles during static generation
-  // Client-side components will handle access control based on user permissions
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+
+  // Prefer service role key to bypass RLS and fetch any article (including drafts)
+  // Fall back to anon key - RLS will only allow published articles
+  const supabaseKey = serviceRoleKey || anonKey;
 
   if (!supabaseUrl || !supabaseKey) {
-    throw new Error("Supabase credentials not found");
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseKey, {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  });
-
-  const { data, error } = await supabase
-    .from("news")
-    .select("*")
-    .eq("slug", slug)
-    .single();
-
-  if (error) {
-    console.error("Error fetching news article:", error);
+    console.error("Supabase credentials not found");
     return null;
   }
 
-  if (!data) {
+  try {
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
+
+    const { data, error } = await supabase
+      .from("news")
+      .select("*")
+      .eq("slug", slug)
+      .single();
+
+    if (error) {
+      // Log the error but don't throw - return null to trigger notFound()
+      // PGRST116 means "no rows returned" - this is expected for missing articles
+      if (error.code === "PGRST116") {
+        console.log(`Article not found for slug: ${slug}`);
+      } else {
+        console.error("Error fetching news article:", {
+          slug,
+          error: error.message,
+          code: error.code,
+          details: error.details,
+          usingServiceRole: !!serviceRoleKey,
+        });
+      }
+      return null;
+    }
+
+    if (!data) {
+      console.warn(`No article data returned for slug: ${slug}`);
+      return null;
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error("Unexpected error fetching news article:", {
+      slug,
+      error: error?.message || String(error),
+    });
     return null;
   }
-
-  return data;
 }
 
 export async function generateMetadata({
