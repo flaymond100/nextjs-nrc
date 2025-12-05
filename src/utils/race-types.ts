@@ -29,8 +29,8 @@ export const raceTypeConfigs: Record<RaceType, RaceTypeConfig> = {
   },
   social: {
     label: "Social",
-    bgColor: "bg-orange-100",
-    textColor: "text-orange-800",
+    bgColor: "bg-yellow-100",
+    textColor: "text-yellow-800",
   },
 };
 

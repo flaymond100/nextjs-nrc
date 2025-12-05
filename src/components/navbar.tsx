@@ -101,7 +101,7 @@ export function Navbar() {
   }
 
   const handleLogin = () => {
-    router.push(`${pathname}?login=true`);
+    router.push("/login");
   };
 
   const handleSignUp = () => {

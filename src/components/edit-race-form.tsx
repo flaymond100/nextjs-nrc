@@ -19,6 +19,7 @@ interface RaceFormData {
   distance_km: string;
   elevation_m: string;
   race_type: RaceType;
+  location: string;
   participants: string[];
 }
 
@@ -32,6 +33,7 @@ const raceValidationSchema = Yup.object().shape({
   race_type: Yup.string()
     .oneOf(["road", "crit", "tt", "triathlon", "social"], "Invalid race type")
     .required("Race type is required"),
+  location: Yup.string().required("Location is required"),
 });
 
 interface EditRaceFormProps {
@@ -56,6 +58,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
         distance_km: "",
         elevation_m: "",
         race_type: "road",
+        location: "",
         participants: [],
       };
     }
@@ -68,6 +71,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
       distance_km: raceData.distance_km?.toString() || "",
       elevation_m: raceData.elevation_m?.toString() || "",
       race_type: raceData.race_type || "road",
+      location: raceData.location || "",
       participants: raceData.participants || [],
     };
   };
@@ -82,7 +86,10 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
             .select("*")
             .eq("id", raceId)
             .single(),
-          supabase.from("riders").select("*"),
+          supabase
+            .from("riders")
+            .select("*")
+            .eq("isEmailConfirmed", true),
         ]);
 
         const { data: raceData, error: raceError } = raceResult;
@@ -133,6 +140,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
             : null,
           elevation_m: values.elevation_m ? parseInt(values.elevation_m) : null,
           race_type: values.race_type,
+          location: values.location,
           participants:
             values.participants.length > 0 ? values.participants : null,
         };
@@ -290,6 +298,32 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
                 </p>
               )}
             </div>
+          </div>
+
+          <div className="mb-4 md:mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="location"
+            >
+              Location <span className="text-red-500">*</span>
+            </label>
+            <input
+              className={`shadow appearance-none border ${
+                formik.errors.location && "border-red-500"
+              } rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
+              id="location"
+              type="text"
+              name="location"
+              placeholder="e.g., Paris, France"
+              value={formik.values.location}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.errors.location && (
+              <p className="text-red-500 text-xs italic mt-1">
+                {formik.errors.location}
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">

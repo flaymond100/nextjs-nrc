@@ -1,15 +1,17 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
-import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
+import { PlusIcon, MinusIcon, TrashIcon } from "@heroicons/react/24/solid";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { NavigationLink } from "./navigation-link";
+import { useAdmin } from "@/hooks/use-admin";
+import { ConfirmModal } from "./confirm-modal";
 
 export function RaceCalendarTable() {
   const [races, setRaces] = useState<RaceCalendar[]>([]);
@@ -17,7 +19,11 @@ export function RaceCalendarTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [updatingRaces, setUpdatingRaces] = useState<Set<string>>(new Set());
+  const [deletingRaces, setDeletingRaces] = useState<Set<string>>(new Set());
+  const [raceToDelete, setRaceToDelete] = useState<RaceCalendar | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const { user } = useAuth();
+  const { isAdmin } = useAdmin();
   const router = useRouter();
 
   useEffect(() => {
@@ -100,7 +106,6 @@ export function RaceCalendarTable() {
     });
   };
 
-
   const getParticipantNames = (
     participantUuids: string[] | null | undefined
   ): string[] => {
@@ -120,7 +125,6 @@ export function RaceCalendarTable() {
       })
       .filter((name): name is string => name !== null && name !== "");
   };
-
 
   const isRegistered = (race: RaceCalendar) => {
     return user && race.participants?.includes(user.id);
@@ -194,6 +198,52 @@ export function RaceCalendarTable() {
     }
   };
 
+  const handleDeleteClick = (race: RaceCalendar) => {
+    setRaceToDelete(race);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!raceToDelete) return;
+
+    setDeletingRaces((prev) => new Set(prev).add(raceToDelete.id));
+    try {
+      const { error: deleteError } = await supabase
+        .from("race_calendar")
+        .delete()
+        .eq("id", raceToDelete.id);
+
+      if (deleteError) {
+        toast.error(deleteError.message || "Failed to delete race");
+        console.error("Error deleting race:", deleteError);
+        setShowDeleteModal(false);
+      } else {
+        // Remove race from local state
+        setRaces((prevRaces) =>
+          prevRaces.filter((r) => r.id !== raceToDelete.id)
+        );
+        toast.success("Race deleted successfully!");
+        setShowDeleteModal(false);
+        setRaceToDelete(null);
+      }
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+      setShowDeleteModal(false);
+    } finally {
+      setDeletingRaces((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(raceToDelete.id);
+        return newSet;
+      });
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setRaceToDelete(null);
+  };
+
   return (
     <div className="overflow-x-auto">
       <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
@@ -206,13 +256,13 @@ export function RaceCalendarTable() {
               Date
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+              Location
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Type
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Distance
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-              Elevation
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Profile
@@ -226,6 +276,11 @@ export function RaceCalendarTable() {
             {user && (
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
                 Participation
+              </th>
+            )}
+            {isAdmin && (
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                Actions
               </th>
             )}
           </tr>
@@ -247,18 +302,24 @@ export function RaceCalendarTable() {
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <span className={`inline-flex text-xs leading-5 ${getRaceTypeBadgeClasses(race.race_type)}`}>
+                <div className="text-sm text-gray-900">
+                  {race.location || "-"}
+                </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <span
+                  className={`inline-flex text-xs leading-5 ${getRaceTypeBadgeClasses(race.race_type)}`}
+                >
                   {formatRaceType(race.race_type)}
                 </span>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">
-                  {race.distance_km ? `${race.distance_km} km` : "-"}
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">
-                  {race.elevation_m ? `${race.elevation_m} m` : "-"}
+                  {race.distance_km
+                    ? race.elevation_m
+                      ? `${race.distance_km} km (${race.elevation_m}m)`
+                      : `${race.distance_km} km`
+                    : "-"}
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
@@ -280,12 +341,24 @@ export function RaceCalendarTable() {
                   "-"
                 )}
               </td>
-              <td className="px-6 py-4 text-sm text-gray-900">
-                {race.participants && race.participants.length > 0 ? (
-                  <ParticipantsDisplay participants={race.participants} riders={riders} />
-                ) : (
-                  <span className="text-gray-400">-</span>
-                )}
+              <td className="px-6 py-4 text-sm text-gray-900 text-center">
+                {(() => {
+                  const confirmedParticipants =
+                    race.participants?.filter((uuid) => {
+                      const rider = riders.get(uuid);
+                      return rider && rider.isEmailConfirmed;
+                    }) || [];
+                  return confirmedParticipants.length > 0 ? (
+                    <div className="flex justify-center">
+                      <ParticipantsDisplay
+                        participants={confirmedParticipants}
+                        riders={riders}
+                      />
+                    </div>
+                  ) : (
+                    <span className="text-gray-400">0</span>
+                  );
+                })()}
               </td>
               {user && (
                 <td className="px-6 py-4 whitespace-nowrap text-center">
@@ -313,10 +386,41 @@ export function RaceCalendarTable() {
                   </button>
                 </td>
               )}
+              {isAdmin && (
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  <button
+                    onClick={() => handleDeleteClick(race)}
+                    disabled={deletingRaces.has(race.id)}
+                    className="inline-flex items-center justify-center p-2 rounded-lg transition-colors bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    title="Delete race"
+                  >
+                    {deletingRaces.has(race.id) ? (
+                      <Loader />
+                    ) : (
+                      <TrashIcon className="h-5 w-5" />
+                    )}
+                  </button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
       </table>
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Race"
+        message={
+          raceToDelete
+            ? `Are you sure you want to delete "${raceToDelete.name}"? This action cannot be undone.`
+            : "Are you sure you want to delete this race? This action cannot be undone."
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmColor="red"
+        loading={raceToDelete ? deletingRaces.has(raceToDelete.id) : false}
+      />
     </div>
   );
 }
@@ -326,74 +430,79 @@ interface ParticipantsDisplayProps {
   riders: Map<string, Rider>;
 }
 
-function ParticipantsDisplay({ participants, riders }: ParticipantsDisplayProps) {
+function ParticipantsDisplay({
+  participants,
+  riders,
+}: ParticipantsDisplayProps) {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const badgeRef = useRef<HTMLDivElement>(null);
 
-  const getParticipantNames = (participantUuids: string[]): string[] => {
+  const getParticipantNames = (
+    participantUuids: string[]
+  ): Array<{ uuid: string; name: string }> => {
     return participantUuids
       .map((uuid) => {
         const rider = riders.get(uuid);
-        if (rider) {
+        if (rider && rider.isEmailConfirmed) {
           const firstName = rider.firstName || "";
           const lastName = rider.lastName || "";
-          return `${firstName} ${lastName}`.trim();
+          const fullName = `${firstName} ${lastName}`.trim();
+          return { uuid, name: fullName || uuid };
         }
         return null;
       })
-      .filter((name): name is string => name !== null && name !== "");
+      .filter(
+        (item): item is { uuid: string; name: string } =>
+          item !== null && item.name !== ""
+      );
   };
 
-  const shuffleArray = <T,>(array: T[]): T[] => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  const participantNames = getParticipantNames(participants);
+  const count = participants.length;
+
+  const handleMouseEnter = () => {
+    if (badgeRef.current) {
+      const rect = badgeRef.current.getBoundingClientRect();
+      setTooltipPosition({
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.left + window.scrollX,
+      });
+      setShowTooltip(true);
     }
-    return shuffled;
   };
-
-  const allNames = getParticipantNames(participants);
-  const shuffled = shuffleArray(allNames);
-  const displayed = shuffled.slice(0, 4);
-  const remaining = shuffled.slice(4);
-  const remainingCount = remaining.length;
 
   return (
-    <div className="flex flex-wrap gap-1 items-center relative">
-      {displayed.map((name, index) => (
-        <span
-          key={index}
-          className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800"
-        >
-          {name}
-        </span>
-      ))}
-      {remainingCount > 0 && (
+    <>
+      <div
+        ref={badgeRef}
+        className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-purple-600 text-white text-sm font-semibold cursor-help hover:bg-purple-700 transition-colors"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={() => setShowTooltip(false)}
+      >
+        {count}
+      </div>
+      {showTooltip && participantNames.length > 0 && (
         <div
-          className="relative inline-block"
-          onMouseEnter={() => setShowTooltip(true)}
-          onMouseLeave={() => setShowTooltip(false)}
+          className="fixed z-[9999] w-64 bg-gray-900 text-white text-sm rounded-lg shadow-xl p-4 pointer-events-none"
+          style={{
+            top: `${tooltipPosition.top}px`,
+            left: `${tooltipPosition.left}px`,
+          }}
         >
-          <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700 cursor-help">
-            +{remainingCount}
-          </span>
-          {showTooltip && (
-            <div className="absolute z-50 left-0 mt-2 w-48 bg-gray-900 text-white text-xs rounded-lg shadow-lg p-3">
-              <div className="font-semibold mb-2 pb-2 border-b border-gray-700">
-                Remaining Participants ({remainingCount})
+          <div className="font-semibold mb-3 pb-2 border-b border-gray-700">
+            Participants ({count})
+          </div>
+          <div className="max-h-64 overflow-y-auto">
+            {participantNames.map((participant) => (
+              <div key={participant.uuid} className="py-1.5 text-gray-200">
+                {participant.name}
               </div>
-              <div className="max-h-48 overflow-y-auto">
-                {remaining.map((name, index) => (
-                  <div key={index} className="py-1">
-                    {name}
-                  </div>
-                ))}
-              </div>
-              <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-900 transform rotate-45"></div>
-            </div>
-          )}
+            ))}
+          </div>
+          <div className="absolute -top-1 left-6 w-2 h-2 bg-gray-900 transform rotate-45"></div>
         </div>
       )}
-    </div>
+    </>
   );
 }

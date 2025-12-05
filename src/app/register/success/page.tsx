@@ -30,7 +30,7 @@ export default function RegisterSuccessPage() {
   return (
     <>
       <Navbar />
-      <section className="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+      <section className="container mx-auto px-4 py-12 min-h-[calc(100vh-400px)] flex items-center justify-center">
         <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8 text-center">
           <div className="mb-6 flex justify-center">
             <CheckCircleIcon className="h-20 w-20 text-green-500" />
@@ -62,7 +62,7 @@ export default function RegisterSuccessPage() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/?login=true"
+              href="/login"
               className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
             >
               Go to Login

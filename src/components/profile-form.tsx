@@ -289,11 +289,6 @@ export const ProfileSection = () => {
             <p className="text-xs text-gray-500 mt-1">
               Upload a profile picture (max 5MB, JPG/PNG/GIF)
             </p>
-            {formik.values.avatarUrl && !previewUrl && (
-              <p className="text-xs text-blue-600 mt-1">
-                Current avatar URL: {formik.values.avatarUrl}
-              </p>
-            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
