@@ -93,7 +93,7 @@ export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { user, signOut, loading, isAdmin } = useAuth();
+  const { user, signOut, loading } = useAuth();
   const { setNavigating } = useNavigation();
 
   function handleOpen() {
@@ -209,7 +209,7 @@ export function Navbar() {
         </div>
 
         {/* Mobile: Avatar/Login buttons - Center */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 lg:hidden">
+        <div className="flex-1 flex items-center justify-center gap-2 lg:hidden">
           {!loading && (
             <>
               {user ? (
