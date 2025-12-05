@@ -26,6 +26,9 @@ export default function MembersPage() {
   const [memberToDelete, setMemberToDelete] = useState<Rider | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [updatingPaid, setUpdatingPaid] = useState<string | null>(null);
+  const [updatingActivated, setUpdatingActivated] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     async function fetchMembers() {
@@ -85,6 +88,70 @@ export default function MembersPage() {
       console.error("Unexpected error:", err);
     } finally {
       setUpdatingPaid(null);
+    }
+  };
+
+  const handleToggleActivated = async (member: Rider) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to perform this action");
+      return;
+    }
+
+    setUpdatingActivated(member.uuid);
+    try {
+      const newValue = !member.isActivated;
+      console.log("Attempting to update isActivated:", {
+        uuid: member.uuid,
+        currentValue: member.isActivated,
+        newValue: newValue,
+      });
+
+      const { data, error } = await supabase
+        .from("riders")
+        .update({ isActivated: newValue })
+        .eq("uuid", member.uuid)
+        .select();
+
+      console.log("Update response:", {
+        data,
+        error,
+        dataLength: data?.length,
+      });
+
+      if (error) {
+        toast.error(error.message || "Failed to update activation status");
+        console.error("Error updating activation status:", error);
+        console.error("Error details:", JSON.stringify(error, null, 2));
+      } else {
+        // Verify the update worked
+        if (data && data.length > 0) {
+          const updatedMember = data[0];
+          // Update local state with the actual data from DB
+          setMembers((prev) =>
+            prev.map((m) =>
+              m.uuid === member.uuid
+                ? { ...m, isActivated: updatedMember.isActivated }
+                : m
+            )
+          );
+          toast.success(
+            `Account ${updatedMember.isActivated ? "activated" : "deactivated"}`
+          );
+        } else {
+          // No data returned, but no error - might be RLS issue
+          console.warn(
+            "Update succeeded but no data returned. Possible RLS policy issue."
+          );
+          toast.error(
+            "Update may have failed. Please check Row Level Security policies."
+          );
+        }
+      }
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+    } finally {
+      setUpdatingActivated(null);
     }
   };
 
@@ -195,6 +262,9 @@ export default function MembersPage() {
                   Email Confirmed
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Activated
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Paid
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -214,7 +284,7 @@ export default function MembersPage() {
               {members.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={isAdmin ? 7 : 6}
+                    colSpan={isAdmin ? 8 : 7}
                     className="px-6 py-4 text-center text-gray-500"
                   >
                     No members found
@@ -263,6 +333,38 @@ export default function MembersPage() {
                         >
                           {member.isEmailConfirmed ? "Yes" : "No"}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {isAdmin ? (
+                          <button
+                            onClick={() => handleToggleActivated(member)}
+                            disabled={updatingActivated === member.uuid}
+                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full cursor-pointer transition-colors ${
+                              member.isActivated
+                                ? "bg-green-100 text-green-800 hover:bg-green-200"
+                                : "bg-red-100 text-red-800 hover:bg-red-200"
+                            } disabled:opacity-50 disabled:cursor-not-allowed`}
+                            title="Click to toggle activation status"
+                          >
+                            {updatingActivated === member.uuid ? (
+                              <Loader />
+                            ) : member.isActivated ? (
+                              "Yes"
+                            ) : (
+                              "No"
+                            )}
+                          </button>
+                        ) : (
+                          <span
+                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                              member.isActivated
+                                ? "bg-green-100 text-green-800"
+                                : "bg-red-100 text-red-800"
+                            }`}
+                          >
+                            {member.isActivated ? "Yes" : "No"}
+                          </span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {isAdmin ? (

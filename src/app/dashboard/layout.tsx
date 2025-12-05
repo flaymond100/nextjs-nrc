@@ -40,58 +40,71 @@ export default function DashboardLayout({
   const router = useRouter();
   const pathname = usePathname();
   const [emailConfirmed, setEmailConfirmed] = useState<boolean | null>(null);
+  const [isActivated, setIsActivated] = useState<boolean | null>(null);
   const [checkingEmail, setCheckingEmail] = useState(true);
+  const [checkingActivation, setCheckingActivation] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile menu state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Desktop collapse state
 
   useEffect(() => {
-    async function checkEmailConfirmation() {
+    async function checkUserStatus() {
       if (!user) {
         setEmailConfirmed(false);
+        setIsActivated(false);
         setCheckingEmail(false);
+        setCheckingActivation(false);
         return;
       }
 
       try {
         const { data, error } = await supabase
           .from("riders")
-          .select("isEmailConfirmed")
+          .select("isEmailConfirmed, isActivated")
           .eq("uuid", user.id)
           .single();
 
         if (error) {
-          console.error("Error checking email confirmation:", error);
+          console.error("Error checking user status:", error);
           setEmailConfirmed(false);
+          setIsActivated(false);
         } else {
           setEmailConfirmed(data?.isEmailConfirmed === true);
+          setIsActivated(data?.isActivated === true);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
         setEmailConfirmed(false);
+        setIsActivated(false);
       } finally {
         setCheckingEmail(false);
+        setCheckingActivation(false);
       }
     }
 
     if (!authLoading && user) {
-      checkEmailConfirmation();
+      checkUserStatus();
     } else if (!authLoading && !user) {
       setEmailConfirmed(false);
+      setIsActivated(false);
       setCheckingEmail(false);
+      setCheckingActivation(false);
     }
   }, [user, authLoading]);
 
   useEffect(() => {
-    if (!authLoading && !checkingEmail) {
+    if (!authLoading && !checkingEmail && !checkingActivation) {
       if (!user) {
         toast.error("Please log in to access the dashboard.");
         router.push("/login");
       } else if (!emailConfirmed) {
         toast.error("Please confirm your email to access the dashboard.");
         router.push("/");
+      } else if (!isActivated) {
+        toast.error("Your account must be activated by an admin to access the dashboard.");
+        router.push("/forbidden");
       }
     }
-  }, [user, emailConfirmed, authLoading, checkingEmail, router]);
+  }, [user, emailConfirmed, isActivated, authLoading, checkingEmail, checkingActivation, router]);
 
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
@@ -110,7 +123,7 @@ export default function DashboardLayout({
     setSidebarOpen(false);
   }, [pathname]);
 
-  const loading = authLoading || checkingEmail || adminLoading;
+  const loading = authLoading || checkingEmail || checkingActivation || adminLoading;
 
   if (loading) {
     return (
@@ -120,7 +133,7 @@ export default function DashboardLayout({
     );
   }
 
-  if (!user || !emailConfirmed) {
+  if (!user || !emailConfirmed || !isActivated) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
