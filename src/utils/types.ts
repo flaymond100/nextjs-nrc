@@ -66,6 +66,7 @@ export interface RaceCalendar {
   distance_km?: number | null;
   elevation_m?: number | null;
   race_type: RaceType;
+  location?: string | null;
   created_at: string;
   participants?: string[] | null;
 }

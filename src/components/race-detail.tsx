@@ -138,14 +138,14 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
     return participantUuids
       .map((uuid) => {
         const rider = riders.get(uuid);
-        if (rider) {
+        if (rider && rider.isEmailConfirmed) {
           const firstName = rider.firstName || "";
           const lastName = rider.lastName || "";
           return { uuid, name: `${firstName} ${lastName}`.trim() || uuid };
         }
-        return { uuid, name: uuid };
+        return null;
       })
-      .filter((item) => item.name);
+      .filter((item): item is { uuid: string; name: string } => item !== null && item.name !== "");
   };
 
   const handleToggleRegistration = async () => {
@@ -330,6 +330,9 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
             </div>
             <div className="flex items-center gap-4 text-gray-600">
               <span className="text-lg">{formatDate(race.event_date)}</span>
+              {race.location && (
+                <span className="text-lg text-gray-600">• {race.location}</span>
+              )}
               <span className={`px-3 py-1 rounded-full font-semibold text-sm ${getRaceTypeBadgeClasses(race.race_type)}`}>
                 {formatRaceType(race.race_type)}
               </span>
@@ -382,29 +385,35 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
             </div>
           )}
 
-          {race.participants && race.participants.length > 0 && (
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                Participants ({race.participants.length})
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {getParticipantNames(race.participants).map((participant) => (
-                  <span
-                    key={participant.uuid}
-                    className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-blue-100 text-blue-800"
-                  >
-                    {participant.name}
-                  </span>
-                ))}
+          {(() => {
+            const confirmedParticipants = race.participants?.filter((uuid) => {
+              const rider = riders.get(uuid);
+              return rider && rider.isEmailConfirmed;
+            }) || [];
+            const participantNames = getParticipantNames(confirmedParticipants);
+            
+            return participantNames.length > 0 ? (
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                  Participants ({participantNames.length})
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {participantNames.map((participant) => (
+                    <span
+                      key={participant.uuid}
+                      className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-blue-100 text-blue-800"
+                    >
+                      {participant.name}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
-
-          {(!race.participants || race.participants.length === 0) && (
-            <div className="mt-8 pt-8 border-t border-gray-200">
-              <p className="text-gray-500">No participants registered yet.</p>
-            </div>
-          )}
+            ) : (
+              <div className="mt-8 pt-8 border-t border-gray-200">
+                <p className="text-gray-500">No confirmed participants registered yet.</p>
+              </div>
+            );
+          })()}
         </div>
       </div>
 

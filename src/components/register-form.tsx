@@ -95,7 +95,7 @@ export const RegisterSection = () => {
         </p>
         <p className="leter-spacing-1 text-sm text-gray-600 mt-2">
           Already have an account?{" "}
-          <Link href="/?login=true" className="text-purple-600 hover:underline">
+          <Link href="/login" className="text-purple-600 hover:underline">
             Login here
           </Link>
         </p>
