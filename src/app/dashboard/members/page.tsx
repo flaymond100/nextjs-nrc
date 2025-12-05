@@ -192,12 +192,6 @@ export default function MembersPage() {
                   Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  FTP
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Weight (kg)
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Email Confirmed
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -220,7 +214,7 @@ export default function MembersPage() {
               {members.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={isAdmin ? 9 : 8}
+                    colSpan={isAdmin ? 7 : 6}
                     className="px-6 py-4 text-center text-gray-500"
                   >
                     No members found
@@ -257,16 +251,6 @@ export default function MembersPage() {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-500">
                           {member.email}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                          {member.ftp || "-"}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
-                          {member.weight || "-"}
                         </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">

@@ -47,8 +47,6 @@ export interface Rider {
   isPaid: boolean;
   firstName: string | null;
   lastName: string | null;
-  ftp: string | null;
-  weight: string | null;
   instagram: string | null;
   strava: string | null;
   bio: string | null;

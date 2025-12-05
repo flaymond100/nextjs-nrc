@@ -166,7 +166,7 @@ export function Navbar() {
               {name}
             </NavItem>
           ))}
-          {isAdmin && (
+          {user && (
             <NavItem href="/dashboard" pathname={pathname}>
               Dashboard
             </NavItem>
@@ -269,7 +269,7 @@ export function Navbar() {
                 {name}
               </NavItem>
             ))}
-            {isAdmin && (
+            {user && (
               <NavItem href="/dashboard" pathname={pathname}>
                 Dashboard
               </NavItem>
