@@ -155,7 +155,6 @@ function LoginModal() {
               <Link
                 href="/register"
                 className="text-sm text-deep-purple-800 hover:text-deep-purple-600"
-                onClick={() => router.back()}
               >
                 Don't have an account? Sign up
               </Link>

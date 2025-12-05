@@ -53,9 +53,10 @@ export const NAV_MENU = [
 interface NavItemProps {
   children: React.ReactNode;
   href?: string;
+  pathname?: string | null;
 }
 
-function NavItem({ children, href }: NavItemProps) {
+function NavItem({ children, href, pathname }: NavItemProps) {
   if (!href || href === "#") {
     return (
       <li>
@@ -66,12 +67,21 @@ function NavItem({ children, href }: NavItemProps) {
     );
   }
 
+  // Check if current path matches the href or starts with it (for sub-paths)
+  // Special handling for home page - only match exact "/"
+  const isActive =
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname?.startsWith(href + "/");
+
   return (
     <li>
       <NavigationLink
         href={href}
         scroll={true}
-        className="flex items-center gap-2 text-lg text-black"
+        className={`flex items-center gap-2 text-lg text-black transition-colors ${
+          isActive ? "underline decoration-2 underline-offset-4" : ""
+        }`}
       >
         {children}
       </NavigationLink>
@@ -83,7 +93,7 @@ export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  const { user, signOut, loading } = useAuth();
+  const { user, signOut, loading, isAdmin } = useAuth();
   const { setNavigating } = useNavigation();
 
   function handleOpen() {
@@ -152,10 +162,15 @@ export function Navbar() {
         {/* Desktop Navigation Menu - Centered */}
         <ul className="absolute left-1/2 transform -translate-x-1/2 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, href }) => (
-            <NavItem key={name} href={href}>
+            <NavItem key={name} href={href} pathname={pathname}>
               {name}
             </NavItem>
           ))}
+          {isAdmin && (
+            <NavItem href="/dashboard" pathname={pathname}>
+              Dashboard
+            </NavItem>
+          )}
         </ul>
 
         {/* Desktop: Avatar/Login buttons - Right */}
@@ -250,10 +265,15 @@ export function Navbar() {
         <div className="container mx-auto mt-3 border-t border-gray-200 px-2 pt-4">
           <ul className="flex flex-col gap-4">
             {NAV_MENU.map(({ name, href }) => (
-              <NavItem key={name} href={href}>
+              <NavItem key={name} href={href} pathname={pathname}>
                 {name}
               </NavItem>
             ))}
+            {isAdmin && (
+              <NavItem href="/dashboard" pathname={pathname}>
+                Dashboard
+              </NavItem>
+            )}
           </ul>
           {/* Removed auth buttons from mobile menu since they're now in the header */}
         </div>
