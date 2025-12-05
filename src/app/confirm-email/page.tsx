@@ -47,10 +47,14 @@ export default function ConfirmEmailPage() {
             Email Confirmed Successfully!
           </h1>
           <div className="space-y-4 text-gray-600 mb-8">
-            <div className="bg-green-50 text-center border-l-4 border-green-500 p-4 text-left">
+            <div className="bg-green-50 border-l-4 border-green-500 p-4 text-left">
               <p className="font-semibold text-green-800 mb-2">
-                Your account is now active and can access all features of your
-                rider profile!
+                Email Confirmed Successfully!
+              </p>
+              <p className="text-green-700">
+                Your email has been verified. Your account is now pending admin
+                activation. Once an admin activates your account, you'll be able
+                to access all features of your rider profile.
               </p>
             </div>
           </div>

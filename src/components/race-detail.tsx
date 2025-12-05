@@ -32,6 +32,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   const [updating, setUpdating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userRider, setUserRider] = useState<Rider | null>(null);
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
   const router = useRouter();
@@ -90,6 +91,36 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
 
     fetchRaceData();
   }, [raceId]);
+
+  // Fetch current user's rider data to check activation status
+  useEffect(() => {
+    async function fetchUserRider() {
+      if (!user) {
+        setUserRider(null);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("riders")
+          .select("*")
+          .eq("uuid", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching user rider data:", error);
+          setUserRider(null);
+        } else {
+          setUserRider(data);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setUserRider(null);
+      }
+    }
+
+    fetchUserRider();
+  }, [user]);
 
   if (loading) {
     return (
@@ -156,6 +187,13 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
     }
 
     if (!race) return;
+
+    // Check if user is activated
+    if (!userRider?.isActivated) {
+      toast.error("Your account must be activated by an admin before you can register for races");
+      router.push("/forbidden");
+      return;
+    }
 
     setUpdating(true);
     try {
@@ -299,14 +337,20 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
                 {user && (
                   <button
                     onClick={handleToggleRegistration}
-                    disabled={updating}
+                    disabled={
+                      updating || (!isRegistered && !userRider?.isActivated)
+                    }
                     className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-colors ${
-                      isRegistered
+                      !isRegistered && !userRider?.isActivated
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : isRegistered
                         ? "bg-red-100 text-red-700 hover:bg-red-200"
                         : "bg-green-100 text-green-700 hover:bg-green-200"
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                     title={
-                      isRegistered
+                      !isRegistered && !userRider?.isActivated
+                        ? "Your account must be activated by an admin to register for races"
+                        : isRegistered
                         ? "Unregister from race"
                         : "Register for race"
                     }

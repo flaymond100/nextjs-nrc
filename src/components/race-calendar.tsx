@@ -22,6 +22,7 @@ export function RaceCalendarTable() {
   const [deletingRaces, setDeletingRaces] = useState<Set<string>>(new Set());
   const [raceToDelete, setRaceToDelete] = useState<RaceCalendar | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userRider, setUserRider] = useState<Rider | null>(null);
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
   const router = useRouter();
@@ -72,6 +73,36 @@ export function RaceCalendarTable() {
 
     fetchData();
   }, []);
+
+  // Fetch current user's rider data to check activation status
+  useEffect(() => {
+    async function fetchUserRider() {
+      if (!user) {
+        setUserRider(null);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("riders")
+          .select("*")
+          .eq("uuid", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error fetching user rider data:", error);
+          setUserRider(null);
+        } else {
+          setUserRider(data);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setUserRider(null);
+      }
+    }
+
+    fetchUserRider();
+  }, [user]);
 
   if (loading) {
     return (
@@ -134,6 +165,13 @@ export function RaceCalendarTable() {
     if (!user) {
       toast.error("Please log in to register for races");
       router.push("/?login=true");
+      return;
+    }
+
+    // Check if user is activated
+    if (!userRider?.isActivated) {
+      toast.error("Your account must be activated by an admin before you can register for races");
+      router.push("/forbidden");
       return;
     }
 
@@ -364,14 +402,21 @@ export function RaceCalendarTable() {
                 <td className="px-6 py-4 whitespace-nowrap text-center">
                   <button
                     onClick={() => handleToggleRegistration(race)}
-                    disabled={updatingRaces.has(race.id)}
+                    disabled={
+                      updatingRaces.has(race.id) ||
+                      (!isRegistered(race) && !userRider?.isActivated)
+                    }
                     className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
-                      isRegistered(race)
+                      !isRegistered(race) && !userRider?.isActivated
+                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                        : isRegistered(race)
                         ? "bg-red-100 text-red-700 hover:bg-red-200"
                         : "bg-green-100 text-green-700 hover:bg-green-200"
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                     title={
-                      isRegistered(race)
+                      !isRegistered(race) && !userRider?.isActivated
+                        ? "Your account must be activated by an admin to register for races"
+                        : isRegistered(race)
                         ? "Unregister from race"
                         : "Register for race"
                     }

@@ -45,6 +45,7 @@ export interface Rider {
   email: string;
   isEmailConfirmed: boolean;
   isPaid: boolean;
+  isActivated: boolean;
   firstName: string | null;
   lastName: string | null;
   instagram: string | null;

@@ -13,6 +13,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { useNavigation } from "@/contexts/navigation-context";
 import { AvatarDropdown } from "./avatar-dropdown";
 import { NavigationLink } from "./navigation-link";
+import { supabase } from "@/utils/supabase";
 
 export const NAV_MENU = [
   {
@@ -91,6 +92,7 @@ function NavItem({ children, href, pathname }: NavItemProps) {
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
+  const [isActivated, setIsActivated] = React.useState<boolean | null>(null);
   const pathname = usePathname();
   const router = useRouter();
   const { user, signOut, loading } = useAuth();
@@ -140,6 +142,40 @@ export function Navbar() {
     );
   }, []);
 
+  // Check if user is activated
+  React.useEffect(() => {
+    async function checkActivation() {
+      if (!user) {
+        setIsActivated(null);
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from("riders")
+          .select("isActivated")
+          .eq("uuid", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error checking activation status:", error);
+          setIsActivated(false);
+        } else {
+          setIsActivated(data?.isActivated === true);
+        }
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setIsActivated(false);
+      }
+    }
+
+    if (!loading && user) {
+      checkActivation();
+    } else if (!loading && !user) {
+      setIsActivated(null);
+    }
+  }, [user, loading]);
+
   return (
     <MTNavbar
       placeholder={""}
@@ -166,7 +202,7 @@ export function Navbar() {
               {name}
             </NavItem>
           ))}
-          {user && (
+          {user && isActivated && (
             <NavItem href="/dashboard" pathname={pathname}>
               Dashboard
             </NavItem>
@@ -269,7 +305,7 @@ export function Navbar() {
                 {name}
               </NavItem>
             ))}
-            {user && (
+            {user && isActivated && (
               <NavItem href="/dashboard" pathname={pathname}>
                 Dashboard
               </NavItem>
