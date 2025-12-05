@@ -5,12 +5,14 @@ import { Navbar, Footer } from "@/components";
 import Home from "./home";
 import { FormSection } from "@/components/contact-form";
 import { Sponsors } from "@/components/sponsors";
+import { CalendarPageContent } from "./calendar/page";
 
 export default function Campaign() {
   return (
     <>
       <Navbar />
       <Home />
+      <CalendarPageContent />
       <SponsorsWrapper />
       <FormSection />
       <Footer />

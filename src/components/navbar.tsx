@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Navbar as MTNavbar,
@@ -7,8 +8,11 @@ import {
 } from "@material-tailwind/react";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
+import { useNavigation } from "@/contexts/navigation-context";
+import { AvatarDropdown } from "./avatar-dropdown";
+import { NavigationLink } from "./navigation-link";
 
 export const NAV_MENU = [
   {
@@ -20,21 +24,18 @@ export const NAV_MENU = [
   //   href: "/trainings",
   // },
   {
-    name: "Cycling Team",
+    name: "Team",
     href: "/cycling-team",
   },
   {
-    name: "Social Rides",
-    href: "/social-rides",
-  },
-  {
-    name: "Coaching",
-    href: "/coaching",
+    name: "Calendar",
+    href: "/calendar",
   },
   {
     name: "Partners",
     href: "/partners",
   },
+
   // {
   //   name: "Our Trainers",
   //   href: "/trainers",
@@ -52,36 +53,85 @@ export const NAV_MENU = [
 interface NavItemProps {
   children: React.ReactNode;
   href?: string;
+  pathname?: string | null;
 }
 
-function NavItem({ children, href }: NavItemProps) {
+function NavItem({ children, href, pathname }: NavItemProps) {
+  if (!href || href === "#") {
+    return (
+      <li>
+        <span className="flex items-center gap-2 text-lg text-black">
+          {children}
+        </span>
+      </li>
+    );
+  }
+
+  // Check if current path matches the href or starts with it (for sub-paths)
+  // Special handling for home page - only match exact "/"
+  const isActive =
+    href === "/"
+      ? pathname === "/"
+      : pathname === href || pathname?.startsWith(href + "/");
+
   return (
     <li>
-      <Link
-        href={href || "#"}
+      <NavigationLink
+        href={href}
         scroll={true}
-        // target={href ? "_blank" : "_self"}
-        className="flex items-center gap-2 text-lg  text-black"
+        className={`flex items-center gap-2 text-lg text-black transition-colors ${
+          isActive ? "underline decoration-2 underline-offset-4" : ""
+        }`}
       >
         {children}
-      </Link>
+      </NavigationLink>
     </li>
   );
 }
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
-  const scrollToStripeTable = () => {
-    const element = document.getElementById("stripe-pricing");
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-    setTimeout(() => setOpen(false), 700);
-  };
+  const pathname = usePathname();
+  const router = useRouter();
+  const { user, signOut, loading, isAdmin } = useAuth();
+  const { setNavigating } = useNavigation();
+
   function handleOpen() {
     setOpen((cur) => !cur);
   }
-  const pathname = usePathname();
+
+  const handleLogin = () => {
+    router.push("/login");
+  };
+
+  const handleSignUp = () => {
+    setNavigating(true);
+    router.push("/register");
+  };
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      // Only set navigating if we're not already on the home page
+      if (pathname !== "/") {
+        setNavigating(true);
+        router.push("/");
+      } else {
+        // If already on home, refresh to clear auth state
+        // Don't set navigating since we're not changing routes
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // Ensure navigation state is reset even if there's an error
+      setNavigating(false);
+    }
+  };
+
+  const handleProfile = () => {
+    setNavigating(true);
+    router.push("/profile");
+  };
 
   React.useEffect(() => {
     window.addEventListener(
@@ -98,63 +148,111 @@ export function Navbar() {
       style={{ borderBottom: " 0.5px solid rgb(55, 0, 125)" }}
       className="border-0 sticky top-0 z-50"
     >
-      <div className="container mx-auto flex items-center justify-between">
-        <Link href="/">
+      <div className="container mx-auto flex items-center justify-between relative">
+        {/* Logo - Left */}
+        <NavigationLink href="/" className="flex-shrink-0">
           <Image
             src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
             alt="favicon Nrc Team"
             width={80}
             height={45}
           />
-        </Link>
-        <ul className="ml-10 hidden items-center gap-8 lg:flex">
+        </NavigationLink>
+
+        {/* Desktop Navigation Menu - Centered */}
+        <ul className="absolute left-1/2 transform -translate-x-1/2 hidden items-center gap-8 lg:flex">
           {NAV_MENU.map(({ name, href }) => (
-            <NavItem key={name} href={href}>
+            <NavItem key={name} href={href} pathname={pathname}>
               {name}
             </NavItem>
           ))}
+          {isAdmin && (
+            <NavItem href="/dashboard" pathname={pathname}>
+              Dashboard
+            </NavItem>
+          )}
         </ul>
-        <div className="hidden items-center gap-2 lg:flex">
-          {pathname === "/trainings/running-trainings/" ||
-          pathname === "/trainings/triathlon-trainings/" ||
-          pathname === "/cycling-team/" ||
-          pathname === "/social-rides/" ||
-          pathname === "/trainings/cycling-trainings/" ? (
-            <Link
-              target="_blank"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-            >
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-              >
-                Join Team
-              </Button>
-            </Link>
-          ) : (
-            <Link
-              target="_blank"
-              href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-            >
-              <Button
-                style={{ background: "#37007d" }}
-                placeholder={""}
-                color="gray"
-                onClick={scrollToStripeTable}
-              >
-                Join Team
-              </Button>
-            </Link>
+
+        {/* Desktop: Avatar/Login buttons - Right */}
+        <div className="hidden items-center gap-2 lg:flex ml-auto">
+          {!loading && (
+            <>
+              {user ? (
+                <AvatarDropdown
+                  onProfileClick={handleProfile}
+                  onLogoutClick={handleLogout}
+                />
+              ) : (
+                !pathname?.startsWith("/register") && (
+                  <>
+                    <Button
+                      style={{ background: "#37007d" }}
+                      placeholder={""}
+                      color="gray"
+                      onClick={handleLogin}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      style={{ background: "#f06723" }}
+                      placeholder={""}
+                      color="gray"
+                      onClick={handleSignUp}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )
+              )}
+            </>
           )}
         </div>
+
+        {/* Mobile: Avatar/Login buttons - Center */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex items-center gap-2 lg:hidden">
+          {!loading && (
+            <>
+              {user ? (
+                <AvatarDropdown
+                  onProfileClick={handleProfile}
+                  onLogoutClick={handleLogout}
+                />
+              ) : (
+                !pathname?.startsWith("/register") && (
+                  <>
+                    <Button
+                      style={{ background: "#37007d" }}
+                      placeholder={""}
+                      color="gray"
+                      size="sm"
+                      onClick={handleLogin}
+                    >
+                      Login
+                    </Button>
+                    <Button
+                      style={{ background: "#f06723" }}
+                      placeholder={""}
+                      color="gray"
+                      size="sm"
+                      onClick={handleSignUp}
+                    >
+                      Sign Up
+                    </Button>
+                  </>
+                )
+              )}
+            </>
+          )}
+        </div>
+
+        {/* Hamburger Menu - Right */}
         <IconButton
           placeholder={""}
           variant="text"
           color="gray"
           aria-label="Open Menu"
           onClick={handleOpen}
-          className="ml-auto inline-block lg:hidden"
+          className="flex-shrink-0 inline-block lg:hidden"
         >
           {open ? (
             <XMarkIcon strokeWidth={2} className="h-6 w-6" />
@@ -167,43 +265,17 @@ export function Navbar() {
         <div className="container mx-auto mt-3 border-t border-gray-200 px-2 pt-4">
           <ul className="flex flex-col gap-4">
             {NAV_MENU.map(({ name, href }) => (
-              <NavItem key={name} href={href}>
+              <NavItem key={name} href={href} pathname={pathname}>
                 {name}
               </NavItem>
             ))}
-          </ul>
-          <div className="mt-6 mb-4 flex items-center gap-2">
-            {pathname === "/trainings/running-trainings/" ||
-            pathname === "/trainings/triathlon-trainings/" ||
-            pathname === "/trainings/cycling-trainings/" ? (
-              <Link
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-              >
-                <Button
-                  style={{ background: "#37007d" }}
-                  placeholder={""}
-                  color="gray"
-                >
-                  Get Started
-                </Button>
-              </Link>
-            ) : (
-              <Link
-                target="_blank"
-                href="https://docs.google.com/forms/d/e/1FAIpQLSe4vxuCkdCzWaMv8SQ60IAqyzCsAsdA5Hhq6ZePYL-J9I7T0g/viewform?usp=sf_link"
-              >
-                <Button
-                  style={{ background: "#37007d" }}
-                  placeholder={""}
-                  color="gray"
-                  onClick={scrollToStripeTable}
-                >
-                  Get Started
-                </Button>
-              </Link>
+            {isAdmin && (
+              <NavItem href="/dashboard" pathname={pathname}>
+                Dashboard
+              </NavItem>
             )}
-          </div>
+          </ul>
+          {/* Removed auth buttons from mobile menu since they're now in the header */}
         </div>
       </Collapse>
     </MTNavbar>

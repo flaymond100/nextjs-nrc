@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Layout } from "@/components";
 
 export const metadata: Metadata = {
-  title: "Cycling Team",
+  title: "Team",
   description:
     "Join our international cycling team from any part of the world.",
   alternates: {
