@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
+import { Bars3Icon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 
 const SIDEBAR_MENU = [
   {
@@ -40,6 +41,8 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [emailConfirmed, setEmailConfirmed] = useState<boolean | null>(null);
   const [checkingEmail, setCheckingEmail] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile menu state
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Desktop collapse state
 
   useEffect(() => {
     async function checkEmailConfirmation() {
@@ -90,6 +93,23 @@ export default function DashboardLayout({
     }
   }, [user, emailConfirmed, authLoading, checkingEmail, router]);
 
+  // Close sidebar when clicking outside on mobile
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setSidebarOpen(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Close sidebar when route changes on mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
+
   const loading = authLoading || checkingEmail || adminLoading;
 
   if (loading) {
@@ -117,12 +137,105 @@ export default function DashboardLayout({
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-50">
-        <div className="flex">
-          {/* Sidebar */}
-          <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-80px)] sticky top-[80px]">
-            <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-800 mb-6">Dashboard</h2>
-            <nav className="space-y-2">
+        <div className="flex relative">
+          {/* Mobile Overlay */}
+          {sidebarOpen && (
+            <div
+              className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+              onClick={() => setSidebarOpen(false)}
+            />
+          )}
+
+          {/* Mobile Expanded Menu Overlay */}
+          {sidebarOpen && (
+            <aside
+              className={`
+                fixed top-[80px] left-0 z-50
+                w-64 h-[calc(100vh-80px)]
+                bg-white border-r border-gray-200
+                transform transition-transform duration-300 ease-in-out
+                md:hidden
+                ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+              `}
+            >
+              {/* Mobile Close Button */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <h2 className="text-lg font-bold text-gray-800">Menu</h2>
+                <button
+                  onClick={() => setSidebarOpen(false)}
+                  className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  aria-label="Close menu"
+                >
+                  <XMarkIcon className="h-6 w-6 text-gray-600" />
+                </button>
+              </div>
+
+              <nav className="space-y-2 p-4">
+                {SIDEBAR_MENU.map((item) => {
+                  if (item.adminOnly && !isAdmin) {
+                    return null;
+                  }
+
+                  const isActive =
+                    pathname === item.href || pathname?.startsWith(item.href + "/");
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setSidebarOpen(false)}
+                      className={`
+                        flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
+                        ${isActive
+                          ? "bg-purple-100 text-purple-700 font-semibold"
+                          : "text-gray-700 hover:bg-gray-100"
+                        }
+                      `}
+                    >
+                      <span className="text-xl flex-shrink-0">{item.icon}</span>
+                      <span>{item.name}</span>
+                    </Link>
+                  );
+                })}
+              </nav>
+            </aside>
+          )}
+
+          {/* Icon-Only Sidebar (Mobile) / Collapsible Sidebar (Desktop) */}
+          <aside
+            className={`
+              sticky top-[80px] left-0 z-40
+              w-16
+              ${sidebarCollapsed ? "md:w-16" : "md:w-64"}
+              bg-white border-r border-gray-200
+              min-h-[calc(100vh-80px)]
+              flex-shrink-0
+              transition-all duration-300 ease-in-out
+            `}
+          >
+            {/* Desktop Title and Toggle */}
+            <div className="hidden md:block">
+              <div className={`${sidebarCollapsed ? "p-2" : "p-6"} transition-all duration-300`}>
+                <div className={`flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"} mb-6`}>
+                  {!sidebarCollapsed && (
+                    <h2 className="text-xl font-bold text-gray-800">Dashboard</h2>
+                  )}
+                  <button
+                    onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                    className="p-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
+                    aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                  >
+                    {sidebarCollapsed ? (
+                      <ChevronRightIcon className="h-5 w-5 text-gray-600" />
+                    ) : (
+                      <ChevronLeftIcon className="h-5 w-5 text-gray-600" />
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <nav className={`space-y-2 p-2 ${sidebarCollapsed ? "md:p-2" : "md:p-6"} md:pt-0 transition-all duration-300`}>
               {SIDEBAR_MENU.map((item) => {
                 // Hide admin-only items for non-admins
                 if (item.adminOnly && !isAdmin) {
@@ -136,23 +249,42 @@ export default function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                      isActive
+                    className={`
+                      relative flex items-center justify-center
+                      ${sidebarCollapsed ? "md:justify-center" : "md:justify-start"}
+                      gap-0 md:gap-3 px-2 md:px-4 py-3 rounded-lg transition-colors
+                      ${isActive
                         ? "bg-purple-100 text-purple-700 font-semibold"
                         : "text-gray-700 hover:bg-gray-100"
-                    }`}
+                      }
+                      group
+                    `}
+                    title={item.name}
                   >
-                    <span className="text-xl">{item.icon}</span>
-                    <span>{item.name}</span>
+                    <span className="text-2xl md:text-xl flex-shrink-0">{item.icon}</span>
+                    <span className={`hidden ${sidebarCollapsed ? "md:hidden" : "md:inline"} transition-opacity duration-300`}>
+                      {item.name}
+                    </span>
+                    {/* Mobile tooltip - shows on hover */}
+                    <span className="md:hidden absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
+                      {item.name}
+                      <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></span>
+                    </span>
+                    {/* Desktop tooltip when collapsed */}
+                    <span className={`hidden ${sidebarCollapsed ? "md:block" : "md:hidden"} absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg`}>
+                      {item.name}
+                      <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></span>
+                    </span>
                   </Link>
                 );
               })}
             </nav>
-            </div>
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 p-8">{children}</main>
+          <main className="flex-1 w-full md:w-auto p-4 md:p-8">
+            {children}
+          </main>
         </div>
       </div>
       <Footer />
