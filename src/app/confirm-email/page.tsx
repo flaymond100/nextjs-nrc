@@ -47,25 +47,10 @@ export default function ConfirmEmailPage() {
             Email Confirmed Successfully!
           </h1>
           <div className="space-y-4 text-gray-600 mb-8">
-            <p className="text-lg">
-              Your email has been successfully confirmed!
-            </p>
-            <div className="bg-green-50 border-l-4 border-green-500 p-4 text-left">
+            <div className="bg-green-50 text-center border-l-4 border-green-500 p-4 text-left">
               <p className="font-semibold text-green-800 mb-2">
-                Your account is now active!
-              </p>
-              <p className="text-green-700 mb-2">
-                You're now logged in and can access all features of your rider
-                profile.
-              </p>
-              <p className="text-green-700 text-sm">
-                <Link
-                  href="/profile"
-                  className="font-semibold underline hover:text-green-900"
-                >
-                  Update your profile
-                </Link>{" "}
-                to add your avatar, personal information, and other details.
+                Your account is now active and can access all features of your
+                rider profile!
               </p>
             </div>
           </div>
