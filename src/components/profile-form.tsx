@@ -15,8 +15,6 @@ import { NavigationLink } from "./navigation-link";
 interface RiderData {
   firstName: string | null;
   lastName: string | null;
-  ftp: string | null;
-  weight: string | null;
   instagram: string | null;
   strava: string | null;
   bio: string | null;
@@ -26,8 +24,6 @@ interface RiderData {
 const profileValidationSchema = Yup.object().shape({
   firstName: Yup.string().nullable(),
   lastName: Yup.string().nullable(),
-  ftp: Yup.string().nullable(),
-  weight: Yup.string().nullable(),
   instagram: Yup.string().nullable(),
   strava: Yup.string().nullable(),
   bio: Yup.string().nullable(),
@@ -45,8 +41,6 @@ export const ProfileSection = () => {
     initialValues: {
       firstName: null,
       lastName: null,
-      ftp: null,
-      weight: null,
       instagram: null,
       strava: null,
       bio: null,
@@ -67,8 +61,6 @@ export const ProfileSection = () => {
             uuid: user.id,
             firstName: values.firstName || null,
             lastName: values.lastName || null,
-            ftp: values.ftp || null,
-            weight: values.weight || null,
             instagram: values.instagram || null,
             strava: values.strava || null,
             bio: values.bio || null,
@@ -123,8 +115,6 @@ export const ProfileSection = () => {
           formik.setValues({
             firstName: data.firstName || null,
             lastName: data.lastName || null,
-            ftp: data.ftp || null,
-            weight: data.weight || null,
             instagram: data.instagram || null,
             strava: data.strava || null,
             bio: data.bio || null,
@@ -338,46 +328,6 @@ export const ProfileSection = () => {
                 name="lastName"
                 placeholder="Last Name"
                 value={formik.values.lastName || ""}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-            <div>
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="ftp"
-              >
-                FTP (Functional Threshold Power)
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="ftp"
-                type="text"
-                name="ftp"
-                placeholder="e.g., 250"
-                value={formik.values.ftp || ""}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-              />
-            </div>
-
-            <div>
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="weight"
-              >
-                Weight (kg)
-              </label>
-              <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                id="weight"
-                type="text"
-                name="weight"
-                placeholder="e.g., 70"
-                value={formik.values.weight || ""}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
               />

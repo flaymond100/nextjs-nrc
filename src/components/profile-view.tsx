@@ -13,8 +13,6 @@ import { NavigationLink } from "./navigation-link";
 interface RiderData {
   firstName: string | null;
   lastName: string | null;
-  ftp: string | null;
-  weight: string | null;
   instagram: string | null;
   strava: string | null;
   bio: string | null;
@@ -56,8 +54,6 @@ export const ProfileView = () => {
           setRiderData({
             firstName: data.firstName || null,
             lastName: data.lastName || null,
-            ftp: data.ftp || null,
-            weight: data.weight || null,
             instagram: data.instagram || null,
             strava: data.strava || null,
             bio: data.bio || null,
@@ -69,8 +65,6 @@ export const ProfileView = () => {
           setRiderData({
             firstName: null,
             lastName: null,
-            ftp: null,
-            weight: null,
             instagram: null,
             strava: null,
             bio: null,
@@ -154,26 +148,6 @@ export const ProfileView = () => {
               {riderData?.email && (
                 <p className="text-gray-600 mb-4">{riderData.email}</p>
               )}
-              {(riderData?.ftp || riderData?.weight) && (
-                <div className="flex flex-wrap gap-4 justify-center md:justify-start">
-                  {riderData.ftp && (
-                    <div className="bg-purple-50 px-4 py-2 rounded-lg">
-                      <span className="text-sm text-gray-600">FTP</span>
-                      <p className="text-lg font-semibold text-purple-700">
-                        {riderData.ftp} W
-                      </p>
-                    </div>
-                  )}
-                  {riderData.weight && (
-                    <div className="bg-purple-50 px-4 py-2 rounded-lg">
-                      <span className="text-sm text-gray-600">Weight</span>
-                      <p className="text-lg font-semibold text-purple-700">
-                        {riderData.weight} kg
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
 
@@ -235,8 +209,6 @@ export const ProfileView = () => {
           {/* Empty State */}
           {!riderData?.firstName &&
             !riderData?.lastName &&
-            !riderData?.ftp &&
-            !riderData?.weight &&
             !riderData?.instagram &&
             !riderData?.strava &&
             !riderData?.bio && (
