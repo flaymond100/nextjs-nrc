@@ -13,7 +13,11 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (
     email: string,
-    password: string
+    password: string,
+    options?: {
+      firstName?: string;
+      lastName?: string;
+    }
   ) => Promise<{ data: { user: User | null } | null; error: any }>;
   signOut: () => Promise<void>;
 }
@@ -57,7 +61,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const currentUser = (session?.user as User) ?? null;
       setUser(currentUser);
       setLoading(false);
-      
+
       // Check admin status if user exists
       if (currentUser?.id) {
         checkAdminStatus(currentUser.id);
@@ -74,7 +78,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const currentUser = (session?.user as User) ?? null;
       setUser(currentUser);
       setLoading(false);
-      
+
       // Check admin status if user exists
       if (currentUser?.id) {
         checkAdminStatus(currentUser.id);
@@ -94,10 +98,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { error };
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    options?: {
+      firstName?: string;
+      lastName?: string;
+    }
+  ) => {
     const { data, error } = (await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          firstName: options?.firstName,
+          lastName: options?.lastName,
+        },
+      },
     })) as { data: { user: User | null }; error: any };
     return { data, error };
   };
@@ -108,7 +125,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, session, loading, isAdmin, adminLoading, signIn, signUp, signOut }}
+      value={{
+        user,
+        session,
+        loading,
+        isAdmin,
+        adminLoading,
+        signIn,
+        signUp,
+        signOut,
+      }}
     >
       {children}
     </AuthContext.Provider>

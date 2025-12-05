@@ -37,7 +37,7 @@ export const ProfileSection = () => {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 
   const formik = useFormik<RiderData>({
@@ -94,6 +94,12 @@ export const ProfileSection = () => {
   });
 
   useEffect(() => {
+    // Wait for auth to finish loading before checking user
+    if (authLoading) {
+      return;
+    }
+
+    // Only redirect if auth has finished loading and user is still null
     if (!user) {
       router.push("/?login=true");
       return;
@@ -131,9 +137,10 @@ export const ProfileSection = () => {
     }
 
     fetchRiderData();
-  }, [user]);
+  }, [user, authLoading, router]);
 
-  if (loading) {
+  // Show loader while auth is loading or rider data is loading
+  if (authLoading || loading) {
     return (
       <section className="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
         <Loader />
@@ -141,6 +148,7 @@ export const ProfileSection = () => {
     );
   }
 
+  // Only show nothing if auth has finished loading and user is still null
   if (!user) {
     return null;
   }
@@ -226,13 +234,14 @@ export const ProfileSection = () => {
                 setUploading(true);
                 try {
                   // Delete old avatar if exists
-                  if (formik.values.avatarUrl && formik.values.avatarUrl.includes("supabase.co/storage")) {
+                  if (
+                    formik.values.avatarUrl &&
+                    formik.values.avatarUrl.includes("supabase.co/storage")
+                  ) {
                     try {
                       const urlParts = formik.values.avatarUrl.split("/");
                       const fileName = urlParts[urlParts.length - 1];
-                      await supabase.storage
-                        .from("avatars")
-                        .remove([fileName]);
+                      await supabase.storage.from("avatars").remove([fileName]);
                     } catch (deleteErr) {
                       // Ignore delete errors (file might not exist)
                       console.log("Could not delete old avatar:", deleteErr);
