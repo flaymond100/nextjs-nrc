@@ -22,7 +22,6 @@ interface NewsFormData {
   excerpt: string;
   content: string;
   main_image_url: string;
-  published_at: string;
   is_published: boolean;
 }
 
@@ -50,7 +49,6 @@ const newsValidationSchema = Yup.object().shape({
     .required("Content is required")
     .min(10, "Content must be at least 10 characters"),
   main_image_url: Yup.string().url("Invalid URL").nullable(),
-  published_at: Yup.string().nullable(),
   is_published: Yup.boolean(),
 });
 
@@ -77,14 +75,9 @@ export const EditNewsForm = ({ newsId }: EditNewsFormProps) => {
         excerpt: "",
         content: "",
         main_image_url: "",
-        published_at: "",
         is_published: false,
       };
     }
-
-    const publishedAt = newsData.published_at
-      ? new Date(newsData.published_at).toISOString().slice(0, 16)
-      : "";
 
     return {
       title: newsData.title || "",
@@ -92,7 +85,6 @@ export const EditNewsForm = ({ newsId }: EditNewsFormProps) => {
       excerpt: newsData.excerpt || "",
       content: newsData.content || "",
       main_image_url: newsData.main_image_url || "",
-      published_at: publishedAt,
       is_published: newsData.is_published || false,
     };
   };
@@ -138,7 +130,6 @@ export const EditNewsForm = ({ newsId }: EditNewsFormProps) => {
       excerpt: "",
       content: "",
       main_image_url: "",
-      published_at: "",
       is_published: false,
     },
     validationSchema: newsValidationSchema,
@@ -163,19 +154,34 @@ export const EditNewsForm = ({ newsId }: EditNewsFormProps) => {
           }
         }
 
-        const newsData = {
+        // Get current article to check if we need to update published_at
+        const { data: currentArticle } = await supabase
+          .from("news")
+          .select("published_at, is_published")
+          .eq("id", newsId)
+          .single();
+
+        const newsData: any = {
           title: values.title,
           slug: values.slug,
           excerpt: values.excerpt || null,
           content: values.content,
           main_image_url: values.main_image_url || null,
-          published_at: values.published_at
-            ? new Date(values.published_at).toISOString()
-            : values.is_published
-              ? new Date().toISOString()
-              : null,
           is_published: values.is_published,
         };
+
+        // Update published_at logic:
+        // - If publishing (was unpublished, now published): set to now
+        // - If unpublishing: keep existing published_at (for history)
+        // - If already published and staying published: keep existing
+        if (values.is_published && (!currentArticle?.is_published || !currentArticle?.published_at)) {
+          // Publishing for the first time or was unpublished
+          newsData.published_at = new Date().toISOString();
+        } else if (!values.is_published) {
+          // Unpublishing - keep existing published_at for history
+          newsData.published_at = currentArticle?.published_at || null;
+        }
+        // If already published and staying published, don't change published_at
 
         const { error } = await supabase
           .from("news")
@@ -511,42 +517,22 @@ export const EditNewsForm = ({ newsId }: EditNewsFormProps) => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
-            <div>
-              <label
-                className="block text-gray-700 text-sm font-bold mb-2"
-                htmlFor="published_at"
-              >
-                Published Date
-              </label>
+          <div className="mb-4 md:mb-6">
+            <label className="flex items-center cursor-pointer">
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline"
-                id="published_at"
-                type="datetime-local"
-                name="published_at"
-                value={formik.values.published_at}
+                type="checkbox"
+                name="is_published"
+                checked={formik.values.is_published}
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
+                className="mr-2 w-5 h-5 text-[#37007d] border-gray-300 rounded focus:ring-[#37007d]"
               />
-              <p className="text-gray-500 text-xs mt-1">
-                Leave empty to publish immediately when checked
-              </p>
-            </div>
-
-            <div className="flex items-center">
-              <label className="flex items-center cursor-pointer">
-                <input
-                  type="checkbox"
-                  name="is_published"
-                  checked={formik.values.is_published}
-                  onChange={formik.handleChange}
-                  className="mr-2 w-5 h-5 text-[#37007d] border-gray-300 rounded focus:ring-[#37007d]"
-                />
-                <span className="text-gray-700 text-sm font-bold">
-                  Publish immediately
-                </span>
-              </label>
-            </div>
+              <span className="text-gray-700 text-sm font-bold">
+                Publish and show on website
+              </span>
+            </label>
+            <p className="text-gray-500 text-xs mt-1 ml-7">
+              Uncheck to hide from public (save as draft)
+            </p>
           </div>
 
           <div className="flex justify-center gap-4 mt-6 md:mt-8">

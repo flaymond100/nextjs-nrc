@@ -12,7 +12,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@material-tailwind/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import toast from "react-hot-toast";
@@ -31,6 +31,24 @@ export function NewsDetail({ article }: NewsDetailProps) {
   const router = useRouter();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+
+  // Redirect non-admins away from draft articles
+  // Note: This is a client-side check. With static export, the content is in the HTML,
+  // but this prevents non-admins from seeing it in the browser.
+  useEffect(() => {
+    if (!article.is_published && !isAdmin) {
+      router.push("/news");
+    }
+  }, [article.is_published, isAdmin, router]);
+
+  // Don't render draft articles for non-admins
+  if (!article.is_published && !isAdmin) {
+    return (
+      <div className="container mx-auto px-4 py-12 text-center">
+        <p>Redirecting...</p>
+      </div>
+    );
+  }
 
   const handleDeleteClick = () => {
     setShowDeleteModal(true);
