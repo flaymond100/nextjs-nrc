@@ -1,14 +1,49 @@
-"use client";
-// components
-import { Navbar, Footer } from "@/components";
-import { EditRaceForm } from "@/components/edit-race-form";
-import { useAdmin } from "@/hooks/use-admin";
-import { useParams, useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { Loader } from "@/components/loader";
-import toast from "react-hot-toast";
+import { createClient } from "@supabase/supabase-js";
+import EditRacePageClient from "./edit-client";
 
-export default function EditRacePage() {
+export async function generateStaticParams(): Promise<{ id: string }[]> {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+
+  if (!supabaseUrl || !supabaseKey) {
+    console.warn("Supabase credentials not found, returning empty params");
+    return [];
+  }
+
+  try {
+    const supabase = createClient(supabaseUrl, supabaseKey);
+    const { data: races, error } = await supabase
+      .from("race_calendar")
+      .select("id");
+
+    if (error) {
+      console.error("Error fetching races for static params:", error);
+      return [];
+    }
+
+    if (!races || races.length === 0) {
+      return [];
+    }
+
+    return races.map((race) => ({
+      id: race.id,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
+}
+
+interface EditRacePageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function EditRacePage({ params }: EditRacePageProps) {
+  const { id: raceId } = await params;
+  return <EditRacePageClient raceId={raceId} />;
+}
   const params = useParams();
   const raceId = params?.id as string;
   const { isAdmin, loading } = useAdmin();
