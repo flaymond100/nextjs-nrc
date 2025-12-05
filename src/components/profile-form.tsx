@@ -26,8 +26,8 @@ const profileValidationSchema = Yup.object().shape({
   lastName: Yup.string().nullable(),
   ftp: Yup.string().nullable(),
   weight: Yup.string().nullable(),
-  instagram: Yup.string().url("Invalid Instagram URL").nullable(),
-  strava: Yup.string().url("Invalid Strava URL").nullable(),
+  instagram: Yup.string().nullable(),
+  strava: Yup.string().nullable(),
   bio: Yup.string().nullable(),
 });
 
