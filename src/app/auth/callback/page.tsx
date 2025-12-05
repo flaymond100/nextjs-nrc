@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import { Navbar, Footer } from "@/components";
@@ -17,7 +17,7 @@ function parseHashParams(hash: string) {
   };
 }
 
-export default function AuthCallbackPage() {
+function AuthCallbackContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [status, setStatus] = useState<"loading" | "error">("loading");
@@ -138,6 +138,31 @@ export default function AuthCallbackPage() {
       </section>
       <Footer />
     </>
+  );
+}
+
+export default function AuthCallbackPage() {
+  return (
+    <Suspense
+      fallback={
+        <>
+          <Navbar />
+          <section className="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+            <div className="max-w-2xl w-full bg-white rounded-lg shadow-lg p-8 text-center">
+              <div className="mb-6 flex justify-center">
+                <Loader />
+              </div>
+              <h1 className="text-2xl font-bold text-gray-800 mb-4">
+                Loading...
+              </h1>
+            </div>
+          </section>
+          <Footer />
+        </>
+      }
+    >
+      <AuthCallbackContent />
+    </Suspense>
   );
 }
 
