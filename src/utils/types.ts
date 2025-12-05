@@ -42,6 +42,9 @@ export type RaceType = "road" | "crit" | "tt" | "triathlon" | "social";
 
 export interface Rider {
   uuid: string;
+  email: string;
+  isEmailConfirmed: boolean;
+  isPaid: boolean;
   firstName: string | null;
   lastName: string | null;
   ftp: string | null;
