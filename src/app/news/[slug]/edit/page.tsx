@@ -3,7 +3,11 @@ import EditNewsPageClient from "./edit-client";
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  // Use service role key to bypass RLS and fetch ALL articles (including drafts)
+  // This is necessary for static generation to include all routes
+  const supabaseKey =
+    process.env.SUPABASE_SERVICE_ROLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase credentials not found, returning empty params");
@@ -11,12 +15,16 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   }
 
   try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data: news, error } = await supabase
-      .from("news")
-      .select("slug")
-      .eq("is_published", true)
-      .lte("published_at", new Date().toISOString());
+    const supabase = createClient(supabaseUrl, supabaseKey, {
+      auth: {
+        autoRefreshToken: false,
+        persistSession: false,
+      },
+    });
+    // Fetch ALL news articles (including drafts/unpublished) for static generation
+    // Using service role key bypasses RLS to ensure all routes are generated at build time
+    // RLS policies will control access at runtime when users visit the pages
+    const { data: news, error } = await supabase.from("news").select("slug");
 
     if (error) {
       console.error("Error fetching news for static params:", error);
@@ -27,9 +35,11 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
       return [];
     }
 
-    return news.map((article) => ({
-      slug: article.slug,
-    }));
+    return news
+      .filter((article) => article.slug && typeof article.slug === "string")
+      .map((article) => ({
+        slug: String(article.slug),
+      }));
   } catch (error) {
     console.error("Error generating static params:", error);
     return [];
@@ -46,4 +56,3 @@ export default async function EditNewsPage({ params }: EditNewsPageProps) {
   const { slug } = await params;
   return <EditNewsPageClient slug={slug} />;
 }
-

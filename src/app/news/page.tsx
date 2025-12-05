@@ -2,7 +2,6 @@
 // components
 import { Navbar, Footer } from "@/components";
 import { NewsList } from "@/components/news-list";
-import { Loader } from "@/components/loader";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@material-tailwind/react";
 import { NavigationLink } from "@/components/navigation-link";
