@@ -3,7 +3,7 @@
  */
 
 const nextConfig = {
-  output: "standalone",
+  output: "export",
   reactStrictMode: true,
   // Use the prefix for GitHub Pages
   // assetPrefix: "/nextjs-nrc/",
@@ -13,7 +13,6 @@ const nextConfig = {
     unoptimized: true,
   },
   distDir: "out",
-  trailingSlash: true,
 };
 
 module.exports = nextConfig;
