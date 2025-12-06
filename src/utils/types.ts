@@ -83,3 +83,32 @@ export interface News {
   created_by?: string | null;
   is_published: boolean;
 }
+
+export interface GobikProduct {
+  id: number;
+  category: string;
+  product_name: string;
+  variant: string | null;
+  price_5_24_eur: number;
+  currency: string;
+}
+
+export type Size = "2XS" | "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL" | "4XL";
+export type Gender = "Men" | "Women";
+
+export interface CartItem {
+  productId: number;
+  productName: string;
+  category: string;
+  variant: string | null;
+  price: number;
+  currency: string;
+  quantity: number;
+  size: Size;
+  gender: Gender;
+}
+
+export interface Cart {
+  items: CartItem[];
+  updatedAt: string;
+}
