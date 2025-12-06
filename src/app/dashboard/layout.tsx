@@ -9,7 +9,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
-import { Bars3Icon, XMarkIcon, ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import {
+  Bars3Icon,
+  XMarkIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/outline";
 
 const SIDEBAR_MENU = [
   {
@@ -106,11 +111,21 @@ export default function DashboardLayout({
         toast.error("Please confirm your email to access the dashboard.");
         router.push("/");
       } else if (!isActivated) {
-        toast.error("Your account must be activated by an admin to access the dashboard.");
+        toast.error(
+          "Your account must be activated by an admin to access the dashboard."
+        );
         router.push("/forbidden");
       }
     }
-  }, [user, emailConfirmed, isActivated, authLoading, checkingEmail, checkingActivation, router]);
+  }, [
+    user,
+    emailConfirmed,
+    isActivated,
+    authLoading,
+    checkingEmail,
+    checkingActivation,
+    router,
+  ]);
 
   // Close sidebar when clicking outside on mobile
   useEffect(() => {
@@ -129,7 +144,8 @@ export default function DashboardLayout({
     setSidebarOpen(false);
   }, [pathname]);
 
-  const loading = authLoading || checkingEmail || checkingActivation || adminLoading;
+  const loading =
+    authLoading || checkingEmail || checkingActivation || adminLoading;
 
   if (loading) {
     return (
@@ -194,12 +210,10 @@ export default function DashboardLayout({
                   if (item.adminOnly && !isAdmin) {
                     return null;
                   }
-                  if (item.verifiedOnly && !isActivated) {
-                    return null;
-                  }
 
                   const isActive =
-                    pathname === item.href || pathname?.startsWith(item.href + "/");
+                    pathname === item.href ||
+                    pathname?.startsWith(item.href + "/");
                   return (
                     <Link
                       key={item.href}
@@ -207,9 +221,10 @@ export default function DashboardLayout({
                       onClick={() => setSidebarOpen(false)}
                       className={`
                         flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
-                        ${isActive
-                          ? "bg-purple-100 text-purple-700 font-semibold"
-                          : "text-gray-700 hover:bg-gray-100"
+                        ${
+                          isActive
+                            ? "bg-purple-100 text-purple-700 font-semibold"
+                            : "text-gray-700 hover:bg-gray-100"
                         }
                       `}
                     >
@@ -236,16 +251,26 @@ export default function DashboardLayout({
           >
             {/* Desktop Title and Toggle */}
             <div className="hidden md:block">
-              <div className={`${sidebarCollapsed ? "p-2" : "p-6"} transition-all duration-300`}>
-                <div className={`flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"} mb-6`}>
+              <div
+                className={`${sidebarCollapsed ? "p-2" : "p-6"} transition-all duration-300`}
+              >
+                <div
+                  className={`flex items-center ${sidebarCollapsed ? "justify-center" : "justify-between"} mb-6`}
+                >
                   {!sidebarCollapsed && (
-                    <h2 className="text-xl font-bold text-gray-800">Dashboard</h2>
+                    <h2 className="text-xl font-bold text-gray-800">
+                      Dashboard
+                    </h2>
                   )}
                   <button
                     onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
                     className="p-2 rounded-lg hover:bg-gray-100 transition-colors flex-shrink-0"
-                    aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
-                    title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+                    aria-label={
+                      sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+                    }
+                    title={
+                      sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+                    }
                   >
                     {sidebarCollapsed ? (
                       <ChevronRightIcon className="h-5 w-5 text-gray-600" />
@@ -257,20 +282,19 @@ export default function DashboardLayout({
               </div>
             </div>
 
-            <nav className={`space-y-2 p-2 ${sidebarCollapsed ? "md:p-2" : "md:p-6"} md:pt-0 transition-all duration-300`}>
+            <nav
+              className={`space-y-2 p-2 ${sidebarCollapsed ? "md:p-2" : "md:p-6"} md:pt-0 transition-all duration-300`}
+            >
               {SIDEBAR_MENU.map((item) => {
                 // Hide admin-only items for non-admins
                 if (item.adminOnly && !isAdmin) {
                   return null;
                 }
-                // Hide verified-only items for non-verified riders
-                if (item.verifiedOnly && !isActivated) {
-                  return null;
-                }
 
                 // Check if current path matches the item href or starts with it (for sub-paths)
                 const isActive =
-                  pathname === item.href || pathname?.startsWith(item.href + "/");
+                  pathname === item.href ||
+                  pathname?.startsWith(item.href + "/");
                 return (
                   <Link
                     key={item.href}
@@ -279,16 +303,21 @@ export default function DashboardLayout({
                       relative flex items-center justify-center
                       ${sidebarCollapsed ? "md:justify-center" : "md:justify-start"}
                       gap-0 md:gap-3 px-2 md:px-4 py-3 rounded-lg transition-colors
-                      ${isActive
-                        ? "bg-purple-100 text-purple-700 font-semibold"
-                        : "text-gray-700 hover:bg-gray-100"
+                      ${
+                        isActive
+                          ? "bg-purple-100 text-purple-700 font-semibold"
+                          : "text-gray-700 hover:bg-gray-100"
                       }
                       group
                     `}
                     title={item.name}
                   >
-                    <span className="text-2xl md:text-xl flex-shrink-0">{item.icon}</span>
-                    <span className={`hidden ${sidebarCollapsed ? "md:hidden" : "md:inline"} transition-opacity duration-300`}>
+                    <span className="text-2xl md:text-xl flex-shrink-0">
+                      {item.icon}
+                    </span>
+                    <span
+                      className={`hidden ${sidebarCollapsed ? "md:hidden" : "md:inline"} transition-opacity duration-300`}
+                    >
                       {item.name}
                     </span>
                     {/* Mobile tooltip - shows on hover */}
@@ -297,7 +326,9 @@ export default function DashboardLayout({
                       <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></span>
                     </span>
                     {/* Desktop tooltip when collapsed */}
-                    <span className={`hidden ${sidebarCollapsed ? "md:block" : "md:hidden"} absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg`}>
+                    <span
+                      className={`hidden ${sidebarCollapsed ? "md:block" : "md:hidden"} absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-sm rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg`}
+                    >
                       {item.name}
                       <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></span>
                     </span>
@@ -308,13 +339,10 @@ export default function DashboardLayout({
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 w-full md:w-auto p-4 md:p-8">
-            {children}
-          </main>
+          <main className="flex-1 w-full md:w-auto p-4 md:p-8">{children}</main>
         </div>
       </div>
       <Footer />
     </>
   );
 }
-
