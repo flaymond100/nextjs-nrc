@@ -23,6 +23,12 @@ const SIDEBAR_MENU = [
     icon: "🏁",
   },
   {
+    name: "Store",
+    href: "/dashboard/store",
+    icon: "🛍️",
+    adminOnly: true,
+  },
+  {
     name: "Members",
     href: "/dashboard/members",
     icon: "👥",
@@ -188,6 +194,9 @@ export default function DashboardLayout({
                   if (item.adminOnly && !isAdmin) {
                     return null;
                   }
+                  if (item.verifiedOnly && !isActivated) {
+                    return null;
+                  }
 
                   const isActive =
                     pathname === item.href || pathname?.startsWith(item.href + "/");
@@ -252,6 +261,10 @@ export default function DashboardLayout({
               {SIDEBAR_MENU.map((item) => {
                 // Hide admin-only items for non-admins
                 if (item.adminOnly && !isAdmin) {
+                  return null;
+                }
+                // Hide verified-only items for non-verified riders
+                if (item.verifiedOnly && !isActivated) {
                   return null;
                 }
 
