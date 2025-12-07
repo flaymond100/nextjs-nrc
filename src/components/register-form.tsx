@@ -1,6 +1,6 @@
 "use client";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
@@ -15,28 +15,51 @@ interface RegisterData {
   confirmPassword: string;
   firstName: string;
   lastName: string;
+  captcha: string;
 }
 
-const registerValidationSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Please confirm your password"),
-  firstName: Yup.string()
-    .required("First name is required")
-    .min(1, "First name is required"),
-  lastName: Yup.string()
-    .required("Last name is required")
-    .min(1, "Last name is required"),
-});
+const generateCaptcha = () => {
+  const num1 = Math.floor(Math.random() * 10) + 1;
+  const num2 = Math.floor(Math.random() * 10) + 1;
+  const answer = num1 + num2;
+  return { question: `${num1} + ${num2}`, answer };
+};
+
+const registerValidationSchema = (captchaAnswer: number) =>
+  Yup.object().shape({
+    email: Yup.string().email("Invalid email").required("Email is required"),
+    password: Yup.string()
+      .min(6, "Password must be at least 6 characters")
+      .required("Password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("password")], "Passwords must match")
+      .required("Please confirm your password"),
+    firstName: Yup.string()
+      .required("First name is required")
+      .min(1, "First name is required"),
+    lastName: Yup.string()
+      .required("Last name is required")
+      .min(1, "Last name is required"),
+    captcha: Yup.string()
+      .required("Please solve the captcha")
+      .test(
+        "captcha-match",
+        "Incorrect answer. Please try again.",
+        (value) => parseInt(value || "0", 10) === captchaAnswer
+      ),
+  });
 
 export const RegisterSection = () => {
   const [disabled, setDisabled] = useState(false);
   const { signUp } = useAuth();
   const router = useRouter();
+
+  const [captcha, setCaptcha] = useState(() => generateCaptcha());
+
+  const validationSchema = useMemo(
+    () => registerValidationSchema(captcha.answer),
+    [captcha.answer]
+  );
 
   const formik = useFormik<RegisterData>({
     initialValues: {
@@ -45,8 +68,9 @@ export const RegisterSection = () => {
       confirmPassword: "",
       firstName: "",
       lastName: "",
+      captcha: "",
     },
-    validationSchema: registerValidationSchema,
+    validationSchema: validationSchema,
     onSubmit: async (values) => {
       setDisabled(true);
       try {
@@ -64,12 +88,18 @@ export const RegisterSection = () => {
         if (authError) {
           toast.error(authError.message || "Failed to create account");
           setDisabled(false);
+          // Regenerate captcha on error
+          setCaptcha(generateCaptcha());
+          formik.setFieldValue("captcha", "");
           return;
         }
 
         if (!authData || !authData.user) {
           toast.error("Account creation failed");
           setDisabled(false);
+          // Regenerate captcha on error
+          setCaptcha(generateCaptcha());
+          formik.setFieldValue("captcha", "");
           return;
         }
 
@@ -78,6 +108,9 @@ export const RegisterSection = () => {
       } catch (err: any) {
         toast.error("An unexpected error occurred");
         console.error(err);
+        // Regenerate captcha on error
+        setCaptcha(generateCaptcha());
+        formik.setFieldValue("captcha", "");
       } finally {
         setDisabled(false);
       }
@@ -238,6 +271,52 @@ export const RegisterSection = () => {
                 </p>
               )}
             </div>
+          </div>
+
+          <div className="mb-6">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="captcha"
+            >
+              Security Check <span className="text-red-500">*</span>
+            </label>
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-gray-700 font-semibold">
+                    What is {captcha.question}?
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCaptcha(generateCaptcha());
+                      formik.setFieldValue("captcha", "");
+                    }}
+                    className="text-purple-600 hover:text-purple-800 text-sm underline"
+                    title="Get a new question"
+                  >
+                    Refresh
+                  </button>
+                </div>
+                <input
+                  className={`shadow appearance-none border ${
+                    formik.errors.captcha && "border-red-500"
+                  } rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline`}
+                  id="captcha"
+                  type="number"
+                  name="captcha"
+                  placeholder="Enter your answer"
+                  value={formik.values.captcha}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                />
+              </div>
+            </div>
+            {formik.errors.captcha && (
+              <p className="text-red-500 text-xs italic mt-1">
+                {formik.errors.captcha}
+              </p>
+            )}
           </div>
 
           <div className="flex justify-center mt-8">
