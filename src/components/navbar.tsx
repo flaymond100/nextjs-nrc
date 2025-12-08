@@ -192,7 +192,7 @@ export function Navbar() {
         {/* Logo - Left */}
         <NavigationLink href="/" className="flex-shrink-0">
           <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/NRC-2.png`}
+            src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/NRC-2.png`}
             alt="favicon Nrc Team"
             width={80}
             height={45}
