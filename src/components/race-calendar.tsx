@@ -170,7 +170,9 @@ export function RaceCalendarTable() {
 
     // Check if user is activated
     if (!userRider?.isActivated) {
-      toast.error("Your account must be activated by an admin before you can register for races");
+      toast.error(
+        "Your account must be activated by an admin before you can register for races"
+      );
       router.push("/forbidden");
       return;
     }
@@ -410,15 +412,15 @@ export function RaceCalendarTable() {
                       !isRegistered(race) && !userRider?.isActivated
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : isRegistered(race)
-                        ? "bg-red-100 text-red-700 hover:bg-red-200"
-                        : "bg-green-100 text-green-700 hover:bg-green-200"
+                          ? "bg-red-100 text-red-700 hover:bg-red-200"
+                          : "bg-green-100 text-green-700 hover:bg-green-200"
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                     title={
                       !isRegistered(race) && !userRider?.isActivated
                         ? "Your account must be activated by an admin to register for races"
                         : isRegistered(race)
-                        ? "Unregister from race"
-                        : "Register for race"
+                          ? "Unregister from race"
+                          : "Register for race"
                     }
                   >
                     {updatingRaces.has(race.id) ? (
@@ -510,8 +512,8 @@ function ParticipantsDisplay({
     if (badgeRef.current) {
       const rect = badgeRef.current.getBoundingClientRect();
       setTooltipPosition({
-        top: rect.bottom + window.scrollY + 8,
-        left: rect.left + window.scrollX,
+        top: rect.bottom + 8,
+        left: rect.left,
       });
       setShowTooltip(true);
     }
