@@ -23,11 +23,15 @@ interface RaceFormData {
   participants: string[];
 }
 
+const PROFILE_TYPES = ["Flat", "Hilly", "Mountain", "Rolling"] as const;
+
 const raceValidationSchema = Yup.object().shape({
   name: Yup.string().required("Race name is required"),
   event_date: Yup.string().required("Event date is required"),
   url: Yup.string().url("Invalid URL").nullable(),
-  profile: Yup.string().nullable(),
+  profile: Yup.string()
+    .oneOf([...PROFILE_TYPES, ""], "Invalid profile type")
+    .nullable(),
   distance_km: Yup.number().positive("Distance must be positive").nullable(),
   elevation_m: Yup.number().integer("Elevation must be an integer").nullable(),
   race_type: Yup.string()
@@ -81,15 +85,8 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
       try {
         // Fetch race and riders in parallel
         const [raceResult, riderResult] = await Promise.all([
-          supabase
-            .from("race_calendar")
-            .select("*")
-            .eq("id", raceId)
-            .single(),
-          supabase
-            .from("riders")
-            .select("*")
-            .eq("isEmailConfirmed", true),
+          supabase.from("race_calendar").select("*").eq("id", raceId).single(),
+          supabase.from("riders").select("*").eq("isEmailConfirmed", true),
         ]);
 
         const { data: raceData, error: raceError } = raceResult;
@@ -177,7 +174,9 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
     return (
       <section className="container mx-auto px-4 py-6 md:py-12 min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Race not found</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Race not found
+          </h2>
           <NavigationLink href="/calendar">
             <Button variant="text" placeholder={""} className="text-purple-600">
               Back to Calendar
@@ -414,16 +413,28 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
             >
               Profile
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline"
+            <select
+              className={`shadow appearance-none border ${
+                formik.errors.profile && "border-red-500"
+              } rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
               id="profile"
-              type="text"
               name="profile"
-              placeholder="e.g., flat, hilly, or profile image URL"
               value={formik.values.profile}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-            />
+            >
+              <option value="">Select profile type</option>
+              {PROFILE_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            {formik.errors.profile && (
+              <p className="text-red-500 text-xs italic mt-1">
+                {formik.errors.profile}
+              </p>
+            )}
           </div>
 
           <div className="mb-4 md:mb-6">
@@ -495,4 +506,3 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
     </section>
   );
 };
-

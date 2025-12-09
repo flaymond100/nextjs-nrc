@@ -21,11 +21,15 @@ interface RaceFormData {
   participants: string[];
 }
 
+const PROFILE_TYPES = ["Flat", "Hilly", "Mountain", "Rolling"] as const;
+
 const raceValidationSchema = Yup.object().shape({
   name: Yup.string().required("Race name is required"),
   event_date: Yup.string().required("Event date is required"),
   url: Yup.string().url("Invalid URL").nullable(),
-  profile: Yup.string().nullable(),
+  profile: Yup.string()
+    .oneOf([...PROFILE_TYPES, ""], "Invalid profile type")
+    .nullable(),
   distance_km: Yup.number().positive("Distance must be positive").nullable(),
   elevation_m: Yup.number().integer("Elevation must be an integer").nullable(),
   race_type: Yup.string()
@@ -322,16 +326,28 @@ export const CreateRaceForm = () => {
             >
               Profile
             </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline"
+            <select
+              className={`shadow appearance-none border ${
+                formik.errors.profile && "border-red-500"
+              } rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
               id="profile"
-              type="text"
               name="profile"
-              placeholder="e.g., flat, hilly, or profile image URL"
               value={formik.values.profile}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-            />
+            >
+              <option value="">Select profile type</option>
+              {PROFILE_TYPES.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            {formik.errors.profile && (
+              <p className="text-red-500 text-xs italic mt-1">
+                {formik.errors.profile}
+              </p>
+            )}
           </div>
 
           <div className="mb-4 md:mb-6">

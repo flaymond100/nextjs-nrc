@@ -158,7 +158,6 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
     });
   };
 
-
   const getParticipantNames = (
     participantUuids: string[] | null | undefined
   ) => {
@@ -176,7 +175,10 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
         }
         return null;
       })
-      .filter((item): item is { uuid: string; name: string } => item !== null && item.name !== "");
+      .filter(
+        (item): item is { uuid: string; name: string } =>
+          item !== null && item.name !== ""
+      );
   };
 
   const handleToggleRegistration = async () => {
@@ -190,7 +192,9 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
 
     // Check if user is activated
     if (!userRider?.isActivated) {
-      toast.error("Your account must be activated by an admin before you can register for races");
+      toast.error(
+        "Your account must be activated by an admin before you can register for races"
+      );
       router.push("/forbidden");
       return;
     }
@@ -344,15 +348,15 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
                       !isRegistered && !userRider?.isActivated
                         ? "bg-gray-100 text-gray-400 cursor-not-allowed"
                         : isRegistered
-                        ? "bg-red-100 text-red-700 hover:bg-red-200"
-                        : "bg-green-100 text-green-700 hover:bg-green-200"
+                          ? "bg-red-100 text-red-700 hover:bg-red-200"
+                          : "bg-green-100 text-green-700 hover:bg-green-200"
                     } disabled:opacity-50 disabled:cursor-not-allowed`}
                     title={
                       !isRegistered && !userRider?.isActivated
                         ? "Your account must be activated by an admin to register for races"
                         : isRegistered
-                        ? "Unregister from race"
-                        : "Register for race"
+                          ? "Unregister from race"
+                          : "Register for race"
                     }
                   >
                     {updating ? (
@@ -377,7 +381,9 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
               {race.location && (
                 <span className="text-lg text-gray-600">• {race.location}</span>
               )}
-              <span className={`px-3 py-1 rounded-full font-semibold text-sm ${getRaceTypeBadgeClasses(race.race_type)}`}>
+              <span
+                className={`px-3 py-1 rounded-full font-semibold text-sm ${getRaceTypeBadgeClasses(race.race_type)}`}
+              >
                 {formatRaceType(race.race_type)}
               </span>
             </div>
@@ -430,12 +436,13 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
           )}
 
           {(() => {
-            const confirmedParticipants = race.participants?.filter((uuid) => {
-              const rider = riders.get(uuid);
-              return rider && rider.isEmailConfirmed;
-            }) || [];
+            const confirmedParticipants =
+              race.participants?.filter((uuid) => {
+                const rider = riders.get(uuid);
+                return rider && rider.isEmailConfirmed;
+              }) || [];
             const participantNames = getParticipantNames(confirmedParticipants);
-            
+
             return participantNames.length > 0 ? (
               <div className="mt-8 pt-8 border-t border-gray-200">
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">
@@ -454,7 +461,9 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
               </div>
             ) : (
               <div className="mt-8 pt-8 border-t border-gray-200">
-                <p className="text-gray-500">No confirmed participants registered yet.</p>
+                <p className="text-gray-500">
+                  No confirmed participants registered yet.
+                </p>
               </div>
             );
           })()}

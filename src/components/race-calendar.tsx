@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
@@ -12,6 +12,95 @@ import { useRouter } from "next/navigation";
 import { NavigationLink } from "./navigation-link";
 import { useAdmin } from "@/hooks/use-admin";
 import { ConfirmModal } from "./confirm-modal";
+
+// Custom profile icon components
+interface ProfileIconProps {
+  className?: string;
+  title?: string;
+}
+
+const FlatProfileIcon = ({
+  className = "h-5 w-5",
+  title,
+}: ProfileIconProps) => (
+  <div className={className} title={title}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-full h-full"
+    >
+      {/* Road edges */}
+      <line x1="2" y1="5" x2="22" y2="5" />
+      <line x1="2" y1="19" x2="22" y2="19" />
+      {/* Road center line */}
+      <line x1="4" y1="12" x2="6" y2="12" />
+      <line x1="9" y1="12" x2="11" y2="12" />
+      <line x1="13" y1="12" x2="15" y2="12" />
+      <line x1="18" y1="12" x2="20" y2="12" />
+    </svg>
+  </div>
+);
+
+const HillyProfileIcon = ({
+  className = "h-5 w-5",
+  title,
+}: ProfileIconProps) => (
+  <div className={className} title={title}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-full h-full"
+    >
+      <path d="M1 18 L6 12 L12 18 L14 12 L18 18 L24 12" />
+    </svg>
+  </div>
+);
+
+const MountainProfileIcon = ({
+  className = "h-5 w-5",
+  title,
+}: ProfileIconProps) => (
+  <div className={className} title={title}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-full h-full"
+    >
+      <path d="M2 20 L8 6 L12 12 L16 4 L22 20" />
+    </svg>
+  </div>
+);
+
+const RollingProfileIcon = ({
+  className = "h-5 w-5",
+  title,
+}: ProfileIconProps) => (
+  <div className={className} title={title}>
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="w-full h-full"
+    >
+      <path d="M2 12 Q6 8 10 12 T18 12 T22 12" />
+    </svg>
+  </div>
+);
 
 export function RaceCalendarTable() {
   const [races, setRaces] = useState<RaceCalendar[]>([]);
@@ -137,24 +226,64 @@ export function RaceCalendarTable() {
     });
   };
 
-  const getParticipantNames = (
-    participantUuids: string[] | null | undefined
-  ): string[] => {
-    if (!participantUuids || participantUuids.length === 0) {
-      return [];
+  const getProfileType = (
+    profile: string | null | undefined
+  ): string | null => {
+    if (!profile) return null;
+
+    const trimmed = profile.trim();
+
+    // Check for exact matches first (for dropdown values)
+    const validTypes = ["Flat", "Hilly", "Mountain", "Rolling"];
+    if (validTypes.includes(trimmed)) {
+      return trimmed;
     }
 
-    return participantUuids
-      .map((uuid) => {
-        const rider = riders.get(uuid);
-        if (rider) {
-          const firstName = rider.firstName || "";
-          const lastName = rider.lastName || "";
-          return `${firstName} ${lastName}`.trim();
-        }
-        return null;
-      })
-      .filter((name): name is string => name !== null && name !== "");
+    // Normalize to lowercase for comparison
+    const normalized = trimmed.toLowerCase();
+
+    // Map common profile descriptions to standardized types
+    const profileMap: Record<string, string> = {
+      flat: "Flat",
+      hilly: "Hilly",
+      mountain: "Mountain",
+      mountainous: "Mountain",
+      rolling: "Rolling",
+    };
+
+    // Check if it matches a known profile type
+    for (const [key, value] of Object.entries(profileMap)) {
+      if (normalized.includes(key)) {
+        return value;
+      }
+    }
+
+    // If it looks like a URL, return null (we don't display URLs)
+    if (normalized.startsWith("http://") || normalized.startsWith("https://")) {
+      return null;
+    }
+
+    // Otherwise, capitalize first letter of each word
+    return trimmed
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+
+  // Map profile types to appropriate custom icons
+  const profileIconMap: Record<
+    string,
+    React.ComponentType<{ className?: string; title?: string }>
+  > = {
+    Flat: FlatProfileIcon,
+    Hilly: HillyProfileIcon,
+    Mountain: MountainProfileIcon,
+    Rolling: RollingProfileIcon,
+  };
+
+  const getProfileIcon = (profileType: string | null) => {
+    if (!profileType) return null;
+    return profileIconMap[profileType] || null;
   };
 
   const isRegistered = (race: RaceCalendar) => {
@@ -328,10 +457,10 @@ export function RaceCalendarTable() {
         <tbody className="bg-white divide-y divide-gray-200">
           {races.map((race) => (
             <tr key={race.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 w-48">
                 <NavigationLink
                   href={`/calendar/${race.id}`}
-                  className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline"
+                  className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline break-words"
                 >
                   {race.name}
                 </NavigationLink>
@@ -353,7 +482,7 @@ export function RaceCalendarTable() {
                   {formatRaceType(race.race_type)}
                 </span>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 w-48">
                 <div className="text-sm text-gray-900">
                   {race.distance_km
                     ? race.elevation_m
@@ -363,8 +492,24 @@ export function RaceCalendarTable() {
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">
-                  {race.profile || "-"}
+                <div className="flex items-center gap-2">
+                  {(() => {
+                    const profileType = getProfileType(race.profile);
+                    const IconComponent = profileType
+                      ? getProfileIcon(profileType)
+                      : null;
+                    return profileType && IconComponent ? (
+                      <div className="relative group inline-flex items-center">
+                        <IconComponent className="h-5 w-5 text-gray-600 cursor-help" />
+                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
+                          {profileType}
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+                        </div>
+                      </div>
+                    ) : (
+                      <span className="text-sm text-gray-400">-</span>
+                    );
+                  })()}
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
@@ -375,7 +520,7 @@ export function RaceCalendarTable() {
                     rel="noopener noreferrer"
                     className="text-purple-600 hover:text-purple-800 hover:underline"
                   >
-                    View Event
+                    Event
                   </Link>
                 ) : (
                   "-"
