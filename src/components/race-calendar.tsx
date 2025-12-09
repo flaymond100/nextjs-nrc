@@ -32,6 +32,7 @@ const FlatProfileIcon = ({
       strokeLinecap="round"
       strokeLinejoin="round"
       className="w-full h-full"
+      style={{ transform: "rotate(90deg)" }}
     >
       {/* Road edges */}
       <line x1="2" y1="5" x2="22" y2="5" />
@@ -433,7 +434,7 @@ export function RaceCalendarTable() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Distance
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Profile
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
@@ -492,7 +493,7 @@ export function RaceCalendarTable() {
                 </div>
               </td>
               <td className="px-6 py-4 whitespace-nowrap">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center gap-2">
                   {(() => {
                     const profileType = getProfileType(race.profile);
                     const IconComponent = profileType
