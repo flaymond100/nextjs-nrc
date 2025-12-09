@@ -20,10 +20,6 @@ export const NAV_MENU = [
     name: "Home",
     href: "/",
   },
-  // {
-  //   name: "Trainings",
-  //   href: "/trainings",
-  // },
   {
     name: "Team",
     href: "/cycling-team",
@@ -40,15 +36,6 @@ export const NAV_MENU = [
     name: "Partners",
     href: "/partners",
   },
-
-  // {
-  //   name: "Our Trainers",
-  //   href: "/trainers",
-  // },
-  // {
-  //   name: "About Us",
-  //   href: "/about-us",
-  // },
   {
     name: "Contact",
     href: "/contact",

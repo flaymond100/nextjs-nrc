@@ -10,7 +10,6 @@ import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
 import {
-  Bars3Icon,
   XMarkIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
