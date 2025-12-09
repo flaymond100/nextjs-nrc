@@ -16,9 +16,17 @@ import {
 } from "@heroicons/react/24/solid";
 import toast from "react-hot-toast";
 import { NavigationLink } from "./navigation-link";
-import { Button } from "@material-tailwind/react";
+import {
+  Button,
+  Card,
+  CardHeader,
+  CardBody,
+  Typography,
+} from "@material-tailwind/react";
 import { useAdmin } from "@/hooks/use-admin";
 import { ConfirmModal } from "./confirm-modal";
+import Image from "next/image";
+import { BsInstagram, BsStrava } from "react-icons/bs";
 
 interface RaceDetailSectionProps {
   raceId: string;
@@ -171,13 +179,33 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
         if (rider && rider.isEmailConfirmed) {
           const firstName = rider.firstName || "";
           const lastName = rider.lastName || "";
-          return { uuid, name: `${firstName} ${lastName}`.trim() || uuid };
+          const fullName = `${firstName} ${lastName}`.trim() || uuid;
+          return {
+            uuid,
+            name: fullName,
+            avatarUrl: rider.avatarUrl || null,
+            firstName: firstName || "",
+            lastName: lastName || "",
+            bio: rider.bio || null,
+            instagram: rider.instagram || null,
+            strava: rider.strava || null,
+          };
         }
         return null;
       })
       .filter(
-        (item): item is { uuid: string; name: string } =>
-          item !== null && item.name !== ""
+        (
+          item
+        ): item is {
+          uuid: string;
+          name: string;
+          avatarUrl: string | null;
+          firstName: string;
+          lastName: string;
+          bio: string | null;
+          instagram: string | null;
+          strava: string | null;
+        } => item !== null && item.name !== ""
       );
   };
 
@@ -445,17 +473,107 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
 
             return participantNames.length > 0 ? (
               <div className="mt-8 pt-8 border-t border-gray-200">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
                   Participants ({participantNames.length})
                 </h3>
-                <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {participantNames.map((participant) => (
-                    <span
+                    <Card
                       key={participant.uuid}
-                      className="inline-flex items-center px-3 py-1 rounded-md text-sm font-medium bg-blue-100 text-blue-800"
+                      className="shadow-lg flex flex-col overflow-hidden rounded-lg"
+                      placeholder=""
                     >
-                      {participant.name}
-                    </span>
+                      {/* CardHeader for Participant Photo */}
+                      <CardHeader
+                        style={{ height: "14rem", marginTop: "0" }}
+                        className="relative overflow-hidden rounded-t-lg"
+                        placeholder=""
+                      >
+                        {participant.avatarUrl ? (
+                          <div className="absolute inset-0 rounded-t-lg overflow-hidden">
+                            <Image
+                              src={participant.avatarUrl}
+                              alt={participant.name}
+                              className="object-cover"
+                              width={"100"}
+                              height={"100"}
+                              style={{
+                                objectFit: "cover",
+                                width: "100%",
+                                height: "auto",
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center rounded-t-lg">
+                            <span className="text-6xl font-bold text-white">
+                              {participant.firstName
+                                ? participant.firstName.charAt(0).toUpperCase()
+                                : participant.lastName
+                                  ? participant.lastName.charAt(0).toUpperCase()
+                                  : "?"}
+                            </span>
+                          </div>
+                        )}
+                      </CardHeader>
+
+                      {/* CardBody for Participant Info */}
+                      <CardBody
+                        className="flex flex-col flex-grow"
+                        placeholder=""
+                      >
+                        <div>
+                          <Typography variant="h5" className=" font-bold">
+                            {participant.name}
+                          </Typography>
+                        </div>
+                      </CardBody>
+
+                      {/* Social Links Footer */}
+                      {(participant.strava || participant.instagram) && (
+                        <div className="px-6 pb-4 pt-0">
+                          <div className="flex gap-2">
+                            {participant.strava && (
+                              <Link
+                                aria-label="Go to strava"
+                                target="_blank"
+                                href={participant.strava}
+                                rel="noopener noreferrer"
+                              >
+                                <Button
+                                  placeholder=""
+                                  aria-label="Go to strava"
+                                  size="sm"
+                                  name="Strava"
+                                  style={{ background: "#f06723" }}
+                                  className="bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-700 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
+                                >
+                                  <BsStrava className="text-white text-xl" />
+                                </Button>
+                              </Link>
+                            )}
+                            {participant.instagram && (
+                              <Link
+                                aria-label="Go to instagram"
+                                target="_blank"
+                                href={participant.instagram}
+                                rel="noopener noreferrer"
+                              >
+                                <Button
+                                  placeholder=""
+                                  aria-label="Go to instagram"
+                                  size="sm"
+                                  name="Instagram"
+                                  className="bg-gradient-to-tr from-yellow-500 via-pink-600 to-purple-700 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
+                                >
+                                  <BsInstagram className="text-white text-xl" />
+                                </Button>
+                              </Link>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </Card>
                   ))}
                 </div>
               </div>
