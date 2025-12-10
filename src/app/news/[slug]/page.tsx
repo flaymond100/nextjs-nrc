@@ -9,13 +9,11 @@ export const dynamicParams = false;
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
 
   // Prefer service role key to bypass RLS and fetch ALL articles (including drafts)
   // Fall back to anon key but only fetch published articles (RLS will filter)
-  const supabaseKey = serviceRoleKey || anonKey;
-  const useServiceRole = !!serviceRoleKey;
+  const supabaseKey = anonKey;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase credentials not found, returning empty params");
@@ -35,15 +33,8 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 
     // If using anon key, only fetch published articles (RLS will enforce this anyway)
     // If using service role key, fetch all articles
-    if (!useServiceRole) {
+    if (!anonKey) {
       query = query.eq("is_published", true);
-      console.log(
-        "Using anon key - only fetching published articles for static generation"
-      );
-    } else {
-      console.log(
-        "Using service role key - fetching all articles (including drafts) for static generation"
-      );
     }
 
     const { data: news, error } = await query;
@@ -53,7 +44,6 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
         error: error.message,
         code: error.code,
         details: error.details,
-        usingServiceRole: useServiceRole,
       });
       // Return empty array - this will cause routes to not be generated
       // But this is better than crashing the build
@@ -90,12 +80,11 @@ interface NewsDetailPageProps {
 
 async function getNewsArticle(slug: string) {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const anonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
 
   // Prefer service role key to bypass RLS and fetch any article (including drafts)
   // Fall back to anon key - RLS will only allow published articles
-  const supabaseKey = serviceRoleKey || anonKey;
+  const supabaseKey = anonKey;
 
   if (!supabaseUrl || !supabaseKey) {
     console.error("Supabase credentials not found");
@@ -127,7 +116,6 @@ async function getNewsArticle(slug: string) {
           error: error.message,
           code: error.code,
           details: error.details,
-          usingServiceRole: !!serviceRoleKey,
         });
       }
       return null;

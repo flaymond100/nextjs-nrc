@@ -5,9 +5,7 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   // Use service role key to bypass RLS and fetch ALL articles (including drafts)
   // This is necessary for static generation to include all routes
-  const supabaseKey =
-    process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase credentials not found, returning empty params");
