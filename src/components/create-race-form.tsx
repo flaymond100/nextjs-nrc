@@ -8,6 +8,8 @@ import { Button } from "@material-tailwind/react";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/navigation";
 import { RaceType, Rider } from "@/utils/types";
+import { useAuth } from "@/contexts/auth-context";
+import { uploadSeriesImage } from "@/utils/storage";
 
 interface RaceFormData {
   name: string;
@@ -44,7 +46,10 @@ export const CreateRaceForm = () => {
   const [disabled, setDisabled] = useState(false);
   const [riders, setRiders] = useState<Rider[]>([]);
   const [loadingRiders, setLoadingRiders] = useState(true);
+  const [uploadingSeriesImage, setUploadingSeriesImage] = useState(false);
+  const [seriesImagePreview, setSeriesImagePreview] = useState<string | null>(null);
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     async function fetchRiders() {
@@ -381,8 +386,83 @@ export const CreateRaceForm = () => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="series_image"
               >
-                Series Image URL
+                Series Image
               </label>
+              
+              {/* File Upload */}
+              <div className="mb-2">
+                <label
+                  htmlFor="series-image-upload"
+                  className="cursor-pointer inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploadingSeriesImage ? "Uploading..." : "Upload Image"}
+                </label>
+                <input
+                  id="series-image-upload"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploadingSeriesImage}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    if (!user) {
+                      toast.error("You must be logged in to upload images");
+                      return;
+                    }
+
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                      toast.error("Image size must be less than 5MB");
+                      return;
+                    }
+
+                    // Validate file type
+                    if (!file.type.startsWith("image/")) {
+                      toast.error("Please select a valid image file");
+                      return;
+                    }
+
+                    setUploadingSeriesImage(true);
+                    try {
+                      // Cleanup old preview URL if exists
+                      if (seriesImagePreview) {
+                        URL.revokeObjectURL(seriesImagePreview);
+                      }
+
+                      const publicUrl = await uploadSeriesImage(file, user.id);
+                      if (publicUrl) {
+                        formik.setFieldValue("series_image", publicUrl);
+                        // Create preview URL for local file
+                        const previewUrl = URL.createObjectURL(file);
+                        setSeriesImagePreview(previewUrl);
+                        toast.success("Image uploaded successfully!");
+                      }
+                    } catch (err: any) {
+                      toast.error(err.message || "Failed to upload image");
+                    } finally {
+                      setUploadingSeriesImage(false);
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Image Preview */}
+              {(seriesImagePreview || formik.values.series_image) && (
+                <div className="mb-2">
+                  <img
+                    src={seriesImagePreview || formik.values.series_image}
+                    alt="Series preview"
+                    className="max-w-32 h-16 object-contain border border-gray-300 rounded"
+                  />
+                </div>
+              )}
+
+              {/* URL Input (Alternative) */}
+              <div className="text-sm text-gray-600 mb-2">
+                Or enter image URL:
+              </div>
               <input
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
                 id="series_image"

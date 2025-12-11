@@ -10,6 +10,8 @@ import { useRouter } from "next/navigation";
 import { RaceType, Rider, RaceCalendar } from "@/utils/types";
 import { NavigationLink } from "./navigation-link";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
+import { useAuth } from "@/contexts/auth-context";
+import { uploadSeriesImage } from "@/utils/storage";
 
 interface RaceFormData {
   name: string;
@@ -52,7 +54,10 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
   const [loadingRiders, setLoadingRiders] = useState(true);
   const [loadingRace, setLoadingRace] = useState(true);
   const [race, setRace] = useState<RaceCalendar | null>(null);
+  const [uploadingSeriesImage, setUploadingSeriesImage] = useState(false);
+  const [seriesImagePreview, setSeriesImagePreview] = useState<string | null>(null);
   const router = useRouter();
+  const { user } = useAuth();
 
   const getInitialValues = (raceData: RaceCalendar | null): RaceFormData => {
     if (!raceData) {
@@ -107,6 +112,10 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
 
         if (raceData) {
           setRace(raceData);
+          // Set preview if series_image exists
+          if (raceData.series_image) {
+            setSeriesImagePreview(raceData.series_image);
+          }
         }
 
         if (riderError) {
@@ -470,8 +479,83 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
                 className="block text-gray-700 text-sm font-bold mb-2"
                 htmlFor="series_image"
               >
-                Series Image URL
+                Series Image
               </label>
+              
+              {/* File Upload */}
+              <div className="mb-2">
+                <label
+                  htmlFor="series-image-upload-edit"
+                  className="cursor-pointer inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {uploadingSeriesImage ? "Uploading..." : "Upload Image"}
+                </label>
+                <input
+                  id="series-image-upload-edit"
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={uploadingSeriesImage}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+
+                    if (!user) {
+                      toast.error("You must be logged in to upload images");
+                      return;
+                    }
+
+                    // Validate file size (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                      toast.error("Image size must be less than 5MB");
+                      return;
+                    }
+
+                    // Validate file type
+                    if (!file.type.startsWith("image/")) {
+                      toast.error("Please select a valid image file");
+                      return;
+                    }
+
+                    setUploadingSeriesImage(true);
+                    try {
+                      // Cleanup old preview URL if exists
+                      if (seriesImagePreview && seriesImagePreview.startsWith("blob:")) {
+                        URL.revokeObjectURL(seriesImagePreview);
+                      }
+
+                      const publicUrl = await uploadSeriesImage(file, user.id);
+                      if (publicUrl) {
+                        formik.setFieldValue("series_image", publicUrl);
+                        // Create preview URL for local file
+                        const previewUrl = URL.createObjectURL(file);
+                        setSeriesImagePreview(previewUrl);
+                        toast.success("Image uploaded successfully!");
+                      }
+                    } catch (err: any) {
+                      toast.error(err.message || "Failed to upload image");
+                    } finally {
+                      setUploadingSeriesImage(false);
+                    }
+                  }}
+                />
+              </div>
+
+              {/* Image Preview */}
+              {(seriesImagePreview || formik.values.series_image) && (
+                <div className="mb-2">
+                  <img
+                    src={seriesImagePreview || formik.values.series_image}
+                    alt="Series preview"
+                    className="max-w-32 h-16 object-contain border border-gray-300 rounded"
+                  />
+                </div>
+              )}
+
+              {/* URL Input (Alternative) */}
+              <div className="text-sm text-gray-600 mb-2">
+                Or enter image URL:
+              </div>
               <input
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
                 id="series_image"
@@ -479,7 +563,15 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
                 name="series_image"
                 placeholder="https://example.com/series-logo.png"
                 value={formik.values.series_image}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  // Update preview when URL changes
+                  if (e.target.value) {
+                    setSeriesImagePreview(e.target.value);
+                  } else {
+                    setSeriesImagePreview(null);
+                  }
+                }}
                 onBlur={formik.handleBlur}
               />
             </div>
