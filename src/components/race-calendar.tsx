@@ -487,7 +487,7 @@ export function RaceCalendarTable() {
                   <img
                     src={race.series_image}
                     alt={race.series || "Series"}
-                    className="h-8 w-auto max-w-32 object-contain"
+                    className="h-8 w-auto max-w-28 object-contain"
                   />
                 ) : race.series ? (
                   <div className="text-sm text-gray-900">{race.series}</div>
