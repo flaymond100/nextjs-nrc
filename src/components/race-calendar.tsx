@@ -416,11 +416,23 @@ export function RaceCalendarTable() {
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
+      <table
+        className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg"
+        style={{ tableLayout: "fixed" }}
+      >
         <thead className="bg-gray-50">
           <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            <th
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
+              style={{ width: "20%" }}
+            >
               Race Name
+            </th>
+            <th
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
+              style={{ width: "10%" }}
+            >
+              Series
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Date
@@ -428,15 +440,19 @@ export function RaceCalendarTable() {
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Location
             </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Type
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            </th> */}
+
+            <th
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
+              style={{ width: "10%" }}
+            >
               Distance
             </th>
-            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            {/* <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Profile
-            </th>
+            </th> */}
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Link
             </th>
@@ -458,7 +474,7 @@ export function RaceCalendarTable() {
         <tbody className="bg-white divide-y divide-gray-200">
           {races.map((race) => (
             <tr key={race.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4 w-48">
+              <td className="px-6 py-4" style={{ width: "20%" }}>
                 <NavigationLink
                   href={`/calendar/${race.id}`}
                   className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline break-words"
@@ -466,33 +482,38 @@ export function RaceCalendarTable() {
                   {race.name}
                 </NavigationLink>
               </td>
+              <td className="px-6 py-4">
+                {race.series_image ? (
+                  <img
+                    src={race.series_image}
+                    alt={race.series || "Series"}
+                    className="h-8 w-auto max-w-32 object-contain"
+                  />
+                ) : race.series ? (
+                  <div className="text-sm text-gray-900">{race.series}</div>
+                ) : (
+                  <span className="text-sm text-gray-400">-</span>
+                )}
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <div className="text-sm text-gray-900">
                   {formatDate(race.event_date)}
                 </div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 ">
                 <div className="text-sm text-gray-900">
                   {race.location || "-"}
                 </div>
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              {/* <td className="px-6 py-4 whitespace-nowrap">
                 <span
                   className={`inline-flex text-xs leading-5 ${getRaceTypeBadgeClasses(race.race_type)}`}
                 >
                   {formatRaceType(race.race_type)}
                 </span>
-              </td>
-              <td className="px-6 py-4 w-48">
-                <div className="text-sm text-gray-900">
-                  {race.distance_km
-                    ? race.elevation_m
-                      ? `${race.distance_km} km (${race.elevation_m}m)`
-                      : `${race.distance_km} km`
-                    : "-"}
-                </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </td> */}
+
+              <td className="px-6 gap-2 items-center py-6 flex">
                 <div className="flex items-center justify-center gap-2">
                   {(() => {
                     const profileType = getProfileType(race.profile);
@@ -512,7 +533,15 @@ export function RaceCalendarTable() {
                     );
                   })()}
                 </div>
+                <div className="text-sm text-gray-900">
+                  {race.distance_km
+                    ? race.elevation_m
+                      ? `${race.distance_km} km (${race.elevation_m}m)`
+                      : `${race.distance_km} km`
+                    : null}
+                </div>
               </td>
+
               <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                 {race.url ? (
                   <Link

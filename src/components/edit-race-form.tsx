@@ -21,6 +21,8 @@ interface RaceFormData {
   race_type: RaceType;
   location: string;
   participants: string[];
+  series: string;
+  series_image: string;
 }
 
 const PROFILE_TYPES = ["Flat", "Hilly", "Mountain", "Rolling"] as const;
@@ -64,6 +66,8 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
         race_type: "road",
         location: "",
         participants: [],
+        series: "",
+        series_image: "",
       };
     }
 
@@ -77,6 +81,8 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
       race_type: raceData.race_type || "road",
       location: raceData.location || "",
       participants: raceData.participants || [],
+      series: raceData.series || "",
+      series_image: raceData.series_image || "",
     };
   };
 
@@ -140,6 +146,8 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
           location: values.location,
           participants:
             values.participants.length > 0 ? values.participants : null,
+          series: values.series || null,
+          series_image: values.series_image || null,
         };
 
         const { error } = await supabase
@@ -435,6 +443,46 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
                 {formik.errors.profile}
               </p>
             )}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-4 md:mb-6">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="series"
+              >
+                Series
+              </label>
+              <input
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
+                id="series"
+                type="text"
+                name="series"
+                placeholder="e.g., UCI World Tour"
+                value={formik.values.series}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
+
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="series_image"
+              >
+                Series Image URL
+              </label>
+              <input
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 text-sm md:text-base leading-tight focus:outline-none focus:shadow-outline`}
+                id="series_image"
+                type="url"
+                name="series_image"
+                placeholder="https://example.com/series-logo.png"
+                value={formik.values.series_image}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+            </div>
           </div>
 
           <div className="mb-4 md:mb-6">

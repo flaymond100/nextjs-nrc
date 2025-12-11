@@ -68,6 +68,8 @@ export interface RaceCalendar {
   location?: string | null;
   created_at: string;
   participants?: string[] | null;
+  series?: string | null;
+  series_image?: string | null;
 }
 
 export interface News {
@@ -93,7 +95,16 @@ export interface GobikProduct {
   currency: string;
 }
 
-export type Size = "2XS" | "XS" | "S" | "M" | "L" | "XL" | "2XL" | "3XL" | "4XL";
+export type Size =
+  | "2XS"
+  | "XS"
+  | "S"
+  | "M"
+  | "L"
+  | "XL"
+  | "2XL"
+  | "3XL"
+  | "4XL";
 export type Gender = "Men" | "Women";
 
 export interface CartItem {
