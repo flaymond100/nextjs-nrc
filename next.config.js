@@ -3,11 +3,12 @@
  */
 
 const nextConfig = {
-  output: "export",
+  // Removed "output: export" to enable dynamic routes for new races
+  // If you need static export, you'll need to set up automatic rebuilds
+  // when races are created (via webhook + CI/CD)
   reactStrictMode: true,
   // Use the prefix for GitHub Pages
   // assetPrefix: "/nextjs-nrc/",
-  // Enable static export
   trailingSlash: true,
   images: {
     unoptimized: true,
