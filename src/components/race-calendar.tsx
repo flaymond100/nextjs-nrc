@@ -133,10 +133,10 @@ export function RaceCalendarTable() {
   const { isAdmin } = useAdmin();
   const router = useRouter();
 
-  // Filter and pagination state
+  // Filter and pagination state - preset to show upcoming races only
   const [filters, setFilters] = useState<FilterState>({
     search: "",
-    dateFilter: "all",
+    dateFilter: "upcoming",
     location: "",
     series: "",
     profile: "",
