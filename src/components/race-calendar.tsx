@@ -388,6 +388,15 @@ export function RaceCalendarTable() {
     });
   };
 
+  // Check if a race is in the past
+  const isPastRace = (race: RaceCalendar): boolean => {
+    const raceDate = new Date(race.event_date);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    raceDate.setHours(0, 0, 0, 0);
+    return raceDate < today;
+  };
+
   // Map profile types to appropriate custom icons
   const profileIconMap: Record<
     string,
@@ -727,40 +736,57 @@ export function RaceCalendarTable() {
                 </td>
               </tr>
             ) : (
-              paginatedRaces.map((race) => (
-                <tr key={race.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4" style={{ width: "20%" }}>
-                    <NavigationLink
-                      href={`/calendar/${race.id}`}
-                      className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline break-words"
-                    >
-                      {race.name}
-                    </NavigationLink>
-                  </td>
-                  <td className="px-6 py-4">
-                    {race.series_image ? (
-                      <img
-                        src={race.series_image}
-                        alt={race.series || "Series"}
-                        className="h-8 w-auto max-w-28 object-contain"
-                      />
-                    ) : race.series ? (
-                      <div className="text-sm text-gray-900">{race.series}</div>
-                    ) : (
-                      <span className="text-sm text-gray-400">-</span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">
-                      {formatDate(race.event_date)}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 ">
-                    <div className="text-sm text-gray-900">
-                      {race.location || "-"}
-                    </div>
-                  </td>
-                  {/* <td className="px-6 py-4 whitespace-nowrap">
+              paginatedRaces.map((race) => {
+                const isPast = isPastRace(race);
+                return (
+                  <tr
+                    key={race.id}
+                    className={`${isPast ? "opacity-60 bg-gray-50" : "hover:bg-gray-50"}`}
+                  >
+                    <td className="px-6 py-4" style={{ width: "20%" }}>
+                      <NavigationLink
+                        href={`/calendar/${race.id}`}
+                        className={`text-sm font-medium break-words ${
+                          isPast
+                            ? "text-gray-500 hover:text-gray-700 hover:underline"
+                            : "text-purple-600 hover:text-purple-800 hover:underline"
+                        }`}
+                      >
+                        {race.name}
+                      </NavigationLink>
+                    </td>
+                    <td className="px-6 py-4">
+                      {race.series_image ? (
+                        <img
+                          src={race.series_image}
+                          alt={race.series || "Series"}
+                          className="h-8 w-auto max-w-28 object-contain"
+                        />
+                      ) : race.series ? (
+                        <div
+                          className={`text-sm ${isPast ? "text-gray-500" : "text-gray-900"}`}
+                        >
+                          {race.series}
+                        </div>
+                      ) : (
+                        <span className="text-sm text-gray-400">-</span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div
+                        className={`text-sm ${isPast ? "text-gray-500" : "text-gray-900"}`}
+                      >
+                        {formatDate(race.event_date)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 ">
+                      <div
+                        className={`text-sm ${isPast ? "text-gray-500" : "text-gray-900"}`}
+                      >
+                        {race.location || "-"}
+                      </div>
+                    </td>
+                    {/* <td className="px-6 py-4 whitespace-nowrap">
                 <span
                   className={`inline-flex text-xs leading-5 ${getRaceTypeBadgeClasses(race.race_type)}`}
                 >
@@ -768,119 +794,128 @@ export function RaceCalendarTable() {
                 </span>
               </td> */}
 
-                  <td className="px-6 gap-2 items-center py-6 flex">
-                    <div className="flex items-center justify-center gap-2">
-                      {(() => {
-                        const profileType = getProfileType(race.profile);
-                        const IconComponent = profileType
-                          ? getProfileIcon(profileType)
-                          : null;
-                        return profileType && IconComponent ? (
-                          <div className="relative group inline-flex items-center">
-                            <IconComponent className="h-5 w-5 text-gray-600 cursor-help" />
-                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
-                              {profileType}
-                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+                    <td className="px-6 gap-2 items-center py-6 flex">
+                      <div className="flex items-center justify-center gap-2">
+                        {(() => {
+                          const profileType = getProfileType(race.profile);
+                          const IconComponent = profileType
+                            ? getProfileIcon(profileType)
+                            : null;
+                          return profileType && IconComponent ? (
+                            <div className="relative group inline-flex items-center">
+                              <IconComponent className="h-5 w-5 text-gray-600 cursor-help" />
+                              <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
+                                {profileType}
+                                <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+                              </div>
                             </div>
+                          ) : (
+                            <span className="text-sm text-gray-400">-</span>
+                          );
+                        })()}
+                      </div>
+                      <div
+                        className={`text-sm ${isPast ? "text-gray-500" : "text-gray-900"}`}
+                      >
+                        {race.distance_km
+                          ? race.elevation_m
+                            ? `${race.distance_km} km (${race.elevation_m}m)`
+                            : `${race.distance_km} km`
+                          : null}
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      {race.url ? (
+                        <Link
+                          href={race.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={
+                            isPast
+                              ? "text-gray-400 hover:text-gray-600 hover:underline"
+                              : "text-purple-600 hover:text-purple-800 hover:underline"
+                          }
+                        >
+                          Event
+                        </Link>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                    <td
+                      className={`px-6 py-4 text-sm text-center ${isPast ? "text-gray-500" : "text-gray-900"}`}
+                    >
+                      {(() => {
+                        const confirmedParticipants =
+                          race.participants?.filter((uuid) => {
+                            const rider = riders.get(uuid);
+                            return rider && rider.isEmailConfirmed;
+                          }) || [];
+                        return confirmedParticipants.length > 0 ? (
+                          <div className="flex justify-center">
+                            <ParticipantsDisplay
+                              participants={confirmedParticipants}
+                              riders={riders}
+                            />
                           </div>
                         ) : (
-                          <span className="text-sm text-gray-400">-</span>
+                          <span className="text-gray-400">0</span>
                         );
                       })()}
-                    </div>
-                    <div className="text-sm text-gray-900">
-                      {race.distance_km
-                        ? race.elevation_m
-                          ? `${race.distance_km} km (${race.elevation_m}m)`
-                          : `${race.distance_km} km`
-                        : null}
-                    </div>
-                  </td>
-
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {race.url ? (
-                      <Link
-                        href={race.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-purple-600 hover:text-purple-800 hover:underline"
-                      >
-                        Event
-                      </Link>
-                    ) : (
-                      "-"
+                    </td>
+                    {user && (
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <button
+                          onClick={() => handleToggleRegistration(race)}
+                          disabled={
+                            updatingRaces.has(race.id) ||
+                            (!isRegistered(race) && !userRider?.isActivated)
+                          }
+                          className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
+                            !isRegistered(race) && !userRider?.isActivated
+                              ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                              : isRegistered(race)
+                                ? "bg-red-100 text-red-700 hover:bg-red-200"
+                                : "bg-green-100 text-green-700 hover:bg-green-200"
+                          } disabled:opacity-50 disabled:cursor-not-allowed`}
+                          title={
+                            !isRegistered(race) && !userRider?.isActivated
+                              ? "Your account must be activated by an admin to register for races"
+                              : isRegistered(race)
+                                ? "Unregister from race"
+                                : "Register for race"
+                          }
+                        >
+                          {updatingRaces.has(race.id) ? (
+                            <Loader />
+                          ) : isRegistered(race) ? (
+                            <MinusIcon className="h-5 w-5" />
+                          ) : (
+                            <PlusIcon className="h-5 w-5" />
+                          )}
+                        </button>
+                      </td>
                     )}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-900 text-center">
-                    {(() => {
-                      const confirmedParticipants =
-                        race.participants?.filter((uuid) => {
-                          const rider = riders.get(uuid);
-                          return rider && rider.isEmailConfirmed;
-                        }) || [];
-                      return confirmedParticipants.length > 0 ? (
-                        <div className="flex justify-center">
-                          <ParticipantsDisplay
-                            participants={confirmedParticipants}
-                            riders={riders}
-                          />
-                        </div>
-                      ) : (
-                        <span className="text-gray-400">0</span>
-                      );
-                    })()}
-                  </td>
-                  {user && (
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <button
-                        onClick={() => handleToggleRegistration(race)}
-                        disabled={
-                          updatingRaces.has(race.id) ||
-                          (!isRegistered(race) && !userRider?.isActivated)
-                        }
-                        className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
-                          !isRegistered(race) && !userRider?.isActivated
-                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                            : isRegistered(race)
-                              ? "bg-red-100 text-red-700 hover:bg-red-200"
-                              : "bg-green-100 text-green-700 hover:bg-green-200"
-                        } disabled:opacity-50 disabled:cursor-not-allowed`}
-                        title={
-                          !isRegistered(race) && !userRider?.isActivated
-                            ? "Your account must be activated by an admin to register for races"
-                            : isRegistered(race)
-                              ? "Unregister from race"
-                              : "Register for race"
-                        }
-                      >
-                        {updatingRaces.has(race.id) ? (
-                          <Loader />
-                        ) : isRegistered(race) ? (
-                          <MinusIcon className="h-5 w-5" />
-                        ) : (
-                          <PlusIcon className="h-5 w-5" />
-                        )}
-                      </button>
-                    </td>
-                  )}
-                  {isAdmin && (
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
-                      <button
-                        onClick={() => handleDeleteClick(race)}
-                        disabled={deletingRaces.has(race.id)}
-                        className="inline-flex items-center justify-center p-2 rounded-lg transition-colors bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                        title="Delete race"
-                      >
-                        {deletingRaces.has(race.id) ? (
-                          <Loader />
-                        ) : (
-                          <TrashIcon className="h-5 w-5" />
-                        )}
-                      </button>
-                    </td>
-                  )}
-                </tr>
-              ))
+                    {isAdmin && (
+                      <td className="px-6 py-4 whitespace-nowrap text-center">
+                        <button
+                          onClick={() => handleDeleteClick(race)}
+                          disabled={deletingRaces.has(race.id)}
+                          className="inline-flex items-center justify-center p-2 rounded-lg transition-colors bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                          title="Delete race"
+                        >
+                          {deletingRaces.has(race.id) ? (
+                            <Loader />
+                          ) : (
+                            <TrashIcon className="h-5 w-5" />
+                          )}
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })
             )}
           </tbody>
         </table>
