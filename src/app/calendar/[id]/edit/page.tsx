@@ -44,4 +44,3 @@ export default async function EditRacePage({ params }: EditRacePageProps) {
   const { id: raceId } = await params;
   return <EditRacePageClient raceId={raceId} />;
 }
-

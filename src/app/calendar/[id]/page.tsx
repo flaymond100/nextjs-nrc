@@ -3,6 +3,8 @@ import { Navbar, Footer } from "@/components";
 import { RaceDetailSection } from "@/components/race-detail";
 import { createClient } from "@supabase/supabase-js";
 
+// Generate static params for existing races at build time
+// For new races created after build, we'll use a catch-all route approach
 export async function generateStaticParams(): Promise<{ id: string }[]> {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
