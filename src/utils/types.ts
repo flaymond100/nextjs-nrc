@@ -54,6 +54,24 @@ export interface Rider {
   avatarUrl: string | null;
   updateAt: string | null;
   is_admin?: boolean | null;
+  contractStartDate?: string | null;
+  lastPaymentDate?: string | null;
+  nextPaymentDueDate?: string | null;
+  paymentAmount?: number | null;
+}
+
+export interface PaymentOverview {
+  uuid: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  contractStartDate: string | null;
+  lastPaymentDate: string | null;
+  nextPaymentDueDate: string | null;
+  isPaid: boolean;
+  paymentAmount: number | null;
+  payment_status: "No payment info" | "Overdue" | "Due Soon" | "Current";
+  days_overdue: number;
 }
 
 export interface RaceCalendar {

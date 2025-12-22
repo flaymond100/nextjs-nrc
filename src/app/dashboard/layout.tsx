@@ -38,6 +38,12 @@ const SIDEBAR_MENU = [
     icon: "👥",
     adminOnly: true,
   },
+  {
+    name: "Payments",
+    href: "/dashboard/payments",
+    icon: "💳",
+    adminOnly: true,
+  },
 ];
 
 export default function DashboardLayout({
