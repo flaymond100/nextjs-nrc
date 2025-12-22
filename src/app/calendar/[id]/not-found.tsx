@@ -19,9 +19,9 @@ export default function RaceNotFound() {
     const match = pathname?.match(/^\/calendar\/([^\/]+)$/);
     if (match && match[1]) {
       const id = match[1];
-      
+
       // Check if this race exists in the database
-      async function checkRace() {
+      const checkRace = async () => {
         try {
           const { data, error } = await supabase
             .from("race_calendar")
@@ -40,7 +40,7 @@ export default function RaceNotFound() {
           console.error("Error checking race:", err);
           setChecking(false);
         }
-      }
+      };
 
       checkRace();
     } else {
@@ -97,4 +97,3 @@ export default function RaceNotFound() {
     </>
   );
 }
-
