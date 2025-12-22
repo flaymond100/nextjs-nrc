@@ -6,7 +6,14 @@ import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
 import Link from "next/link";
 import { useAuth } from "@/contexts/auth-context";
-import { PlusIcon, MinusIcon, TrashIcon } from "@heroicons/react/24/solid";
+import {
+  PlusIcon,
+  MinusIcon,
+  TrashIcon,
+  FunnelIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { NavigationLink } from "./navigation-link";
@@ -103,6 +110,15 @@ const RollingProfileIcon = ({
   </div>
 );
 
+interface FilterState {
+  search: string;
+  dateFilter: "all" | "upcoming" | "past";
+  location: string;
+  series: string;
+  profile: string;
+  registeredOnly: boolean;
+}
+
 export function RaceCalendarTable() {
   const [races, setRaces] = useState<RaceCalendar[]>([]);
   const [riders, setRiders] = useState<Map<string, Rider>>(new Map());
@@ -116,6 +132,18 @@ export function RaceCalendarTable() {
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
   const router = useRouter();
+
+  // Filter and pagination state
+  const [filters, setFilters] = useState<FilterState>({
+    search: "",
+    dateFilter: "all",
+    location: "",
+    series: "",
+    profile: "",
+    registeredOnly: false,
+  });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
 
   useEffect(() => {
     async function fetchData() {
@@ -194,6 +222,11 @@ export function RaceCalendarTable() {
     fetchUserRider();
   }, [user]);
 
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filters]);
+
   if (loading) {
     return (
       <div className="flex justify-center items-center py-12">
@@ -210,23 +243,7 @@ export function RaceCalendarTable() {
     );
   }
 
-  if (races.length === 0) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-gray-600">No races scheduled at this time.</p>
-      </div>
-    );
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
+  // Helper function to get profile type - must be defined before use
   const getProfileType = (
     profile: string | null | undefined
   ): string | null => {
@@ -269,6 +286,106 @@ export function RaceCalendarTable() {
       .split(" ")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
+  };
+
+  // Get unique values for filter dropdowns
+  const uniqueLocations = Array.from(
+    new Set(races.map((r) => r.location).filter(Boolean))
+  ).sort() as string[];
+  const uniqueSeries = Array.from(
+    new Set(races.map((r) => r.series).filter(Boolean))
+  ).sort() as string[];
+  const uniqueProfiles = Array.from(
+    new Set(
+      races
+        .map((r) => getProfileType(r.profile))
+        .filter((p): p is string => p !== null)
+    )
+  ).sort();
+
+  // Filter races based on filter state
+  const filteredRaces = races.filter((race) => {
+    // Search filter
+    if (filters.search) {
+      const searchLower = filters.search.toLowerCase();
+      const matchesSearch =
+        race.name.toLowerCase().includes(searchLower) ||
+        race.location?.toLowerCase().includes(searchLower) ||
+        race.series?.toLowerCase().includes(searchLower);
+      if (!matchesSearch) return false;
+    }
+
+    // Date filter
+    if (filters.dateFilter !== "all") {
+      const raceDate = new Date(race.event_date);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      raceDate.setHours(0, 0, 0, 0);
+
+      if (filters.dateFilter === "upcoming" && raceDate < today) return false;
+      if (filters.dateFilter === "past" && raceDate >= today) return false;
+    }
+
+    // Location filter
+    if (filters.location && race.location !== filters.location) return false;
+
+    // Series filter
+    if (filters.series && race.series !== filters.series) return false;
+
+    // Profile filter
+    if (filters.profile) {
+      const raceProfile = getProfileType(race.profile);
+      if (raceProfile !== filters.profile) return false;
+    }
+
+    // Registered only filter
+    if (filters.registeredOnly && user) {
+      if (!race.participants?.includes(user.id)) return false;
+    }
+
+    return true;
+  });
+
+  // Pagination
+  const totalPages = Math.ceil(filteredRaces.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedRaces = filteredRaces.slice(startIndex, endIndex);
+
+  const handleFilterChange = (key: keyof FilterState, value: any) => {
+    setFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const clearFilters = () => {
+    setFilters({
+      search: "",
+      dateFilter: "all",
+      location: "",
+      series: "",
+      profile: "",
+      registeredOnly: false,
+    });
+  };
+
+  const hasActiveFilters = Object.values(filters).some(
+    (value) => value !== "" && value !== false && value !== "all"
+  );
+
+  if (races.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">No races scheduled at this time.</p>
+      </div>
+    );
+  }
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   };
 
   // Map profile types to appropriate custom icons
@@ -415,97 +532,235 @@ export function RaceCalendarTable() {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table
-        className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg"
-        style={{ tableLayout: "fixed" }}
-      >
-        <thead className="bg-gray-50">
-          <tr>
-            <th
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
-              style={{ width: "20%" }}
-            >
-              Race Name
-            </th>
-            <th
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
-              style={{ width: "10%" }}
-            >
-              Series
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+    <div className="space-y-4">
+      {/* Filters Section */}
+      <div className="bg-white rounded-lg border border-gray-200  shadow-md p-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-4">
+          <div className="flex items-center gap-2">
+            {hasActiveFilters && (
+              <button
+                onClick={clearFilters}
+                className="flex items-center gap-1 px-3 py-2 text-sm text-gray-600 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition-colors"
+              >
+                <XMarkIcon className="h-4 w-4" />
+                Clear all
+              </button>
+            )}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
+          {/* Search */}
+          <div className="xl:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Search
+            </label>
+            <input
+              type="text"
+              value={filters.search}
+              onChange={(e) => handleFilterChange("search", e.target.value)}
+              placeholder="Search races..."
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            />
+          </div>
+
+          {/* Date Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Date
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            </label>
+            <select
+              value={filters.dateFilter}
+              onChange={(e) => handleFilterChange("dateFilter", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            >
+              <option value="all">All Dates</option>
+              <option value="upcoming">Upcoming</option>
+              <option value="past">Past</option>
+            </select>
+          </div>
+
+          {/* Location Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
               Location
-            </th>
-            {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+            </label>
+            <select
+              value={filters.location}
+              onChange={(e) => handleFilterChange("location", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            >
+              <option value="">All Locations</option>
+              {uniqueLocations.map((location) => (
+                <option key={location} value={location}>
+                  {location}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Series Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Series
+            </label>
+            <select
+              value={filters.series}
+              onChange={(e) => handleFilterChange("series", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            >
+              <option value="">All Series</option>
+              {uniqueSeries.map((series) => (
+                <option key={series} value={series}>
+                  {series}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Profile Filter */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Profile
+            </label>
+            <select
+              value={filters.profile}
+              onChange={(e) => handleFilterChange("profile", e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            >
+              <option value="">All Profiles</option>
+              {uniqueProfiles.map((profile) => (
+                <option key={profile} value={profile}>
+                  {profile}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Registered Only Filter */}
+          {user && (
+            <div className="flex items-end">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={filters.registeredOnly}
+                  onChange={(e) =>
+                    handleFilterChange("registeredOnly", e.target.checked)
+                  }
+                  className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  My Races Only
+                </span>
+              </label>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table
+          className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg"
+          style={{ tableLayout: "fixed" }}
+        >
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
+                style={{ width: "20%" }}
+              >
+                Race Name
+              </th>
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
+                style={{ width: "10%" }}
+              >
+                Series
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                Date
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                Location
+              </th>
+              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Type
             </th> */}
 
-            <th
-              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
-              style={{ width: "10%" }}
-            >
-              Distance
-            </th>
-            {/* <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+              <th
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b"
+                style={{ width: "10%" }}
+              >
+                Distance
+              </th>
+              {/* <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
               Profile
             </th> */}
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-              Link
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-              Participants
-            </th>
-            {user && (
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                Participation
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                Link
               </th>
-            )}
-            {isAdmin && (
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
-                Actions
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                Participants
               </th>
-            )}
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
-          {races.map((race) => (
-            <tr key={race.id} className="hover:bg-gray-50">
-              <td className="px-6 py-4" style={{ width: "20%" }}>
-                <NavigationLink
-                  href={`/calendar/${race.id}`}
-                  className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline break-words"
+              {user && (
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                  Participation
+                </th>
+              )}
+              {isAdmin && (
+                <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider border-b">
+                  Actions
+                </th>
+              )}
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {paginatedRaces.length === 0 ? (
+              <tr>
+                <td
+                  colSpan={7 + (user ? 1 : 0) + (isAdmin ? 1 : 0)}
+                  className="px-6 py-12 text-center text-gray-500"
                 >
-                  {race.name}
-                </NavigationLink>
-              </td>
-              <td className="px-6 py-4">
-                {race.series_image ? (
-                  <img
-                    src={race.series_image}
-                    alt={race.series || "Series"}
-                    className="h-8 w-auto max-w-28 object-contain"
-                  />
-                ) : race.series ? (
-                  <div className="text-sm text-gray-900">{race.series}</div>
-                ) : (
-                  <span className="text-sm text-gray-400">-</span>
-                )}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
-                <div className="text-sm text-gray-900">
-                  {formatDate(race.event_date)}
-                </div>
-              </td>
-              <td className="px-6 py-4 ">
-                <div className="text-sm text-gray-900">
-                  {race.location || "-"}
-                </div>
-              </td>
-              {/* <td className="px-6 py-4 whitespace-nowrap">
+                  No races match your filters. Try adjusting your search
+                  criteria.
+                </td>
+              </tr>
+            ) : (
+              paginatedRaces.map((race) => (
+                <tr key={race.id} className="hover:bg-gray-50">
+                  <td className="px-6 py-4" style={{ width: "20%" }}>
+                    <NavigationLink
+                      href={`/calendar/${race.id}`}
+                      className="text-sm font-medium text-purple-600 hover:text-purple-800 hover:underline break-words"
+                    >
+                      {race.name}
+                    </NavigationLink>
+                  </td>
+                  <td className="px-6 py-4">
+                    {race.series_image ? (
+                      <img
+                        src={race.series_image}
+                        alt={race.series || "Series"}
+                        className="h-8 w-auto max-w-28 object-contain"
+                      />
+                    ) : race.series ? (
+                      <div className="text-sm text-gray-900">{race.series}</div>
+                    ) : (
+                      <span className="text-sm text-gray-400">-</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {formatDate(race.event_date)}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 ">
+                    <div className="text-sm text-gray-900">
+                      {race.location || "-"}
+                    </div>
+                  </td>
+                  {/* <td className="px-6 py-4 whitespace-nowrap">
                 <span
                   className={`inline-flex text-xs leading-5 ${getRaceTypeBadgeClasses(race.race_type)}`}
                 >
@@ -513,121 +768,199 @@ export function RaceCalendarTable() {
                 </span>
               </td> */}
 
-              <td className="px-6 gap-2 items-center py-6 flex">
-                <div className="flex items-center justify-center gap-2">
-                  {(() => {
-                    const profileType = getProfileType(race.profile);
-                    const IconComponent = profileType
-                      ? getProfileIcon(profileType)
-                      : null;
-                    return profileType && IconComponent ? (
-                      <div className="relative group inline-flex items-center">
-                        <IconComponent className="h-5 w-5 text-gray-600 cursor-help" />
-                        <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
-                          {profileType}
-                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-2 h-2 bg-gray-900 rotate-45"></div>
-                        </div>
-                      </div>
-                    ) : (
-                      <span className="text-sm text-gray-400">-</span>
-                    );
-                  })()}
-                </div>
-                <div className="text-sm text-gray-900">
-                  {race.distance_km
-                    ? race.elevation_m
-                      ? `${race.distance_km} km (${race.elevation_m}m)`
-                      : `${race.distance_km} km`
-                    : null}
-                </div>
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                {race.url ? (
-                  <Link
-                    href={race.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-purple-600 hover:text-purple-800 hover:underline"
-                  >
-                    Event
-                  </Link>
-                ) : (
-                  "-"
-                )}
-              </td>
-              <td className="px-6 py-4 text-sm text-gray-900 text-center">
-                {(() => {
-                  const confirmedParticipants =
-                    race.participants?.filter((uuid) => {
-                      const rider = riders.get(uuid);
-                      return rider && rider.isEmailConfirmed;
-                    }) || [];
-                  return confirmedParticipants.length > 0 ? (
-                    <div className="flex justify-center">
-                      <ParticipantsDisplay
-                        participants={confirmedParticipants}
-                        riders={riders}
-                      />
+                  <td className="px-6 gap-2 items-center py-6 flex">
+                    <div className="flex items-center justify-center gap-2">
+                      {(() => {
+                        const profileType = getProfileType(race.profile);
+                        const IconComponent = profileType
+                          ? getProfileIcon(profileType)
+                          : null;
+                        return profileType && IconComponent ? (
+                          <div className="relative group inline-flex items-center">
+                            <IconComponent className="h-5 w-5 text-gray-600 cursor-help" />
+                            <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
+                              {profileType}
+                              <div className="absolute top-full left-1/2 transform -translate-x-1/2 -mt-1 w-2 h-2 bg-gray-900 rotate-45"></div>
+                            </div>
+                          </div>
+                        ) : (
+                          <span className="text-sm text-gray-400">-</span>
+                        );
+                      })()}
                     </div>
-                  ) : (
-                    <span className="text-gray-400">0</span>
+                    <div className="text-sm text-gray-900">
+                      {race.distance_km
+                        ? race.elevation_m
+                          ? `${race.distance_km} km (${race.elevation_m}m)`
+                          : `${race.distance_km} km`
+                        : null}
+                    </div>
+                  </td>
+
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {race.url ? (
+                      <Link
+                        href={race.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-purple-600 hover:text-purple-800 hover:underline"
+                      >
+                        Event
+                      </Link>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900 text-center">
+                    {(() => {
+                      const confirmedParticipants =
+                        race.participants?.filter((uuid) => {
+                          const rider = riders.get(uuid);
+                          return rider && rider.isEmailConfirmed;
+                        }) || [];
+                      return confirmedParticipants.length > 0 ? (
+                        <div className="flex justify-center">
+                          <ParticipantsDisplay
+                            participants={confirmedParticipants}
+                            riders={riders}
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-gray-400">0</span>
+                      );
+                    })()}
+                  </td>
+                  {user && (
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        onClick={() => handleToggleRegistration(race)}
+                        disabled={
+                          updatingRaces.has(race.id) ||
+                          (!isRegistered(race) && !userRider?.isActivated)
+                        }
+                        className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
+                          !isRegistered(race) && !userRider?.isActivated
+                            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+                            : isRegistered(race)
+                              ? "bg-red-100 text-red-700 hover:bg-red-200"
+                              : "bg-green-100 text-green-700 hover:bg-green-200"
+                        } disabled:opacity-50 disabled:cursor-not-allowed`}
+                        title={
+                          !isRegistered(race) && !userRider?.isActivated
+                            ? "Your account must be activated by an admin to register for races"
+                            : isRegistered(race)
+                              ? "Unregister from race"
+                              : "Register for race"
+                        }
+                      >
+                        {updatingRaces.has(race.id) ? (
+                          <Loader />
+                        ) : isRegistered(race) ? (
+                          <MinusIcon className="h-5 w-5" />
+                        ) : (
+                          <PlusIcon className="h-5 w-5" />
+                        )}
+                      </button>
+                    </td>
+                  )}
+                  {isAdmin && (
+                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                      <button
+                        onClick={() => handleDeleteClick(race)}
+                        disabled={deletingRaces.has(race.id)}
+                        className="inline-flex items-center justify-center p-2 rounded-lg transition-colors bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        title="Delete race"
+                      >
+                        {deletingRaces.has(race.id) ? (
+                          <Loader />
+                        ) : (
+                          <TrashIcon className="h-5 w-5" />
+                        )}
+                      </button>
+                    </td>
+                  )}
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-between bg-white rounded-lg shadow-md p-4">
+        <div className="text-sm text-gray-600">
+          {/* Showing {paginatedRaces.length} of {filteredRaces.length} races */}
+          {/* {totalPages > 1 && `Page ${currentPage} of ${totalPages}`} */}
+          <div className="flex items-center gap-2">
+            <select
+              value={itemsPerPage}
+              onChange={(e) => {
+                setItemsPerPage(Number(e.target.value));
+                setCurrentPage(1);
+              }}
+              className="px-3 py-2 border border-gray-300 rounded-lg text-sm"
+            >
+              <option value={10}>10 per page</option>
+              <option value={25}>25 per page</option>
+              <option value={50}>50 per page</option>
+              <option value={100}>100 per page</option>
+            </select>
+          </div>
+        </div>
+        {totalPages > 1 && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+              className="px-3 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center gap-1"
+            >
+              <ChevronLeftIcon className="h-5 w-5" />
+              Previous
+            </button>
+            <div className="flex items-center gap-1">
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((page) => {
+                  // Show first page, last page, current page, and pages around current
+                  if (page === 1 || page === totalPages) return true;
+                  if (Math.abs(page - currentPage) <= 1) return true;
+                  return false;
+                })
+                .map((page, index, array) => {
+                  // Add ellipsis if there's a gap
+                  const showEllipsisBefore =
+                    index > 0 && page - array[index - 1] > 1;
+                  return (
+                    <React.Fragment key={page}>
+                      {showEllipsisBefore && (
+                        <span className="px-2 text-gray-400">...</span>
+                      )}
+                      <button
+                        onClick={() => setCurrentPage(page)}
+                        className={`px-3 py-2 border rounded-lg ${
+                          currentPage === page
+                            ? "bg-purple-600 text-white border-purple-600"
+                            : "border-gray-300 hover:bg-gray-50"
+                        }`}
+                      >
+                        {page}
+                      </button>
+                    </React.Fragment>
                   );
-                })()}
-              </td>
-              {user && (
-                <td className="px-6 py-4 whitespace-nowrap text-center">
-                  <button
-                    onClick={() => handleToggleRegistration(race)}
-                    disabled={
-                      updatingRaces.has(race.id) ||
-                      (!isRegistered(race) && !userRider?.isActivated)
-                    }
-                    className={`inline-flex items-center justify-center p-2 rounded-lg transition-colors ${
-                      !isRegistered(race) && !userRider?.isActivated
-                        ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                        : isRegistered(race)
-                          ? "bg-red-100 text-red-700 hover:bg-red-200"
-                          : "bg-green-100 text-green-700 hover:bg-green-200"
-                    } disabled:opacity-50 disabled:cursor-not-allowed`}
-                    title={
-                      !isRegistered(race) && !userRider?.isActivated
-                        ? "Your account must be activated by an admin to register for races"
-                        : isRegistered(race)
-                          ? "Unregister from race"
-                          : "Register for race"
-                    }
-                  >
-                    {updatingRaces.has(race.id) ? (
-                      <Loader />
-                    ) : isRegistered(race) ? (
-                      <MinusIcon className="h-5 w-5" />
-                    ) : (
-                      <PlusIcon className="h-5 w-5" />
-                    )}
-                  </button>
-                </td>
-              )}
-              {isAdmin && (
-                <td className="px-6 py-4 whitespace-nowrap text-center">
-                  <button
-                    onClick={() => handleDeleteClick(race)}
-                    disabled={deletingRaces.has(race.id)}
-                    className="inline-flex items-center justify-center p-2 rounded-lg transition-colors bg-red-100 text-red-700 hover:bg-red-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                    title="Delete race"
-                  >
-                    {deletingRaces.has(race.id) ? (
-                      <Loader />
-                    ) : (
-                      <TrashIcon className="h-5 w-5" />
-                    )}
-                  </button>
-                </td>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                })}
+            </div>
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(totalPages, prev + 1))
+              }
+              disabled={currentPage === totalPages}
+              className="px-3 py-2 border border-gray-300 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-50 flex items-center gap-1"
+            >
+              Next
+              <ChevronRightIcon className="h-5 w-5" />
+            </button>
+          </div>
+        )}
+      </div>
       <ConfirmModal
         isOpen={showDeleteModal}
         onClose={handleDeleteCancel}
