@@ -13,6 +13,7 @@ import {
   PlusIcon,
   CheckIcon,
   XMarkIcon,
+  DocumentDuplicateIcon,
 } from "@heroicons/react/24/outline";
 
 export default function StoreAdminPage() {
@@ -29,6 +30,21 @@ export default function StoreAdminPage() {
   const [saving, setSaving] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [creating, setCreating] = useState(false);
+  const [formData, setFormData] = useState<{
+    name: string;
+    price: string;
+    available_bool: string;
+    img_reference: string;
+    product_url: string;
+    product_item_info: string;
+  }>({
+    name: "",
+    price: "",
+    available_bool: "true",
+    img_reference: "",
+    product_url: "",
+    product_item_info: "",
+  });
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
@@ -123,36 +139,86 @@ export default function StoreAdminPage() {
     }
   };
 
+  // Generate unique numeric IDs for product creation (bigint compatible)
+  const generateId = (): number => {
+    // Generate a unique numeric ID using timestamp + random number
+    // JavaScript safe integer range: -2^53 to 2^53-1 (about 16 digits)
+    // We'll use timestamp (13 digits) + random (3 digits) = 16 digits max
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000); // 3-digit random (0-999)
+    // Combine: timestamp (13 digits) + random (3 digits) = safe 16-digit number
+    const idString = `${timestamp}${random.toString().padStart(3, '0')}`;
+    return Number(idString);
+  };
+
+  const generateSKU = (): number => {
+    // Generate numeric SKU (bigint compatible)
+    // Similar to generateId but with a slight offset to ensure uniqueness
+    const timestamp = Date.now();
+    const random = Math.floor(Math.random() * 1000); // 3-digit random (0-999)
+    // Add a small offset (100) to differentiate from product_id/variant_id
+    const offset = 100;
+    // Combine: timestamp (13 digits) + offset (3 digits) + random (3 digits) = safe 16-digit number
+    const skuString = `${timestamp}${offset.toString().padStart(3, '0')}${random.toString().padStart(3, '0')}`;
+    return Number(skuString);
+  };
+
+  const handleCopyProduct = (product: FourEnduranceStoreProduct) => {
+    setFormData({
+      name: product.name || "",
+      price: product.price?.toString() || "",
+      available_bool: product.available_bool === true ? "true" : "false",
+      img_reference: product.img_reference || "",
+      product_url: product.product_url || "",
+      product_item_info: product.product_item_info || "",
+    });
+    setShowCreateForm(true);
+    toast.success("Product information copied to form");
+    // Scroll to form
+    setTimeout(() => {
+      const formElement = document.getElementById("create-product-form");
+      formElement?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
+
   const handleCreateProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.currentTarget);
 
     try {
       setCreating(true);
 
-      const newProduct = {
-        name: formData.get("name") as string,
-        price: parseFloat(formData.get("price") as string),
-        currency: (formData.get("currency") as string) || "EUR",
-        available_bool: formData.get("available_bool") === "true",
-        product_item_info:
-          (formData.get("product_item_info") as string) || null,
-        img_reference: (formData.get("img_reference") as string) || null,
-        product_url: (formData.get("product_url") as string) || null,
-        product_id: (formData.get("product_id") as string) || null,
-        variant_id: (formData.get("variant_id") as string) || null,
-        sku: (formData.get("sku") as string) || null,
-      };
+      const productName = formData.name;
+      const price = parseFloat(formData.price);
+      const currency = "EUR"; // Always EUR
+      const available_bool = formData.available_bool === "true";
 
-      if (!newProduct.name) {
+      if (!productName) {
         toast.error("Product name is required");
         return;
       }
 
-      if (isNaN(newProduct.price) || newProduct.price < 0) {
+      if (isNaN(price) || price < 0) {
         toast.error("Please enter a valid price");
         return;
       }
+
+      // Generate unique IDs on the fly
+      const product_id = generateId();
+      const variant_id = generateId();
+      const sku = generateSKU();
+
+      const newProduct = {
+        name: productName,
+        price: price,
+        currency: currency,
+        available_bool: available_bool,
+        product_item_info: formData.product_item_info || null,
+        img_reference: formData.img_reference || null,
+        product_url: formData.product_url || null,
+        product_id: product_id,
+        variant_id: variant_id,
+        sku: sku,
+      };
 
       const { error: insertError } = await supabase
         .from("endurance_store")
@@ -166,7 +232,14 @@ export default function StoreAdminPage() {
 
       toast.success("Product created successfully");
       setShowCreateForm(false);
-      e.currentTarget.reset();
+      setFormData({
+        name: "",
+        price: "",
+        available_bool: "true",
+        img_reference: "",
+        product_url: "",
+        product_item_info: "",
+      });
       fetchProducts();
     } catch (err: any) {
       console.error("Error creating product:", err);
@@ -193,26 +266,37 @@ export default function StoreAdminPage() {
       {/* Header */}
       <div className="mb-8">
         <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <Link
-                href="/dashboard/4endurance-store"
-                className="text-purple-600 hover:text-purple-700"
-              >
-                <ArrowLeftIcon className="h-6 w-6" />
-              </Link>
-              <h1 className="text-3xl font-bold text-gray-800">
-                Store Administration
-              </h1>
-            </div>
-            <button
-              onClick={() => setShowCreateForm(!showCreateForm)}
-              className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          <div className="flex items-center gap-4">
+            <Link
+              href="/dashboard/4endurance-store"
+              className="text-purple-600 hover:text-purple-700"
             >
-              <PlusIcon className="h-5 w-5" />
-              <span>New Product</span>
-            </button>
+              <ArrowLeftIcon className="h-6 w-6" />
+            </Link>
+            <h1 className="text-3xl font-bold text-gray-800">
+              Store Administration
+            </h1>
           </div>
+          <button
+            onClick={() => {
+              setShowCreateForm(!showCreateForm);
+              if (!showCreateForm) {
+                // Reset form when opening
+                setFormData({
+                  name: "",
+                  price: "",
+                  available_bool: "true",
+                  img_reference: "",
+                  product_url: "",
+                  product_item_info: "",
+                });
+              }
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            <PlusIcon className="h-5 w-5" />
+            <span>New Product</span>
+          </button>
         </div>
         <p className="text-gray-600">Manage product prices and availability</p>
       </div>
@@ -225,7 +309,10 @@ export default function StoreAdminPage() {
 
       {/* Create Product Form */}
       {showCreateForm && (
-        <div className="mb-6 p-6 bg-white border border-gray-200 rounded-lg shadow-md">
+        <div
+          id="create-product-form"
+          className="mb-6 p-6 bg-white border border-gray-200 rounded-lg shadow-md"
+        >
           <h2 className="text-xl font-bold text-gray-800 mb-4">
             Create New Product
           </h2>
@@ -238,17 +325,25 @@ export default function StoreAdminPage() {
                 <input
                   type="text"
                   name="name"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Price *
+                  Price (EUR) *
                 </label>
                 <input
                   type="number"
                   name="price"
+                  value={formData.price}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: e.target.value })
+                  }
                   step="0.01"
                   min="0"
                   required
@@ -257,24 +352,14 @@ export default function StoreAdminPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Currency
-                </label>
-                <select
-                  name="currency"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  defaultValue="EUR"
-                >
-                  <option value="EUR">EUR</option>
-                  <option value="USD">USD</option>
-                  <option value="GBP">GBP</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Available
                 </label>
                 <select
                   name="available_bool"
+                  value={formData.available_bool}
+                  onChange={(e) =>
+                    setFormData({ ...formData, available_bool: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="true">Available</option>
@@ -283,41 +368,15 @@ export default function StoreAdminPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Product ID
-                </label>
-                <input
-                  type="text"
-                  name="product_id"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Variant ID
-                </label>
-                <input
-                  type="text"
-                  name="variant_id"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  SKU
-                </label>
-                <input
-                  type="text"
-                  name="sku"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
                   Image URL
                 </label>
                 <input
                   type="url"
                   name="img_reference"
+                  value={formData.img_reference}
+                  onChange={(e) =>
+                    setFormData({ ...formData, img_reference: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
@@ -328,6 +387,10 @@ export default function StoreAdminPage() {
                 <input
                   type="url"
                   name="product_url"
+                  value={formData.product_url}
+                  onChange={(e) =>
+                    setFormData({ ...formData, product_url: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
@@ -338,6 +401,10 @@ export default function StoreAdminPage() {
               </label>
               <textarea
                 name="product_item_info"
+                value={formData.product_item_info}
+                onChange={(e) =>
+                  setFormData({ ...formData, product_item_info: e.target.value })
+                }
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
@@ -352,7 +419,17 @@ export default function StoreAdminPage() {
               </button>
               <button
                 type="button"
-                onClick={() => setShowCreateForm(false)}
+                onClick={() => {
+                  setShowCreateForm(false);
+                  setFormData({
+                    name: "",
+                    price: "",
+                    available_bool: "true",
+                    img_reference: "",
+                    product_url: "",
+                    product_item_info: "",
+                  });
+                }}
                 className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300"
               >
                 Cancel
@@ -471,23 +548,35 @@ export default function StoreAdminPage() {
                               onClick={() => handleSaveEdit(product)}
                               disabled={saving}
                               className="text-green-600 hover:text-green-900 disabled:opacity-50"
+                              title="Save"
                             >
                               <CheckIcon className="h-5 w-5" />
                             </button>
                             <button
                               onClick={handleCancelEdit}
                               className="text-red-600 hover:text-red-900"
+                              title="Cancel"
                             >
                               <XMarkIcon className="h-5 w-5" />
                             </button>
                           </div>
                         ) : (
-                          <button
-                            onClick={() => handleEdit(product)}
-                            className="text-purple-600 hover:text-purple-900"
-                          >
-                            <PencilIcon className="h-5 w-5" />
-                          </button>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => handleEdit(product)}
+                              className="text-purple-600 hover:text-purple-900"
+                              title="Edit"
+                            >
+                              <PencilIcon className="h-5 w-5" />
+                            </button>
+                            <button
+                              onClick={() => handleCopyProduct(product)}
+                              className="text-blue-600 hover:text-blue-900"
+                              title="Copy to create form"
+                            >
+                              <DocumentDuplicateIcon className="h-5 w-5" />
+                            </button>
+                          </div>
                         )}
                       </td>
                     </tr>
