@@ -45,13 +45,13 @@ export default function FourEnduranceStorePage() {
   useEffect(() => {
     if (user) {
       fetchOrders();
-      
+
       // Listen for order updates (e.g., when a new order is submitted)
       const handleOrderUpdate = () => {
         fetchOrders();
       };
       window.addEventListener("orderSubmitted", handleOrderUpdate);
-      
+
       return () => {
         window.removeEventListener("orderSubmitted", handleOrderUpdate);
       };
@@ -133,7 +133,7 @@ export default function FourEnduranceStorePage() {
 
       // Get unique user IDs (only needed for admin view)
       if (isAdmin) {
-        const userIds = [...new Set(ordersData.map((o) => o.user_id))];
+        const userIds = Array.from(new Set(ordersData.map((o) => o.user_id)));
 
         // Fetch rider data for all users
         const { data: ridersData, error: ridersError } = await supabase
@@ -174,7 +174,10 @@ export default function FourEnduranceStorePage() {
     }
   };
 
-  const handleStatusUpdate = async (orderId: number, newStatus: OrderStatus) => {
+  const handleStatusUpdate = async (
+    orderId: number,
+    newStatus: OrderStatus
+  ) => {
     if (!isAdmin) {
       toast.error("You don't have permission to update order status");
       return;
@@ -360,7 +363,8 @@ export default function FourEnduranceStorePage() {
         {isAdmin && storeOpen === false && (
           <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
             <p className="text-yellow-800 text-sm font-medium">
-              ⚠️ Admin View: This store is currently closed to regular users. You can still access and manage products.
+              ⚠️ Admin View: This store is currently closed to regular users.
+              You can still access and manage products.
             </p>
           </div>
         )}
@@ -474,12 +478,17 @@ export default function FourEnduranceStorePage() {
                         <td className="px-4 py-3 whitespace-nowrap">
                           {isAdmin ? (
                             updatingStatus === order.id ? (
-                              <span className="text-sm text-gray-500">Updating...</span>
+                              <span className="text-sm text-gray-500">
+                                Updating...
+                              </span>
                             ) : (
                               <select
                                 value={order.status}
                                 onChange={(e) =>
-                                  handleStatusUpdate(order.id, e.target.value as OrderStatus)
+                                  handleStatusUpdate(
+                                    order.id,
+                                    e.target.value as OrderStatus
+                                  )
                                 }
                                 className="px-2 py-1 text-xs font-medium rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 cursor-pointer bg-white"
                               >
@@ -494,21 +503,26 @@ export default function FourEnduranceStorePage() {
                           ) : (
                             <span
                               className={`px-2 py-1 text-xs font-medium rounded-full ${
-                                statusColors[order.status] || "bg-gray-100 text-gray-800"
+                                statusColors[order.status] ||
+                                "bg-gray-100 text-gray-800"
                               }`}
                             >
-                              {order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                              {order.status.charAt(0).toUpperCase() +
+                                order.status.slice(1)}
                             </span>
                           )}
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-600">
-                          {new Date(order.created_at).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "short",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
+                          {new Date(order.created_at).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "short",
+                              day: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            }
+                          )}
                         </td>
                       </tr>
                     );
