@@ -8,12 +8,19 @@ import {
   clearCart,
   getCartTotal,
 } from "@/utils/cart-storage";
+import { supabase } from "@/utils/supabase";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [total, setTotal] = useState(0);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const { user } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     loadCart();
@@ -63,6 +70,94 @@ export default function CheckoutPage() {
       clearCart();
       loadCart();
       window.dispatchEvent(new Event("cartUpdated"));
+    }
+  };
+
+  const handleSubmitOrder = async () => {
+    if (!user) {
+      setSubmitError("You must be logged in to submit an order.");
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      setSubmitError("Your cart is empty.");
+      return;
+    }
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    try {
+      // Filter only 4Endurance products (those with variant_id)
+      const enduranceItems = cartItems.filter(
+        (item) => item.category === "4Endurance" && item.variant
+      );
+
+      if (enduranceItems.length === 0) {
+        setSubmitError("No 4Endurance products in cart to order.");
+        setSubmitting(false);
+        return;
+      }
+
+      // Calculate total from endurance items only
+      const orderTotal = enduranceItems.reduce(
+        (sum, item) => sum + item.price * item.quantity,
+        0
+      );
+
+      // Create order
+      const { data: order, error: orderError } = await supabase
+        .from("orders")
+        .insert({
+          user_id: user.id,
+          total_price: orderTotal,
+          currency: "EUR",
+          status: "pending",
+        })
+        .select()
+        .single();
+
+      if (orderError) {
+        throw orderError;
+      }
+
+      // Create order items
+      const orderItemsData = enduranceItems.map((item) => ({
+        order_id: order.id,
+        variant_id: item.variant ? parseInt(item.variant) : null,
+        product_name: item.productName,
+        quantity: item.quantity,
+        price_at_time: item.price,
+        currency: item.currency || "EUR",
+      }));
+
+      const { error: itemsError } = await supabase
+        .from("order_items")
+        .insert(orderItemsData);
+
+      if (itemsError) {
+        // If order items fail, try to delete the order
+        await supabase.from("orders").delete().eq("id", order.id);
+        throw itemsError;
+      }
+
+      // Clear cart and redirect
+      clearCart();
+      window.dispatchEvent(new Event("cartUpdated"));
+      
+      // Notify admin views to refresh orders
+      window.dispatchEvent(new Event("orderSubmitted"));
+      
+      // Show success message and redirect
+      alert(`Order #${order.id} submitted successfully!`);
+      router.push("/dashboard/4endurance-store");
+    } catch (err: any) {
+      console.error("Error submitting order:", err);
+      setSubmitError(
+        err.message || "Failed to submit order. Please try again."
+      );
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -239,23 +334,31 @@ export default function CheckoutPage() {
             </span>
           </div>
 
-          {/* Note about submit button */}
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-            <p className="text-sm text-yellow-800">
-              <strong>Note:</strong> The submit button will be implemented once
-              the order endpoint is available.
-            </p>
-          </div>
+          {/* Error message */}
+          {submitError && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+              <p className="text-sm text-red-800">{submitError}</p>
+            </div>
+          )}
 
-          {/* Placeholder for future submit button */}
-          <div className="opacity-50 cursor-not-allowed">
-            <button
-              disabled
-              className="w-full py-3 bg-gray-400 text-white font-semibold rounded-lg"
-            >
-              Submit Order (Coming Soon)
-            </button>
-          </div>
+          {/* Submit Order Button */}
+          <button
+            onClick={handleSubmitOrder}
+            disabled={submitting || cartItems.filter(item => item.category === "4Endurance").length === 0}
+            className={`w-full py-3 font-semibold rounded-lg transition-colors ${
+              submitting || cartItems.filter(item => item.category === "4Endurance").length === 0
+                ? "bg-gray-400 text-white cursor-not-allowed"
+                : "bg-purple-600 text-white hover:bg-purple-700"
+            }`}
+          >
+            {submitting ? "Submitting Order..." : "Submit Order"}
+          </button>
+
+          {cartItems.filter(item => item.category === "4Endurance").length === 0 && (
+            <p className="text-sm text-gray-600 text-center mt-2">
+              Only 4Endurance products can be ordered through this store.
+            </p>
+          )}
         </div>
       </div>
     </div>

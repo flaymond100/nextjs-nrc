@@ -228,6 +228,7 @@ export default function DashboardLayout({
     }),
   ];
 
+  // Wait for all checks to complete before rendering
   const loading =
     authLoading || checkingEmail || checkingActivation || adminLoading;
 
@@ -239,6 +240,11 @@ export default function DashboardLayout({
     );
   }
 
+  // CRITICAL: Dashboard is ONLY accessible to activated users
+  // This guard prevents any dashboard content from rendering if:
+  // - User is not logged in
+  // - Email is not confirmed
+  // - Account is not activated by admin
   if (!user || !emailConfirmed || !isActivated) {
     return (
       <div className="min-h-screen flex items-center justify-center">

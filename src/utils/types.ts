@@ -165,3 +165,31 @@ export interface StoreManagement {
   created_at: string;
   updated_at: string;
 }
+
+export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+
+export interface OrderItem {
+  id: number;
+  order_id: number;
+  variant_id: number | null;
+  product_name: string;
+  quantity: number;
+  price_at_time: number;
+  currency: string;
+  created_at: string;
+}
+
+export interface Order {
+  id: number;
+  user_id: string;
+  total_price: number;
+  currency: string;
+  status: OrderStatus;
+  created_at: string;
+  updated_at: string;
+  // Joined data (optional, for admin views)
+  user_email?: string | null;
+  user_first_name?: string | null;
+  user_last_name?: string | null;
+  items?: OrderItem[];
+}
