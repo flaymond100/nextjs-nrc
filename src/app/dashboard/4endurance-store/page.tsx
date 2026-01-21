@@ -9,7 +9,12 @@ import { useAdmin } from "@/hooks/use-admin";
 import { useAuth } from "@/contexts/auth-context";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import { ShoppingCartIcon, Cog6ToothIcon } from "@heroicons/react/24/outline";
+import {
+  ShoppingCartIcon,
+  Cog6ToothIcon,
+  TrashIcon,
+} from "@heroicons/react/24/outline";
+import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function FourEnduranceStorePage() {
   const [products, setProducts] = useState<FourEnduranceStoreProduct[]>([]);
@@ -22,6 +27,10 @@ export default function FourEnduranceStorePage() {
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
+  const [deleting, setDeleting] = useState(false);
+  const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
 
   useEffect(() => {
     checkStoreStatus();
@@ -110,6 +119,19 @@ export default function FourEnduranceStorePage() {
           .limit(10); // Show last 10 orders
         ordersData = result.data;
         ordersError = result.error;
+
+        // Fetch total revenue from all orders for admins
+        const { data: allOrdersData, error: totalError } = await supabase
+          .from("orders")
+          .select("total_price");
+
+        if (!totalError && allOrdersData) {
+          const total = allOrdersData.reduce(
+            (sum, order) => sum + Number(order.total_price),
+            0
+          );
+          setTotalRevenue(total);
+        }
       } else {
         // Users see only their own orders
         const result = await supabase
@@ -205,6 +227,58 @@ export default function FourEnduranceStorePage() {
     } finally {
       setUpdatingStatus(null);
     }
+  };
+
+  const handleDeleteClick = (order: Order) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to delete orders");
+      return;
+    }
+    setOrderToDelete(order);
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!orderToDelete || !isAdmin) return;
+
+    setDeleting(true);
+    try {
+      // Delete order (order_items will be deleted automatically via CASCADE)
+      const { error: deleteError } = await supabase
+        .from("orders")
+        .delete()
+        .eq("id", orderToDelete.id);
+
+      if (deleteError) {
+        console.error("Error deleting order:", deleteError);
+        toast.error(
+          deleteError.message || "Failed to delete order. Please try again."
+        );
+        return;
+      }
+
+      // Remove from local state
+      setOrders((prev) => prev.filter((o) => o.id !== orderToDelete.id));
+
+      // Update total revenue
+      if (totalRevenue !== null) {
+        setTotalRevenue(totalRevenue - Number(orderToDelete.total_price));
+      }
+
+      toast.success("Order deleted successfully");
+      setShowDeleteModal(false);
+      setOrderToDelete(null);
+    } catch (err: any) {
+      console.error("Error deleting order:", err);
+      toast.error("Failed to delete order. Please try again.");
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setShowDeleteModal(false);
+    setOrderToDelete(null);
   };
 
   const fetchProducts = async () => {
@@ -403,9 +477,19 @@ export default function FourEnduranceStorePage() {
       {user && (
         <div className="mb-8 bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-800">
-              {isAdmin ? "Recent Orders" : "My Orders"}
-            </h2>
+            <div>
+              <h2 className="text-xl font-bold text-gray-800">
+                {isAdmin ? "Recent Orders" : "My Orders"}
+              </h2>
+              {isAdmin && totalRevenue !== null && (
+                <p className="text-sm text-gray-600 mt-1">
+                  Total Revenue (All Orders):{" "}
+                  <span className="font-bold text-purple-700 text-lg">
+                    {totalRevenue.toFixed(2)} EUR
+                  </span>
+                </p>
+              )}
+            </div>
             <button
               onClick={fetchOrders}
               className="text-sm text-purple-600 hover:text-purple-700 font-medium"
@@ -441,6 +525,11 @@ export default function FourEnduranceStorePage() {
                     <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Date
                     </th>
+                    {isAdmin && (
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                      </th>
+                    )}
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -524,6 +613,17 @@ export default function FourEnduranceStorePage() {
                             }
                           )}
                         </td>
+                        {isAdmin && (
+                          <td className="px-4 py-3 whitespace-nowrap text-sm">
+                            <button
+                              onClick={() => handleDeleteClick(order)}
+                              className="text-red-600 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition-colors"
+                              title="Delete order"
+                            >
+                              <TrashIcon className="h-5 w-5" />
+                            </button>
+                          </td>
+                        )}
                       </tr>
                     );
                   })}
@@ -533,6 +633,23 @@ export default function FourEnduranceStorePage() {
           )}
         </div>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={handleDeleteCancel}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Order"
+        message={
+          orderToDelete
+            ? `Are you sure you want to delete order #${orderToDelete.id}? This action cannot be undone and all associated order items will be permanently removed.`
+            : "Are you sure you want to delete this order? This action cannot be undone."
+        }
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmColor="red"
+        loading={deleting}
+      />
 
       {/* Products Grid */}
       {displayProducts.length === 0 ? (

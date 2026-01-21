@@ -148,9 +148,8 @@ export default function CheckoutPage() {
       // Notify admin views to refresh orders
       window.dispatchEvent(new Event("orderSubmitted"));
       
-      // Show success message and redirect
-      alert(`Order #${order.id} submitted successfully!`);
-      router.push("/dashboard/4endurance-store");
+      // Redirect to confirmation page with order ID
+      router.push(`/dashboard/4endurance-store/confirmation?orderId=${order.id}`);
     } catch (err: any) {
       console.error("Error submitting order:", err);
       setSubmitError(
