@@ -34,20 +34,26 @@ export default function CheckoutPage() {
     productId: number,
     size: Size,
     gender: Gender,
-    newQuantity: number
+    newQuantity: number,
+    variant?: string | null
   ) => {
     if (newQuantity <= 0) {
-      handleRemoveItem(productId, size, gender);
+      handleRemoveItem(productId, size, gender, variant);
     } else {
-      updateCartItem(productId, size, gender, newQuantity);
+      updateCartItem(productId, size, gender, newQuantity, variant);
       loadCart();
       // Dispatch event to update cart count in other components
       window.dispatchEvent(new Event("cartUpdated"));
     }
   };
 
-  const handleRemoveItem = (productId: number, size: Size, gender: Gender) => {
-    removeFromCart(productId, size, gender);
+  const handleRemoveItem = (
+    productId: number,
+    size: Size,
+    gender: Gender,
+    variant?: string | null
+  ) => {
+    removeFromCart(productId, size, gender, variant);
     loadCart();
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -64,13 +70,13 @@ export default function CheckoutPage() {
     return (
       <div className="max-w-4xl mx-auto">
         <Link
-          href="/dashboard/store"
+          href="/dashboard/4endurance-store"
           className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-6"
         >
           <ArrowLeftIcon className="h-5 w-5" />
           <span>Back to Store</span>
         </Link>
-        
+
         <div className="bg-white rounded-lg shadow-md p-12 text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             Your cart is empty
@@ -79,7 +85,7 @@ export default function CheckoutPage() {
             Add some products to your cart to continue.
           </p>
           <Link
-            href="/dashboard/store"
+            href="/dashboard/4endurance-store"
             className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Browse Products
@@ -92,7 +98,7 @@ export default function CheckoutPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <Link
-        href="/dashboard/store"
+        href="/dashboard/4endurance-store"
         className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-6"
       >
         <ArrowLeftIcon className="h-5 w-5" />
@@ -112,85 +118,108 @@ export default function CheckoutPage() {
 
         {/* Cart Items */}
         <div className="space-y-4 mb-8">
-          {cartItems.map((item, index) => (
-            <div
-              key={`${item.productId}-${item.size}-${item.gender}-${index}`}
-              className="border border-gray-200 rounded-lg p-4"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-800 mb-1">
-                    {item.productName}
-                  </h3>
-                  {item.variant && (
-                    <p className="text-sm text-gray-600 mb-2">{item.variant}</p>
-                  )}
-                  <div className="flex gap-4 text-sm text-gray-600">
-                    <span>
-                      <span className="font-medium">Category:</span> {item.category}
-                    </span>
-                    <span>
-                      <span className="font-medium">Size:</span> {item.size}
-                    </span>
-                    <span>
-                      <span className="font-medium">Gender:</span> {item.gender}
-                    </span>
+          {cartItems.map((item, index) => {
+            // Use variant_id if available for unique key, otherwise use standard key
+            const uniqueKey = item.variant
+              ? `${item.variant}-${index}`
+              : `${item.productId}-${item.size}-${item.gender}-${index}`;
+
+            return (
+              <div
+                key={uniqueKey}
+                className="border border-gray-200 rounded-lg p-4"
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-1">
+                      {item.productName}
+                    </h3>
+                    {item.variant && (
+                      <p className="text-sm text-gray-600 mb-2">
+                        Variant ID: {item.variant}
+                      </p>
+                    )}
+                    <div className="flex gap-4 text-sm text-gray-600">
+                      <span>
+                        <span className="font-medium">Category:</span>{" "}
+                        {item.category}
+                      </span>
+                      {item.category !== "4Endurance" && (
+                        <>
+                          <span>
+                            <span className="font-medium">Size:</span>{" "}
+                            {item.size}
+                          </span>
+                          <span>
+                            <span className="font-medium">Gender:</span>{" "}
+                            {item.gender}
+                          </span>
+                        </>
+                      )}
+                    </div>
                   </div>
-                </div>
-                <div className="ml-4 text-right">
-                  <p className="text-lg font-bold text-purple-700 mb-2">
-                    {(item.price * item.quantity).toFixed(2)} {item.currency}
-                  </p>
-                  <p className="text-sm text-gray-600 mb-3">
-                    {item.price.toFixed(2)} {item.currency} each
-                  </p>
-                  
-                  {/* Quantity Controls */}
-                  <div className="flex items-center gap-3 justify-end">
+                  <div className="ml-4 text-right">
+                    <p className="text-lg font-bold text-purple-700 mb-2">
+                      {(item.price * item.quantity).toFixed(2)} {item.currency}
+                    </p>
+                    <p className="text-sm text-gray-600 mb-3">
+                      {item.price.toFixed(2)} {item.currency} each
+                    </p>
+
+                    {/* Quantity Controls */}
+                    <div className="flex items-center gap-3 justify-end">
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.productId,
+                            item.size,
+                            item.gender,
+                            item.quantity - 1,
+                            item.variant
+                          )
+                        }
+                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors"
+                      >
+                        −
+                      </button>
+                      <span className="text-lg font-semibold text-gray-800 w-8 text-center">
+                        {item.quantity}
+                      </span>
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(
+                            item.productId,
+                            item.size,
+                            item.gender,
+                            item.quantity + 1,
+                            item.variant
+                          )
+                        }
+                        className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors"
+                      >
+                        +
+                      </button>
+                    </div>
+
                     <button
                       onClick={() =>
-                        handleQuantityChange(
+                        handleRemoveItem(
                           item.productId,
                           item.size,
                           item.gender,
-                          item.quantity - 1
+                          item.variant
                         )
                       }
-                      className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors"
+                      className="mt-2 flex items-center gap-1 text-sm text-red-600 hover:text-red-700"
                     >
-                      −
-                    </button>
-                    <span className="text-lg font-semibold text-gray-800 w-8 text-center">
-                      {item.quantity}
-                    </span>
-                    <button
-                      onClick={() =>
-                        handleQuantityChange(
-                          item.productId,
-                          item.size,
-                          item.gender,
-                          item.quantity + 1
-                        )
-                      }
-                      className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold transition-colors"
-                    >
-                      +
+                      <TrashIcon className="h-4 w-4" />
+                      <span>Remove</span>
                     </button>
                   </div>
-                  
-                  <button
-                    onClick={() =>
-                      handleRemoveItem(item.productId, item.size, item.gender)
-                    }
-                    className="mt-2 flex items-center gap-1 text-sm text-red-600 hover:text-red-700"
-                  >
-                    <TrashIcon className="h-4 w-4" />
-                    <span>Remove</span>
-                  </button>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Order Summary */}
@@ -232,4 +261,3 @@ export default function CheckoutPage() {
     </div>
   );
 }
-

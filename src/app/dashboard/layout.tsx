@@ -9,13 +9,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
+import { StoreManagement } from "@/utils/types";
 import {
   XMarkIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 
-const SIDEBAR_MENU = [
+interface MenuItem {
+  name: string;
+  href: string;
+  icon: string;
+  adminOnly?: boolean;
+  store_name?: string;
+}
+
+const STATIC_MENU_ITEMS: MenuItem[] = [
   {
     name: "Profile",
     href: "/dashboard/profile",
@@ -27,12 +36,6 @@ const SIDEBAR_MENU = [
     icon: "🏁",
   },
   {
-    name: "Store",
-    href: "/dashboard/store",
-    icon: "🛍️",
-    adminOnly: true,
-  },
-  {
     name: "Members",
     href: "/dashboard/members",
     icon: "👥",
@@ -42,6 +45,12 @@ const SIDEBAR_MENU = [
     name: "Payments",
     href: "/dashboard/payments",
     icon: "💳",
+    adminOnly: true,
+  },
+  {
+    name: "Manage Stores",
+    href: "/dashboard/stores",
+    icon: "🏪",
     adminOnly: true,
   },
 ];
@@ -61,6 +70,7 @@ export default function DashboardLayout({
   const [checkingActivation, setCheckingActivation] = useState(true);
   const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile menu state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Desktop collapse state
+  const [openStores, setOpenStores] = useState<StoreManagement[]>([]);
 
   useEffect(() => {
     async function checkUserStatus() {
@@ -149,6 +159,56 @@ export default function DashboardLayout({
     setSidebarOpen(false);
   }, [pathname]);
 
+  // Fetch open stores for sidebar menu
+  useEffect(() => {
+    async function fetchOpenStores() {
+      try {
+        const { data, error } = await supabase
+          .from("store_management")
+          .select("*")
+          .eq("is_open", true)
+          .order("display_name", { ascending: true });
+
+        if (error) {
+          console.error("Error fetching open stores:", error);
+          setOpenStores([]);
+          return;
+        }
+
+        setOpenStores((data || []) as StoreManagement[]);
+      } catch (err) {
+        console.error("Error fetching open stores:", err);
+        setOpenStores([]);
+      }
+    }
+
+    // Only fetch if user is authenticated and activated
+    if (!authLoading && user && emailConfirmed && isActivated) {
+      fetchOpenStores();
+    }
+  }, [user, authLoading, emailConfirmed, isActivated]);
+
+  // Build menu items: static items + open stores
+  const menuItems: MenuItem[] = [
+    ...STATIC_MENU_ITEMS,
+    // Add open stores after "My Races" and before admin items
+    // Map store_name to static URLs
+    ...openStores.map((store) => {
+      // Map endurance_store to static URL /dashboard/4endurance-store
+      const href =
+        store.store_name === "endurance_store"
+          ? "/dashboard/4endurance-store"
+          : `/dashboard/store?store=${store.store_name}`;
+
+      return {
+        name: store.display_name,
+        href,
+        icon: "🍩",
+        store_name: store.store_name,
+      };
+    }),
+  ];
+
   const loading =
     authLoading || checkingEmail || checkingActivation || adminLoading;
 
@@ -211,7 +271,7 @@ export default function DashboardLayout({
               </div>
 
               <nav className="space-y-2 p-4">
-                {SIDEBAR_MENU.map((item) => {
+                {menuItems.map((item) => {
                   if (item.adminOnly && !isAdmin) {
                     return null;
                   }
@@ -290,7 +350,7 @@ export default function DashboardLayout({
             <nav
               className={`space-y-2 p-2 ${sidebarCollapsed ? "md:p-2" : "md:p-6"} md:pt-0 transition-all duration-300`}
             >
-              {SIDEBAR_MENU.map((item) => {
+              {menuItems.map((item) => {
                 // Hide admin-only items for non-admins
                 if (item.adminOnly && !isAdmin) {
                   return null;

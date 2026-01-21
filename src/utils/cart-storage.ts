@@ -44,13 +44,20 @@ export function saveCart(cart: Cart): void {
 export function addToCart(item: CartItem): void {
   const cart = getCart() || { items: [], updatedAt: new Date().toISOString() };
   
-  // Check if item with same productId, size, and gender already exists
-  const existingIndex = cart.items.findIndex(
-    (i) =>
+  // For 4endurance products, use variant field if available for matching
+  // Otherwise, match by productId, size, and gender
+  const existingIndex = cart.items.findIndex((i) => {
+    if (item.variant && i.variant) {
+      // Both have variant (4endurance products) - match by variant
+      return i.variant === item.variant;
+    }
+    // Standard matching by productId, size, and gender
+    return (
       i.productId === item.productId &&
       i.size === item.size &&
       i.gender === item.gender
-  );
+    );
+  });
 
   if (existingIndex >= 0) {
     // Update quantity if item exists
@@ -70,19 +77,26 @@ export function updateCartItem(
   productId: number,
   size: string,
   gender: string,
-  quantity: number
+  quantity: number,
+  variant?: string | null
 ): void {
   const cart = getCart();
   if (!cart) {
     return;
   }
 
-  const itemIndex = cart.items.findIndex(
-    (i) =>
+  const itemIndex = cart.items.findIndex((i) => {
+    if (variant && i.variant) {
+      // Both have variant (4endurance products) - match by variant
+      return i.variant === variant;
+    }
+    // Standard matching by productId, size, and gender
+    return (
       i.productId === productId &&
       i.size === size &&
       i.gender === gender
-  );
+    );
+  });
 
   if (itemIndex >= 0) {
     if (quantity <= 0) {
@@ -101,21 +115,26 @@ export function updateCartItem(
 export function removeFromCart(
   productId: number,
   size: string,
-  gender: string
+  gender: string,
+  variant?: string | null
 ): void {
   const cart = getCart();
   if (!cart) {
     return;
   }
 
-  cart.items = cart.items.filter(
-    (i) =>
-      !(
-        i.productId === productId &&
-        i.size === size &&
-        i.gender === gender
-      )
-  );
+  cart.items = cart.items.filter((i) => {
+    if (variant && i.variant) {
+      // Both have variant (4endurance products) - match by variant
+      return i.variant !== variant;
+    }
+    // Standard matching by productId, size, and gender
+    return !(
+      i.productId === productId &&
+      i.size === size &&
+      i.gender === gender
+    );
+  });
 
   saveCart(cart);
 }

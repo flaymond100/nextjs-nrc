@@ -141,3 +141,27 @@ export interface Cart {
   items: CartItem[];
   updatedAt: string;
 }
+
+export interface FourEnduranceStoreProduct {
+  name: string;
+  price: number;
+  currency: string | null;
+  product_item_info: string | null;
+  available_bool: boolean | null;
+  img_reference: string | null;
+  product_url: string | null;
+  product_id: string | number | null;
+  variant_id: string | number | null;
+  sku: string | null;
+}
+
+export interface StoreManagement {
+  id: number;
+  store_name: string;
+  store_table_name: string;
+  is_open: boolean;
+  display_name: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+}
