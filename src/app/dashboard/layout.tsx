@@ -159,39 +159,52 @@ export default function DashboardLayout({
     setSidebarOpen(false);
   }, [pathname]);
 
-  // Fetch open stores for sidebar menu
+  // Fetch stores for sidebar menu
+  // Admins see all stores (open and closed), regular users only see open stores
   useEffect(() => {
-    async function fetchOpenStores() {
+    async function fetchStores() {
       try {
-        const { data, error } = await supabase
+        let query = supabase
           .from("store_management")
           .select("*")
-          .eq("is_open", true)
           .order("display_name", { ascending: true });
 
+        // Regular users only see open stores, admins see all stores
+        if (!isAdmin) {
+          query = query.eq("is_open", true);
+        }
+
+        const { data, error } = await query;
+
         if (error) {
-          console.error("Error fetching open stores:", error);
+          console.error("Error fetching stores:", error);
           setOpenStores([]);
           return;
         }
 
         setOpenStores((data || []) as StoreManagement[]);
       } catch (err) {
-        console.error("Error fetching open stores:", err);
+        console.error("Error fetching stores:", err);
         setOpenStores([]);
       }
     }
 
-    // Only fetch if user is authenticated and activated
-    if (!authLoading && user && emailConfirmed && isActivated) {
-      fetchOpenStores();
+    // Only fetch if user is authenticated and activated, and admin status is known
+    if (
+      !authLoading &&
+      !adminLoading &&
+      user &&
+      emailConfirmed &&
+      isActivated
+    ) {
+      fetchStores();
     }
-  }, [user, authLoading, emailConfirmed, isActivated]);
+  }, [user, authLoading, emailConfirmed, isActivated, isAdmin, adminLoading]);
 
-  // Build menu items: static items + open stores
+  // Build menu items: static items + stores (open stores for regular users, all stores for admins)
   const menuItems: MenuItem[] = [
     ...STATIC_MENU_ITEMS,
-    // Add open stores after "My Races" and before admin items
+    // Add stores after "My Races" and before admin items
     // Map store_name to static URLs
     ...openStores.map((store) => {
       // Map endurance_store to static URL /dashboard/4endurance-store
@@ -200,8 +213,14 @@ export default function DashboardLayout({
           ? "/dashboard/4endurance-store"
           : `/dashboard/store?store=${store.store_name}`;
 
+      // Add visual indicator for closed stores (admins only)
+      const displayName =
+        isAdmin && !store.is_open
+          ? `${store.display_name} (Closed)`
+          : store.display_name;
+
       return {
-        name: store.display_name,
+        name: displayName,
         href,
         icon: "🍩",
         store_name: store.store_name,

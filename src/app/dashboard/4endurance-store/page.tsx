@@ -34,7 +34,7 @@ export default function FourEnduranceStorePage() {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("cartUpdated", handleStorageChange);
     };
-  }, []);
+  }, [isAdmin]);
 
   const checkStoreStatus = async () => {
     try {
@@ -55,7 +55,8 @@ export default function FourEnduranceStorePage() {
       const isOpen = data?.is_open === true;
       setStoreOpen(isOpen);
 
-      if (isOpen) {
+      // Always fetch products if store is open OR if user is admin
+      if (isOpen || isAdmin) {
         fetchProducts();
       }
     } catch (err) {
@@ -179,7 +180,8 @@ export default function FourEnduranceStorePage() {
     );
   }
 
-  if (storeOpen === false) {
+  // Show closed message only if store is closed AND user is not admin
+  if (storeOpen === false && !isAdmin) {
     return (
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
@@ -221,6 +223,14 @@ export default function FourEnduranceStorePage() {
     <div className="max-w-7xl mx-auto">
       {/* Header */}
       <div className="mb-8">
+        {/* Admin notice when store is closed */}
+        {isAdmin && storeOpen === false && (
+          <div className="mb-4 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+            <p className="text-yellow-800 text-sm font-medium">
+              ⚠️ Admin View: This store is currently closed to regular users. You can still access and manage products.
+            </p>
+          </div>
+        )}
         <div className="flex items-center justify-between mb-4">
           <h1 className="text-3xl font-bold text-gray-800">4Endurance Store</h1>
           <div className="flex items-center gap-2">

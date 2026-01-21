@@ -53,46 +53,6 @@ export default function DashboardPage() {
         <p className="text-gray-600">Welcome to your dashboard</p>
       </div>
 
-      {/* Open Stores Section */}
-      {openStores.length > 0 ? (
-        <div className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-            Open Stores
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {openStores.map((store) => (
-              <Link
-                key={store.id}
-                href={store.store_name === "endurance_store" 
-                  ? "/dashboard/4endurance-store"
-                  : `/dashboard/store?store=${store.store_name}`}
-                className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
-              >
-                <div className="flex items-start justify-between mb-3">
-                  <ShoppingBagIcon className="h-8 w-8 text-purple-600" />
-                  <span className="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-                    Open
-                  </span>
-                </div>
-                <h3 className="text-lg font-bold text-gray-800 mb-2">
-                  {store.display_name}
-                </h3>
-                {store.description && (
-                  <p className="text-sm text-gray-600 line-clamp-2">
-                    {store.description}
-                  </p>
-                )}
-              </Link>
-            ))}
-          </div>
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg shadow-md p-8 text-center">
-          <ShoppingBagIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600">No stores are currently open</p>
-        </div>
-      )}
-
       {/* Quick Links */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
@@ -108,9 +68,7 @@ export default function DashboardPage() {
           className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
         >
           <div className="text-2xl mb-2">🏁</div>
-          <h3 className="text-lg font-semibold text-gray-800 mb-1">
-            My Races
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-800 mb-1">My Races</h3>
           <p className="text-sm text-gray-600">View your registered races</p>
         </Link>
         {openStores.length > 0 && (
@@ -127,4 +85,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
