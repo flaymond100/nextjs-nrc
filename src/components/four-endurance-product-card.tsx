@@ -111,10 +111,10 @@ export function FourEnduranceProductCard({
   const isAvailable = currentProduct.available_bool === true;
 
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
       {/* Product Image */}
       {currentProduct.img_reference && (
-        <div className="relative w-full h-32 sm:h-40 md:h-48 bg-gray-100">
+        <div className="relative w-full h-32 sm:h-40 md:h-48 bg-gray-100 flex-shrink-0">
           <Image
             src={currentProduct.img_reference}
             alt={currentProduct.name}
@@ -125,7 +125,7 @@ export function FourEnduranceProductCard({
         </div>
       )}
 
-      <div className="p-3 sm:p-4">
+      <div className="p-3 sm:p-4 flex flex-col flex-1">
         <div className="mb-2 flex items-center justify-between gap-2">
           <span className="inline-block px-2 py-0.5 text-xs font-semibold text-purple-700 bg-purple-100 rounded-full">
             4Endurance
@@ -137,56 +137,16 @@ export function FourEnduranceProductCard({
             </span>
           )}
         </div>
-
-        <h3 className="text-sm sm:text-base font-bold text-gray-800 mb-2 line-clamp-2">
+        <h3 className="text-sm sm:text-base font-bold text-gray-800 mb-2 line-clamp-3">
           {currentProduct.name}
         </h3>
-
-        {/* Variant Dropdown */}
-        {hasMultipleVariants && (
-          <div className="mb-3">
-            <label className="block text-xs font-medium text-gray-700 mb-1">
-              Variant
-            </label>
-            <select
-              value={currentProduct.variant_id?.toString() || ""}
-              onChange={(e) => handleVariantChange(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-            >
-              {variants.map((variant) => (
-                <option
-                  key={variant.variant_id?.toString() || variant.name}
-                  value={variant.variant_id?.toString() || ""}
-                >
-                  {variant.name}
-                  {variant.available_bool === false ? " (Out of stock)" : ""}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
-
-        {currentProduct.product_item_info && (
-          <p className="text-xs text-gray-600 mb-2 line-clamp-2">
-            {currentProduct.product_item_info}
-          </p>
-        )}
-
-        {/* SKU Display (hidden on mobile) */}
-        {currentProduct.sku && (
-          <p className="text-xs text-gray-500 mb-2 hidden sm:block">
-            SKU: {currentProduct.sku}
-          </p>
-        )}
-
         <div className="mb-2 sm:mb-3">
           <p className="text-base sm:text-lg font-bold text-purple-700">
             {Number(currentProduct.price).toFixed(2)}{" "}
             {currentProduct.currency || "EUR"}
           </p>
         </div>
-
-        {/* Product URL Link */}
+        {/* Product URL Link
         {currentProduct.product_url && (
           <div className="mb-3">
             <a
@@ -199,10 +159,11 @@ export function FourEnduranceProductCard({
               <span>Open product page</span>
             </a>
           </div>
-        )}
-
+        )} */}
+        {/* Spacer to push quantity/cart section to bottom */}
+        <div className="flex-1"></div>
         {/* Quantity Selection */}
-        <div className="mb-2 sm:mb-3">
+        <div className="mb-2 sm:mb-3 mt-4">
           <label className="block text-xs font-medium text-gray-700 mb-1">
             Quantity
           </label>
@@ -224,7 +185,6 @@ export function FourEnduranceProductCard({
             </button>
           </div>
         </div>
-
         {/* Add to Cart / Notify Me Button */}
         {isAvailable ? (
           <button
@@ -241,9 +201,7 @@ export function FourEnduranceProductCard({
             >
               Notify me
             </button>
-            <p className="text-xs text-gray-500 text-center">
-              Out of stock
-            </p>
+            <p className="text-xs text-gray-500 text-center">Out of stock</p>
           </div>
         )}
       </div>
