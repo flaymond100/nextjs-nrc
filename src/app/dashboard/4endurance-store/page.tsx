@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
-import { FourEnduranceStoreProduct, Order, OrderStatus } from "@/utils/types";
+import { FourEnduranceStoreProduct, Order, OrderStatus, OrderItem } from "@/utils/types";
 import { FourEnduranceProductCard } from "@/components/four-endurance-product-card";
 import { Loader } from "@/components/loader";
 import { getCartItemCount } from "@/utils/cart-storage";
@@ -25,7 +25,7 @@ export default function FourEnduranceStorePage() {
   const { user } = useAuth();
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
   const [closingDate, setClosingDate] = useState<string | null>(null);
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<(Order & { items: OrderItem[] })[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -213,6 +213,28 @@ export default function FourEnduranceStorePage() {
         return;
       }
 
+      // Fetch order items for all orders
+      const orderIds = ordersData.map((order) => order.id);
+      const { data: itemsData, error: itemsError } = await supabase
+        .from("order_items")
+        .select("*")
+        .in("order_id", orderIds)
+        .order("id", { ascending: true });
+
+      if (itemsError) {
+        console.error("Error fetching order items:", itemsError);
+        // Continue without items if there's an error
+      }
+
+      // Group items by order_id
+      const itemsMap = new Map<number, OrderItem[]>();
+      (itemsData || []).forEach((item) => {
+        if (!itemsMap.has(item.order_id)) {
+          itemsMap.set(item.order_id, []);
+        }
+        itemsMap.get(item.order_id)!.push(item as OrderItem);
+      });
+
       // Get unique user IDs (only needed for admin view)
       if (isAdmin) {
         const userIds = Array.from(new Set(ordersData.map((o) => o.user_id)));
@@ -233,7 +255,7 @@ export default function FourEnduranceStorePage() {
           (ridersData || []).map((rider) => [rider.uuid, rider])
         );
 
-        // Combine orders with rider data
+        // Combine orders with rider data and items
         const ordersWithUser = ordersData.map((order) => {
           const rider = ridersMap.get(order.user_id);
           return {
@@ -241,13 +263,19 @@ export default function FourEnduranceStorePage() {
             user_email: rider?.email || null,
             user_first_name: rider?.firstName || null,
             user_last_name: rider?.lastName || null,
+            items: itemsMap.get(order.id) || [],
           };
         });
 
-        setOrders(ordersWithUser as Order[]);
+        setOrders(ordersWithUser as (Order & { items: OrderItem[] })[]);
       } else {
-        // For regular users, just set the orders directly
-        setOrders(ordersData as Order[]);
+        // For regular users, combine orders with items
+        const ordersWithItems = ordersData.map((order) => ({
+          ...order,
+          items: itemsMap.get(order.id) || [],
+        }));
+
+        setOrders(ordersWithItems as (Order & { items: OrderItem[] })[]);
       }
     } catch (err) {
       console.error("Error fetching orders:", err);
@@ -627,6 +655,9 @@ export default function FourEnduranceStorePage() {
                       </th>
                     )}
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      Products
+                    </th>
+                    <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                       Total
                     </th>
                     <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -671,6 +702,20 @@ export default function FourEnduranceStorePage() {
                             )}
                           </td>
                         )}
+                        <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm text-gray-700">
+                          {order.items && order.items.length > 0 ? (
+                            <div className="space-y-1">
+                              {order.items.map((item, idx) => (
+                                <div key={item.id || idx} className="flex items-center gap-2">
+                                  <span className="font-medium">{item.product_name}</span>
+                                  <span className="text-gray-500">× {item.quantity}</span>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 italic">No items</span>
+                          )}
+                        </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-gray-900">
                           {order.total_price.toFixed(2)} {order.currency}
                         </td>
