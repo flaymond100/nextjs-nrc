@@ -41,6 +41,12 @@ const STATIC_MENU_ITEMS: MenuItem[] = [
     icon: "📦",
   },
   {
+    name: "All Orders",
+    href: "/dashboard/all-orders",
+    icon: "📋",
+    adminOnly: true,
+  },
+  {
     name: "Members",
     href: "/dashboard/members",
     icon: "👥",
