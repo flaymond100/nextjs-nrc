@@ -2,6 +2,10 @@ import React from "react";
 import { Footer, Navbar } from "@/components";
 import { Sponsors } from "@/components/sponsors";
 
+// Force static generation for static export
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
 export default function SponsorsPage() {
   return (
     <>

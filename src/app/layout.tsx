@@ -2,11 +2,10 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Bricolage_Grotesque } from "next/font/google";
 import { Layout } from "@/components";
-import Modal from "@/components/modal";
-import LoginModal from "@/components/login-modal";
+import ModalWrapper from "@/components/modal-wrapper";
+import LoginModalWrapper from "@/components/login-modal-wrapper";
 import { GlobalLoader } from "@/components/global-loader";
 import { Toaster } from "react-hot-toast";
-import { Suspense } from "react";
 import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AuthProvider } from "@/contexts/auth-context";
@@ -126,15 +125,13 @@ export default function RootLayout({
               <Scroll />
               <Toaster position="top-right" />
               {children}
-              <Suspense fallback={<>modal</>}>
-                <Modal />
-                <LoginModal />
-              </Suspense>
+              <ModalWrapper />
+              <LoginModalWrapper />
             </Layout>
           </NavigationProvider>
         </AuthProvider>
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
       </body>
-      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
     </html>
   );
 }
