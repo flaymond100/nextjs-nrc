@@ -57,7 +57,7 @@ export default function StoreManagementPage() {
 
     try {
       const now = new Date().toISOString();
-      
+
       // Find stores that should be closed (closing_date is set and in the past, but store is still open)
       const { data: storesToClose, error } = await supabase
         .from("store_management")
@@ -153,7 +153,7 @@ export default function StoreManagementPage() {
         const now = new Date();
         if (closingDate <= now) {
           shouldBeOpen = false;
-          toast.info(
+          toast.error(
             `Store will be closed because closing date (${closingDate.toLocaleDateString()}) has passed.`
           );
         }
@@ -198,11 +198,15 @@ export default function StoreManagementPage() {
         store_name: formData.get("store_name") as string,
         store_table_name: formData.get("store_table_name") as string,
         display_name: formData.get("display_name") as string,
-        description: formData.get("description") as string || null,
+        description: (formData.get("description") as string) || null,
         is_open: formData.get("is_open") === "true",
       };
 
-      if (!newStore.store_name || !newStore.store_table_name || !newStore.display_name) {
+      if (
+        !newStore.store_name ||
+        !newStore.store_table_name ||
+        !newStore.display_name
+      ) {
         toast.error("Store name, table name, and display name are required");
         return;
       }
@@ -446,12 +450,12 @@ export default function StoreManagementPage() {
                           </>
                         )}
                       </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {store.store_name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {store.store_table_name}
-                    </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {store.store_name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {store.store_table_name}
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {isEditing ? (
                           <div className="space-y-2">
@@ -506,36 +510,36 @@ export default function StoreManagementPage() {
                           ? new Date(store.closing_date).toLocaleString()
                           : "—"}
                       </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {isEditing ? (
-                        <div className="flex items-center gap-2">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                        {isEditing ? (
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={() => handleSaveEdit(store)}
+                              disabled={saving}
+                              className="text-green-600 hover:text-green-900 disabled:opacity-50"
+                              title="Save"
+                            >
+                              <CheckIcon className="h-5 w-5" />
+                            </button>
+                            <button
+                              onClick={handleCancelEdit}
+                              className="text-red-600 hover:text-red-900"
+                              title="Cancel"
+                            >
+                              <XMarkIcon className="h-5 w-5" />
+                            </button>
+                          </div>
+                        ) : (
                           <button
-                            onClick={() => handleSaveEdit(store)}
-                            disabled={saving}
-                            className="text-green-600 hover:text-green-900 disabled:opacity-50"
-                            title="Save"
+                            onClick={() => handleEdit(store)}
+                            className="text-purple-600 hover:text-purple-900"
+                            title="Edit"
                           >
-                            <CheckIcon className="h-5 w-5" />
+                            <PencilIcon className="h-5 w-5" />
                           </button>
-                          <button
-                            onClick={handleCancelEdit}
-                            className="text-red-600 hover:text-red-900"
-                            title="Cancel"
-                          >
-                            <XMarkIcon className="h-5 w-5" />
-                          </button>
-                        </div>
-                      ) : (
-                        <button
-                          onClick={() => handleEdit(store)}
-                          className="text-purple-600 hover:text-purple-900"
-                          title="Edit"
-                        >
-                          <PencilIcon className="h-5 w-5" />
-                        </button>
-                      )}
-                    </td>
-                  </tr>
+                        )}
+                      </td>
+                    </tr>
                   );
                 })
               )}
