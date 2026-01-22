@@ -36,6 +36,11 @@ const STATIC_MENU_ITEMS: MenuItem[] = [
     icon: "🏁",
   },
   {
+    name: "My Orders",
+    href: "/dashboard/my-orders",
+    icon: "📦",
+  },
+  {
     name: "Members",
     href: "/dashboard/members",
     icon: "👥",
@@ -182,7 +187,23 @@ export default function DashboardLayout({
           return;
         }
 
-        setOpenStores((data || []) as StoreManagement[]);
+        // Filter stores based on closing_date for regular users
+        let filteredStores = (data || []) as StoreManagement[];
+        
+        if (!isAdmin) {
+          // For regular users, also filter out stores that have passed their closing date
+          const now = new Date();
+          filteredStores = filteredStores.filter((store) => {
+            if (!store.is_open) return false;
+            if (store.closing_date) {
+              const closingDate = new Date(store.closing_date);
+              return closingDate > now;
+            }
+            return true;
+          });
+        }
+
+        setOpenStores(filteredStores);
       } catch (err) {
         console.error("Error fetching stores:", err);
         setOpenStores([]);

@@ -286,7 +286,7 @@ export default function OrderConfirmationPage() {
             Continue Shopping
           </Link>
           <Link
-            href="/dashboard/4endurance-store"
+            href="/dashboard/my-orders"
             className="flex-1 text-center px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm sm:text-base"
           >
             View My Orders

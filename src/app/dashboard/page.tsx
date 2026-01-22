@@ -29,7 +29,18 @@ export default function DashboardPage() {
         return;
       }
 
-      setOpenStores((data || []) as StoreManagement[]);
+      // Filter stores that have passed their closing date
+      const now = new Date();
+      const filteredStores = (data || []).filter((store: StoreManagement) => {
+        if (!store.is_open) return false;
+        if (store.closing_date) {
+          const closingDate = new Date(store.closing_date);
+          return closingDate > now;
+        }
+        return true;
+      }) as StoreManagement[];
+
+      setOpenStores(filteredStores);
     } catch (err) {
       console.error("Error fetching open stores:", err);
       setOpenStores([]);

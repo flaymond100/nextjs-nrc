@@ -162,6 +162,7 @@ export interface StoreManagement {
   is_open: boolean;
   display_name: string;
   description: string | null;
+  closing_date: string | null;
   created_at: string;
   updated_at: string;
 }

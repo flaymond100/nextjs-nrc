@@ -24,6 +24,7 @@ export default function FourEnduranceStorePage() {
   const { isAdmin } = useAdmin();
   const { user } = useAuth();
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
+  const [closingDate, setClosingDate] = useState<string | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null);
@@ -31,6 +32,12 @@ export default function FourEnduranceStorePage() {
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<{
+    days: number;
+    hours: number;
+    minutes: number;
+    seconds: number;
+  } | null>(null);
 
   useEffect(() => {
     checkStoreStatus();
@@ -67,11 +74,50 @@ export default function FourEnduranceStorePage() {
     }
   }, [isAdmin, user]);
 
+  // Countdown timer effect
+  useEffect(() => {
+    if (!closingDate || !storeOpen) {
+      setTimeRemaining(null);
+      return;
+    }
+
+    const updateCountdown = () => {
+      const now = new Date();
+      const closing = new Date(closingDate);
+      const diff = closing.getTime() - now.getTime();
+
+      if (diff <= 0) {
+        setTimeRemaining(null);
+        setClosingDate(null);
+        // Store has closed, refresh status
+        setStoreOpen(false);
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      setTimeRemaining({ days, hours, minutes, seconds });
+    };
+
+    // Update immediately
+    updateCountdown();
+
+    // Update every second
+    const interval = setInterval(updateCountdown, 1000);
+
+    return () => clearInterval(interval);
+  }, [closingDate, storeOpen]);
+
   const checkStoreStatus = async () => {
     try {
       const { data, error } = await supabase
         .from("store_management")
-        .select("is_open")
+        .select("is_open, closing_date")
         .eq("store_name", "endurance_store")
         .single();
 
@@ -83,7 +129,21 @@ export default function FourEnduranceStorePage() {
         return;
       }
 
-      const isOpen = data?.is_open === true;
+      // Check if store is closed by date
+      let isOpen = data?.is_open === true;
+      if (isOpen && data?.closing_date) {
+        const closingDate = new Date(data.closing_date);
+        const now = new Date();
+        if (closingDate <= now) {
+          isOpen = false;
+        } else {
+          // Store is open and has a closing date - set it for countdown
+          setClosingDate(data.closing_date);
+        }
+      } else {
+        setClosingDate(null);
+      }
+
       setStoreOpen(isOpen);
 
       // Always fetch products if store is open OR if user is admin
@@ -474,6 +534,54 @@ export default function FourEnduranceStorePage() {
           Browse nutrition from our partner 4Endurance
         </p>
       </div>
+
+      {/* Countdown Timer */}
+      {storeOpen && closingDate && timeRemaining && (
+        <div className="mb-6 sm:mb-8 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg shadow-lg p-6 sm:p-8 text-white">
+          <div className="text-center">
+            <h2 className="text-xl sm:text-2xl font-bold mb-2">
+              Store Closing Soon!
+            </h2>
+            <p className="text-sm sm:text-base text-purple-100 mb-4 sm:mb-6">
+              Place your order before the store closes
+            </p>
+            <div className="grid grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto">
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <div className="text-2xl sm:text-4xl font-bold">
+                  {timeRemaining.days}
+                </div>
+                <div className="text-xs sm:text-sm text-purple-100 mt-1">
+                  Days
+                </div>
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <div className="text-2xl sm:text-4xl font-bold">
+                  {timeRemaining.hours.toString().padStart(2, "0")}
+                </div>
+                <div className="text-xs sm:text-sm text-purple-100 mt-1">
+                  Hours
+                </div>
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <div className="text-2xl sm:text-4xl font-bold">
+                  {timeRemaining.minutes.toString().padStart(2, "0")}
+                </div>
+                <div className="text-xs sm:text-sm text-purple-100 mt-1">
+                  Minutes
+                </div>
+              </div>
+              <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 sm:p-4">
+                <div className="text-2xl sm:text-4xl font-bold">
+                  {timeRemaining.seconds.toString().padStart(2, "0")}
+                </div>
+                <div className="text-xs sm:text-sm text-purple-100 mt-1">
+                  Seconds
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Orders Table - Admin sees all orders, Users see their own */}
       {user && (

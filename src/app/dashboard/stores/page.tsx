@@ -28,6 +28,7 @@ export default function StoreManagementPage() {
     display_name: string;
     description: string;
     is_open: boolean;
+    closing_date: string;
   } | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -41,8 +42,54 @@ export default function StoreManagementPage() {
   useEffect(() => {
     if (isAdmin) {
       fetchStores();
+      // Check and auto-close stores periodically
+      checkAndAutoCloseStores();
+      const interval = setInterval(() => {
+        checkAndAutoCloseStores();
+      }, 60000); // Check every minute
+
+      return () => clearInterval(interval);
     }
   }, [isAdmin]);
+
+  const checkAndAutoCloseStores = async () => {
+    if (!isAdmin) return;
+
+    try {
+      const now = new Date().toISOString();
+      
+      // Find stores that should be closed (closing_date is set and in the past, but store is still open)
+      const { data: storesToClose, error } = await supabase
+        .from("store_management")
+        .select("*")
+        .eq("is_open", true)
+        .not("closing_date", "is", null)
+        .lt("closing_date", now);
+
+      if (error) {
+        console.error("Error checking closing dates:", error);
+        return;
+      }
+
+      if (storesToClose && storesToClose.length > 0) {
+        // Close all stores that have passed their closing date
+        const storeIds = storesToClose.map((s) => s.id);
+        const { error: updateError } = await supabase
+          .from("store_management")
+          .update({ is_open: false })
+          .in("id", storeIds);
+
+        if (updateError) {
+          console.error("Error auto-closing stores:", updateError);
+        } else {
+          // Refresh stores list if any were closed
+          fetchStores();
+        }
+      }
+    } catch (err) {
+      console.error("Error in auto-close check:", err);
+    }
+  };
 
   const fetchStores = async () => {
     try {
@@ -71,10 +118,15 @@ export default function StoreManagementPage() {
 
   const handleEdit = (store: StoreManagement) => {
     setEditingId(store.id);
+    // Format closing_date for input (YYYY-MM-DDTHH:mm)
+    const closingDate = store.closing_date
+      ? new Date(store.closing_date).toISOString().slice(0, 16)
+      : "";
     setEditForm({
       display_name: store.display_name,
       description: store.description || "",
       is_open: store.is_open === true,
+      closing_date: closingDate,
     });
   };
 
@@ -94,12 +146,26 @@ export default function StoreManagementPage() {
         return;
       }
 
+      // Check if closing_date is in the past and auto-close if needed
+      let shouldBeOpen = editForm.is_open;
+      if (editForm.closing_date) {
+        const closingDate = new Date(editForm.closing_date);
+        const now = new Date();
+        if (closingDate <= now) {
+          shouldBeOpen = false;
+          toast.info(
+            `Store will be closed because closing date (${closingDate.toLocaleDateString()}) has passed.`
+          );
+        }
+      }
+
       const { error: updateError } = await supabase
         .from("store_management")
         .update({
           display_name: editForm.display_name.trim(),
           description: editForm.description.trim() || null,
-          is_open: editForm.is_open,
+          is_open: shouldBeOpen,
+          closing_date: editForm.closing_date || null,
         })
         .eq("id", store.id);
 
@@ -317,6 +383,9 @@ export default function StoreManagementPage() {
                   Status
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Closing Date
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
@@ -325,7 +394,7 @@ export default function StoreManagementPage() {
               {stores.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={5}
+                    colSpan={6}
                     className="px-6 py-4 text-center text-gray-500"
                   >
                     No stores found
@@ -385,19 +454,41 @@ export default function StoreManagementPage() {
                     </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {isEditing ? (
-                          <select
-                            value={editForm?.is_open ? "true" : "false"}
-                            onChange={(e) =>
-                              setEditForm({
-                                ...editForm!,
-                                is_open: e.target.value === "true",
-                              })
-                            }
-                            className="px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
-                          >
-                            <option value="true">Open</option>
-                            <option value="false">Closed</option>
-                          </select>
+                          <div className="space-y-2">
+                            <select
+                              value={editForm?.is_open ? "true" : "false"}
+                              onChange={(e) =>
+                                setEditForm({
+                                  ...editForm!,
+                                  is_open: e.target.value === "true",
+                                })
+                              }
+                              className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            >
+                              <option value="true">Open</option>
+                              <option value="false">Closed</option>
+                            </select>
+                            <div>
+                              <label className="block text-xs font-medium text-gray-700 mb-1">
+                                Closing Date (optional)
+                              </label>
+                              <input
+                                type="datetime-local"
+                                value={editForm?.closing_date || ""}
+                                onChange={(e) =>
+                                  setEditForm({
+                                    ...editForm!,
+                                    closing_date: e.target.value,
+                                  })
+                                }
+                                className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                placeholder="Select closing date"
+                              />
+                              <p className="text-xs text-gray-500 mt-1">
+                                Store will automatically close on this date
+                              </p>
+                            </div>
+                          </div>
                         ) : (
                           <span
                             className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
@@ -409,6 +500,11 @@ export default function StoreManagementPage() {
                             {store.is_open ? "Open" : "Closed"}
                           </span>
                         )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {store.closing_date
+                          ? new Date(store.closing_date).toLocaleString()
+                          : "—"}
                       </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                       {isEditing ? (
