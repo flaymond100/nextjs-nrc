@@ -26,7 +26,9 @@ export default function FourEnduranceStorePage() {
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
   const [closingDate, setClosingDate] = useState<string | null>(null);
   const [orders, setOrders] = useState<(Order & { items: OrderItem[] })[]>([]);
+  const [allOrdersForSummary, setAllOrdersForSummary] = useState<(Order & { items: OrderItem[] })[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [summaryLoading, setSummaryLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
@@ -61,10 +63,16 @@ export default function FourEnduranceStorePage() {
   useEffect(() => {
     if (user) {
       fetchOrders();
+      if (isAdmin) {
+        fetchAllOrdersForSummary();
+      }
 
       // Listen for order updates (e.g., when a new order is submitted)
       const handleOrderUpdate = () => {
         fetchOrders();
+        if (isAdmin) {
+          fetchAllOrdersForSummary();
+        }
       };
       window.addEventListener("orderSubmitted", handleOrderUpdate);
 
@@ -160,6 +168,64 @@ export default function FourEnduranceStorePage() {
 
   const updateCartCount = () => {
     setCartItemCount(getCartItemCount());
+  };
+
+  const fetchAllOrdersForSummary = async () => {
+    if (!user || !isAdmin) return;
+
+    try {
+      setSummaryLoading(true);
+
+      // Fetch ALL orders for summary (no limit)
+      const { data: ordersData, error: ordersError } = await supabase
+        .from("orders")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (ordersError) {
+        console.error("Error fetching all orders for summary:", ordersError);
+        return;
+      }
+
+      if (!ordersData || ordersData.length === 0) {
+        setAllOrdersForSummary([]);
+        return;
+      }
+
+      // Fetch order items for all orders
+      const orderIds = ordersData.map((order) => order.id);
+      const { data: itemsData, error: itemsError } = await supabase
+        .from("order_items")
+        .select("*")
+        .in("order_id", orderIds)
+        .order("id", { ascending: true });
+
+      if (itemsError) {
+        console.error("Error fetching order items for summary:", itemsError);
+        // Continue without items if there's an error
+      }
+
+      // Group items by order_id
+      const itemsMap = new Map<number, OrderItem[]>();
+      (itemsData || []).forEach((item) => {
+        if (!itemsMap.has(item.order_id)) {
+          itemsMap.set(item.order_id, []);
+        }
+        itemsMap.get(item.order_id)!.push(item as OrderItem);
+      });
+
+      // Combine orders with items
+      const ordersWithItems = ordersData.map((order) => ({
+        ...order,
+        items: itemsMap.get(order.id) || [],
+      }));
+
+      setAllOrdersForSummary(ordersWithItems as (Order & { items: OrderItem[] })[]);
+    } catch (err) {
+      console.error("Error fetching all orders for summary:", err);
+    } finally {
+      setSummaryLoading(false);
+    }
   };
 
   const fetchOrders = async () => {
@@ -351,6 +417,11 @@ export default function FourEnduranceStorePage() {
       // Update total revenue
       if (totalRevenue !== null) {
         setTotalRevenue(totalRevenue - Number(orderToDelete.total_price));
+      }
+
+      // Refresh summary if admin
+      if (isAdmin) {
+        fetchAllOrdersForSummary();
       }
 
       toast.success("Order deleted successfully");
@@ -608,6 +679,102 @@ export default function FourEnduranceStorePage() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Product Summary - Admin Only */}
+      {isAdmin && user && (
+        <div className="mb-6 sm:mb-8 bg-white rounded-lg shadow-md p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0 mb-4">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800">
+              Product Summary (All Orders)
+            </h2>
+            <button
+              onClick={fetchAllOrdersForSummary}
+              className="text-xs sm:text-sm text-purple-600 hover:text-purple-700 font-medium self-start sm:self-auto"
+            >
+              Refresh
+            </button>
+          </div>
+          {summaryLoading ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader />
+            </div>
+          ) : allOrdersForSummary.length === 0 ? (
+            <p className="text-gray-600 text-center py-4">No orders found.</p>
+          ) : (
+            (() => {
+              // Aggregate all order items by product name
+              const productSummary = new Map<
+                string,
+                { totalQuantity: number; orderCount: number }
+              >();
+
+              allOrdersForSummary.forEach((order) => {
+                if (order.items && order.items.length > 0) {
+                  order.items.forEach((item) => {
+                    const productName = item.product_name;
+                    const existing = productSummary.get(productName) || {
+                      totalQuantity: 0,
+                      orderCount: 0,
+                    };
+                    productSummary.set(productName, {
+                      totalQuantity: existing.totalQuantity + item.quantity,
+                      orderCount: existing.orderCount + 1,
+                    });
+                  });
+                }
+              });
+
+              // Convert to array and sort by total quantity (descending)
+              const summaryArray = Array.from(productSummary.entries())
+                .map(([productName, data]) => ({
+                  productName,
+                  totalQuantity: data.totalQuantity,
+                  orderCount: data.orderCount,
+                }))
+                .sort((a, b) => b.totalQuantity - a.totalQuantity);
+
+              return summaryArray.length === 0 ? (
+                <p className="text-gray-600 text-center py-4">No products found in orders.</p>
+              ) : (
+                <div className="overflow-x-auto -mx-4 sm:mx-0">
+                  <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Product Name
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          Total Quantity
+                        </th>
+                        <th className="px-2 sm:px-4 py-2 sm:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider hidden sm:table-cell">
+                          Orders
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white divide-y divide-gray-200">
+                      {summaryArray.map((item, idx) => (
+                        <tr key={idx} className="hover:bg-gray-50">
+                          <td className="px-2 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-gray-900">
+                            {item.productName}
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-700">
+                            <span className="font-semibold text-purple-700">
+                              {item.totalQuantity}
+                            </span>
+                          </td>
+                          <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-600 hidden sm:table-cell">
+                            {item.orderCount} {item.orderCount === 1 ? "order" : "orders"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              );
+            })()
+          )}
         </div>
       )}
 
