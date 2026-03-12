@@ -337,11 +337,12 @@ export const RegisterSection = () => {
             </p>
             <div className="space-y-2">
               <a
-                href="/documents/registration-form.pdf"
+                href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag.pdf"
+                target="_blank"
                 download
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline text-sm"
               >
-                📄 Registration Form
+                📄 Mitgliedsantrag (Registration Form)
               </a>
             </div>
           </div>
@@ -358,21 +359,20 @@ export const RegisterSection = () => {
                 className="mt-1 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
               />
               <div>
-                <label
-                  htmlFor="acceptsTerms"
-                  className="text-sm text-gray-700"
-                >
-                  By accepting this I confirm that I read and agree with{' '}
+                <label htmlFor="acceptsTerms" className="text-sm text-gray-700">
+                  By accepting this I confirm that I read and agree with{" "}
                   <a
-                    href="/documents/satzung.pdf"
+                    href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Satzung%20NRC%20eV.pdf"
+                    target="_blank"
                     download
                     className="font-medium text-gray-700 underline hover:text-gray-900"
                   >
                     Satzung
-                  </a>{' '}
-                  and{' '}
+                  </a>{" "}
+                  and{" "}
                   <a
-                    href="/documents/beitragsordnung.pdf"
+                    href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Beitragsordnung.pdf"
+                    target="_blank"
                     download
                     className="font-medium text-gray-700 underline hover:text-gray-900"
                   >
