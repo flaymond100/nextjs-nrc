@@ -141,62 +141,90 @@ export const DocumentUploadSection = () => {
 
   return (
     <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-      <h3 className="text-gray-700 font-bold mb-4">
-        📋 Upload Signed Documents
-      </h3>
-      <p className="text-gray-600 text-sm mb-6">
-        In order to complete your registration, please upload the signed
-        registration form.
-      </p>
-      <p className="text-gray-600 text-sm mb-6">
-        {" "}
-        Once uploaded, we will review your documents and get back to you within
-        2-3 business days.{" "}
-      </p>
-
-      <div className="space-y-4">
-        {/* Registration Form */}
-        <div className="p-3 bg-white border border-gray-300 rounded">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-gray-700 font-semibold">
-              Registration Form
+      {documentData?.registrationFormUrl ? (
+        <>
+          <div className="flex items-center gap-2 mb-4">
+            <CheckCircleIcon className="w-5 h-5 text-green-600" />
+            <span className="text-sm text-green-600">
+              Registration form uploaded
             </span>
-            {documentData?.registrationFormUrl && (
-              <div className="flex items-center gap-2">
-                <CheckCircleIcon className="w-5 h-5 text-green-600" />
-                <span className="text-xs text-green-600">Uploaded</span>
+          </div>
+          <div className="mb-2">
+            <a
+              href={documentData.registrationFormUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline text-sm flex items-center gap-1"
+            >
+              <ArrowDownTrayIcon className="w-4 h-4" />
+              View Uploaded Document
+            </a>
+          </div>
+        </>
+      ) : (
+        <div>
+          <h3 className="text-gray-700 font-bold mb-4">
+            📋 Upload Signed Mitgliedsantrag (Registration Form)
+          </h3>
+          <span className="text-gray-600 text-sm mb-6">
+            In order to complete your membership, please upload the signed
+            <a
+              href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag.pdf"
+              target="_blank"
+              download
+              className="flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline text-sm"
+            >
+              📄 Mitgliedsantrag (Registration Form)
+            </a>
+          </span>
+
+          <br />
+          <p className="text-gray-600 text-sm mb-6">
+            Once uploaded, we will review your documents and get back to you
+            within 2-3 business days.{" "}
+          </p>
+          <div className="space-y-4">
+            {/* Registration Form */}
+            <div className="p-3 bg-white border border-gray-300 rounded">
+              <div className="flex items-center justify-between mb-2">
+                {documentData?.registrationFormUrl && (
+                  <div className="flex items-center gap-2">
+                    <CheckCircleIcon className="w-5 h-5 text-green-600" />
+                    <span className="text-xs text-green-600">Uploaded</span>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
 
-          {documentData?.registrationFormUrl ? (
-            <div className="mb-2">
-              <a
-                href={documentData.registrationFormUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 hover:underline text-sm flex items-center gap-1"
-              >
-                <ArrowDownTrayIcon className="w-4 h-4" />
-                View Uploaded Document
-              </a>
+              {documentData?.registrationFormUrl ? (
+                <div className="mb-2">
+                  <a
+                    href={documentData.registrationFormUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-600 hover:underline text-sm flex items-center gap-1"
+                  >
+                    <ArrowDownTrayIcon className="w-4 h-4" />
+                    View Uploaded Document
+                  </a>
+                </div>
+              ) : null}
+
+              <div className="flex items-center gap-2">
+                <input
+                  type="file"
+                  id="registration-form-input"
+                  accept=".pdf,.doc,.docx"
+                  onChange={(e) => handleFileUpload(e)}
+                  disabled={uploadingRegForm}
+                  className="text-sm"
+                />
+                {uploadingRegForm && <Loader />}
+              </div>
+              <p className="text-xs text-gray-500 mt-1">PDF or Word, max 3MB</p>
             </div>
-          ) : null}
-
-          <div className="flex items-center gap-2">
-            <input
-              type="file"
-              id="registration-form-input"
-              accept=".pdf,.doc,.docx"
-              onChange={(e) => handleFileUpload(e)}
-              disabled={uploadingRegForm}
-              className="text-sm"
-            />
-            {uploadingRegForm && <Loader />}
           </div>
-          <p className="text-xs text-gray-500 mt-1">PDF or Word, max 3MB</p>
         </div>
-      </div>
+      )}
 
       {documentData?.documentsUploadedAt && (
         <p className="text-xs text-gray-500 mt-4">
