@@ -319,6 +319,51 @@ export const RegisterSection = () => {
             )}
           </div>
 
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <h3 className="text-gray-700 font-bold mb-3">
+              📋 Required Documents
+            </h3>
+            <p className="text-gray-600 text-sm mb-3">
+              Please download, sign, and keep this document. You'll upload it
+              after confirming your email.
+            </p>
+            <div className="space-y-2">
+              <a
+                href="/documents/registration-form.pdf"
+                download
+                className="flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline text-sm"
+              >
+                📄 Registration Form
+              </a>
+            </div>
+          </div>
+
+          <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+            <h3 className="text-gray-700 font-bold mb-3">
+              Additional Documents
+            </h3>
+            <p className="text-gray-600 text-sm mb-3">
+              Please review the following documents to understand our terms and
+              conditions, membership fees, and other important information:
+            </p>
+            <div className="space-y-2">
+              <a
+                href="/documents/satzung.pdf"
+                download
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-800 hover:underline text-sm"
+              >
+                📄 Satzung
+              </a>
+              <a
+                href="/documents/beitragsordnung.pdf"
+                download
+                className="flex items-center gap-2 text-gray-600 hover:text-gray-800 hover:underline text-sm"
+              >
+                📄 Beitragsordnung
+              </a>
+            </div>
+          </div>
+
           <div className="flex justify-center mt-8">
             <Button
               type="submit"

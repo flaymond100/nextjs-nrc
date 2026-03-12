@@ -271,6 +271,9 @@ export default function MembersPage() {
                   Admin
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Registration Form
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Joined
                 </th>
                 {isAdmin && (
@@ -284,7 +287,7 @@ export default function MembersPage() {
               {members.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={isAdmin ? 8 : 7}
+                    colSpan={isAdmin ? 9 : 8}
                     className="px-6 py-4 text-center text-gray-500"
                   >
                     No members found
@@ -408,6 +411,20 @@ export default function MembersPage() {
                         >
                           {member.is_admin ? "Yes" : "No"}
                         </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {member.registrationFormUrl ? (
+                          <a
+                            href={member.registrationFormUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium"
+                          >
+                            📄 View
+                          </a>
+                        ) : (
+                          <span className="text-gray-400 text-sm">-</span>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {member.updateAt
