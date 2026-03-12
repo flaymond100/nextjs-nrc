@@ -9,8 +9,12 @@ import { ConfirmModal } from "@/components/confirm-modal";
 import toast from "react-hot-toast";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
+type RiderWithMembership = Rider & {
+  membershipNumber?: string | null;
+};
+
 export default function MembersPage() {
-  const [members, setMembers] = useState<Rider[]>([]);
+  const [members, setMembers] = useState<RiderWithMembership[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -29,6 +33,13 @@ export default function MembersPage() {
   const [updatingActivated, setUpdatingActivated] = useState<string | null>(
     null
   );
+  const [editingMembership, setEditingMembership] = useState<string | null>(
+    null
+  );
+  const [membershipDrafts, setMembershipDrafts] = useState<
+    Record<string, string>
+  >({});
+  const [savingMembership, setSavingMembership] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchMembers() {
@@ -155,6 +166,42 @@ export default function MembersPage() {
     }
   };
 
+  const handleSaveMembershipNumber = async (member: RiderWithMembership) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to perform this action");
+      return;
+    }
+
+    const membershipNumber = (membershipDrafts[member.uuid] ?? "").trim();
+
+    setSavingMembership(member.uuid);
+    try {
+      const { error } = await supabase
+        .from("riders")
+        .update({ membershipNumber })
+        .eq("uuid", member.uuid);
+
+      if (error) {
+        toast.error(error.message || "Failed to update membership number");
+        console.error("Error updating membership number:", error);
+        return;
+      }
+
+      setMembers((prev) =>
+        prev.map((m) =>
+          m.uuid === member.uuid ? { ...m, membershipNumber } : m
+        )
+      );
+      setEditingMembership(null);
+      toast.success("Membership number updated");
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+    } finally {
+      setSavingMembership(null);
+    }
+  };
+
   const handleDeleteClick = (member: Rider) => {
     if (!isAdmin) {
       toast.error("You don't have permission to perform this action");
@@ -259,6 +306,9 @@ export default function MembersPage() {
                   Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Membership No.
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Email Confirmed
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -287,7 +337,7 @@ export default function MembersPage() {
               {members.length === 0 ? (
                 <tr>
                   <td
-                    colSpan={isAdmin ? 9 : 8}
+                    colSpan={isAdmin ? 10 : 9}
                     className="px-6 py-4 text-center text-gray-500"
                   >
                     No members found
@@ -325,6 +375,58 @@ export default function MembersPage() {
                         <div className="text-sm text-gray-500">
                           {member.email}
                         </div>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        {isAdmin && editingMembership === member.uuid ? (
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="text"
+                              value={
+                                membershipDrafts[member.uuid] ??
+                                member.membershipNumber ??
+                                ""
+                              }
+                              onChange={(e) =>
+                                setMembershipDrafts((prev) => ({
+                                  ...prev,
+                                  [member.uuid]: e.target.value,
+                                }))
+                              }
+                              className="w-32 rounded border border-gray-300 px-2 py-1 text-sm"
+                              placeholder="Membership No."
+                            />
+                            <button
+                              onClick={() => handleSaveMembershipNumber(member)}
+                              disabled={savingMembership === member.uuid}
+                              className="rounded bg-blue-600 px-2 py-1 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+                            >
+                              {savingMembership === member.uuid
+                                ? "..."
+                                : "Save"}
+                            </button>
+                            <button
+                              onClick={() => setEditingMembership(null)}
+                              disabled={savingMembership === member.uuid}
+                              className="rounded bg-gray-200 px-2 py-1 text-xs font-medium text-gray-700 hover:bg-gray-300"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        ) : (
+                          <button
+                            onClick={() => {
+                              setEditingMembership(member.uuid);
+                              setMembershipDrafts((prev) => ({
+                                ...prev,
+                                [member.uuid]: member.membershipNumber ?? "",
+                              }));
+                            }}
+                            className="text-left text-sm text-gray-700 hover:text-blue-600"
+                            title="Click to edit membership number"
+                          >
+                            {member.membershipNumber || "-"}
+                          </button>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span

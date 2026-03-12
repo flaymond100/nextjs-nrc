@@ -144,6 +144,15 @@ export const DocumentUploadSection = () => {
       <h3 className="text-gray-700 font-bold mb-4">
         📋 Upload Signed Documents
       </h3>
+      <p className="text-gray-600 text-sm mb-6">
+        In order to complete your registration, please upload the signed
+        registration form.
+      </p>
+      <p className="text-gray-600 text-sm mb-6">
+        {" "}
+        Once uploaded, we will review your documents and get back to you within
+        2-3 business days.{" "}
+      </p>
 
       <div className="space-y-4">
         {/* Registration Form */}
