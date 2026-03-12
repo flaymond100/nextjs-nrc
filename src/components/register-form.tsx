@@ -16,6 +16,7 @@ interface RegisterData {
   firstName: string;
   lastName: string;
   captcha: string;
+  acceptsTerms: boolean;
 }
 
 const generateCaptcha = () => {
@@ -47,6 +48,12 @@ const registerValidationSchema = (captchaAnswer: number) =>
         "Incorrect answer. Please try again.",
         (value) => parseInt(value || "0", 10) === captchaAnswer
       ),
+    acceptsTerms: Yup.boolean()
+      .oneOf(
+        [true],
+        "You must confirm that you read and agree with Satzung and Beitragsordnung"
+      )
+      .required(),
   });
 
 export const RegisterSection = () => {
@@ -69,6 +76,7 @@ export const RegisterSection = () => {
       firstName: "",
       lastName: "",
       captcha: "",
+      acceptsTerms: false,
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
@@ -339,28 +347,45 @@ export const RegisterSection = () => {
           </div>
 
           <div className="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
-            <h3 className="text-gray-700 font-bold mb-3">
-              Additional Documents
-            </h3>
-            <p className="text-gray-600 text-sm mb-3">
-              Please review the following documents to understand our terms and
-              conditions, membership fees, and other important information:
-            </p>
-            <div className="space-y-2">
-              <a
-                href="/documents/satzung.pdf"
-                download
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-800 hover:underline text-sm"
-              >
-                📄 Satzung
-              </a>
-              <a
-                href="/documents/beitragsordnung.pdf"
-                download
-                className="flex items-center gap-2 text-gray-600 hover:text-gray-800 hover:underline text-sm"
-              >
-                📄 Beitragsordnung
-              </a>
+            <div className="flex items-start gap-3">
+              <input
+                id="acceptsTerms"
+                name="acceptsTerms"
+                type="checkbox"
+                checked={formik.values.acceptsTerms}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+              />
+              <div>
+                <label
+                  htmlFor="acceptsTerms"
+                  className="text-sm text-gray-700"
+                >
+                  By accepting this I confirm that I read and agree with{' '}
+                  <a
+                    href="/documents/satzung.pdf"
+                    download
+                    className="font-medium text-gray-700 underline hover:text-gray-900"
+                  >
+                    Satzung
+                  </a>{' '}
+                  and{' '}
+                  <a
+                    href="/documents/beitragsordnung.pdf"
+                    download
+                    className="font-medium text-gray-700 underline hover:text-gray-900"
+                  >
+                    Beitragsordnung
+                  </a>
+                  . <span className="text-red-500">*</span>
+                </label>
+                {formik.touched.acceptsTerms && formik.errors.acceptsTerms && (
+                  <p className="text-red-500 text-xs italic mt-2">
+                    {formik.errors.acceptsTerms}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
 
