@@ -58,6 +58,9 @@ export interface Rider {
   lastPaymentDate?: string | null;
   nextPaymentDueDate?: string | null;
   paymentAmount?: number | null;
+  registrationFormUrl?: string | null;
+  sepaMandateUrl?: string | null;
+  documentsUploadedAt?: string | null;
 }
 
 export interface PaymentOverview {
