@@ -158,6 +158,19 @@ export interface FourEnduranceStoreProduct {
   sku: string | null;
 }
 
+export interface SocksStoreProduct {
+  name: string;
+  price: number;
+  currency: string | null;
+  product_item_info: string | null;
+  available_bool: boolean | null;
+  img_reference: string | null;
+  product_url: string | null;
+  product_id: string | number | null;
+  variant_id: string | number | null;
+  sku: string | null;
+}
+
 export interface StoreManagement {
   id: number;
   store_name: string;
@@ -170,7 +183,13 @@ export interface StoreManagement {
   updated_at: string;
 }
 
-export type OrderStatus = 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+export type OrderStatus =
+  | "pending"
+  | "confirmed"
+  | "processing"
+  | "shipped"
+  | "delivered"
+  | "cancelled";
 
 export interface OrderItem {
   id: number;
