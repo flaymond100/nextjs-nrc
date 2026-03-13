@@ -337,7 +337,7 @@ export const RegisterSection = () => {
             </p>
             <div className="space-y-2">
               <a
-                href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag.pdf"
+                href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag_NRC.pdf"
                 target="_blank"
                 download
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline text-sm"

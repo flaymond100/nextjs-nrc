@@ -169,7 +169,7 @@ export const DocumentUploadSection = () => {
           <span className="text-gray-600 text-sm mb-6">
             In order to complete your membership, please upload the signed
             <a
-              href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag.pdf"
+              href="hhttps://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag_NRC.pdf"
               target="_blank"
               download
               className="flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline text-sm"
