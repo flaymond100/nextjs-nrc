@@ -11,7 +11,7 @@ export default function PricingPage() {
     <>
       <Navbar />
       <PersonalCoaching />
-      <CarouselFeatures />
+      {/* <CarouselFeatures /> */}
       <Footer />
     </>
   );

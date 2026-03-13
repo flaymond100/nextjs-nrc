@@ -14,7 +14,7 @@ export default function PricingPage() {
     <>
       <Navbar />
       <StripePricingTable />
-      <CarouselFeatures />
+      {/* <CarouselFeatures /> */}
       <CalendlyWidget />
       <Faq />
       <Footer />

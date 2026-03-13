@@ -28,7 +28,7 @@ export default function AboutUsPage() {
     <>
       <Navbar />
       <AboutUs />
-      <CarouselFeatures />
+      {/* <CarouselFeatures /> */}
       <Footer />
     </>
   );

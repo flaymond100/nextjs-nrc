@@ -13,7 +13,7 @@ export default function ContactUs() {
     <>
       <Navbar />
       <ContactUsPage />
-      <CarouselFeatures />
+      {/* <CarouselFeatures /> */}
       <Faq />
       <Footer />
     </>
