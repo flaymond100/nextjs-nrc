@@ -110,6 +110,9 @@ export const DocumentUploadSection = () => {
 
       toast.success("Registration form uploaded successfully");
 
+      // Dispatch event to notify modal
+      window.dispatchEvent(new CustomEvent('documentUploaded'));
+
       // Reset file input
       event.target.value = "";
     } catch (err) {

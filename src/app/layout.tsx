@@ -10,6 +10,7 @@ import Scroll from "@/components/scroll";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { AuthProvider } from "@/contexts/auth-context";
 import { NavigationProvider } from "@/contexts/navigation-context";
+import { DocumentUploadModal } from "@/components/document-upload-modal";
 
 const rubik = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -127,6 +128,7 @@ export default function RootLayout({
               {children}
               <ModalWrapper />
               <LoginModalWrapper />
+              <DocumentUploadModal />
             </Layout>
           </NavigationProvider>
         </AuthProvider>

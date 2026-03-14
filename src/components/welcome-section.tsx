@@ -8,6 +8,7 @@ import { RaceCalendar } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
 import { CalendarIcon, MapPinIcon } from "@heroicons/react/24/outline";
+import { DocumentUploadSection } from "./document-upload-section";
 
 interface WelcomeSectionProps {
   firstName: string | null;
