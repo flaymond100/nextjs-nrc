@@ -9,6 +9,8 @@ import { Button } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import { NavigationLink } from "./navigation-link";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 interface RiderData {
   firstName: string | null;
@@ -16,6 +18,7 @@ interface RiderData {
   instagram: string | null;
   strava: string | null;
   bio: string | null;
+  adminNotes: string | null;
   avatarUrl: string | null;
   email: string | null;
 }
@@ -57,6 +60,7 @@ export const ProfileView = () => {
             instagram: data.instagram || null,
             strava: data.strava || null,
             bio: data.bio || null,
+            adminNotes: data.adminNotes || null,
             avatarUrl: data.avatarUrl || null,
             email: user?.email || null,
           });
@@ -68,6 +72,7 @@ export const ProfileView = () => {
             instagram: null,
             strava: null,
             bio: null,
+            adminNotes: null,
             avatarUrl: null,
             email: user?.email || null,
           });
@@ -131,7 +136,7 @@ export const ProfileView = () => {
                     alt="Profile Avatar"
                     width={150}
                     height={150}
-                    className="rounded-full object-cover border-4 border-gray-200"
+                    className="rounded-full object-cover border-4 border-gray-200 max-h-[150px]"
                   />
                 ) : (
                   <div className="w-[150px] h-[150px] rounded-full bg-gray-200 flex items-center justify-center border-4 border-gray-300">
@@ -150,6 +155,23 @@ export const ProfileView = () => {
                 )}
               </div>
             </div>
+
+            {/* Admin Notes (Markdown, read-only) */}
+            {riderData?.adminNotes &&
+              riderData.adminNotes.trim().length > 0 && (
+                <div className={riderData?.bio ? "mt-8" : ""}>
+                  <h3 className="text-2xl font-semibold text-gray-800 mb-4">
+                    Notes and Promocodes
+                  </h3>
+                  <div className="prose prose-sm max-w-none rounded-lg border border-gray-200 bg-gray-50 p-4 prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-blue-700">
+                    <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                      {riderData.adminNotes}
+                    </ReactMarkdown>
+                  </div>
+                </div>
+              )}
+
+            <br />
 
             {/* Social Links */}
             {(riderData?.instagram || riderData?.strava) && (
@@ -213,7 +235,8 @@ export const ProfileView = () => {
               !riderData?.lastName &&
               !riderData?.instagram &&
               !riderData?.strava &&
-              !riderData?.bio && (
+              !riderData?.bio &&
+              !riderData?.adminNotes && (
                 <div className="text-center py-12">
                   <p className="text-gray-500 mb-4">
                     Your profile is empty. Start by adding your information!
