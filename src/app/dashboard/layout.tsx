@@ -195,7 +195,7 @@ export default function DashboardLayout({
 
         // Filter stores based on closing_date for regular users
         let filteredStores = (data || []) as StoreManagement[];
-        
+
         if (!isAdmin) {
           // For regular users, also filter out stores that have passed their closing date
           const now = new Date();
@@ -235,10 +235,13 @@ export default function DashboardLayout({
     // Map store_name to static URLs
     ...openStores.map((store) => {
       // Map endurance_store to static URL /dashboard/4endurance-store
+      // Map socks_store to static URL /dashboard/socks-store
       const href =
         store.store_name === "endurance_store"
           ? "/dashboard/4endurance-store"
-          : `/dashboard/store?store=${store.store_name}`;
+          : store.store_name === "socks_store"
+            ? "/dashboard/socks-store"
+            : `/dashboard/store?store=${store.store_name}`;
 
       // Add visual indicator for closed stores (admins only)
       const displayName =

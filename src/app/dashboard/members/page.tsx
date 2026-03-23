@@ -6,6 +6,7 @@ import { Rider } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { useAdmin } from "@/hooks/use-admin";
 import { ConfirmModal } from "@/components/confirm-modal";
+import { MemberNotesModal } from "@/components";
 import toast from "react-hot-toast";
 import { TrashIcon } from "@heroicons/react/24/solid";
 
@@ -29,7 +30,6 @@ export default function MembersPage() {
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<Rider | null>(null);
   const [deleting, setDeleting] = useState(false);
-  const [updatingPaid, setUpdatingPaid] = useState<string | null>(null);
   const [updatingActivated, setUpdatingActivated] = useState<string | null>(
     null
   );
@@ -40,6 +40,11 @@ export default function MembersPage() {
     Record<string, string>
   >({});
   const [savingMembership, setSavingMembership] = useState<string | null>(null);
+  const [notesModalOpen, setNotesModalOpen] = useState(false);
+  const [memberToEditNotes, setMemberToEditNotes] =
+    useState<RiderWithMembership | null>(null);
+  const [notesDraft, setNotesDraft] = useState("");
+  const [savingNotes, setSavingNotes] = useState(false);
 
   useEffect(() => {
     async function fetchMembers() {
@@ -66,41 +71,6 @@ export default function MembersPage() {
 
     fetchMembers();
   }, []);
-
-  const handleTogglePaid = async (member: Rider) => {
-    if (!isAdmin) {
-      toast.error("You don't have permission to perform this action");
-      return;
-    }
-
-    setUpdatingPaid(member.uuid);
-    try {
-      const { error } = await supabase
-        .from("riders")
-        .update({ isPaid: !member.isPaid })
-        .eq("uuid", member.uuid);
-
-      if (error) {
-        toast.error(error.message || "Failed to update payment status");
-        console.error("Error updating payment status:", error);
-      } else {
-        // Update local state
-        setMembers((prev) =>
-          prev.map((m) =>
-            m.uuid === member.uuid ? { ...m, isPaid: !m.isPaid } : m
-          )
-        );
-        toast.success(
-          `Payment status updated to ${!member.isPaid ? "Paid" : "Unpaid"}`
-        );
-      }
-    } catch (err: any) {
-      toast.error("An unexpected error occurred");
-      console.error("Unexpected error:", err);
-    } finally {
-      setUpdatingPaid(null);
-    }
-  };
 
   const handleToggleActivated = async (member: Rider) => {
     if (!isAdmin) {
@@ -211,6 +181,66 @@ export default function MembersPage() {
     setDeleteModalOpen(true);
   };
 
+  const handleOpenNotesModal = (member: RiderWithMembership) => {
+    if (!isAdmin) {
+      toast.error("You don't have permission to perform this action");
+      return;
+    }
+
+    setMemberToEditNotes(member);
+    setNotesDraft(member.adminNotes ?? "");
+    setNotesModalOpen(true);
+  };
+
+  const handleCloseNotesModal = () => {
+    if (savingNotes) return;
+    setNotesModalOpen(false);
+    setMemberToEditNotes(null);
+    setNotesDraft("");
+  };
+
+  const handleSaveNotes = async () => {
+    if (!isAdmin || !memberToEditNotes) {
+      toast.error("You don't have permission to perform this action");
+      return;
+    }
+
+    setSavingNotes(true);
+    try {
+      const adminNotes = notesDraft.trim();
+      const valueToSave = adminNotes.length > 0 ? adminNotes : null;
+
+      const { error } = await supabase
+        .from("riders")
+        .update({ adminNotes: valueToSave })
+        .eq("uuid", memberToEditNotes.uuid);
+
+      if (error) {
+        toast.error(error.message || "Failed to update notes");
+        console.error("Error updating notes:", error);
+        return;
+      }
+
+      setMembers((prev) =>
+        prev.map((m) =>
+          m.uuid === memberToEditNotes.uuid
+            ? { ...m, adminNotes: valueToSave }
+            : m
+        )
+      );
+
+      toast.success("Notes updated");
+      setNotesModalOpen(false);
+      setMemberToEditNotes(null);
+      setNotesDraft("");
+    } catch (err: any) {
+      toast.error("An unexpected error occurred");
+      console.error("Unexpected error:", err);
+    } finally {
+      setSavingNotes(false);
+    }
+  };
+
   const handleDeleteConfirm = async () => {
     if (!memberToDelete || !isAdmin) return;
 
@@ -315,7 +345,7 @@ export default function MembersPage() {
                   Activated
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Paid
+                  Notes
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Admin
@@ -472,36 +502,15 @@ export default function MembersPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        {isAdmin ? (
-                          <button
-                            onClick={() => handleTogglePaid(member)}
-                            disabled={updatingPaid === member.uuid}
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full cursor-pointer transition-colors ${
-                              member.isPaid
-                                ? "bg-green-100 text-green-800 hover:bg-green-200"
-                                : "bg-red-100 text-red-800 hover:bg-red-200"
-                            } disabled:opacity-50 disabled:cursor-not-allowed`}
-                            title="Click to toggle payment status"
-                          >
-                            {updatingPaid === member.uuid ? (
-                              <Loader />
-                            ) : member.isPaid ? (
-                              "Yes"
-                            ) : (
-                              "No"
-                            )}
-                          </button>
-                        ) : (
-                          <span
-                            className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              member.isPaid
-                                ? "bg-green-100 text-green-800"
-                                : "bg-red-100 text-red-800"
-                            }`}
-                          >
-                            {member.isPaid ? "Yes" : "No"}
-                          </span>
-                        )}
+                        <button
+                          onClick={() => handleOpenNotesModal(member)}
+                          className="rounded bg-blue-600 px-3 py-1 text-xs font-medium text-white hover:bg-blue-700"
+                          title="Change admin notes"
+                        >
+                          {(member.adminNotes ?? "").trim().length > 0
+                            ? "Edit"
+                            : "Change"}
+                        </button>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span
@@ -558,6 +567,16 @@ export default function MembersPage() {
       <div className="mt-4 text-sm text-gray-600">
         Total members: {members.length}
       </div>
+
+      <MemberNotesModal
+        isOpen={notesModalOpen}
+        member={memberToEditNotes}
+        notes={notesDraft}
+        loading={savingNotes}
+        onChangeNotes={setNotesDraft}
+        onClose={handleCloseNotesModal}
+        onSave={handleSaveNotes}
+      />
 
       <ConfirmModal
         isOpen={deleteModalOpen}

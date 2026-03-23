@@ -186,9 +186,9 @@ export const ProfileSection = () => {
                 <Image
                   src={previewUrl || formik.values.avatarUrl || ""}
                   alt="Profile Avatar"
-                  width={120}
-                  height={120}
-                  className="rounded-full object-cover border-2 border-gray-300"
+                  width={150}
+                  height={150}
+                  className="rounded-full object-cover border-2 border-gray-300 max-h-[150px]"
                 />
                 {uploading && (
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full">
