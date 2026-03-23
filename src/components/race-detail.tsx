@@ -485,25 +485,22 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
                     >
                       {/* CardHeader for Participant Photo */}
                       <CardHeader
-                        style={{ height: "14rem", marginTop: "0" }}
-                        className="relative overflow-hidden rounded-t-lg"
+                        style={{
+                          height: "14rem",
+                          marginTop: "0",
+                          boxShadow: "none",
+                        }}
+                        className="relative overflow-hidden flex items-center justify-center"
                         placeholder=""
                       >
                         {participant.avatarUrl ? (
-                          <div className="absolute inset-0 rounded-t-lg overflow-hidden">
-                            <Image
-                              src={participant.avatarUrl}
-                              alt={participant.name}
-                              className="object-cover"
-                              width={"100"}
-                              height={"100"}
-                              style={{
-                                objectFit: "cover",
-                                width: "100%",
-                                height: "auto",
-                              }}
-                            />
-                          </div>
+                          <Image
+                            className="rounded-full object-cover h-[200px] w-[200px]"
+                            src={participant.avatarUrl}
+                            alt={participant.name}
+                            width={"150"}
+                            height={"150"}
+                          />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center rounded-t-lg">
                             <span className="text-6xl font-bold text-white">
