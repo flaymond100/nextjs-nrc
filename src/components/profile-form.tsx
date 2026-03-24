@@ -149,7 +149,7 @@ export const ProfileSection = () => {
   return (
     <section className="container mx-auto px-4 py-12 min-h-screen">
       <div className="mb-6">
-        <NavigationLink href="/profile">
+        <NavigationLink href="/dashboard/profile">
           <Button
             variant="text"
             placeholder={""}

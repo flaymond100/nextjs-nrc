@@ -8,7 +8,9 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 export function DocumentUploadModal() {
   const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const [documentsUploaded, setDocumentsUploaded] = useState<boolean | null>(null);
+  const [documentsUploaded, setDocumentsUploaded] = useState<boolean | null>(
+    null
+  );
 
   useEffect(() => {
     if (!user) {
@@ -17,8 +19,8 @@ export function DocumentUploadModal() {
     }
 
     // Check if modal was already shown in this session
-    const modalShown = sessionStorage.getItem('documentModalShown');
-    if (modalShown === 'true') {
+    const modalShown = sessionStorage.getItem("documentModalShown");
+    if (modalShown === "true") {
       return;
     }
 
@@ -52,7 +54,7 @@ export function DocumentUploadModal() {
 
   const handleClose = () => {
     setShowModal(false);
-    sessionStorage.setItem('documentModalShown', 'true');
+    sessionStorage.setItem("documentModalShown", "true");
   };
 
   // Listen for document upload completion
@@ -62,10 +64,10 @@ export function DocumentUploadModal() {
       handleClose();
     };
 
-    window.addEventListener('documentUploaded', handleDocumentUploaded);
+    window.addEventListener("documentUploaded", handleDocumentUploaded);
 
     return () => {
-      window.removeEventListener('documentUploaded', handleDocumentUploaded);
+      window.removeEventListener("documentUploaded", handleDocumentUploaded);
     };
   }, []);
 
@@ -87,7 +89,8 @@ export function DocumentUploadModal() {
         </div>
         <div className="p-6">
           <p className="text-gray-600 mb-6">
-            To complete your membership in the NRC International Team, please upload the required documents.
+            To complete your membership in the NRC International Team, please
+            upload the required documents.
           </p>
           <DocumentUploadSection />
         </div>

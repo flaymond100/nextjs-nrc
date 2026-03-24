@@ -51,6 +51,7 @@ export default function MembersPage() {
       try {
         setLoading(true);
         const { data, error } = await supabase
+          .schema("private")
           .from("riders")
           .select("*")
           .order("firstName", { ascending: true });
@@ -88,6 +89,7 @@ export default function MembersPage() {
       });
 
       const { data, error } = await supabase
+        .schema("private")
         .from("riders")
         .update({ isActivated: newValue })
         .eq("uuid", member.uuid)
@@ -147,6 +149,7 @@ export default function MembersPage() {
     setSavingMembership(member.uuid);
     try {
       const { error } = await supabase
+        .schema("private")
         .from("riders")
         .update({ membershipNumber })
         .eq("uuid", member.uuid);
@@ -211,6 +214,7 @@ export default function MembersPage() {
       const valueToSave = adminNotes.length > 0 ? adminNotes : null;
 
       const { error } = await supabase
+        .schema("private")
         .from("riders")
         .update({ adminNotes: valueToSave })
         .eq("uuid", memberToEditNotes.uuid);

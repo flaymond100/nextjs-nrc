@@ -59,7 +59,6 @@ export interface Rider {
   nextPaymentDueDate?: string | null;
   paymentAmount?: number | null;
   registrationFormUrl?: string | null;
-  sepaMandateUrl?: string | null;
   documentsUploadedAt?: string | null;
   adminNotes?: string | null; // returned as markdown string, can be null if no notes exist
 }

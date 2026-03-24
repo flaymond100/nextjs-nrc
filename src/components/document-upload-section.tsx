@@ -13,7 +13,6 @@ import { Loader } from "./loader";
 
 interface DocumentData {
   registrationFormUrl: string | null;
-  sepaMandateUrl: string | null;
   documentsUploadedAt: string | null;
 }
 
@@ -35,7 +34,7 @@ export const DocumentUploadSection = () => {
       try {
         const { data, error } = await supabase
           .from("riders")
-          .select("registrationFormUrl, sepaMandateUrl, documentsUploadedAt")
+          .select("registrationFormUrl, documentsUploadedAt")
           .eq("uuid", user.id)
           .single();
 
@@ -44,7 +43,6 @@ export const DocumentUploadSection = () => {
         } else if (data) {
           setDocumentData({
             registrationFormUrl: data.registrationFormUrl || null,
-            sepaMandateUrl: data.sepaMandateUrl || null,
             documentsUploadedAt: data.documentsUploadedAt || null,
           });
         }
@@ -81,11 +79,7 @@ export const DocumentUploadSection = () => {
       const publicUrl = result.publicUrl || "";
 
       // Update the database
-      const updateResult = await updateRiderDocuments(
-        user.id,
-        publicUrl,
-        undefined
-      );
+      const updateResult = await updateRiderDocuments(user.id, publicUrl);
 
       if (!updateResult.success) {
         toast.error(updateResult.error || "Failed to save document URL");
@@ -97,13 +91,11 @@ export const DocumentUploadSection = () => {
         if (!prev) {
           return {
             registrationFormUrl: publicUrl,
-            sepaMandateUrl: null,
             documentsUploadedAt: new Date().toISOString(),
           };
         }
         return {
           registrationFormUrl: publicUrl,
-          sepaMandateUrl: prev.sepaMandateUrl ?? null,
           documentsUploadedAt: new Date().toISOString(),
         };
       });
@@ -111,7 +103,7 @@ export const DocumentUploadSection = () => {
       toast.success("Registration form uploaded successfully");
 
       // Dispatch event to notify modal
-      window.dispatchEvent(new CustomEvent('documentUploaded'));
+      window.dispatchEvent(new CustomEvent("documentUploaded"));
 
       // Reset file input
       event.target.value = "";

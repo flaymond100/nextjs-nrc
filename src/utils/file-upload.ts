@@ -81,8 +81,7 @@ export async function uploadDocumentToSupabase(
  */
 export async function updateRiderDocuments(
   userId: string,
-  registrationFormUrl?: string,
-  sepaMandateUrl?: string
+  registrationFormUrl?: string
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const updateData: any = {
@@ -92,11 +91,9 @@ export async function updateRiderDocuments(
     if (registrationFormUrl) {
       updateData.registrationFormUrl = registrationFormUrl;
     }
-    if (sepaMandateUrl) {
-      updateData.sepaMandateUrl = sepaMandateUrl;
-    }
 
     const { error } = await supabase
+      .schema("private") // --- IGNORE --- (schema is set to "private" for all rider data operations)
       .from("riders")
       .update(updateData)
       .eq("uuid", userId);
