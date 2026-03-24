@@ -491,10 +491,10 @@ export default function SocksStorePage() {
             <ShoppingCartIcon className="mx-auto h-16 w-16 text-gray-400" />
           </div>
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Socks Store is Currently Closed
+            Apparel Store is Currently Closed
           </h1>
           <p className="text-gray-600 mb-6">
-            The socks store is not available at the moment. Please check back
+            The apparel store is not available at the moment. Please check back
             later.
           </p>
           {closingDate && timeRemaining && (
@@ -533,12 +533,12 @@ export default function SocksStorePage() {
             >
               ← Back to Dashboard
             </Link>
-            <h1 className="text-3xl font-bold text-gray-800">Socks Store</h1>
+            <h1 className="text-3xl font-bold text-gray-800">Apparel Store</h1>
           </div>
           <div className="flex items-center gap-4">
             {isAdmin && (
               <Link
-                href="/dashboard/socks-store/admin"
+                href="/dashboard/apparel-store/admin"
                 className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <Cog6ToothIcon className="h-5 w-5" />
@@ -546,7 +546,7 @@ export default function SocksStorePage() {
               </Link>
             )}
             <Link
-              href="/dashboard/socks-store/checkout"
+              href="/dashboard/apparel-store/checkout"
               className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors relative"
             >
               <ShoppingCartIcon className="h-5 w-5" />
