@@ -148,13 +148,9 @@ export default function MyOrdersPage() {
 
       {orders.length === 0 ? (
         <div className="bg-white rounded-lg shadow-md p-12 text-center">
-          <p className="text-gray-600 mb-4">You haven't placed any orders yet.</p>
-          <Link
-            href="/dashboard/4endurance-store"
-            className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
-          >
-            Browse Store
-          </Link>
+          <p className="text-gray-600 mb-4">
+            You haven't placed any orders yet.
+          </p>
         </div>
       ) : (
         <div className="space-y-4">
@@ -249,7 +245,9 @@ export default function MyOrdersPage() {
                                 </h5>
                                 <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                                   <span>
-                                    <span className="font-medium">Quantity:</span>{" "}
+                                    <span className="font-medium">
+                                      Quantity:
+                                    </span>{" "}
                                     {item.quantity}
                                   </span>
                                   <span>
@@ -275,7 +273,8 @@ export default function MyOrdersPage() {
                                   {item.currency}
                                 </p>
                                 <p className="text-xs text-gray-500">
-                                  {item.quantity} × {item.price_at_time.toFixed(2)}
+                                  {item.quantity} ×{" "}
+                                  {item.price_at_time.toFixed(2)}
                                 </p>
                               </div>
                             </div>
