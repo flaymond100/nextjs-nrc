@@ -148,7 +148,7 @@ export default function SocksCheckoutPage() {
       // Notify admin views to refresh orders
       window.dispatchEvent(new Event("orderSubmitted"));
 
-      router.push("/dashboard/socks-store/confirmation");
+      router.push("/dashboard/apparel-store/confirmation");
     } catch (error: any) {
       console.error("Error submitting order:", error);
       setSubmitError(
@@ -171,17 +171,17 @@ export default function SocksCheckoutPage() {
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center">
           <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Socks Store Checkout
+            Apparel Store Checkout
           </h1>
           <p className="text-gray-600 mb-6">
-            Your cart is empty or contains no socks products.
+            Your cart is empty or contains no apparel products.
           </p>
           <Link
-            href="/dashboard/socks-store"
+            href="/dashboard/apparel-store"
             className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             <ArrowLeftIcon className="h-5 w-5 mr-2" />
-            Back to Socks Store
+            Back to Apparel Store
           </Link>
         </div>
       </div>
@@ -192,14 +192,14 @@ export default function SocksCheckoutPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <Link
-          href="/dashboard/socks-store"
+          href="/dashboard/apparel-store"
           className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-4"
         >
           <ArrowLeftIcon className="h-5 w-5 mr-2" />
-          Back to Socks Store
+          Back to Apparel Store
         </Link>
         <h1 className="text-3xl font-bold text-gray-800">Checkout</h1>
-        <p className="text-gray-600">Review your socks order</p>
+        <p className="text-gray-600">Review your apparel order</p>
       </div>
 
       {submitError && (

@@ -235,12 +235,12 @@ export default function DashboardLayout({
     // Map store_name to static URLs
     ...openStores.map((store) => {
       // Map endurance_store to static URL /dashboard/4endurance-store
-      // Map socks_store to static URL /dashboard/socks-store
+      // Map socks_store to static URL /dashboard/apparel-store
       const href =
         store.store_name === "endurance_store"
           ? "/dashboard/4endurance-store"
           : store.store_name === "socks_store"
-            ? "/dashboard/socks-store"
+            ? "/dashboard/apparel-store"
             : `/dashboard/store?store=${store.store_name}`;
 
       // Add visual indicator for closed stores (admins only)

@@ -49,7 +49,7 @@ export default function SocksStoreAdminPage() {
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/dashboard/socks-store");
+      router.push("/dashboard/apparel-store");
     }
   }, [isAdmin, adminLoading, router]);
 
@@ -240,13 +240,13 @@ export default function SocksStoreAdminPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard/socks-store"
+              href="/dashboard/apparel-store"
               className="text-purple-600 hover:text-purple-700"
             >
               <ArrowLeftIcon className="h-6 w-6" />
             </Link>
             <h1 className="text-3xl font-bold text-gray-800">
-              Socks Store Admin
+              Apparel Store Admin
             </h1>
           </div>
           <button
@@ -258,7 +258,7 @@ export default function SocksStoreAdminPage() {
           </button>
         </div>
         <p className="text-gray-600">
-          Manage socks store products and inventory
+          Manage apparel store products and inventory
         </p>
       </div>
 
