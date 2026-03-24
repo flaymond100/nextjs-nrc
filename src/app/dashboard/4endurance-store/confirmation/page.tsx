@@ -233,10 +233,12 @@ export default function OrderConfirmationPage() {
                 </label>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <p className="text-base sm:text-lg font-semibold text-gray-800 break-all">
-                    Kostiantyn Garbar
+                    NRC INTERNATIONAL TEAM e.V.
                   </p>
                   <button
-                    onClick={() => copyToClipboard("Kostiantyn Garbar")}
+                    onClick={() =>
+                      copyToClipboard("NRC INTERNATIONAL TEAM e.V.")
+                    }
                     className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
                     title="Copy to clipboard"
                   >
@@ -251,10 +253,10 @@ export default function OrderConfirmationPage() {
                 </label>
                 <div className="flex items-center gap-2 mt-1 flex-wrap">
                   <p className="text-sm sm:text-base md:text-lg font-mono font-semibold text-gray-800 break-all">
-                    DE21100110012431229843
+                    DE70 8306 5408 0006 8964 56
                   </p>
                   <button
-                    onClick={() => copyToClipboard("DE21100110012431229843")}
+                    onClick={() => copyToClipboard("DE70830654080006896456")}
                     className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
                     title="Copy to clipboard"
                   >
