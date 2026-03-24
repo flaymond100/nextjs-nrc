@@ -631,9 +631,7 @@ export default function SocksStorePage() {
             </Link>
           </div>
         </div>
-        <p className="text-gray-600">
-          Browse and purchase high-quality socks for your cycling adventures.
-        </p>
+        <p className="text-gray-600">Browse and purchase team apparel.</p>
         {closingDate && timeRemaining && (
           <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-md">
             <p className="text-yellow-800 font-medium">
