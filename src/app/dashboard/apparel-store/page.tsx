@@ -51,43 +51,64 @@ export default function SocksStorePage() {
   useEffect(() => {
     checkStoreStatus();
     updateCartCount();
-    fetchProducts();
 
     // Listen for storage changes to update cart count
     const handleStorageChange = () => {
       updateCartCount();
     };
     window.addEventListener("storage", handleStorageChange);
+
+    // Also listen for custom events (for same-tab updates)
     window.addEventListener("cartUpdated", handleStorageChange);
 
     return () => {
       window.removeEventListener("storage", handleStorageChange);
       window.removeEventListener("cartUpdated", handleStorageChange);
     };
-  }, []);
+  }, [isAdmin]);
 
   useEffect(() => {
-    if (isAdmin) {
-      fetchAllOrdersForSummary();
+    if (user) {
+      fetchOrders();
+      if (isAdmin) {
+        fetchAllOrdersForSummary();
+      }
+
+      const handleOrderUpdate = () => {
+        fetchOrders();
+        if (isAdmin) {
+          fetchAllOrdersForSummary();
+        }
+      };
+
+      window.addEventListener("orderSubmitted", handleOrderUpdate);
+
+      return () => {
+        window.removeEventListener("orderSubmitted", handleOrderUpdate);
+      };
     }
-  }, [storeOpen, isAdmin]);
+  }, [isAdmin, user]);
 
   useEffect(() => {
-    if (closingDate) {
-      const interval = setInterval(() => {
-        updateTimeRemaining();
-      }, 1000);
+    if (!closingDate || !storeOpen) {
+      setTimeRemaining(null);
+      return;
+    }
+
+    const interval = setInterval(() => {
       updateTimeRemaining();
-      return () => clearInterval(interval);
-    }
-  }, [closingDate]);
+    }, 1000);
+    updateTimeRemaining();
+
+    return () => clearInterval(interval);
+  }, [closingDate, storeOpen]);
 
   const checkStoreStatus = async () => {
     try {
       console.log("Checking store status for socks_store...");
       const { data, error } = await supabase
         .from("store_management")
-        .select("*")
+        .select("is_open, closing_date")
         .eq("store_name", "socks_store")
         .single();
 
@@ -95,29 +116,66 @@ export default function SocksStorePage() {
 
       if (error) {
         console.error("Error checking store status:", error);
-        setError("Failed to check store status");
-        setStoreOpen(false); // Set to false so we don't show endless loading
+        setStoreOpen(true);
+        fetchProducts();
         return;
       }
 
       if (data) {
         console.log("Store data found:", data);
-        setStoreOpen(data.is_open);
-        setClosingDate(data.closing_date);
+        let isOpen = data.is_open === true;
+
+        if (isOpen && data.closing_date) {
+          const nextClosingDate = new Date(data.closing_date);
+          const now = new Date();
+
+          if (nextClosingDate <= now) {
+            isOpen = false;
+            setClosingDate(null);
+          } else {
+            setClosingDate(data.closing_date);
+          }
+        } else {
+          setClosingDate(null);
+        }
+
+        setStoreOpen(isOpen);
+
+        if (isOpen || isAdmin) {
+          fetchProducts();
+        }
       } else {
         console.log("No store data found");
-        setStoreOpen(false);
+        setStoreOpen(true);
+        fetchProducts();
       }
     } catch (err) {
       console.error("Error in checkStoreStatus:", err);
-      setError("Failed to check store status");
-      setStoreOpen(false); // Set to false so we don't show endless loading
+      setStoreOpen(true);
+      fetchProducts();
     }
   };
 
   const updateCartCount = () => {
     const count = getCartItemCount();
     setCartItemCount(count);
+  };
+
+  const getApparelVariantIds = async () => {
+    const { data, error } = await supabase
+      .from("socks_store")
+      .select("variant_id")
+      .not("variant_id", "is", null);
+
+    if (error) {
+      throw error;
+    }
+
+    return new Set(
+      (data || [])
+        .map((item) => Number(item.variant_id))
+        .filter((variantId) => !Number.isNaN(variantId))
+    );
   };
 
   const updateTimeRemaining = () => {
@@ -129,6 +187,8 @@ export default function SocksStorePage() {
 
     if (diff <= 0) {
       setTimeRemaining(null);
+      setClosingDate(null);
+      setStoreOpen(false);
       return;
     }
 
@@ -194,6 +254,7 @@ export default function SocksStorePage() {
 
     try {
       setSummaryLoading(true);
+      const apparelVariantIds = await getApparelVariantIds();
 
       // Fetch all orders for revenue calculation
       const { data: ordersData, error: ordersError } = await supabase
@@ -233,14 +294,23 @@ export default function SocksStorePage() {
         itemsMap.get(item.order_id)!.push(item as OrderItem);
       });
 
-      // Combine orders with items
-      const ordersWithItems = ordersData.map((order) => ({
-        ...order,
-        items: itemsMap.get(order.id) || [],
-      }));
+      const apparelOrders = ordersData
+        .map((order) => ({
+          ...order,
+          items: itemsMap.get(order.id) || [],
+        }))
+        .filter(
+          (order) =>
+            order.items.length > 0 &&
+            order.items.every(
+              (item) =>
+                item.variant_id !== null &&
+                apparelVariantIds.has(Number(item.variant_id))
+            )
+        );
 
       setAllOrdersForSummary(
-        ordersWithItems as (Order & { items: OrderItem[] })[]
+        apparelOrders as (Order & { items: OrderItem[] })[]
       );
     } catch (err) {
       console.error("Error fetching all orders for summary:", err);
@@ -254,6 +324,7 @@ export default function SocksStorePage() {
 
     try {
       setOrdersLoading(true);
+      const apparelVariantIds = await getApparelVariantIds();
       let ordersData;
       let ordersError;
 
@@ -271,14 +342,6 @@ export default function SocksStorePage() {
         const { data: allOrdersData, error: totalError } = await supabase
           .from("orders")
           .select("total_price");
-
-        if (!totalError && allOrdersData) {
-          const total = allOrdersData.reduce(
-            (sum, order) => sum + Number(order.total_price),
-            0
-          );
-          setTotalRevenue(total);
-        }
       } else {
         // Users see only their own orders
         const result = await supabase
@@ -322,9 +385,32 @@ export default function SocksStorePage() {
         itemsMap.get(item.order_id)!.push(item as OrderItem);
       });
 
+      const filteredOrdersData = ordersData.filter((order) => {
+        const orderItems = itemsMap.get(order.id) || [];
+
+        return (
+          orderItems.length > 0 &&
+          orderItems.every(
+            (item) =>
+              item.variant_id !== null &&
+              apparelVariantIds.has(Number(item.variant_id))
+          )
+        );
+      });
+
+      if (isAdmin) {
+        const total = filteredOrdersData.reduce(
+          (sum, order) => sum + Number(order.total_price),
+          0
+        );
+        setTotalRevenue(total);
+      }
+
       // Get unique user IDs (only needed for admin view)
       if (isAdmin) {
-        const userIds = Array.from(new Set(ordersData.map((o) => o.user_id)));
+        const userIds = Array.from(
+          new Set(filteredOrdersData.map((o) => o.user_id))
+        );
 
         // Fetch rider data for all users
         const { data: ridersData, error: ridersError } = await supabase
@@ -343,7 +429,7 @@ export default function SocksStorePage() {
         );
 
         // Combine orders with rider data and items
-        const ordersWithUser = ordersData.map((order) => {
+        const ordersWithUser = filteredOrdersData.map((order) => {
           const rider = ridersMap.get(order.user_id);
           return {
             ...order,
@@ -357,7 +443,7 @@ export default function SocksStorePage() {
         setOrders(ordersWithUser as (Order & { items: OrderItem[] })[]);
       } else {
         // For regular users, combine orders with items
-        const ordersWithItems = ordersData.map((order) => ({
+        const ordersWithItems = filteredOrdersData.map((order) => ({
           ...order,
           items: itemsMap.get(order.id) || [],
         }));
@@ -461,7 +547,7 @@ export default function SocksStorePage() {
     setOrderToDelete(null);
   };
 
-  if (storeOpen === null) {
+  if (loading || storeOpen === null) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader />

@@ -148,7 +148,8 @@ export default function SocksCheckoutPage() {
       // Notify admin views to refresh orders
       window.dispatchEvent(new Event("orderSubmitted"));
 
-      router.push("/dashboard/apparel-store/confirmation");
+      // Redirect to confirmation page with order ID
+      router.push(`/dashboard/apparel-store/confirmation?orderId=${order.id}`);
     } catch (error: any) {
       console.error("Error submitting order:", error);
       setSubmitError(
