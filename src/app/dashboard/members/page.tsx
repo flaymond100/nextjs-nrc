@@ -336,7 +336,10 @@ export default function MembersPage() {
                   Email
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Membership No.
+                  Membership
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Registration
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Email Confirmed
@@ -350,9 +353,7 @@ export default function MembersPage() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Admin
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Registration Form
-                </th>
+
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Joined
                 </th>
@@ -459,6 +460,20 @@ export default function MembersPage() {
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
+                        {member.registrationFormUrl ? (
+                          <a
+                            href={member.registrationFormUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium"
+                          >
+                            📄 View
+                          </a>
+                        ) : (
+                          <span className="text-gray-400 text-sm">-</span>
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
                         <span
                           className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                             member.isEmailConfirmed
@@ -523,20 +538,7 @@ export default function MembersPage() {
                           {member.is_admin ? "Yes" : "No"}
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {member.registrationFormUrl ? (
-                          <a
-                            href={member.registrationFormUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 hover:underline text-sm font-medium"
-                          >
-                            📄 View
-                          </a>
-                        ) : (
-                          <span className="text-gray-400 text-sm">-</span>
-                        )}
-                      </td>
+
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                         {member.updateAt
                           ? new Date(member.updateAt).toLocaleDateString()
