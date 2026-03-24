@@ -11,6 +11,13 @@ import Link from "next/link";
 import { NavigationLink } from "./navigation-link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { RaceCalendar } from "@/utils/types";
+import {
+  formatRaceType,
+  getNextRaceHeading,
+  getRaceTypeBadgeClasses,
+} from "@/utils/race-types";
+import { CalendarIcon, MapPinIcon } from "@heroicons/react/24/outline";
 
 interface RiderData {
   firstName: string | null;
@@ -26,6 +33,8 @@ interface RiderData {
 export const ProfileView = () => {
   const [loading, setLoading] = useState(true);
   const [riderData, setRiderData] = useState<RiderData | null>(null);
+  const [nextRace, setNextRace] = useState<RaceCalendar | null>(null);
+  const [loadingRace, setLoadingRace] = useState(true);
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 
@@ -87,6 +96,49 @@ export const ProfileView = () => {
     fetchRiderData();
   }, [user, authLoading, router]);
 
+  useEffect(() => {
+    async function fetchNextRace() {
+      if (!user) {
+        setLoadingRace(false);
+        return;
+      }
+
+      try {
+        setLoadingRace(true);
+        const { data: allRaces, error } = await supabase
+          .from("race_calendar")
+          .select("*")
+          .order("event_date", { ascending: true });
+
+        if (error) {
+          console.error("Error fetching races:", error);
+          setNextRace(null);
+          return;
+        }
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const userRaces =
+          allRaces?.filter(
+            (race) =>
+              race.participants &&
+              race.participants.includes(user.id) &&
+              new Date(race.event_date) >= today
+          ) || [];
+
+        setNextRace(userRaces[0] || null);
+      } catch (err) {
+        console.error("Unexpected error:", err);
+        setNextRace(null);
+      } finally {
+        setLoadingRace(false);
+      }
+    }
+
+    fetchNextRace();
+  }, [user]);
+
   // Show loader while auth is loading or rider data is loading
   if (authLoading || loading) {
     return (
@@ -106,6 +158,15 @@ export const ProfileView = () => {
       "Rider"
     : "Rider";
   const displayName = riderData?.firstName || "there";
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
 
   return (
     <section className="mb-10 pt-24 px-8 pb-20 md:pb-0 relative min-h-[calc(100vh-100px)]">
@@ -155,6 +216,51 @@ export const ProfileView = () => {
                 )}
               </div>
             </div>
+
+            {loadingRace ? (
+              <div className="mb-8 flex justify-center md:justify-start">
+                <Loader />
+              </div>
+            ) : nextRace ? (
+              <div className="mb-8 border-b border-gray-200 pb-8">
+                <h3 className="mb-4 text-2xl font-semibold text-gray-800">
+                  {getNextRaceHeading(nextRace.event_date)}
+                </h3>
+                <Link href={`/calendar/${nextRace.id}`}>
+                  <div className="cursor-pointer rounded-lg border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-purple-100 p-6 transition-shadow hover:shadow-lg">
+                    <div className="mb-3 flex items-start justify-between gap-4">
+                      <h4 className="text-xl font-bold text-gray-900">
+                        {nextRace.name}
+                      </h4>
+                      <span
+                        className={`px-3 py-1 text-xs font-semibold ${getRaceTypeBadgeClasses(
+                          nextRace.race_type
+                        )}`}
+                      >
+                        {formatRaceType(nextRace.race_type)}
+                      </span>
+                    </div>
+                    <div className="space-y-2 text-gray-700">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-5 w-5 text-purple-600" />
+                        <span>{formatDate(nextRace.event_date)}</span>
+                      </div>
+                      {nextRace.location && (
+                        <div className="flex items-center gap-2">
+                          <MapPinIcon className="h-5 w-5 text-purple-600" />
+                          <span>{nextRace.location}</span>
+                        </div>
+                      )}
+                      {nextRace.distance_km && (
+                        <div className="text-sm text-gray-600">
+                          Distance: {nextRace.distance_km} km
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ) : null}
 
             {/* Admin Notes (Markdown, read-only) */}
             {riderData?.adminNotes &&
@@ -236,7 +342,8 @@ export const ProfileView = () => {
               !riderData?.instagram &&
               !riderData?.strava &&
               !riderData?.bio &&
-              !riderData?.adminNotes && (
+              !riderData?.adminNotes &&
+              !nextRace && (
                 <div className="text-center py-12">
                   <p className="text-gray-500 mb-4">
                     Your profile is empty. Start by adding your information!

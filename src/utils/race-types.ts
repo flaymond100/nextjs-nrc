@@ -48,3 +48,25 @@ export function getRaceTypeBadgeClasses(type: RaceType | string): string {
   return `px-2 py-1 rounded-full ${config.bgColor} ${config.textColor} font-semibold text-xs`;
 }
 
+export function getNextRaceHeading(dateString: string): string {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const raceDate = new Date(dateString);
+  raceDate.setHours(0, 0, 0, 0);
+
+  const millisecondsPerDay = 1000 * 60 * 60 * 24;
+  const diffInDays = Math.round(
+    (raceDate.getTime() - today.getTime()) / millisecondsPerDay
+  );
+
+  if (diffInDays <= 0) {
+    return "Your Race is Today 💪";
+  }
+
+  if (diffInDays === 1) {
+    return "Your Next Race in 1 Day 🔥";
+  }
+
+  return `Your Next Race in ${diffInDays} Days`;
+}

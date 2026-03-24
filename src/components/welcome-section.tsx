@@ -5,7 +5,11 @@ import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import { RaceCalendar } from "@/utils/types";
-import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
+import {
+  formatRaceType,
+  getNextRaceHeading,
+  getRaceTypeBadgeClasses,
+} from "@/utils/race-types";
 import { Loader } from "./loader";
 import { CalendarIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { DocumentUploadSection } from "./document-upload-section";
@@ -95,7 +99,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
           ) : nextRace ? (
             <div className="w-full max-w-2xl mb-8">
               <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
-                Your Next Race
+                {getNextRaceHeading(nextRace.event_date)}
               </h2>
               <Link href={`/calendar/${nextRace.id}`}>
                 <div className="bg-gradient-to-r from-purple-50 to-purple-100 border-2 border-purple-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
@@ -145,7 +149,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
           )}
 
           <div className="flex flex-col sm:flex-row justify-start items-start gap-4 mt-8">
-            <Link href="/dashboard">
+            <Link href="/dashboard/profile">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}

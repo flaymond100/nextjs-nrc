@@ -194,7 +194,7 @@ export function Navbar() {
             </NavItem>
           ))}
           {user && isActivated && (
-            <NavItem href="/dashboard" pathname={pathname}>
+            <NavItem href="/dashboard/profile" pathname={pathname}>
               Dashboard
             </NavItem>
           )}
