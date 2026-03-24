@@ -45,6 +45,7 @@ export default function PaymentsPage() {
         setLoading(true);
         // Fetch payment data from riders table
         const { data, error } = await supabase
+          .schema("private") // --- IGNORE --- (schema is set to "private" for all rider data operations)
           .from("riders")
           .select(
             "uuid, email, firstName, lastName, contractStartDate, lastPaymentDate, nextPaymentDueDate, isPaid, paymentAmount"

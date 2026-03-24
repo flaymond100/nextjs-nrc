@@ -1,7 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
-import { FourEnduranceStoreProduct, Order, OrderStatus, OrderItem } from "@/utils/types";
+import {
+  FourEnduranceStoreProduct,
+  Order,
+  OrderStatus,
+  OrderItem,
+} from "@/utils/types";
 import { FourEnduranceProductCard } from "@/components/four-endurance-product-card";
 import { Loader } from "@/components/loader";
 import { getCartItemCount } from "@/utils/cart-storage";
@@ -26,7 +31,9 @@ export default function FourEnduranceStorePage() {
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
   const [closingDate, setClosingDate] = useState<string | null>(null);
   const [orders, setOrders] = useState<(Order & { items: OrderItem[] })[]>([]);
-  const [allOrdersForSummary, setAllOrdersForSummary] = useState<(Order & { items: OrderItem[] })[]>([]);
+  const [allOrdersForSummary, setAllOrdersForSummary] = useState<
+    (Order & { items: OrderItem[] })[]
+  >([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null);
@@ -220,7 +227,9 @@ export default function FourEnduranceStorePage() {
         items: itemsMap.get(order.id) || [],
       }));
 
-      setAllOrdersForSummary(ordersWithItems as (Order & { items: OrderItem[] })[]);
+      setAllOrdersForSummary(
+        ordersWithItems as (Order & { items: OrderItem[] })[]
+      );
     } catch (err) {
       console.error("Error fetching all orders for summary:", err);
     } finally {
@@ -307,6 +316,7 @@ export default function FourEnduranceStorePage() {
 
         // Fetch rider data for all users
         const { data: ridersData, error: ridersError } = await supabase
+          .schema("private") // --- IGNORE --- (schema is set to "private" for all rider data operations)
           .from("riders")
           .select("uuid, email, firstName, lastName")
           .in("uuid", userIds);
@@ -736,7 +746,9 @@ export default function FourEnduranceStorePage() {
                 .sort((a, b) => b.totalQuantity - a.totalQuantity);
 
               return summaryArray.length === 0 ? (
-                <p className="text-gray-600 text-center py-4">No products found in orders.</p>
+                <p className="text-gray-600 text-center py-4">
+                  No products found in orders.
+                </p>
               ) : (
                 <div className="overflow-x-auto -mx-4 sm:mx-0">
                   <table className="min-w-full divide-y divide-gray-200">
@@ -765,7 +777,8 @@ export default function FourEnduranceStorePage() {
                             </span>
                           </td>
                           <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm text-gray-600 hidden sm:table-cell">
-                            {item.orderCount} {item.orderCount === 1 ? "order" : "orders"}
+                            {item.orderCount}{" "}
+                            {item.orderCount === 1 ? "order" : "orders"}
                           </td>
                         </tr>
                       ))}
@@ -873,14 +886,23 @@ export default function FourEnduranceStorePage() {
                           {order.items && order.items.length > 0 ? (
                             <div className="space-y-1">
                               {order.items.map((item, idx) => (
-                                <div key={item.id || idx} className="flex items-center gap-2">
-                                  <span className="font-medium">{item.product_name}</span>
-                                  <span className="text-gray-500">× {item.quantity}</span>
+                                <div
+                                  key={item.id || idx}
+                                  className="flex items-center gap-2"
+                                >
+                                  <span className="font-medium">
+                                    {item.product_name}
+                                  </span>
+                                  <span className="text-gray-500">
+                                    × {item.quantity}
+                                  </span>
                                 </div>
                               ))}
                             </div>
                           ) : (
-                            <span className="text-gray-400 italic">No items</span>
+                            <span className="text-gray-400 italic">
+                              No items
+                            </span>
                           )}
                         </td>
                         <td className="px-2 sm:px-4 py-2 sm:py-3 whitespace-nowrap text-xs sm:text-sm font-semibold text-gray-900">

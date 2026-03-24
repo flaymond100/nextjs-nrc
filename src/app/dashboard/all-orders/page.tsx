@@ -7,10 +7,7 @@ import { Order, OrderItem } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import {
-  ChevronDownIcon,
-  ChevronUpIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export default function AllOrdersPage() {
   const { user, loading: authLoading } = useAuth();
@@ -58,10 +55,13 @@ export default function AllOrdersPage() {
       }
 
       // Get unique user IDs to fetch user information
-      const userIds = Array.from(new Set(ordersData.map((order) => order.user_id)));
+      const userIds = Array.from(
+        new Set(ordersData.map((order) => order.user_id))
+      );
 
       // Fetch rider data for all users
       const { data: ridersData, error: ridersError } = await supabase
+        .schema("private") // --- IGNORE --- (schema is set to "private" for all rider data operations)
         .from("riders")
         .select("uuid, email, firstName, lastName")
         .in("uuid", userIds);
@@ -190,10 +190,11 @@ export default function AllOrdersPage() {
         <div className="space-y-4">
           {orders.map((order) => {
             const isExpanded = expandedOrders.has(order.id);
-            const userName = order.user_first_name || order.user_last_name
-              ? `${order.user_first_name || ""} ${order.user_last_name || ""}`.trim()
-              : "Unknown User";
-            
+            const userName =
+              order.user_first_name || order.user_last_name
+                ? `${order.user_first_name || ""} ${order.user_last_name || ""}`.trim()
+                : "Unknown User";
+
             return (
               <div
                 key={order.id}
@@ -225,7 +226,8 @@ export default function AllOrdersPage() {
                           {userName}
                           {order.user_email && (
                             <span className="text-gray-500">
-                              {" "}({order.user_email})
+                              {" "}
+                              ({order.user_email})
                             </span>
                           )}
                         </span>
@@ -292,7 +294,9 @@ export default function AllOrdersPage() {
                                 </h5>
                                 <div className="flex flex-wrap gap-4 text-sm text-gray-600">
                                   <span>
-                                    <span className="font-medium">Quantity:</span>{" "}
+                                    <span className="font-medium">
+                                      Quantity:
+                                    </span>{" "}
                                     {item.quantity}
                                   </span>
                                   <span>
@@ -318,7 +322,8 @@ export default function AllOrdersPage() {
                                   {item.currency}
                                 </p>
                                 <p className="text-xs text-gray-500">
-                                  {item.quantity} × {item.price_at_time.toFixed(2)}
+                                  {item.quantity} ×{" "}
+                                  {item.price_at_time.toFixed(2)}
                                 </p>
                               </div>
                             </div>

@@ -414,6 +414,7 @@ export default function SocksStorePage() {
 
         // Fetch rider data for all users
         const { data: ridersData, error: ridersError } = await supabase
+          .schema("private") // --- IGNORE --- (schema is set to "private" for all rider data operations)
           .from("riders")
           .select("uuid, email, firstName, lastName")
           .in("uuid", userIds);
