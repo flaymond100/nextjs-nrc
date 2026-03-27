@@ -11,7 +11,57 @@ export default function CalendarPage() {
   return (
     <>
       <Navbar />
-      <CalendarPageContent />
+      <div className="flex items-start w-full">
+        {/* Left Banner - visible at lg+ */}
+        <div className="hidden lg:flex flex-col items-center justify-start sticky top-[50%] transform -translate-y-1/2 self-start flex-1 max-w-[180px] xl:max-w-[280px] shrink-0 py-8">
+          <a
+            href="https://www.roadclassics.cz/en/propozice/palava"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/banner.png"
+              alt="Banner"
+              className="w-[120px] xl:w-[180px] object-contain rounded-lg border border-black shadow-sm hover:opacity-90 transition-opacity"
+            />
+          </a>
+        </div>
+
+        {/* Main Content */}
+        <div className="flex-1 min-w-0">
+          <CalendarPageContent />
+        </div>
+
+        {/* Right Banner - visible at lg+ */}
+        <div className="hidden lg:flex flex-col items-center justify-start sticky top-[50%] transform -translate-y-1/2 self-start flex-1 max-w-[180px] xl:max-w-[280px] shrink-0 py-8">
+          <a
+            href="https://www.roadclassics.cz/en/propozice/palava"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="/banner.png"
+              alt="Banner"
+              className="w-[120px] xl:w-[180px] object-contain rounded-lg border border-black shadow-sm hover:opacity-90 transition-opacity"
+            />
+          </a>
+        </div>
+      </div>
+
+      {/* Bottom fixed banner - visible below 960px */}
+      <div className="960:hidden fixed bottom-0 left-1/2 -translate-x-1/2 z-50">
+        <a
+          href="https://www.roadclassics.cz/en/propozice/palava"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <img
+            src="/banner-mobile.png"
+            alt="Banner"
+            className="w-[80vw] max-w-[80vw] h-auto object-contain rounded-lg border border-black shadow-lg hover:opacity-90 transition-opacity"
+          />
+        </a>
+      </div>
       <Footer />
     </>
   );

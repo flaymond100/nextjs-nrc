@@ -8,6 +8,9 @@ const config: Config = withMT({
   ],
   theme: {
     extend: {
+      screens: {
+        "960": "960px",
+      },
       fontFamily: {
         rubik: ["var(--font-rubik)"],
       },
