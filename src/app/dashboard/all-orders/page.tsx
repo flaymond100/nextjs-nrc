@@ -312,6 +312,20 @@ export default function AllOrdersPage() {
                                       {item.variant_id}
                                     </span>
                                   )}
+                                  {item.size && (
+                                    <span>
+                                      <span className="font-medium">Size:</span>{" "}
+                                      {item.size}
+                                    </span>
+                                  )}
+                                  {item.gender && (
+                                    <span>
+                                      <span className="font-medium">
+                                        Gender:
+                                      </span>{" "}
+                                      {item.gender}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                               <div className="text-right">

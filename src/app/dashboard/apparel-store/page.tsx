@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import {
-  SocksStoreProduct,
+  ApparelStoreProduct,
   Order,
   OrderStatus,
   OrderItem,
@@ -22,7 +22,7 @@ import {
 import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function SocksStorePage() {
-  const [products, setProducts] = useState<SocksStoreProduct[]>([]);
+  const [products, setProducts] = useState<ApparelStoreProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [cartItemCount, setCartItemCount] = useState(0);
@@ -209,7 +209,7 @@ export default function SocksStorePage() {
       const { data, error: queryError } = await supabase
         .from("socks_store")
         .select(
-          "name, price, currency, available_bool, img_reference, product_url, product_id, variant_id, sku, product_item_info"
+          "name, price, currency, product_item_info, available, img_reference, product_url, product_id, variant_id, sku, available_bool, gender, sizes"
         )
         .order("available_bool", { ascending: false, nullsFirst: false })
         .order("name", { ascending: true });
@@ -240,7 +240,7 @@ export default function SocksStorePage() {
         return;
       }
 
-      setProducts((data || []) as SocksStoreProduct[]);
+      setProducts((data || []) as ApparelStoreProduct[]);
     } catch (err: any) {
       console.error("Error fetching products:", err);
       setError(err.message || "Failed to load products");
@@ -661,12 +661,6 @@ export default function SocksStorePage() {
           <h2 className="text-2xl font-bold text-gray-800">
             Available Products
           </h2>
-          <button
-            onClick={fetchProducts}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm"
-          >
-            Refresh Products
-          </button>
         </div>
         {loading ? (
           <div className="flex items-center justify-center py-12">

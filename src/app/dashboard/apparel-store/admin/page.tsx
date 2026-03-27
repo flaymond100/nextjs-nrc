@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
-import { SocksStoreProduct } from "@/utils/types";
+import { ApparelStoreProduct } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { useAdmin } from "@/hooks/use-admin";
 import toast from "react-hot-toast";
@@ -17,7 +17,7 @@ import {
 } from "@heroicons/react/24/outline";
 
 export default function SocksStoreAdminPage() {
-  const [products, setProducts] = useState<SocksStoreProduct[]>([]);
+  const [products, setProducts] = useState<ApparelStoreProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -76,7 +76,7 @@ export default function SocksStoreAdminPage() {
         return;
       }
 
-      setProducts((data || []) as SocksStoreProduct[]);
+      setProducts((data || []) as ApparelStoreProduct[]);
     } catch (err: any) {
       console.error("Error fetching products:", err);
       setError(err.message || "Failed to load products");
@@ -85,7 +85,7 @@ export default function SocksStoreAdminPage() {
     }
   };
 
-  const handleEdit = (product: SocksStoreProduct) => {
+  const handleEdit = (product: ApparelStoreProduct) => {
     setEditingId(product.name);
     setEditForm({
       price: product.price?.toString() || "",
@@ -98,7 +98,7 @@ export default function SocksStoreAdminPage() {
     setEditForm(null);
   };
 
-  const handleSaveEdit = async (product: SocksStoreProduct) => {
+  const handleSaveEdit = async (product: ApparelStoreProduct) => {
     if (!editForm) return;
 
     try {
@@ -190,7 +190,7 @@ export default function SocksStoreAdminPage() {
     }
   };
 
-  const handleDuplicate = async (product: SocksStoreProduct) => {
+  const handleDuplicate = async (product: ApparelStoreProduct) => {
     try {
       const duplicatedProduct = {
         ...product,

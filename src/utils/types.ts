@@ -125,8 +125,10 @@ export type Size =
   | "XL"
   | "2XL"
   | "3XL"
-  | "4XL";
-export type Gender = "Men" | "Women";
+  | "4XL"
+  | "One Size"
+  | string;
+export type Gender = "Men" | "Women" | string;
 
 export interface CartItem {
   productId: number;
@@ -158,18 +160,23 @@ export interface FourEnduranceStoreProduct {
   sku: string | null;
 }
 
-export interface SocksStoreProduct {
+export interface ApparelStoreProduct {
   name: string;
-  price: number;
+  price: number | null;
   currency: string | null;
   product_item_info: string | null;
+  available: string | null;
   available_bool: boolean | null;
   img_reference: string | null;
   product_url: string | null;
-  product_id: string | number | null;
-  variant_id: string | number | null;
-  sku: string | null;
+  product_id: number | null;
+  variant_id: number | null;
+  sku: number | null;
+  gender: string[] | null;
+  sizes: string[] | null;
 }
+
+export type SocksStoreProduct = ApparelStoreProduct;
 
 export interface StoreManagement {
   id: number;
@@ -200,6 +207,8 @@ export interface OrderItem {
   price_at_time: number;
   currency: string;
   created_at: string;
+  size?: string;
+  gender?: string;
 }
 
 export interface Order {

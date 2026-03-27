@@ -88,19 +88,17 @@ export default function SocksCheckoutPage() {
     setSubmitError(null);
 
     try {
-      // Filter only Socks products (those with category "Socks")
-      const socksItems = cartItems.filter(
-        (item) => item.category === "Socks" && item.variant
+      const apparelItems = cartItems.filter(
+        (item) => item.category === "Apparel" && item.variant
       );
 
-      if (socksItems.length === 0) {
-        setSubmitError("No socks products in cart to order.");
+      if (apparelItems.length === 0) {
+        setSubmitError("No apparel products in cart to order.");
         setSubmitting(false);
         return;
       }
 
-      // Calculate total from socks items only
-      const orderTotal = socksItems.reduce(
+      const orderTotal = apparelItems.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0
       );
@@ -122,13 +120,15 @@ export default function SocksCheckoutPage() {
       }
 
       // Create order items
-      const orderItemsData = socksItems.map((item) => ({
+      const orderItemsData = apparelItems.map((item) => ({
         order_id: order.id,
         variant_id: item.variant ? parseInt(item.variant) : null,
         product_name: item.productName,
         quantity: item.quantity,
         price_at_time: item.price,
         currency: item.currency || "EUR",
+        size: item.size,
+        gender: item.gender,
       }));
 
       const { error: itemsError } = await supabase
@@ -160,14 +160,13 @@ export default function SocksCheckoutPage() {
     }
   };
 
-  // Filter cart items to show only socks products
-  const socksItems = cartItems.filter((item) => item.category === "Socks");
-  const socksTotal = socksItems.reduce(
+  const apparelItems = cartItems.filter((item) => item.category === "Apparel");
+  const apparelTotal = apparelItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
-  if (socksItems.length === 0) {
+  if (apparelItems.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center">
@@ -213,7 +212,7 @@ export default function SocksCheckoutPage() {
         <h2 className="text-xl font-bold text-gray-800 mb-4">Order Summary</h2>
 
         <div className="space-y-4">
-          {socksItems.map((item) => (
+          {apparelItems.map((item) => (
             <div
               key={`${item.productId}-${item.variant}`}
               className="flex items-center justify-between py-4 border-b border-gray-200 last:border-b-0"
@@ -222,7 +221,19 @@ export default function SocksCheckoutPage() {
                 <h3 className="font-medium text-gray-900">
                   {item.productName}
                 </h3>
-                <p className="text-sm text-gray-600">
+                <div className="flex flex-wrap gap-2 mt-1">
+                  {item.size && (
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                      Size: {item.size}
+                    </span>
+                  )}
+                  {item.gender && (
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                      {item.gender}
+                    </span>
+                  )}
+                </div>
+                <p className="text-sm text-gray-600 mt-1">
                   €{item.price.toFixed(2)} each
                 </p>
               </div>
@@ -286,7 +297,7 @@ export default function SocksCheckoutPage() {
           <div className="flex justify-between items-center">
             <span className="text-lg font-bold text-gray-800">Total:</span>
             <span className="text-lg font-bold text-purple-600">
-              €{socksTotal.toFixed(2)}
+              €{apparelTotal.toFixed(2)}
             </span>
           </div>
         </div>
