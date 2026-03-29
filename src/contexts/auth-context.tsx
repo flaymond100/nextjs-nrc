@@ -1,6 +1,12 @@
 "use client";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { Session } from "@supabase/supabase-js";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import { AuthChangeEvent, Session } from "@supabase/supabase-js";
 import { supabase } from "@/utils/supabase";
 import { User } from "@/utils/types";
 
@@ -30,6 +36,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [adminLoading, setAdminLoading] = useState(false);
+  const userRef = useRef<User | null>(null);
+  const sessionRef = useRef<Session | null>(null);
+
+  const areUsersEquivalent = (current: User | null, next: User | null) => {
+    if (current === next) {
+      return true;
+    }
+
+    if (!current || !next) {
+      return current === next;
+    }
+
+    return (
+      current.id === next.id &&
+      current.updated_at === next.updated_at &&
+      current.last_sign_in_at === next.last_sign_in_at &&
+      current.email === next.email
+    );
+  };
+
+  const areSessionsEquivalent = (
+    current: Session | null,
+    next: Session | null
+  ) => {
+    if (current === next) {
+      return true;
+    }
+
+    if (!current || !next) {
+      return current === next;
+    }
+
+    return (
+      current.access_token === next.access_token &&
+      current.refresh_token === next.refresh_token &&
+      current.expires_at === next.expires_at &&
+      current.user.id === next.user.id &&
+      current.user.updated_at === next.user.updated_at
+    );
+  };
 
   const checkAdminStatus = async (userId: string) => {
     setAdminLoading(true);
@@ -54,37 +100,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const syncAuthState = (
+    event: AuthChangeEvent | "INITIAL_LOAD",
+    nextSession: Session | null
+  ) => {
+    const nextUser = (nextSession?.user as User) ?? null;
+    const currentUser = userRef.current;
+    const currentSession = sessionRef.current;
+    const userChanged = !areUsersEquivalent(currentUser, nextUser);
+    const sessionChanged = !areSessionsEquivalent(currentSession, nextSession);
+    const userIdChanged = currentUser?.id !== nextUser?.id;
+
+    if (sessionChanged) {
+      sessionRef.current = nextSession;
+      setSession(nextSession);
+    }
+
+    if (userChanged) {
+      userRef.current = nextUser;
+      setUser(nextUser);
+    }
+
+    setLoading(false);
+
+    if (!nextUser?.id) {
+      setIsAdmin(false);
+      return;
+    }
+
+    if (
+      userIdChanged ||
+      event === "INITIAL_LOAD" ||
+      event === "INITIAL_SESSION" ||
+      event === "USER_UPDATED"
+    ) {
+      setTimeout(() => {
+        void checkAdminStatus(nextUser.id);
+      }, 0);
+    }
+  };
+
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      const currentUser = (session?.user as User) ?? null;
-      setUser(currentUser);
-      setLoading(false);
-
-      // Check admin status if user exists
-      if (currentUser?.id) {
-        checkAdminStatus(currentUser.id);
-      } else {
-        setIsAdmin(false);
-      }
+      syncAuthState("INITIAL_LOAD", session);
     });
 
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      const currentUser = (session?.user as User) ?? null;
-      setUser(currentUser);
-      setLoading(false);
-
-      // Check admin status if user exists
-      if (currentUser?.id) {
-        checkAdminStatus(currentUser.id);
-      } else {
-        setIsAdmin(false);
-      }
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      syncAuthState(event, session);
     });
 
     return () => subscription.unsubscribe();
