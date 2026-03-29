@@ -62,9 +62,7 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
         slug: String(article.slug),
       }));
 
-    console.log(
-      `Generated ${validSlugs.length} static params for news articles`
-    );
+  
     return validSlugs;
   } catch (error) {
     console.error("Error generating static params:", error);

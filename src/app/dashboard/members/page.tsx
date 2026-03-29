@@ -82,11 +82,7 @@ export default function MembersPage() {
     setUpdatingActivated(member.uuid);
     try {
       const newValue = !member.isActivated;
-      console.log("Attempting to update isActivated:", {
-        uuid: member.uuid,
-        currentValue: member.isActivated,
-        newValue: newValue,
-      });
+
 
       const { data, error } = await supabase
         .schema("private")
@@ -94,12 +90,6 @@ export default function MembersPage() {
         .update({ isActivated: newValue })
         .eq("uuid", member.uuid)
         .select();
-
-      console.log("Update response:", {
-        data,
-        error,
-        dataLength: data?.length,
-      });
 
       if (error) {
         toast.error(error.message || "Failed to update activation status");

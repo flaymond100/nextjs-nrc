@@ -140,14 +140,12 @@ export default function SocksStorePage() {
 
   const checkStoreStatus = async () => {
     try {
-      console.log("Checking store status for socks_store...");
       const { data, error } = await supabase
         .from("store_management")
         .select("is_open, closing_date")
         .eq("store_name", "socks_store")
         .single();
 
-      console.log("Store status result:", { data, error });
 
       if (error) {
         console.error("Error checking store status:", error);
@@ -157,7 +155,6 @@ export default function SocksStorePage() {
       }
 
       if (data) {
-        console.log("Store data found:", data);
         let isOpen = data.is_open === true;
 
         if (isOpen && data.closing_date) {
@@ -249,7 +246,6 @@ export default function SocksStorePage() {
         .order("available_bool", { ascending: false, nullsFirst: false })
         .order("name", { ascending: true });
 
-      console.log("Query result:", { data, error: queryError });
 
       if (queryError) {
         // Log detailed error for debugging
