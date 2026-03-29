@@ -41,6 +41,8 @@ export default function SocksStorePage() {
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
+  const [hasSubmittedDocs, setHasSubmittedDocs] = useState<boolean | null>(null);
+  const [docsLoading, setDocsLoading] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState<{
     days: number;
     hours: number;
@@ -66,6 +68,39 @@ export default function SocksStorePage() {
       window.removeEventListener("cartUpdated", handleStorageChange);
     };
   }, [isAdmin]);
+
+  useEffect(() => {
+    if (!user) {
+      setHasSubmittedDocs(false);
+      setDocsLoading(false);
+      return;
+    }
+
+    const checkDocs = async () => {
+      try {
+        const { data, error } = await supabase
+          .schema("private")
+          .from("riders")
+          .select("registrationFormUrl")
+          .eq("uuid", user.id)
+          .single();
+
+        if (error) {
+          console.error("Error checking documents:", error);
+          setHasSubmittedDocs(false);
+        } else {
+          setHasSubmittedDocs(data?.registrationFormUrl != null);
+        }
+      } catch (err) {
+        console.error("Unexpected error checking documents:", err);
+        setHasSubmittedDocs(false);
+      } finally {
+        setDocsLoading(false);
+      }
+    };
+
+    checkDocs();
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -548,10 +583,41 @@ export default function SocksStorePage() {
     setOrderToDelete(null);
   };
 
-  if (loading || storeOpen === null) {
+  if (loading || storeOpen === null || docsLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader />
+      </div>
+    );
+  }
+
+  // Block non-admin users who haven't submitted registration documents
+  if (!isAdmin && !hasSubmittedDocs) {
+    return (
+      <div className="max-w-7xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">
+            Apparel Store
+          </h1>
+        </div>
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="text-center max-w-md">
+            <p className="text-xl text-gray-700 mb-3 font-semibold">
+              Registration Documents Required
+            </p>
+            <p className="text-gray-500 mb-6">
+              You need to submit your registration documents before you can
+              access the store. Please upload your signed Mitgliedsantrag in
+              your profile.
+            </p>
+            <a
+              href="/dashboard/profile"
+              className="px-5 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              Go to Profile
+            </a>
+          </div>
+        </div>
       </div>
     );
   }

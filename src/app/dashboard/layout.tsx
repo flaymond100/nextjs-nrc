@@ -82,6 +82,7 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile menu state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Desktop collapse state
   const [openStores, setOpenStores] = useState<StoreManagement[]>([]);
+  const [hasSubmittedDocs, setHasSubmittedDocs] = useState<boolean | null>(null);
 
   useEffect(() => {
     async function checkUserStatus() {
@@ -95,8 +96,9 @@ export default function DashboardLayout({
 
       try {
         const { data, error } = await supabase
+          .schema("private")
           .from("riders")
-          .select("isEmailConfirmed, isActivated")
+          .select("isEmailConfirmed, isActivated, registrationFormUrl")
           .eq("uuid", user.id)
           .single();
 
@@ -104,9 +106,11 @@ export default function DashboardLayout({
           console.error("Error checking user status:", error);
           setEmailConfirmed(false);
           setIsActivated(false);
+          setHasSubmittedDocs(false);
         } else {
           setEmailConfirmed(data?.isEmailConfirmed === true);
           setIsActivated(data?.isActivated === true);
+          setHasSubmittedDocs(data?.registrationFormUrl != null);
         }
       } catch (err) {
         console.error("Unexpected error:", err);
@@ -123,6 +127,7 @@ export default function DashboardLayout({
     } else if (!authLoading && !user) {
       setEmailConfirmed(false);
       setIsActivated(false);
+      setHasSubmittedDocs(false);
       setCheckingEmail(false);
       setCheckingActivation(false);
     }
@@ -331,6 +336,20 @@ export default function DashboardLayout({
                     return null;
                   }
 
+                  if (item.store_name && !isAdmin && !hasSubmittedDocs) {
+                    return (
+                      <div key={item.href} className="flex flex-col px-4 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                        <div className="flex items-center gap-3 text-gray-400 cursor-not-allowed">
+                          <span className="text-xl flex-shrink-0">🔒</span>
+                          <span>{item.name}</span>
+                        </div>
+                        <p className="text-xs text-gray-400 mt-1 ml-8">
+                          Submit registration docs to unlock
+                        </p>
+                      </div>
+                    );
+                  }
+
                   const isActive =
                     pathname === item.href ||
                     pathname?.startsWith(item.href + "/");
@@ -409,6 +428,31 @@ export default function DashboardLayout({
                 // Hide admin-only items for non-admins
                 if (item.adminOnly && !isAdmin) {
                   return null;
+                }
+
+                // Lock store items for non-admin users who haven't submitted docs
+                if (item.store_name && !isAdmin && !hasSubmittedDocs) {
+                  return (
+                    <span
+                      key={item.href}
+                      className={`
+                        relative flex items-center justify-center
+                        ${sidebarCollapsed ? "md:justify-center" : "md:justify-start"}
+                        gap-0 md:gap-3 px-2 md:px-4 py-3 rounded-lg text-gray-400 cursor-not-allowed
+                        group
+                      `}
+                    >
+                      <span className="text-2xl md:text-xl flex-shrink-0">🔒</span>
+                      <span className={`hidden ${sidebarCollapsed ? "md:hidden" : "md:inline"} transition-opacity duration-300`}>
+                        {item.name}
+                      </span>
+                      {/* Tooltip — always visible on hover for both mobile icon bar and desktop (expanded & collapsed) */}
+                      <span className="absolute left-full ml-3 px-3 py-2 bg-gray-900 text-white text-xs rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
+                        Registration docs required to access this store
+                        <span className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1 w-2 h-2 bg-gray-900 rotate-45"></span>
+                      </span>
+                    </span>
+                  );
                 }
 
                 // Check if current path matches the item href or starts with it (for sub-paths)
