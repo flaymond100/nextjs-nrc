@@ -21,6 +21,10 @@ export const NAV_MENU = [
     href: "/",
   },
   {
+    name: "Gallery",
+    href: "/gallery",
+  },
+  {
     name: "Team",
     href: "/cycling-team",
   },
