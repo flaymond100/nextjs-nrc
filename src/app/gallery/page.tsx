@@ -35,7 +35,7 @@ export default function GalleryPage() {
               >
                 <div className="aspect-[4/3] overflow-hidden bg-[#ece7e1]">
                   <img
-                    src={event.fallbackCoverImage}
+                    src={event.coverImage}
                     alt={event.title}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                   />
