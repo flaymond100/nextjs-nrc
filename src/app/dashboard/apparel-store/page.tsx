@@ -22,6 +22,9 @@ import {
 import { ConfirmModal } from "@/components/confirm-modal";
 
 export default function SocksStorePage() {
+  const SUPABASE_PAGE_SIZE = 1000;
+  const ORDER_ID_CHUNK_SIZE = 200;
+
   const [products, setProducts] = useState<ApparelStoreProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +44,9 @@ export default function SocksStorePage() {
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
   const [deleting, setDeleting] = useState(false);
   const [totalRevenue, setTotalRevenue] = useState<number | null>(null);
-  const [hasSubmittedDocs, setHasSubmittedDocs] = useState<boolean | null>(null);
+  const [hasSubmittedDocs, setHasSubmittedDocs] = useState<boolean | null>(
+    null
+  );
   const [docsLoading, setDocsLoading] = useState(true);
   const [timeRemaining, setTimeRemaining] = useState<{
     days: number;
@@ -146,7 +151,6 @@ export default function SocksStorePage() {
         .eq("store_name", "socks_store")
         .single();
 
-
       if (error) {
         console.error("Error checking store status:", error);
         setStoreOpen(true);
@@ -210,6 +214,86 @@ export default function SocksStorePage() {
     );
   };
 
+  const fetchAllOrdersData = async <T,>(
+    selectColumns: string,
+    userId?: string
+  ) => {
+    const allOrders: T[] = [];
+    let from = 0;
+
+    while (true) {
+      let query = supabase
+        .from("orders")
+        .select(selectColumns)
+        .order("created_at", { ascending: false })
+        .range(from, from + SUPABASE_PAGE_SIZE - 1);
+
+      if (userId) {
+        query = query.eq("user_id", userId);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data || data.length === 0) {
+        break;
+      }
+
+      allOrders.push(...(data as T[]));
+
+      if (data.length < SUPABASE_PAGE_SIZE) {
+        break;
+      }
+
+      from += SUPABASE_PAGE_SIZE;
+    }
+
+    return allOrders;
+  };
+
+  const fetchOrderItemsForOrders = async (orderIds: number[]) => {
+    if (orderIds.length === 0) {
+      return [];
+    }
+
+    const allItems: OrderItem[] = [];
+
+    for (let i = 0; i < orderIds.length; i += ORDER_ID_CHUNK_SIZE) {
+      const chunkOrderIds = orderIds.slice(i, i + ORDER_ID_CHUNK_SIZE);
+      let from = 0;
+
+      while (true) {
+        const { data, error } = await supabase
+          .from("order_items")
+          .select("*")
+          .in("order_id", chunkOrderIds)
+          .order("id", { ascending: true })
+          .range(from, from + SUPABASE_PAGE_SIZE - 1);
+
+        if (error) {
+          throw error;
+        }
+
+        if (!data || data.length === 0) {
+          break;
+        }
+
+        allItems.push(...(data as OrderItem[]));
+
+        if (data.length < SUPABASE_PAGE_SIZE) {
+          break;
+        }
+
+        from += SUPABASE_PAGE_SIZE;
+      }
+    }
+
+    return allItems;
+  };
+
   const updateTimeRemaining = () => {
     if (!closingDate) return;
 
@@ -245,7 +329,6 @@ export default function SocksStorePage() {
         )
         .order("available_bool", { ascending: false, nullsFirst: false })
         .order("name", { ascending: true });
-
 
       if (queryError) {
         // Log detailed error for debugging
@@ -288,12 +371,13 @@ export default function SocksStorePage() {
       const apparelVariantIds = await getApparelVariantIds();
 
       // Fetch all orders for revenue calculation
-      const { data: ordersData, error: ordersError } = await supabase
-        .from("orders")
-        .select("id, total_price")
-        .order("created_at", { ascending: false });
-
-      if (ordersError) {
+      let ordersData: Array<Pick<Order, "id" | "total_price">> = [];
+      try {
+        ordersData =
+          await fetchAllOrdersData<Pick<Order, "id" | "total_price">>(
+            "id, total_price"
+          );
+      } catch (ordersError) {
         console.error("Error fetching orders for summary:", ordersError);
         return;
       }
@@ -305,13 +389,10 @@ export default function SocksStorePage() {
 
       // Fetch order items for all orders
       const orderIds = ordersData.map((order) => order.id);
-      const { data: itemsData, error: itemsError } = await supabase
-        .from("order_items")
-        .select("*")
-        .in("order_id", orderIds)
-        .order("id", { ascending: true });
-
-      if (itemsError) {
+      let itemsData: OrderItem[] = [];
+      try {
+        itemsData = await fetchOrderItemsForOrders(orderIds);
+      } catch (itemsError) {
         console.error("Error fetching order items for summary:", itemsError);
         // Continue without items if there's an error
       }
@@ -356,35 +437,14 @@ export default function SocksStorePage() {
     try {
       setOrdersLoading(true);
       const apparelVariantIds = await getApparelVariantIds();
-      let ordersData;
-      let ordersError;
+      let ordersData: Order[] = [];
 
-      if (isAdmin) {
-        // Admins see all orders
-        const result = await supabase
-          .from("orders")
-          .select("*")
-          .order("created_at", { ascending: false })
-          .limit(10); // Show last 10 orders
-        ordersData = result.data;
-        ordersError = result.error;
-
-        // Fetch total revenue from all orders for admins
-        const { data: allOrdersData, error: totalError } = await supabase
-          .from("orders")
-          .select("total_price");
-      } else {
-        // Users see only their own orders
-        const result = await supabase
-          .from("orders")
-          .select("*")
-          .eq("user_id", user.id)
-          .order("created_at", { ascending: false });
-        ordersData = result.data;
-        ordersError = result.error;
-      }
-
-      if (ordersError) {
+      try {
+        ordersData = await fetchAllOrdersData<Order>(
+          "*",
+          isAdmin ? undefined : user.id
+        );
+      } catch (ordersError) {
         console.error("Error fetching orders:", ordersError);
         return;
       }
@@ -396,13 +456,10 @@ export default function SocksStorePage() {
 
       // Fetch order items for all orders
       const orderIds = ordersData.map((order) => order.id);
-      const { data: itemsData, error: itemsError } = await supabase
-        .from("order_items")
-        .select("*")
-        .in("order_id", orderIds)
-        .order("id", { ascending: true });
-
-      if (itemsError) {
+      let itemsData: OrderItem[] = [];
+      try {
+        itemsData = await fetchOrderItemsForOrders(orderIds);
+      } catch (itemsError) {
         console.error("Error fetching order items:", itemsError);
         // Continue without items if there's an error
       }
