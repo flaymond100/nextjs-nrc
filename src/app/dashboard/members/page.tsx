@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/utils/supabase";
 import { Rider } from "@/utils/types";
@@ -16,6 +16,10 @@ type RiderWithMembership = Rider & {
 
 export default function MembersPage() {
   const [members, setMembers] = useState<RiderWithMembership[]>([]);
+  const [showActivatedOnly, setShowActivatedOnly] = useState(true);
+  const [membershipSort, setMembershipSort] = useState<"none" | "asc" | "desc">(
+    "asc"
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
@@ -73,6 +77,50 @@ export default function MembersPage() {
     fetchMembers();
   }, []);
 
+  const displayedMembers = useMemo(() => {
+    let nextMembers = [...members];
+
+    if (showActivatedOnly) {
+      nextMembers = nextMembers.filter((member) => member.isActivated === true);
+    }
+
+    if (membershipSort === "none") {
+      return nextMembers;
+    }
+
+    const parseMembership = (value?: string | null) => {
+      if (!value) return null;
+
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+
+      const asNumber = Number(trimmed);
+      if (!Number.isNaN(asNumber)) {
+        return asNumber;
+      }
+
+      return trimmed.toLowerCase();
+    };
+
+    return nextMembers.sort((a, b) => {
+      const aValue = parseMembership(a.membershipNumber);
+      const bValue = parseMembership(b.membershipNumber);
+
+      if (aValue === null && bValue === null) return 0;
+      if (aValue === null) return 1;
+      if (bValue === null) return -1;
+
+      if (typeof aValue === "number" && typeof bValue === "number") {
+        return membershipSort === "asc" ? aValue - bValue : bValue - aValue;
+      }
+
+      const aText = String(aValue);
+      const bText = String(bValue);
+      const result = aText.localeCompare(bText);
+      return membershipSort === "asc" ? result : -result;
+    });
+  }, [members, showActivatedOnly, membershipSort]);
+
   const handleToggleActivated = async (member: Rider) => {
     if (!isAdmin) {
       toast.error("You don't have permission to perform this action");
@@ -82,7 +130,6 @@ export default function MembersPage() {
     setUpdatingActivated(member.uuid);
     try {
       const newValue = !member.isActivated;
-
 
       const { data, error } = await supabase
         .schema("private")
@@ -316,6 +363,32 @@ export default function MembersPage() {
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Members</h1>
         <p className="text-gray-600 mt-2">View and manage all team members</p>
+        <div className="mt-4 flex flex-wrap items-center gap-4">
+          <label className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <input
+              type="checkbox"
+              checked={showActivatedOnly}
+              onChange={(e) => setShowActivatedOnly(e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            Activated users only
+          </label>
+
+          <div className="inline-flex items-center gap-2 text-sm text-gray-700">
+            <span>Sort membership number:</span>
+            <select
+              value={membershipSort}
+              onChange={(e) =>
+                setMembershipSort(e.target.value as "none" | "asc" | "desc")
+              }
+              className="rounded border border-gray-300 px-2 py-1 text-sm"
+            >
+              <option value="asc">Ascending</option>
+              <option value="desc">Descending</option>
+              <option value="none">No sorting</option>
+            </select>
+          </div>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg overflow-hidden">
@@ -359,17 +432,17 @@ export default function MembersPage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {members.length === 0 ? (
+              {displayedMembers.length === 0 ? (
                 <tr>
                   <td
                     colSpan={isAdmin ? 10 : 9}
                     className="px-6 py-4 text-center text-gray-500"
                   >
-                    No members found
+                    No members found for the current filter
                   </td>
                 </tr>
               ) : (
-                members.map((member) => {
+                displayedMembers.map((member) => {
                   // Get email from auth.users table if needed
                   // For now, we'll show what we have from riders table
                   const fullName = `${member.firstName || ""} ${
@@ -561,7 +634,7 @@ export default function MembersPage() {
       </div>
 
       <div className="mt-4 text-sm text-gray-600">
-        Total members: {members.length}
+        Showing {displayedMembers.length} of {members.length} members
       </div>
 
       <MemberNotesModal
