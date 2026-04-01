@@ -8,9 +8,6 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 export function DocumentUploadModal() {
   const { user } = useAuth();
   const [showModal, setShowModal] = useState(false);
-  const [documentsUploaded, setDocumentsUploaded] = useState<boolean | null>(
-    null
-  );
 
   useEffect(() => {
     if (!user) {
@@ -18,18 +15,21 @@ export function DocumentUploadModal() {
       return;
     }
 
-    // Check if modal was already shown in this session
-    const modalShown = sessionStorage.getItem("documentModalShown");
-    if (modalShown === "true") {
+    // Skip showing only after successful upload in this browser session.
+    const modalAcknowledged = sessionStorage.getItem(
+      "registrationFormModalCompleted"
+    );
+    if (modalAcknowledged === "true") {
       return;
     }
 
-    // Fetch rider data to check if documents are uploaded
+    // Fetch rider data to check if registration form is uploaded.
     const fetchRiderData = async () => {
       try {
         const { data, error } = await supabase
+          .schema("private")
           .from("riders")
-          .select("documentsUploadedAt")
+          .select("registrationFormUrl")
           .eq("uuid", user.id)
           .single();
 
@@ -38,8 +38,7 @@ export function DocumentUploadModal() {
           return;
         }
 
-        const hasUploaded = data?.documentsUploadedAt !== null;
-        setDocumentsUploaded(hasUploaded);
+        const hasUploaded = data?.registrationFormUrl != null;
 
         if (!hasUploaded) {
           setShowModal(true);
@@ -54,13 +53,12 @@ export function DocumentUploadModal() {
 
   const handleClose = () => {
     setShowModal(false);
-    sessionStorage.setItem("documentModalShown", "true");
   };
 
   // Listen for document upload completion
   useEffect(() => {
     const handleDocumentUploaded = () => {
-      setDocumentsUploaded(true);
+      sessionStorage.setItem("registrationFormModalCompleted", "true");
       handleClose();
     };
 
