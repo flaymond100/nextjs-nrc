@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { StoreManagement } from "@/utils/types";
 import { Loader } from "@/components/loader";
+import { getDashboardStoreHref } from "@/utils/store-routes";
 import Link from "next/link";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 
@@ -82,16 +83,21 @@ export default function DashboardPage() {
           <h3 className="text-lg font-semibold text-gray-800 mb-1">My Races</h3>
           <p className="text-sm text-gray-600">View your registered races</p>
         </Link>
-        {openStores.length > 0 && (
+        {openStores.map((store) => (
           <Link
-            href="/dashboard/4endurance-store"
+            key={store.id}
+            href={getDashboardStoreHref(store.store_name)}
             className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
           >
             <div className="text-2xl mb-2">🛍️</div>
-            <h3 className="text-lg font-semibold text-gray-800 mb-1">Store</h3>
-            <p className="text-sm text-gray-600">Browse all products</p>
+            <h3 className="text-lg font-semibold text-gray-800 mb-1">
+              {store.display_name}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {store.description || "Open store in dashboard"}
+            </p>
           </Link>
-        )}
+        ))}
       </div>
     </div>
   );
