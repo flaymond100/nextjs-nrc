@@ -4,6 +4,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import {
   ShoppingBagIcon,
+  ShoppingCartIcon,
   TrashIcon,
   Cog6ToothIcon,
 } from "@heroicons/react/24/outline";
@@ -13,11 +14,14 @@ import { useAdmin } from "@/hooks/use-admin";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import {
+  VittoriaStoreProduct,
   Order,
   OrderItem,
   OrderStatus,
   VittoriaStoreOrderRow,
 } from "@/utils/types";
+import { VittoriaProductCard } from "@/components/vittoria-product-card";
+import { getCartItemCount } from "@/utils/cart-storage";
 
 type VittoriaOrderRow = VittoriaStoreOrderRow & {
   orders?: {
@@ -44,6 +48,9 @@ type VittoriaOrderRow = VittoriaStoreOrderRow & {
 };
 
 type VittoriaOrder = Order & { items: OrderItem[] };
+type DisplayVittoriaProduct = VittoriaStoreProduct & {
+  variants: VittoriaStoreProduct[];
+};
 
 function buildOrderItem(row: VittoriaOrderRow): OrderItem | null {
   const rowOrderId = row.order_id ?? row.orders?.id ?? null;
@@ -108,6 +115,7 @@ export default function VittoriaStorePage() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [ordersLoading, setOrdersLoading] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(false);
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [docsLoading, setDocsLoading] = useState(true);
   const [storeOpen, setStoreOpen] = useState<boolean | null>(null);
@@ -122,10 +130,13 @@ export default function VittoriaStorePage() {
     null
   );
   const [orders, setOrders] = useState<VittoriaOrder[]>([]);
+  const [products, setProducts] = useState<VittoriaStoreProduct[]>([]);
+  const [cartItemCount, setCartItemCount] = useState(0);
   const [allOrdersForSummary, setAllOrdersForSummary] = useState<
     VittoriaOrder[]
   >([]);
   const [error, setError] = useState<string | null>(null);
+  const [productError, setProductError] = useState<string | null>(null);
   const [updatingStatus, setUpdatingStatus] = useState<number | null>(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
@@ -142,6 +153,19 @@ export default function VittoriaStorePage() {
 
   useEffect(() => {
     checkStoreStatus();
+    updateCartCount();
+
+    const handleStorageChange = () => {
+      updateCartCount();
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("cartUpdated", handleStorageChange);
+
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener("cartUpdated", handleStorageChange);
+    };
   }, [isAdmin]);
 
   useEffect(() => {
@@ -184,12 +208,14 @@ export default function VittoriaStorePage() {
     }
 
     fetchOrders();
+    fetchProducts();
     if (isAdmin) {
       fetchAllOrdersForSummary();
     }
 
     const handleOrderUpdate = () => {
       fetchOrders();
+      fetchProducts();
       if (isAdmin) {
         fetchAllOrdersForSummary();
       }
@@ -270,6 +296,10 @@ export default function VittoriaStorePage() {
     }
   };
 
+  const updateCartCount = () => {
+    setCartItemCount(getCartItemCount());
+  };
+
   const fetchVittoriaRows = async (filterUserId?: string) => {
     let query = supabase
       .from("vittoria_store")
@@ -289,6 +319,35 @@ export default function VittoriaStorePage() {
     }
 
     return (data || []) as VittoriaOrderRow[];
+  };
+
+  const fetchProducts = async () => {
+    try {
+      setProductsLoading(true);
+      setProductError(null);
+
+      const { data, error: queryError } = await supabase
+        .from("vittoria_store")
+        .select(
+          "id, store_id, order_id, order_item_id, created_at, updated_at, price, quantity, name, currency, available_bool, img_reference, product_url, product_id, variant_id, sku, product_item_info"
+        )
+        .is("order_id", null)
+        .is("order_item_id", null)
+        .order("available_bool", { ascending: false, nullsFirst: false })
+        .order("name", { ascending: true });
+
+      if (queryError) {
+        throw queryError;
+      }
+
+      setProducts((data || []) as VittoriaStoreProduct[]);
+    } catch (err: any) {
+      console.error("Error fetching Vittoria products:", err);
+      setProductError(err.message || "Failed to load Vittoria products");
+      setProducts([]);
+    } finally {
+      setProductsLoading(false);
+    }
   };
 
   const fetchOrders = async () => {
@@ -427,6 +486,43 @@ export default function VittoriaStorePage() {
     );
   }, [allOrdersForSummary]);
 
+  const displayProducts = useMemo<DisplayVittoriaProduct[]>(() => {
+    const groupedProducts = products.reduce(
+      (accumulator, product) => {
+        const productId = product.product_id?.toString();
+        const key =
+          productId ||
+          product.variant_id?.toString() ||
+          product.name ||
+          product.id.toString();
+
+        if (!accumulator[key]) {
+          accumulator[key] = [];
+        }
+
+        accumulator[key].push(product);
+        return accumulator;
+      },
+      {} as Record<string, VittoriaStoreProduct[]>
+    );
+
+    return Object.values(groupedProducts).map((variants) => {
+      const defaultVariant =
+        variants.find((variant) => variant.available_bool === true) ||
+        variants[0];
+
+      return {
+        ...defaultVariant,
+        variants: variants.sort((left, right) => {
+          if (left.available_bool === right.available_bool) {
+            return (left.name || "").localeCompare(right.name || "");
+          }
+          return left.available_bool === true ? -1 : 1;
+        }),
+      };
+    });
+  }, [products]);
+
   if (loading || storeOpen === null || docsLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -512,19 +608,33 @@ export default function VittoriaStorePage() {
             </Link>
             <h1 className="text-3xl font-bold text-gray-800">Vittoria Store</h1>
           </div>
-          {isAdmin && (
+          <div className="flex items-center gap-2">
+            {isAdmin && (
+              <Link
+                href="/dashboard/vittoria-store/admin"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                <Cog6ToothIcon className="h-5 w-5" />
+                <span>Admin</span>
+              </Link>
+            )}
             <Link
-              href="/dashboard/vittoria-store/admin"
-              className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              href="/dashboard/vittoria-store/checkout"
+              className="relative flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
-              <Cog6ToothIcon className="h-5 w-5" />
-              <span>Admin</span>
+              <ShoppingCartIcon className="h-5 w-5" />
+              <span>Checkout</span>
+              {cartItemCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-6 w-6 flex items-center justify-center">
+                  {cartItemCount}
+                </span>
+              )}
             </Link>
-          )}
+          </div>
         </div>
 
         <p className="text-gray-600">
-          Review Vittoria store orders and order item details.
+          Browse Vittoria products and review your store orders.
         </p>
 
         {closingDate && timeRemaining && (
@@ -542,6 +652,55 @@ export default function VittoriaStorePage() {
           <p className="text-red-600">{error}</p>
         </div>
       )}
+
+      <div className="mb-12 bg-white rounded-lg shadow-md p-6">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-800">Products</h2>
+            <p className="text-sm text-gray-500">
+              Browse Vittoria catalog items available in the store.
+            </p>
+          </div>
+          <button
+            onClick={fetchProducts}
+            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+          >
+            Refresh Products
+          </button>
+        </div>
+
+        {productsLoading ? (
+          <div className="flex items-center justify-center py-8">
+            <Loader />
+          </div>
+        ) : productError ? (
+          <div className="text-center py-8">
+            <p className="text-red-600 mb-4">{productError}</p>
+            <button
+              onClick={fetchProducts}
+              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        ) : displayProducts.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-600">
+              No products available at the moment.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {displayProducts.map((product) => (
+              <VittoriaProductCard
+                key={product.product_id || product.variant_id || product.id}
+                product={product}
+                variants={product.variants}
+              />
+            ))}
+          </div>
+        )}
+      </div>
 
       {isAdmin && (
         <div className="mb-12 bg-white rounded-lg shadow-md p-6">

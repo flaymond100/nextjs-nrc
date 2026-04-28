@@ -11,6 +11,8 @@ create table if not exists public.vittoria_store (
 );
 
 alter table public.vittoria_store
+  alter column order_id drop not null,
+  alter column order_item_id drop not null,
   add column if not exists currency text,
   add column if not exists available_bool boolean default true,
   add column if not exists img_reference text,

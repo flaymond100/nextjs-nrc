@@ -95,6 +95,7 @@ export default function VittoriaStoreAdminPage() {
         )
         .is("order_id", null)
         .is("order_item_id", null)
+        .order("available_bool", { ascending: false, nullsFirst: false })
         .order("name", { ascending: true });
 
       if (queryError) {
@@ -141,7 +142,10 @@ export default function VittoriaStoreAdminPage() {
         return;
       }
 
-      if (parsedQuantity !== null && (isNaN(parsedQuantity) || parsedQuantity <= 0)) {
+      if (
+        parsedQuantity !== null &&
+        (isNaN(parsedQuantity) || parsedQuantity <= 0)
+      ) {
         toast.error("Quantity must be empty or greater than zero");
         return;
       }
@@ -186,24 +190,6 @@ export default function VittoriaStoreAdminPage() {
     return Number(
       `${timestamp}${offset.toString().padStart(3, "0")}${random.toString().padStart(3, "0")}`
     );
-  };
-
-  const handleCopyProduct = (product: VittoriaStoreProduct) => {
-    setFormData({
-      name: product.name || "",
-      price: product.price?.toString() || "",
-      quantity: product.quantity?.toString() || "",
-      available_bool: product.available_bool === true ? "true" : "false",
-      img_reference: product.img_reference || "",
-      product_url: product.product_url || "",
-      product_item_info: product.product_item_info || "",
-    });
-    setShowCreateForm(true);
-    toast.success("Product information copied to form");
-    setTimeout(() => {
-      const formElement = document.getElementById("create-product-form");
-      formElement?.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 100);
   };
 
   const handleCreateProduct = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -278,6 +264,41 @@ export default function VittoriaStoreAdminPage() {
     }
   };
 
+  const handleDuplicate = async (product: VittoriaStoreProduct) => {
+    try {
+      const duplicatedProduct = {
+        store_id: storeId,
+        name: `${product.name || "Unnamed product"} (Copy)`,
+        price: Number(product.price || 0),
+        quantity: product.quantity,
+        currency: product.currency || "EUR",
+        available_bool: false,
+        img_reference: product.img_reference,
+        product_url: product.product_url,
+        product_item_info: product.product_item_info,
+        product_id: generateId(),
+        variant_id: generateId(),
+        sku: generateSku(),
+      };
+
+      const { error: insertError } = await supabase
+        .from("vittoria_store")
+        .insert([duplicatedProduct]);
+
+      if (insertError) {
+        console.error("Error duplicating Vittoria product:", insertError);
+        toast.error(`Failed to duplicate product: ${insertError.message}`);
+        return;
+      }
+
+      toast.success("Product duplicated successfully");
+      fetchProducts();
+    } catch (err: any) {
+      console.error("Error duplicating product:", err);
+      toast.error("Failed to duplicate product");
+    }
+  };
+
   if (adminLoading || loading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
@@ -326,7 +347,9 @@ export default function VittoriaStoreAdminPage() {
             <span>New Product</span>
           </button>
         </div>
-        <p className="text-gray-600">Manage Vittoria product prices and availability</p>
+        <p className="text-gray-600">
+          Manage Vittoria store products and inventory
+        </p>
       </div>
 
       {error && (
@@ -341,7 +364,7 @@ export default function VittoriaStoreAdminPage() {
           className="mb-6 p-6 bg-white border border-gray-200 rounded-lg shadow-md"
         >
           <h2 className="text-xl font-bold text-gray-800 mb-4">
-            Create New Product
+            Add New Product
           </h2>
           <form onSubmit={handleCreateProduct} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -357,22 +380,24 @@ export default function VittoriaStoreAdminPage() {
                   }
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="e.g., Vittoria Corsa Pro"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Price (EUR) *
+                  Price (€) *
                 </label>
                 <input
                   type="number"
+                  step="0.01"
+                  min="0"
                   value={formData.price}
                   onChange={(e) =>
                     setFormData({ ...formData, price: e.target.value })
                   }
-                  step="0.01"
-                  min="0"
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="29.99"
                 />
               </div>
               <div>
@@ -387,11 +412,12 @@ export default function VittoriaStoreAdminPage() {
                   }
                   min="1"
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="10"
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Available
+                  Availability
                 </label>
                 <select
                   value={formData.available_bool}
@@ -415,6 +441,7 @@ export default function VittoriaStoreAdminPage() {
                     setFormData({ ...formData, img_reference: e.target.value })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="https://example.com/image.jpg"
                 />
               </div>
               <div>
@@ -428,6 +455,7 @@ export default function VittoriaStoreAdminPage() {
                     setFormData({ ...formData, product_url: e.target.value })
                   }
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="https://example.com/product"
                 />
               </div>
             </div>
@@ -438,10 +466,14 @@ export default function VittoriaStoreAdminPage() {
               <textarea
                 value={formData.product_item_info}
                 onChange={(e) =>
-                  setFormData({ ...formData, product_item_info: e.target.value })
+                  setFormData({
+                    ...formData,
+                    product_item_info: e.target.value,
+                  })
                 }
                 rows={3}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Additional product information..."
               />
             </div>
             <div className="flex gap-2">
@@ -481,10 +513,7 @@ export default function VittoriaStoreAdminPage() {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Product Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Variant ID
+                  Product
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Price
@@ -493,7 +522,7 @@ export default function VittoriaStoreAdminPage() {
                   Quantity
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Available
+                  Availability
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -503,7 +532,10 @@ export default function VittoriaStoreAdminPage() {
             <tbody className="bg-white divide-y divide-gray-200">
               {products.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-4 text-center text-gray-500">
+                  <td
+                    colSpan={5}
+                    className="px-6 py-4 text-center text-gray-500"
+                  >
                     No products found
                   </td>
                 </tr>
@@ -512,18 +544,31 @@ export default function VittoriaStoreAdminPage() {
                   const isEditing = editingId === product.id;
                   return (
                     <tr key={product.id}>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm font-medium text-gray-900">
-                          {product.name}
-                        </div>
-                        {product.sku && (
-                          <div className="text-xs text-gray-500">
-                            SKU: {product.sku}
+                      <td className="px-6 py-4">
+                        <div className="flex items-center">
+                          {product.img_reference && (
+                            <img
+                              src={product.img_reference}
+                              alt={product.name || "Vittoria product"}
+                              className="w-12 h-12 object-cover rounded-lg mr-3"
+                            />
+                          )}
+                          <div>
+                            <div className="text-sm font-medium text-gray-900">
+                              {product.name}
+                            </div>
+                            {product.product_item_info && (
+                              <div className="text-xs text-gray-500">
+                                {product.product_item_info}
+                              </div>
+                            )}
+                            {product.sku && (
+                              <div className="text-xs text-gray-400">
+                                SKU: {product.sku}
+                              </div>
+                            )}
                           </div>
-                        )}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                        {product.variant_id?.toString() || "N/A"}
+                        </div>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {isEditing ? (
@@ -533,13 +578,17 @@ export default function VittoriaStoreAdminPage() {
                             min="0"
                             value={editForm?.price || ""}
                             onChange={(e) =>
-                              setEditForm({ ...editForm!, price: e.target.value })
+                              setEditForm({
+                                ...editForm!,
+                                price: e.target.value,
+                              })
                             }
-                            className="w-24 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            placeholder="0.00"
                           />
                         ) : (
-                          <span className="text-sm text-gray-900">
-                            {Number(product.price || 0).toFixed(2)} {product.currency || "EUR"}
+                          <span className="text-sm text-gray-500">
+                            €{Number(product.price || 0).toFixed(2)}
                           </span>
                         )}
                       </td>
@@ -550,12 +599,16 @@ export default function VittoriaStoreAdminPage() {
                             min="1"
                             value={editForm?.quantity || ""}
                             onChange={(e) =>
-                              setEditForm({ ...editForm!, quantity: e.target.value })
+                              setEditForm({
+                                ...editForm!,
+                                quantity: e.target.value,
+                              })
                             }
-                            className="w-24 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            placeholder="0"
                           />
                         ) : (
-                          <span className="text-sm text-gray-900">
+                          <span className="text-sm text-gray-500">
                             {product.quantity ?? "-"}
                           </span>
                         )}
@@ -570,7 +623,7 @@ export default function VittoriaStoreAdminPage() {
                                 available_bool: e.target.value === "true",
                               })
                             }
-                            className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className="text-sm border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-purple-500"
                           >
                             <option value="true">Available</option>
                             <option value="false">Not Available</option>
@@ -578,18 +631,20 @@ export default function VittoriaStoreAdminPage() {
                         ) : (
                           <span
                             className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                              product.available_bool === true
+                              product.available_bool
                                 ? "bg-green-100 text-green-800"
                                 : "bg-red-100 text-red-800"
                             }`}
                           >
-                            {product.available_bool === true ? "Available" : "Not Available"}
+                            {product.available_bool
+                              ? "Available"
+                              : "Not Available"}
                           </span>
                         )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                         {isEditing ? (
-                          <div className="flex gap-2">
+                          <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleSaveEdit(product)}
                               disabled={saving}
@@ -607,7 +662,7 @@ export default function VittoriaStoreAdminPage() {
                             </button>
                           </div>
                         ) : (
-                          <div className="flex gap-2">
+                          <div className="flex items-center gap-2">
                             <button
                               onClick={() => handleEdit(product)}
                               className="text-purple-600 hover:text-purple-900"
@@ -616,9 +671,9 @@ export default function VittoriaStoreAdminPage() {
                               <PencilIcon className="h-5 w-5" />
                             </button>
                             <button
-                              onClick={() => handleCopyProduct(product)}
+                              onClick={() => handleDuplicate(product)}
                               className="text-blue-600 hover:text-blue-900"
-                              title="Copy to create form"
+                              title="Duplicate"
                             >
                               <DocumentDuplicateIcon className="h-5 w-5" />
                             </button>
