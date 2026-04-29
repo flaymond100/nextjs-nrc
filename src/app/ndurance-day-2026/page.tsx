@@ -422,7 +422,7 @@ export default function NduranceDay2026Page() {
             </FadeIn>
             <FadeIn delay={80}>
               <h1 className="nd-hero-title" style={{ marginTop: "1rem" }}>
-                <em>N</em>DUR<em>ANCE</em>
+                <em>N</em>DU<em>R</em>AN<em>C</em>E
                 <br />
                 DAY
               </h1>
