@@ -149,7 +149,7 @@ export default function NduranceDay2026Page() {
         .nd-stat-unit {
           font-family: 'DM Mono', monospace;
           font-size: 0.7rem;
-          color: #420087;
+          color: whitef;
           margin-left: 4px;
         }
 
