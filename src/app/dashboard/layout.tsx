@@ -10,6 +10,7 @@ import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
 import { StoreManagement } from "@/utils/types";
+import { getDashboardStoreHref } from "@/utils/store-routes";
 import {
   XMarkIcon,
   ChevronLeftIcon,
@@ -82,7 +83,9 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false); // Mobile menu state
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false); // Desktop collapse state
   const [openStores, setOpenStores] = useState<StoreManagement[]>([]);
-  const [hasSubmittedDocs, setHasSubmittedDocs] = useState<boolean | null>(null);
+  const [hasSubmittedDocs, setHasSubmittedDocs] = useState<boolean | null>(
+    null
+  );
 
   useEffect(() => {
     async function checkUserStatus() {
@@ -237,16 +240,8 @@ export default function DashboardLayout({
   const menuItems: MenuItem[] = [
     ...STATIC_MENU_ITEMS,
     // Add stores after "My Races" and before admin items
-    // Map store_name to static URLs
     ...openStores.map((store) => {
-      // Map endurance_store to static URL /dashboard/4endurance-store
-      // Map socks_store to static URL /dashboard/apparel-store
-      const href =
-        store.store_name === "endurance_store"
-          ? "/dashboard/4endurance-store"
-          : store.store_name === "socks_store"
-            ? "/dashboard/apparel-store"
-            : `/dashboard/store?store=${store.store_name}`;
+      const href = getDashboardStoreHref(store.store_name);
 
       // Add visual indicator for closed stores (admins only)
       const displayName =
@@ -257,7 +252,7 @@ export default function DashboardLayout({
       return {
         name: displayName,
         href,
-        icon: "🍩",
+        icon: displayName === "Vittoria Store" ? "🛞" : "🍩",
         store_name: store.store_name,
       };
     }),
@@ -338,7 +333,10 @@ export default function DashboardLayout({
 
                   if (item.store_name && !isAdmin && !hasSubmittedDocs) {
                     return (
-                      <div key={item.href} className="flex flex-col px-4 py-2 rounded-lg bg-gray-50 border border-gray-200">
+                      <div
+                        key={item.href}
+                        className="flex flex-col px-4 py-2 rounded-lg bg-gray-50 border border-gray-200"
+                      >
                         <div className="flex items-center gap-3 text-gray-400 cursor-not-allowed">
                           <span className="text-xl flex-shrink-0">🔒</span>
                           <span>{item.name}</span>
@@ -442,8 +440,12 @@ export default function DashboardLayout({
                         group
                       `}
                     >
-                      <span className="text-2xl md:text-xl flex-shrink-0">🔒</span>
-                      <span className={`hidden ${sidebarCollapsed ? "md:hidden" : "md:inline"} transition-opacity duration-300`}>
+                      <span className="text-2xl md:text-xl flex-shrink-0">
+                        🔒
+                      </span>
+                      <span
+                        className={`hidden ${sidebarCollapsed ? "md:hidden" : "md:inline"} transition-opacity duration-300`}
+                      >
                         {item.name}
                       </span>
                       {/* Tooltip — always visible on hover for both mobile icon bar and desktop (expanded & collapsed) */}

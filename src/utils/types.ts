@@ -190,6 +190,38 @@ export interface StoreManagement {
   updated_at: string;
 }
 
+export interface VittoriaStoreOrderRow {
+  id: number;
+  store_id: number | null;
+  order_id: number | null;
+  order_item_id: number | null;
+  created_at: string;
+  updated_at: string;
+  price: number | null;
+  quantity: number | null;
+  name: string | null;
+}
+
+export interface VittoriaStoreProduct {
+  id: number;
+  store_id: number | null;
+  order_id: number | null;
+  order_item_id: number | null;
+  created_at: string;
+  updated_at: string;
+  price: number | null;
+  quantity: number | null;
+  name: string | null;
+  currency: string | null;
+  available_bool: boolean | null;
+  img_reference: string | null;
+  product_url: string | null;
+  product_id: string | number | null;
+  variant_id: string | number | null;
+  sku: string | number | null;
+  product_item_info: string | null;
+}
+
 export type OrderStatus =
   | "pending"
   | "confirmed"
