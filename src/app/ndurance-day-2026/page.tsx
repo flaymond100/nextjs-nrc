@@ -8,6 +8,9 @@ import { useEffect, useRef, useState } from "react";
 const GOOGLE_FORM_URL =
   "https://docs.google.com/forms/d/e/1FAIpQLSdHwOqVmV0394UdKBF7h2VU2wGvcVHoe1A5MzIpaz7Ik4u9og/viewform?usp=publish-editor";
 
+const KOMOOT_ROUTE_URL =
+  "https://www.komoot.com/de-DE/tour/2913439010?ref=itd&share_token=aPNL2itGU0iBp3UBLEnZjtSoKR2FdbdOKovWvx7xd4QS66lOzn&ref=its";
+
 // ─── Replace with your actual event image path ───────────────────────────────
 const EVENT_IMAGE =
   "https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/images/Untitled.png";
@@ -345,6 +348,25 @@ export default function NduranceDay2026Page() {
         .nd-btn-arrow { transition: transform 0.2s; }
         .nd-btn:hover .nd-btn-arrow { transform: translateX(4px); }
 
+        .nd-btn-komoot {
+          background: #4f6812;
+          color: #ffffff;
+          box-shadow: 0 0 0 2px rgba(79,104,18,0.35), 0 12px 30px rgba(0,0,0,0.35);
+        }
+
+        .nd-btn-komoot:hover {
+          background: #4f6812;
+          transform: translateY(-1px);
+        }
+
+        .nd-hero-cta-row,
+        .nd-cta-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.85rem;
+          align-items: center;
+        }
+
         .nd-deadline {
           font-family: 'DM Mono', monospace;
           font-size: 0.7rem;
@@ -434,15 +456,24 @@ export default function NduranceDay2026Page() {
               </p>
             </FadeIn>
             <FadeIn delay={200}>
-              <a
-                href={GOOGLE_FORM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="nd-btn"
-                style={{ marginTop: "2rem" }}
-              >
-                Register Now <span className="nd-btn-arrow">→</span>
-              </a>
+              <div className="nd-hero-cta-row" style={{ marginTop: "2rem" }}>
+                <a
+                  href={GOOGLE_FORM_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nd-btn"
+                >
+                  Register Now <span className="nd-btn-arrow">→</span>
+                </a>
+                <a
+                  href={KOMOOT_ROUTE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="nd-btn nd-btn-komoot"
+                >
+                  View Route on Komoot <span className="nd-btn-arrow">↗</span>
+                </a>
+              </div>
             </FadeIn>
           </div>
           <div className="nd-scroll-hint">
@@ -587,15 +618,25 @@ export default function NduranceDay2026Page() {
                   Spaces are limited. Registration closes May 20. By registering
                   you consent to photo and video documentation.
                 </p>
-                <a
-                  href={GOOGLE_FORM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="nd-btn"
-                >
-                  Register on Google Forms{" "}
-                  <span className="nd-btn-arrow">→</span>
-                </a>
+                <div className="nd-cta-row">
+                  <a
+                    href={GOOGLE_FORM_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nd-btn"
+                  >
+                    Register on Google Forms{" "}
+                    <span className="nd-btn-arrow">→</span>
+                  </a>
+                  <a
+                    href={KOMOOT_ROUTE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="nd-btn nd-btn-komoot"
+                  >
+                    Open Komoot Route <span className="nd-btn-arrow">↗</span>
+                  </a>
+                </div>
               </div>
             </FadeIn>
           </div>
