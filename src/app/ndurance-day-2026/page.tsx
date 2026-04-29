@@ -64,7 +64,7 @@ export default function NduranceDay2026Page() {
           font-size: 0.72rem;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          background: #6B21E8;
+          background: #420087;
           color: #fff;
           padding: 6px 14px;
           border-radius: 2px;
@@ -78,7 +78,7 @@ export default function NduranceDay2026Page() {
           color: #ffffff;
         }
 
-        .nd-hero-title em { font-style: normal; color: #9B5CF6; }
+        .nd-hero-title em { font-style: normal; color: #420087; }
 
         .nd-hero-sub {
           font-family: 'DM Mono', monospace;
@@ -149,7 +149,7 @@ export default function NduranceDay2026Page() {
         .nd-stat-unit {
           font-family: 'DM Mono', monospace;
           font-size: 0.7rem;
-          color: #9B5CF6;
+          color: #420087;
           margin-left: 4px;
         }
 
@@ -175,7 +175,7 @@ export default function NduranceDay2026Page() {
           font-size: 0.68rem;
           letter-spacing: 0.28em;
           text-transform: uppercase;
-          color: #6B21E8;
+          color: #420087;
           margin-bottom: 0.75rem;
         }
 
@@ -216,19 +216,19 @@ export default function NduranceDay2026Page() {
           height: 10px;
           border-radius: 50%;
           background: #fff;
-          border: 2px solid #6B21E8;
+          border: 2px solid #420087;
         }
 
         .nd-tl-item.highlight::before {
-          background: #6B21E8;
-          box-shadow: 0 0 0 4px rgba(107,33,232,0.12);
+          background: #420087;
+          box-shadow: 0 0 0 4px rgba(66,0,135,0.12);
         }
 
         .nd-tl-time {
           font-family: 'DM Mono', monospace;
           font-size: 0.68rem;
           letter-spacing: 0.15em;
-          color: #6B21E8;
+          color: #420087;
           margin-bottom: 3px;
         }
 
@@ -302,7 +302,7 @@ export default function NduranceDay2026Page() {
           position: absolute;
           top: -100px; right: -100px;
           width: 400px; height: 400px;
-          background: radial-gradient(circle, rgba(107,33,232,0.22) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(66,0,135,0.22) 0%, transparent 70%);
           pointer-events: none;
         }
 
@@ -317,7 +317,7 @@ export default function NduranceDay2026Page() {
           user-select: none;
         }
 
-        .nd-cta-block .nd-section-label { color: #9B5CF6; }
+        .nd-cta-block .nd-section-label { color: #420087; }
         .nd-cta-block .nd-section-title { color: #ffffff; }
         .nd-cta-block .nd-body { color: rgba(255,255,255,0.48); }
 
@@ -326,7 +326,7 @@ export default function NduranceDay2026Page() {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          background: #6B21E8;
+          background: #420087;
           color: #fff;
           font-family: 'Barlow', sans-serif;
           font-weight: 700;
@@ -341,7 +341,7 @@ export default function NduranceDay2026Page() {
           border-radius: 2px;
         }
 
-        .nd-btn:hover { background: #7C3AED; transform: translateY(-1px); }
+        .nd-btn:hover { background: #420087; transform: translateY(-1px); }
         .nd-btn-arrow { transition: transform 0.2s; }
         .nd-btn:hover .nd-btn-arrow { transform: translateX(4px); }
 
@@ -353,7 +353,7 @@ export default function NduranceDay2026Page() {
           margin-top: 1rem;
         }
 
-        .nd-deadline span { color: #9B5CF6; }
+        .nd-deadline span { color: #420087; }
 
         /* Sponsors */
         .nd-sponsors {
