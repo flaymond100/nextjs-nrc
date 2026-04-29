@@ -201,7 +201,9 @@ export default function VittoriaOrderConfirmationPage() {
           <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-200 space-y-2">
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
               <span>Subtotal:</span>
-              <span>{(order.total_price - 6).toFixed(2)} {order.currency}</span>
+              <span>
+                {(order.total_price - 6).toFixed(2)} {order.currency}
+              </span>
             </div>
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
               <span>Delivery:</span>
@@ -215,7 +217,9 @@ export default function VittoriaOrderConfirmationPage() {
                 {order.total_price.toFixed(2)} {order.currency}
               </span>
             </div>
-            <p className="text-xs text-gray-500 text-right">Prices include VAT</p>
+            <p className="text-xs text-gray-500 text-right">
+              Price already includes VAT
+            </p>
           </div>
         </div>
 

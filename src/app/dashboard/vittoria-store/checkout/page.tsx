@@ -452,7 +452,35 @@ export default function VittoriaCheckoutPage() {
               €{vittoriaTotal.toFixed(2)}
             </span>
           </div>
-          <p className="text-xs text-gray-500 text-right">Prices include VAT</p>
+          <p className="text-xs text-gray-500 text-right">
+            Price already includes VAT
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6 mb-6">
+        <h2 className="text-lg font-bold text-gray-800 mb-3">
+          Payment Instructions
+        </h2>
+        <p className="text-sm text-gray-700 mb-4">
+          After submitting your order, please transfer the total amount to the
+          team bank account:
+        </p>
+        <div className="bg-white rounded-lg p-4 border border-purple-200 space-y-3">
+          <div>
+            <label className="text-sm font-medium text-gray-600">
+              Account Holder:
+            </label>
+            <p className="text-base font-semibold text-gray-800 mt-1">
+              NRC INTERNATIONAL TEAM e.V.
+            </p>
+          </div>
+          <div>
+            <label className="text-sm font-medium text-gray-600">IBAN:</label>
+            <p className="text-base font-mono font-semibold text-gray-800 mt-1 break-all">
+              DE70 8306 5408 0006 8964 56
+            </p>
+          </div>
         </div>
       </div>
 

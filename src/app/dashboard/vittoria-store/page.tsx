@@ -318,7 +318,7 @@ export default function VittoriaStorePage() {
       throw queryError;
     }
 
-    return (data || []) as VittoriaOrderRow[];
+    return (data || []) as unknown as VittoriaOrderRow[];
   };
 
   const fetchProducts = async () => {
