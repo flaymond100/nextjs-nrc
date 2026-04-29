@@ -10,7 +10,7 @@ const GOOGLE_FORM_URL =
 
 // ─── Replace with your actual event image path ───────────────────────────────
 const EVENT_IMAGE =
-  "hhttps://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/images/Screenshot%202026-04-28%20113252.png";
+  "https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/images/Screenshot%202026-04-28%20113252.png";
 
 const SPONSORS = ["Vittoria", "4Endurance", "ventro", "GOBIK"];
 
