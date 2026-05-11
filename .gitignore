@@ -12,6 +12,9 @@
 /.next/
 /out/
 
+# vite
+/dist/
+
 # production
 /build
 
@@ -34,7 +37,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-pnpm-lock.yaml
 yarn.lock
 
 /database/
