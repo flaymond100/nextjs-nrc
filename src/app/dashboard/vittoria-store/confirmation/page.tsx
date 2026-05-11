@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import {
@@ -90,7 +90,7 @@ export default function VittoriaOrderConfirmationPage() {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Link
-          href="/dashboard/vittoria-store"
+          to="/dashboard/vittoria-store"
           className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-4 sm:mb-6 text-sm sm:text-base"
         >
           <ArrowLeftIcon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -105,7 +105,7 @@ export default function VittoriaOrderConfirmationPage() {
             {error || "We couldn't find the order you're looking for."}
           </p>
           <Link
-            href="/dashboard/vittoria-store"
+            to="/dashboard/vittoria-store"
             className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Back to Store
@@ -118,7 +118,7 @@ export default function VittoriaOrderConfirmationPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6">
       <Link
-        href="/dashboard/vittoria-store"
+        to="/dashboard/vittoria-store"
         className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-4 sm:mb-6 text-sm sm:text-base"
       >
         <ArrowLeftIcon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -318,7 +318,7 @@ export default function VittoriaOrderConfirmationPage() {
             Once your payment is received, your order will be processed.
           </p>
           <Link
-            href="/dashboard/vittoria-store"
+            to="/dashboard/vittoria-store"
             className="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Continue Shopping

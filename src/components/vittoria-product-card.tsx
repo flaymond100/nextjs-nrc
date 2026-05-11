@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import toast from "react-hot-toast";
 import { LinkIcon } from "@heroicons/react/24/outline";
 import { addToCart } from "@/utils/cart-storage";
@@ -113,7 +112,7 @@ export function VittoriaProductCard({
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
       {currentProduct.img_reference && (
         <div className="relative w-full h-48 bg-gray-100 flex-shrink-0">
-          <Image
+          <img
             src={currentProduct.img_reference}
             alt={currentProduct.name || "Vittoria product"}
             fill

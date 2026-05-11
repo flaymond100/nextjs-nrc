@@ -6,8 +6,7 @@ import { Navbar, Footer } from "@/components";
 // sections
 import Faq from "../../faq";
 import OurPrograms from "../../our-programs";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import CarouselFeatures from "@/app/carousel-features";
 import { CalendlyWidget } from "@/components/widget";
 
@@ -27,7 +26,7 @@ const CyclingTrainings = () => {
         from TrainingPeaks.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
         src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_1.webp`}
@@ -61,7 +60,7 @@ const CyclingTrainings = () => {
         what we{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
-          href="/coaching"
+          to="/coaching"
         >
           offer
         </Link>{" "}
@@ -89,7 +88,7 @@ const CyclingTrainings = () => {
         people consistent in their fitness routines, leading to better results.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
         src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_2.webp`}
@@ -127,7 +126,7 @@ const CyclingTrainings = () => {
         demotivated.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
         src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_3.png`}

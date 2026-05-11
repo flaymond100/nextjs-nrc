@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
@@ -354,7 +354,7 @@ export default function DashboardLayout({
                   return (
                     <Link
                       key={item.href}
-                      href={item.href}
+                      to={item.href}
                       onClick={() => setSidebarOpen(false)}
                       className={`
                         flex items-center gap-3 px-4 py-3 rounded-lg transition-colors
@@ -464,7 +464,7 @@ export default function DashboardLayout({
                 return (
                   <Link
                     key={item.href}
-                    href={item.href}
+                    to={item.href}
                     className={`
                       relative flex items-center justify-center
                       ${sidebarCollapsed ? "md:justify-center" : "md:justify-start"}

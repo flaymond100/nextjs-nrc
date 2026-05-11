@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import { Loader } from "@/components/loader";
 
@@ -60,13 +60,13 @@ export default function ConfirmEmailPage() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/profile"
+              to="/profile"
               className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
             >
               Complete Your Profile
             </Link>
             <Link
-              href="/"
+              to="/"
               className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
             >
               Go to Home

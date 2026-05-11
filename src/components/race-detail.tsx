@@ -4,7 +4,7 @@ import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import {
@@ -25,7 +25,6 @@ import {
 } from "@material-tailwind/react";
 import { useAdmin } from "@/hooks/use-admin";
 import { ConfirmModal } from "./confirm-modal";
-import Image from "next/image";
 import { BsInstagram, BsStrava } from "react-icons/bs";
 
 interface RaceDetailSectionProps {
@@ -147,7 +146,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
           </h1>
           <p className="text-red-500 mb-4">{error || "Race not found"}</p>
           <Link
-            href="/calendar"
+            to="/calendar"
             className="text-purple-600 hover:text-purple-800 hover:underline"
           >
             ← Back to Calendar
@@ -453,7 +452,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
           {race.url && (
             <div className="mb-6">
               <Link
-                href={race.url}
+                to={race.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
@@ -494,7 +493,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
                         placeholder=""
                       >
                         {participant.avatarUrl ? (
-                          <Image
+                          <img
                             className="rounded-full object-cover h-[200px] w-[200px]"
                             src={participant.avatarUrl}
                             alt={participant.name}
@@ -534,7 +533,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
                               <Link
                                 aria-label="Go to strava"
                                 target="_blank"
-                                href={participant.strava}
+                                to={participant.strava}
                                 rel="noopener noreferrer"
                               >
                                 <Button
@@ -553,7 +552,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
                               <Link
                                 aria-label="Go to instagram"
                                 target="_blank"
-                                href={participant.instagram}
+                                to={participant.instagram}
                                 rel="noopener noreferrer"
                               >
                                 <Button

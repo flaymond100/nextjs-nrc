@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Image from "next/image";
 import {
   Card,
   CardBody,
@@ -22,7 +21,7 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { usePathname } from "next/navigation";
 
 export function OurPrograms() {
@@ -53,7 +52,7 @@ export function OurPrograms() {
           color="gray"
           className="animate-in slide-in-from-left duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
-          <Image
+          <img
             width={768}
             height={768}
             src={`${import.meta.env.VITE_BASE_URL}/image/8716_20230423_144655_274310037_original.webp`}
@@ -75,7 +74,7 @@ export function OurPrograms() {
                 coaches provide support to help you reach new goals.
               </Typography>
             </CardBody>
-            <Link style={{ zIndex: "1" }} href="/trainings/running-trainings">
+            <Link style={{ zIndex: "1" }} to="/trainings/running-trainings">
               <Button className="mb-8" size="sm" color="white">
                 Read More
               </Button>
@@ -88,7 +87,7 @@ export function OurPrograms() {
           color="gray"
           className="animate-in slide-in-from-bottom duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
-          <Image
+          <img
             width={768}
             height={768}
             src={`${import.meta.env.VITE_BASE_URL}/image/France_Downhill_Kosta.webp`}
@@ -113,7 +112,7 @@ export function OurPrograms() {
             <Link
               aria-label="Read more about cycling trainings"
               style={{ zIndex: "1" }}
-              href="/trainings/cycling-trainings"
+              to="/trainings/cycling-trainings"
             >
               <Button className="mb-8" size="sm" color="white">
                 Read More
@@ -126,7 +125,7 @@ export function OurPrograms() {
           color="gray"
           className="animate-in slide-in-from-right duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center"
         >
-          <Image
+          <img
             width={768}
             height={768}
             style={{ left: "-10px" }}
@@ -152,7 +151,7 @@ export function OurPrograms() {
             <Link
               aria-label="Read more about triathlon trainings"
               style={{ zIndex: "1" }}
-              href="/trainings/triathlon-trainings"
+              to="/trainings/triathlon-trainings"
             >
               <Button className="mb-8" size="sm" color="white">
                 Read More
@@ -283,7 +282,7 @@ export const TimelineWithIcon = () => {
           </div>
         </div>
         {!form && (
-          <Link className="mb-10" aria-label="sing-up-form" href="/coaching">
+          <Link className="mb-10" aria-label="sing-up-form" to="/coaching">
             <Button size="lg" style={{ background: "#37007d" }}>
               Get Started
             </Button>

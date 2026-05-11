@@ -7,7 +7,6 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { useNavigation } from "@/contexts/navigation-context";
@@ -79,7 +78,6 @@ function NavItem({ children, href, pathname }: NavItemProps) {
     <li>
       <NavigationLink
         href={href}
-        scroll={true}
         className={`flex items-center gap-2 text-lg text-black transition-colors ${
           isActive ? "underline decoration-2 underline-offset-4" : ""
         }`}
@@ -187,7 +185,7 @@ export function Navbar() {
       <div className="container mx-auto flex items-center justify-between relative">
         {/* Logo - Left */}
         <NavigationLink href="/" className="flex-shrink-0">
-          <Image
+          <img
             src={`${import.meta.env.VITE_BASE_URL ?? ""}/NRC-2.png`}
             alt="favicon Nrc Team"
             width={80}

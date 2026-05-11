@@ -4,10 +4,9 @@ import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/navigation";
 import { Loader } from "@/components/loader";
-import Image from "next/image";
 import { Button } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { NavigationLink } from "./navigation-link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -192,7 +191,7 @@ export const ProfileView = () => {
             <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8 pb-8 border-b border-gray-200">
               <div className="flex-shrink-0">
                 {riderData?.avatarUrl ? (
-                  <Image
+                  <img
                     src={riderData.avatarUrl}
                     alt="Profile Avatar"
                     width={150}
@@ -226,7 +225,7 @@ export const ProfileView = () => {
                 <h3 className="mb-4 text-2xl font-semibold text-gray-800">
                   {getNextRaceHeading(nextRace.event_date)}
                 </h3>
-                <Link href={`/calendar/${nextRace.id}`}>
+                <Link to={`/calendar/${nextRace.id}`}>
                   <div className="cursor-pointer rounded-lg border-2 border-purple-200 bg-gradient-to-r from-purple-50 to-purple-100 p-6 transition-shadow hover:shadow-lg">
                     <div className="mb-3 flex items-start justify-between gap-4">
                       <h4 className="text-xl font-bold text-gray-900">
@@ -288,7 +287,7 @@ export const ProfileView = () => {
                 <div className="flex flex-wrap gap-4">
                   {riderData.instagram && (
                     <Link
-                      href={riderData.instagram}
+                      to={riderData.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg hover:from-purple-600 hover:to-pink-600 transition-colors"
@@ -305,7 +304,7 @@ export const ProfileView = () => {
                   )}
                   {riderData.strava && (
                     <Link
-                      href={riderData.strava}
+                      to={riderData.strava}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"

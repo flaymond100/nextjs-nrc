@@ -10,8 +10,7 @@ import {
   Button,
   CardFooter,
 } from "@material-tailwind/react";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { BsInstagram, BsStrava } from "react-icons/bs";
 export const Roster = () => {
   const riders = [
@@ -294,7 +293,7 @@ export const Roster = () => {
           <Card key={rider.id} className="shadow-lg mb-10  flex flex-col">
             {/* CardHeader for Rider Photo */}
             <CardHeader style={{ height: "27rem" }} className="relative">
-              <Image
+              <img
                 src={rider.photoUrl}
                 alt={rider.name}
                 fill
@@ -322,7 +321,7 @@ export const Roster = () => {
                   <Link
                     aria-label="Go to strava"
                     target="_blank"
-                    href={rider.stravaUrl}
+                    to={rider.stravaUrl}
                   >
                     <Button
                       placeholder={""}
@@ -340,7 +339,7 @@ export const Roster = () => {
                   <Link
                     aria-label="Go to komoot"
                     target="_blank"
-                    href={rider.komootUrl}
+                    to={rider.komootUrl}
                   >
                     <Button
                       placeholder={""}
@@ -350,7 +349,7 @@ export const Roster = () => {
                       style={{ background: "#447c00" }}
                       className="bg-gradient-to-tr from-#8acb3c via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
                     >
-                      <Image
+                      <img
                         src={`${
                           import.meta.env.VITE_BASE_URL ?? ""
                         }/image/komoot.png`}
@@ -365,7 +364,7 @@ export const Roster = () => {
                   <Link
                     aria-label="Go to instagram"
                     target="_blank"
-                    href={rider.instagramUrl}
+                    to={rider.instagramUrl}
                   >
                     <Button
                       placeholder={""}

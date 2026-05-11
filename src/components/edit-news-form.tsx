@@ -11,7 +11,6 @@ import { useAuth } from "@/contexts/auth-context";
 import { uploadNewsImage } from "@/utils/storage";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import Image from "next/image";
 import { News } from "@/utils/types";
 import { NavigationLink } from "./navigation-link";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
@@ -423,7 +422,7 @@ export const EditNewsForm = ({ newsId }: EditNewsFormProps) => {
             {/* Image Preview */}
             {(formik.values.main_image_url || imagePreview) && (
               <div className="mb-4 relative w-full h-48 md:h-64 rounded-lg overflow-hidden border border-gray-300">
-                <Image
+                <img
                   src={imagePreview || formik.values.main_image_url}
                   alt="Preview"
                   fill

@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@material-tailwind/react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
@@ -101,7 +101,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
               <h2 className="text-2xl font-bold text-gray-900 mb-4 text-left">
                 {getNextRaceHeading(nextRace.event_date)}
               </h2>
-              <Link href={`/calendar/${nextRace.id}`}>
+              <Link to={`/calendar/${nextRace.id}`}>
                 <div className="bg-gradient-to-r from-purple-50 to-purple-100 border-2 border-purple-200 rounded-lg p-6 hover:shadow-lg transition-shadow cursor-pointer">
                   <div className="flex items-start justify-between mb-3">
                     <h3 className="text-xl font-bold text-gray-900">
@@ -138,7 +138,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
               <p className="text-gray-600 text-lg">
                 You don't have any upcoming races registered.{" "}
                 <Link
-                  href="/calendar"
+                  to="/calendar"
                   className="text-purple-600 hover:text-purple-800 hover:underline"
                 >
                   Browse the calendar
@@ -149,7 +149,7 @@ export function WelcomeSection({ firstName }: WelcomeSectionProps) {
           )}
 
           <div className="flex flex-col sm:flex-row justify-start items-start gap-4 mt-8">
-            <Link href="/dashboard/profile">
+            <Link to="/dashboard/profile">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}

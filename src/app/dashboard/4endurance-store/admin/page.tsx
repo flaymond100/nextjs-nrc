@@ -6,7 +6,7 @@ import { FourEnduranceStoreProduct } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { useAdmin } from "@/hooks/use-admin";
 import toast from "react-hot-toast";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import {
   ArrowLeftIcon,
   PencilIcon,
@@ -268,7 +268,7 @@ export default function StoreAdminPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard/4endurance-store"
+              to="/dashboard/4endurance-store"
               className="text-purple-600 hover:text-purple-700"
             >
               <ArrowLeftIcon className="h-6 w-6" />

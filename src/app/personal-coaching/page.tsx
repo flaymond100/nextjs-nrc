@@ -7,7 +7,6 @@ import Prices, { StripePricingTable } from "../prices";
 import Faq from "../faq";
 import CarouselFeatures from "../carousel-features";
 import { CalendlyWidget } from "@/components/widget";
-import Image from "next/image";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";

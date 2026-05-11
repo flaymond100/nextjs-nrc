@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import { Button } from "@material-tailwind/react";
-import Image from "next/image";
 import { BsInstagram } from "react-icons/bs";
 
 const komoot = {
@@ -40,7 +38,12 @@ export const SocialRides = () => {
               >
                 Komoot Track for {komoot.date}
               </h3>
-              <Link aria-label="Go to komoot" target="_blank" href={komoot.url}>
+              <a
+                aria-label="Go to komoot"
+                target="_blank"
+                rel="noopener noreferrer"
+                href={komoot.url ?? "#"}
+              >
                 <Button
                   placeholder={""}
                   aria-label="Go to komoot"
@@ -49,7 +52,7 @@ export const SocialRides = () => {
                   style={{ background: "#447c00" }}
                   className="bg-gradient-to-tr from-#8acb3c mb-5 via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
                 >
-                  <Image
+                  <img
                     src={`${
                       import.meta.env.VITE_BASE_URL ?? ""
                     }/image/komoot.png`}
@@ -58,7 +61,7 @@ export const SocialRides = () => {
                     height={20}
                   />
                 </Button>
-              </Link>
+              </a>
             </>
           )}
           <br />
@@ -85,9 +88,10 @@ export const SocialRides = () => {
             ⚠️ Be aware that starting point might change! Please follow us on
             Instagram for updates. ⚠️
           </h3>
-          <Link
+          <a
             aria-label="Go to instagram"
             target="_blank"
+            rel="noopener noreferrer"
             href="https://www.instagram.com/nrc.int.team/"
           >
             <Button
@@ -99,10 +103,10 @@ export const SocialRides = () => {
             >
               <BsInstagram className="text-white text-xl" />
             </Button>
-          </Link>
+          </a>
         </div>
 
-        <Image
+        <img
           width={300}
           height={400}
           src={`${

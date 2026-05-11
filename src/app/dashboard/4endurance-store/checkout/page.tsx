@@ -11,7 +11,7 @@ import {
 import { supabase } from "@/utils/supabase";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function CheckoutPage() {
@@ -164,7 +164,7 @@ export default function CheckoutPage() {
     return (
       <div className="max-w-4xl mx-auto">
         <Link
-          href="/dashboard/4endurance-store"
+          to="/dashboard/4endurance-store"
           className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-6"
         >
           <ArrowLeftIcon className="h-5 w-5" />
@@ -179,7 +179,7 @@ export default function CheckoutPage() {
             Add some products to your cart to continue.
           </p>
           <Link
-            href="/dashboard/4endurance-store"
+            to="/dashboard/4endurance-store"
             className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Browse Products
@@ -192,7 +192,7 @@ export default function CheckoutPage() {
   return (
     <div className="max-w-4xl mx-auto">
       <Link
-        href="/dashboard/4endurance-store"
+        to="/dashboard/4endurance-store"
         className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-6"
       >
         <ArrowLeftIcon className="h-5 w-5" />

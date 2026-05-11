@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { ApparelStoreProduct, CartItem, Size, Gender } from "@/utils/types";
 import { addToCart } from "@/utils/cart-storage";
 import toast from "react-hot-toast";
-import Image from "next/image";
 import { LinkIcon } from "@heroicons/react/24/outline";
 
 interface SocksProductCardProps {
@@ -115,7 +114,7 @@ export function SocksProductCard({
       {/* Product Image */}
       {currentProduct.img_reference && (
         <div className="relative w-full h-[300px] bg-gray-100 flex-shrink-0">
-          <Image
+          <img
             src={currentProduct.img_reference}
             alt={currentProduct.name}
             fill

@@ -2,7 +2,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { News } from "@/utils/types";
-import Image from "next/image";
 import { format } from "date-fns";
 import { NavigationLink } from "./navigation-link";
 import {
@@ -155,13 +154,10 @@ export function NewsDetail({ article }: NewsDetailProps) {
       {/* Main Image */}
       {article.main_image_url && (
         <div className="relative w-full h-64 md:h-96 lg:h-[500px] mb-8 md:mb-12 rounded-lg overflow-hidden">
-          <Image
+          <img
             src={article.main_image_url}
             alt={article.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 896px"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
       )}

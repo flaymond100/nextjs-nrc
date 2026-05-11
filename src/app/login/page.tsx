@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { Loader } from "@/components/loader";
 import { useAuth } from "@/contexts/auth-context";
 import { Navbar, Footer } from "@/components";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useRouter } from "next/navigation";
 
 const loginValidationSchema = Yup.object().shape({
@@ -158,13 +158,13 @@ export default function LoginPage() {
 
               <div className="text-center space-y-2">
                 <Link
-                  href="/register"
+                  to="/register"
                   className="block text-sm text-purple-600 hover:text-purple-800 hover:underline"
                 >
                   Don't have an account? Sign up
                 </Link>
                 <Link
-                  href="/"
+                  to="/"
                   className="block text-sm text-gray-600 hover:text-gray-800 hover:underline"
                 >
                   Back to Home

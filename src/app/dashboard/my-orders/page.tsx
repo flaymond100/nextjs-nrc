@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import { Order, OrderItem } from "@/utils/types";
 import { Loader } from "@/components/loader";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import {
   ArrowLeftIcon,
   ChevronDownIcon,

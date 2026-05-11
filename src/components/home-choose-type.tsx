@@ -1,7 +1,6 @@
 "use client";
-import Image from "next/image";
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { ChatBubbleOvalLeftEllipsisIcon as Icon } from "@heroicons/react/24/solid";
 
 export function ChooseType() {
@@ -11,7 +10,7 @@ export function ChooseType() {
         <Link
           aria-label="Read more about cycling trainings"
           style={{ zIndex: "1" }}
-          href="/trainings/cycling-trainings"
+          to="/trainings/cycling-trainings"
           className="flip-card-1"
         >
           <Card
@@ -20,7 +19,7 @@ export function ChooseType() {
             style={{ borderRadius: 3 }}
             className="animate-in slide-in-from-bottom duration-1000 relative grid h-full w-full place-items-center overflow-hidden text-center "
           >
-            <Image
+            <img
               width={768}
               height={768}
               src={`${import.meta.env.VITE_BASE_URL}/image/France_Downhill_Kosta.webp`}
@@ -46,7 +45,7 @@ export function ChooseType() {
             className=" absolute inset-0 h-full w-full flip-card-1 bg-gray-900/75"
           />
 
-          <Image
+          <img
             width={768}
             height={768}
             src={`${import.meta.env.VITE_BASE_URL}/image/France_Downhill_Kosta.webp`}

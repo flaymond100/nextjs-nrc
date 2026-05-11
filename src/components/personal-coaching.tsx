@@ -1,5 +1,4 @@
 import { FC } from "react";
-import Image from "next/image";
 import { FormSection } from "@/components/contact-form";
 
 export const PersonalCoaching: FC = () => {
@@ -17,7 +16,7 @@ export const PersonalCoaching: FC = () => {
           className="overflow-hidden h-[466px] md:h-[560px]"
           style={{ zIndex: 2 }}
         >
-          <Image
+          <img
             width={370}
             height={300}
             src={`${

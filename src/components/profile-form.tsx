@@ -8,7 +8,6 @@ import { Button } from "@material-tailwind/react";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { NavigationLink } from "./navigation-link";
 import { DocumentUploadSection } from "./document-upload-section";
@@ -183,7 +182,7 @@ export const ProfileSection = () => {
           {(previewUrl || formik.values.avatarUrl) && (
             <div className="mb-6 flex justify-center">
               <div className="relative">
-                <Image
+                <img
                   src={previewUrl || formik.values.avatarUrl || ""}
                   alt="Profile Avatar"
                   width={150}

@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
@@ -80,7 +79,7 @@ export function AvatarDropdown({
         className="flex items-center justify-center w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 hover:border-purple-600 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500"
       >
         {avatarUrl ? (
-          <Image
+          <img
             src={avatarUrl}
             alt="User Avatar"
             width={40}

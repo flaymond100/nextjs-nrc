@@ -2,7 +2,6 @@
 import { Navbar, Footer } from "@/components";
 
 // sections
-import Image from "next/image";
 import CarouselFeatures from "../carousel-features";
 import Prices from "../prices";
 
@@ -68,7 +67,7 @@ const AboutUs = () => {
             </p>
           </div>
 
-          <Image
+          <img
             width={500}
             height={600}
             src={`${
@@ -92,7 +91,7 @@ const AboutUs = () => {
         </ul>
 
         <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <Image
+          <img
             width={500}
             height={600}
             src={`${

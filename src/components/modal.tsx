@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Field, FieldProps, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
@@ -73,7 +73,7 @@ function Modal() {
                 <div className="flex justify-end">
                   <Link
                     className="inline-block align-baseline font-bold text-md text-gray-500 hover:text-gray-800"
-                    href={pathname}
+                    to={pathname}
                   >
                     <button type="button">X</button>
                   </Link>

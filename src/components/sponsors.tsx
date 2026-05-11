@@ -1,6 +1,4 @@
-import Image from "next/image";
-import Link from "next/link";
-
+import { Link } from "react-router-dom";
 const sponsors = [
   {
     name: "Vittoria Tyres",
@@ -51,7 +49,7 @@ export const Sponsors = () => {
             }}
           >
             <div className="flex justify-center">
-              <Image
+              <img
                 width={300}
                 height={400}
                 src={`${import.meta.env.VITE_BASE_URL ?? ""}${
@@ -65,7 +63,7 @@ export const Sponsors = () => {
             <p className="text-sm text-gray-600 mb-4 flex-grow">
               {sponsor.description}
             </p>
-            <Link href={sponsor.url} target="_blank" rel="noopener noreferrer">
+            <a href={sponsor.url} target="_blank" rel="noopener noreferrer">
               <button
                 className="px-4 py-2 bg-gray-200 text-sm font-semibold rounded-lg hover:bg-gray-300 transition-colors duration-200 border"
                 style={{
@@ -75,7 +73,7 @@ export const Sponsors = () => {
               >
                 Visit Website
               </button>
-            </Link>
+            </a>
           </div>
         ))}
         <div
@@ -94,7 +92,7 @@ export const Sponsors = () => {
             </p>
           </div>
           <div className="mt-auto">
-            <Link href="/contact">
+            <Link to="/contact">
               <button className="px-6 py-3 bg-[#37007d] text-white font-semibold rounded-lg hover:bg-[#2a005f] transition-colors duration-200">
                 BECOME A PARTNER
               </button>

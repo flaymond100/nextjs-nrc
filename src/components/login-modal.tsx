@@ -1,6 +1,6 @@
 "use client";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
@@ -67,7 +67,7 @@ function LoginModal() {
             <div className="flex justify-end">
               <Link
                 className="inline-block align-baseline font-bold text-md text-gray-500 hover:text-gray-800"
-                href={pathname}
+                to={pathname}
               >
                 <button type="button">X</button>
               </Link>
@@ -153,7 +153,7 @@ function LoginModal() {
 
             <div className="text-center">
               <Link
-                href="/register"
+                to="/register"
                 className="text-sm text-deep-purple-800 hover:text-deep-purple-600"
               >
                 Don't have an account? Sign up

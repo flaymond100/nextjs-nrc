@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { notFound } from "next/navigation";
 import { Footer, Navbar } from "@/components";
 import { galleryEvents, getGalleryEventBySlug } from "@/utils/gallery-events";
@@ -35,7 +35,7 @@ export default async function GalleryAlbumPage({
       <main className="bg-[linear-gradient(180deg,_#f8f5ff_0%,_#ffffff_34%,_#f8fafc_100%)]">
         <section className="container mx-auto px-4 pt-14 pb-10 sm:pt-20">
           <Link
-            href="/gallery"
+            to="/gallery"
             className="inline-flex items-center rounded-full border border-[#37007d]/20 bg-white px-4 py-2 text-sm font-semibold text-[#37007d] transition-colors hover:border-[#37007d]"
           >
             Back to events

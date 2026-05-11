@@ -7,8 +7,7 @@ import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-
+import { Link } from "react-router-dom";
 interface RegisterData {
   email: string;
   password: string;
@@ -136,7 +135,7 @@ export const RegisterSection = () => {
         </p>
         <p className="leter-spacing-1 text-sm text-gray-600 mt-2">
           Already have an account?{" "}
-          <Link href="/login" className="text-purple-600 hover:underline">
+          <Link to="/login" className="text-purple-600 hover:underline">
             Login here
           </Link>
         </p>

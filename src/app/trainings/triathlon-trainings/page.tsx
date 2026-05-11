@@ -4,8 +4,7 @@ import { Navbar, Footer } from "@/components";
 // sections
 import Faq from "../../faq";
 import OurPrograms from "../../our-programs";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import CarouselFeatures from "@/app/carousel-features";
 import { CalendlyWidget } from "@/components/widget";
 
@@ -24,7 +23,7 @@ const TraithlonTrainings = () => {
         own customized workout plan is better than using one from TrainingPeaks.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
         src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_1.webp`}
@@ -56,7 +55,7 @@ const TraithlonTrainings = () => {
         what we{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
-          href="/coaching"
+          to="/coaching"
         >
           offer
         </Link>{" "}
@@ -78,7 +77,7 @@ const TraithlonTrainings = () => {
         and focused on your goals.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
         src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_2.webp`}
@@ -140,7 +139,7 @@ const TraithlonTrainings = () => {
         visualizing success.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
         src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_3.webp`}

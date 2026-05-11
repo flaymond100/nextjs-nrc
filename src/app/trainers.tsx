@@ -7,8 +7,6 @@ import {
   CardHeader,
   Button,
 } from "@material-tailwind/react";
-import Image from "next/image";
-
 const KOSTA = [
   "My coaching philosophy focuses on creating personalized training plans according to your specific needs and goals.",
   "With over a 8 years of coaching experience in professional sport, I apply the best practices to make the training process as enjoyable as it might be.",
@@ -73,7 +71,7 @@ export function Trainers() {
             placeholder={undefined}
           >
             <div className="flex align-middle justify-center">
-              <Image
+              <img
                 width={300}
                 height={300}
                 style={{
@@ -136,7 +134,7 @@ export function Trainers() {
             placeholder={undefined}
           >
             <div className="flex align-middle justify-center">
-              <Image
+              <img
                 width={500}
                 height={600}
                 style={{

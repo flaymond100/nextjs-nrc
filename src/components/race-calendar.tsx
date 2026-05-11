@@ -4,7 +4,7 @@ import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import {
   PlusIcon,
@@ -828,7 +828,7 @@ export function RaceCalendarTable() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {race.url ? (
                         <Link
-                          href={race.url}
+                          to={race.url}
                           target="_blank"
                           rel="noopener noreferrer"
                           className={

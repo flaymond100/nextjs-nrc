@@ -6,7 +6,7 @@ import { RaceCalendar } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { NavigationLink } from "@/components/navigation-link";
 import { getRaceTypeBadgeClasses, formatRaceType } from "@/utils/race-types";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { CalendarIcon, MapPinIcon, ClockIcon } from "@heroicons/react/24/outline";
 
 export default function MyRacesPage() {
@@ -163,7 +163,7 @@ export default function MyRacesPage() {
               <div className="flex gap-2">
                 {race.url && (
                   <Link
-                    href={race.url}
+                    to={race.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 px-4 py-2 bg-purple-600 text-white text-center rounded-lg hover:bg-purple-700 transition-colors text-sm"
