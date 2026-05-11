@@ -1,7 +1,5 @@
-"use client";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useNavigation } from "@/contexts/navigation-context";
-import { usePathname } from "next/navigation";
 import { ReactNode } from "react";
 
 interface NavigationLinkProps {
@@ -20,7 +18,7 @@ export function NavigationLink({
   onClick,
 }: NavigationLinkProps) {
   const { setNavigating } = useNavigation();
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
 
   const handleClick = () => {
     const currentPath = pathname?.replace(/\/$/, "") || "";

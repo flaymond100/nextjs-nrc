@@ -1,6 +1,4 @@
-"use client";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { Link } from "react-router-dom";
+import { useSearchParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { Field, FieldProps, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
@@ -16,10 +14,10 @@ const contactValidationSchema = Yup.object().shape({
 });
 
 function Modal() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const modal = searchParams.get("modal");
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = useLocation().pathname;
+  const navigate = useNavigate();
   const [disabled, setDisabled] = React.useState(false);
 
   const formik = useFormik<{
@@ -45,7 +43,7 @@ function Modal() {
               style: { color: "white", background: "green" },
               duration: 4000,
             });
-            router.back();
+            navigate(-1);
             resetForm();
           },
           (error: { text: any }) => {

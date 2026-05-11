@@ -1,11 +1,8 @@
-"use client";
 import { Button } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { ChatBubbleOvalLeftEllipsisIcon as Icon } from "@heroicons/react/24/solid";
-import { usePathname } from "next/navigation";
-
 export function FixedPlugin() {
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
 
   return (
     <Link aria-label="open-contact-modal" to={pathname + "?modal=true"}>

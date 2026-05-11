@@ -1,12 +1,9 @@
-"use client";
 import { useAdmin } from "@/hooks/use-admin";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
-import { usePathname } from "next/navigation";
 import { Navbar, Footer } from "@/components";
 import { supabase } from "@/utils/supabase";
 import { StoreManagement } from "@/utils/types";
@@ -74,8 +71,8 @@ export default function DashboardLayout({
 }) {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const router = useRouter();
-  const pathname = usePathname();
+  const navigate = useNavigate();
+  const pathname = useLocation().pathname;
   const [emailConfirmed, setEmailConfirmed] = useState<boolean | null>(null);
   const [isActivated, setIsActivated] = useState<boolean | null>(null);
   const [checkingEmail, setCheckingEmail] = useState(true);
@@ -140,15 +137,15 @@ export default function DashboardLayout({
     if (!authLoading && !checkingEmail && !checkingActivation) {
       if (!user) {
         toast.error("Please log in to access the dashboard.");
-        router.push("/login");
+        navigate("/login");
       } else if (!emailConfirmed) {
         toast.error("Please confirm your email to access the dashboard.");
-        router.push("/");
+        navigate("/");
       } else if (!isActivated) {
         toast.error(
           "Your account must be activated by an admin to access the dashboard."
         );
-        router.push("/forbidden");
+        navigate("/forbidden");
       }
     }
   }, [
@@ -158,7 +155,7 @@ export default function DashboardLayout({
     authLoading,
     checkingEmail,
     checkingActivation,
-    router,
+    navigate,
   ]);
 
   // Close sidebar when clicking outside on mobile

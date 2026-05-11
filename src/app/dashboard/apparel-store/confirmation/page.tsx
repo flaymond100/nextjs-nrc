@@ -1,10 +1,8 @@
-"use client";
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { Order, OrderItem } from "@/utils/types";
 import { Loader } from "@/components/loader";
-import { Link } from "react-router-dom";
 import {
   CheckCircleIcon,
   ArrowLeftIcon,
@@ -13,8 +11,8 @@ import {
 import toast from "react-hot-toast";
 
 export default function SocksOrderConfirmationPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const orderId = searchParams.get("orderId");
   const [order, setOrder] = useState<Order | null>(null);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);

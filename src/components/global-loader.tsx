@@ -1,4 +1,3 @@
-"use client";
 import { useNavigation } from "@/contexts/navigation-context";
 import { Loader } from "./loader";
 

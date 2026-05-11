@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
@@ -6,7 +5,7 @@ import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { supabase } from "@/utils/supabase";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import { uploadNewsImage } from "@/utils/storage";
 import ReactMarkdown from "react-markdown";
@@ -53,7 +52,7 @@ export const CreateNewsForm = () => {
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
-  const router = useRouter();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const formik = useFormik<NewsFormData>({
@@ -112,7 +111,7 @@ export const CreateNewsForm = () => {
           }
         } else {
           toast.success("News article created successfully!");
-          router.push("/news");
+          navigate("/news");
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");
@@ -438,7 +437,7 @@ export const CreateNewsForm = () => {
               variant="outlined"
               placeholder={""}
               color="gray"
-              onClick={() => router.push("/news")}
+              onClick={() => navigate("/news")}
               disabled={disabled}
               className="w-full md:w-auto px-6 md:px-8 py-2 md:py-3 text-sm md:text-base"
             >

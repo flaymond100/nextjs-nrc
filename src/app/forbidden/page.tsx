@@ -1,4 +1,3 @@
-"use client";
 import { Navbar, Footer } from "@/components";
 import { Link } from "react-router-dom";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";

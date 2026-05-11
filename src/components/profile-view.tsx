@@ -1,12 +1,10 @@
-"use client";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link } from "react-router-dom";
 import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { PencilIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
 import { NavigationLink } from "./navigation-link";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -35,7 +33,7 @@ export const ProfileView = () => {
   const [nextRace, setNextRace] = useState<RaceCalendar | null>(null);
   const [loadingRace, setLoadingRace] = useState(true);
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Wait for auth to finish loading before checking user
@@ -45,7 +43,7 @@ export const ProfileView = () => {
 
     // Only redirect if auth has finished loading and user is still null
     if (!user) {
-      router.push("/login");
+      navigate("/login");
       return;
     }
 
@@ -93,7 +91,7 @@ export const ProfileView = () => {
     }
 
     fetchRiderData();
-  }, [user, authLoading, router]);
+  }, [user, authLoading, navigate]);
 
   useEffect(() => {
     async function fetchNextRace() {

@@ -1,6 +1,4 @@
-"use client";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { Link } from "react-router-dom";
+import { useSearchParams, useLocation, useNavigate, Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
@@ -18,10 +16,10 @@ const loginValidationSchema = Yup.object().shape({
 });
 
 function LoginModal() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const modal = searchParams.get("login");
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = useLocation().pathname;
+  const navigate = useNavigate();
   const [disabled, setDisabled] = useState(false);
   const { signIn } = useAuth();
 
@@ -41,7 +39,7 @@ function LoginModal() {
           toast.error(error.message || "Authentication failed");
         } else {
           toast.success("Successfully logged in!");
-          router.back();
+          navigate(-1);
           resetForm();
         }
       } catch (err: any) {

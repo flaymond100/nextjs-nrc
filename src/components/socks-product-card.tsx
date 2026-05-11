@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import { ApparelStoreProduct, CartItem, Size, Gender } from "@/utils/types";
 import { addToCart } from "@/utils/cart-storage";

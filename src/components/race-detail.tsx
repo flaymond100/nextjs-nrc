@@ -1,11 +1,9 @@
-"use client";
 import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
-import { Link } from "react-router-dom";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import {
   PlusIcon,
@@ -42,7 +40,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   const [userRider, setUserRider] = useState<Rider | null>(null);
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const isRegistered = user && race?.participants?.includes(user.id);
 
@@ -211,7 +209,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
   const handleToggleRegistration = async () => {
     if (!user) {
       toast.error("Please log in to register for races");
-      router.push("/?login=true");
+      navigate("/?login=true");
       return;
     }
 
@@ -222,7 +220,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
       toast.error(
         "Your account must be activated by an admin before you can register for races"
       );
-      router.push("/forbidden");
+      navigate("/forbidden");
       return;
     }
 
@@ -302,7 +300,7 @@ export function RaceDetailSection({ raceId }: RaceDetailSectionProps) {
         setShowDeleteModal(false);
         // Redirect to calendar page after a short delay
         setTimeout(() => {
-          router.push("/calendar");
+          navigate("/calendar");
         }, 1000);
       }
     } catch (err: any) {

@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Navbar, Footer } from "@/components";
 import { RaceDetailSection } from "@/components/race-detail";
 import { supabase } from "@/utils/supabase";
@@ -9,8 +8,8 @@ import { Loader } from "@/components/loader";
 // This not-found page handles race routes that weren't generated at build time
 // It checks if the URL matches a race ID pattern and tries to fetch the race client-side
 export default function RaceNotFound() {
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = useLocation().pathname;
+  const navigate = useNavigate();
   const [checking, setChecking] = useState(true);
   const [raceId, setRaceId] = useState<string | null>(null);
 
@@ -86,7 +85,7 @@ export default function RaceNotFound() {
             The race you're looking for doesn't exist or has been removed.
           </p>
           <button
-            onClick={() => router.push("/calendar")}
+            onClick={() => navigate("/calendar")}
             className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
           >
             Back to Calendar

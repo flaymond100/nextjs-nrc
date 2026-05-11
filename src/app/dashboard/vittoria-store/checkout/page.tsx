@@ -1,8 +1,5 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import { Link } from "react-router-dom";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
@@ -22,7 +19,7 @@ export default function VittoriaCheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { user } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadCart();
@@ -306,7 +303,7 @@ export default function VittoriaCheckoutPage() {
 
       window.dispatchEvent(new Event("cartUpdated"));
       window.dispatchEvent(new Event("orderSubmitted"));
-      router.push(`/dashboard/vittoria-store/confirmation?orderId=${order.id}`);
+      navigate(`/dashboard/vittoria-store/confirmation?orderId=${order.id}`);
     } catch (err: any) {
       console.error("Error submitting Vittoria order:", err);
       setSubmitError(

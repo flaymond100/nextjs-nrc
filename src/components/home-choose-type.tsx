@@ -1,4 +1,3 @@
-"use client";
 import { Button, Card, CardBody, Typography } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { ChatBubbleOvalLeftEllipsisIcon as Icon } from "@heroicons/react/24/solid";

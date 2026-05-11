@@ -1,14 +1,12 @@
-"use client";
 import { Navbar, Footer } from "@/components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function RegisterSuccessPage() {
   const { user, loading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Wait for auth to finish loading
@@ -18,9 +16,9 @@ export default function RegisterSuccessPage() {
 
     // If user is logged in, redirect to home
     if (user) {
-      router.push("/");
+      navigate("/");
     }
-  }, [user, loading, router]);
+  }, [user, loading, navigate]);
 
   // Don't render content if user is logged in (will redirect)
   if (loading || user) {

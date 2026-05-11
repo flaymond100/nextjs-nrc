@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
@@ -6,7 +5,7 @@ import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { supabase } from "@/utils/supabase";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { RaceType, Rider, RaceCalendar } from "@/utils/types";
 import { NavigationLink } from "./navigation-link";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
@@ -56,7 +55,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
   const [race, setRace] = useState<RaceCalendar | null>(null);
   const [uploadingSeriesImage, setUploadingSeriesImage] = useState(false);
   const [seriesImagePreview, setSeriesImagePreview] = useState<string | null>(null);
-  const router = useRouter();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const getInitialValues = (raceData: RaceCalendar | null): RaceFormData => {
@@ -106,7 +105,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
         if (raceError) {
           toast.error("Failed to load race data");
           console.error("Error fetching race:", raceError);
-          router.push("/calendar");
+          navigate("/calendar");
           return;
         }
 
@@ -133,7 +132,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
     }
 
     fetchData();
-  }, [raceId, router]);
+  }, [raceId, navigate]);
 
   const formik = useFormik<RaceFormData>({
     initialValues: getInitialValues(race),
@@ -168,7 +167,7 @@ export const EditRaceForm = ({ raceId }: EditRaceFormProps) => {
           toast.error(error.message || "Failed to update race");
         } else {
           toast.success("Race updated successfully!");
-          router.push(`/calendar/${raceId}`);
+          navigate(`/calendar/${raceId}`);
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");

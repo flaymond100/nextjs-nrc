@@ -1,6 +1,4 @@
-"use client";
-
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
 export default function Scroll() {
@@ -8,7 +6,7 @@ export default function Scroll() {
   // their current scroll position will persist to the next page.
   // this useEffect is a workaround to 'fix' that behavior.
 
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
   useEffect(() => {
     window.scroll(0, 0);
   }, [pathname]);

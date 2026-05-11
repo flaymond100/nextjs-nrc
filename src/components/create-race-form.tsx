@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
@@ -6,7 +5,7 @@ import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { supabase } from "@/utils/supabase";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { RaceType, Rider } from "@/utils/types";
 import { useAuth } from "@/contexts/auth-context";
 import { uploadSeriesImage } from "@/utils/storage";
@@ -48,7 +47,7 @@ export const CreateRaceForm = () => {
   const [loadingRiders, setLoadingRiders] = useState(true);
   const [uploadingSeriesImage, setUploadingSeriesImage] = useState(false);
   const [seriesImagePreview, setSeriesImagePreview] = useState<string | null>(null);
-  const router = useRouter();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -113,7 +112,7 @@ export const CreateRaceForm = () => {
           toast.error(error.message || "Failed to create race");
         } else {
           toast.success("Race created successfully!");
-          router.push("/calendar");
+          navigate("/calendar");
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");

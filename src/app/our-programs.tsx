@@ -1,5 +1,3 @@
-"use client";
-
 import React from "react";
 import {
   Card,
@@ -21,11 +19,9 @@ import {
   ChevronDownIcon,
 } from "@heroicons/react/24/solid";
 
-import { Link } from "react-router-dom";
-import { usePathname } from "next/navigation";
-
+import { Link, useLocation } from "react-router-dom";
 export function OurPrograms() {
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
   const homePage = pathname === "/";
 
   return null;
@@ -165,7 +161,7 @@ export function OurPrograms() {
 }
 
 export const TimelineWithIcon = () => {
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
   const form = pathname === "/coaching/";
 
   return (

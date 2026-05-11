@@ -1,11 +1,10 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { RaceCalendarTable } from "@/components/race-calendar";
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@material-tailwind/react";
 import { NavigationLink } from "@/components/navigation-link";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 
 export default function CalendarPage() {
   return (
@@ -69,7 +68,7 @@ export default function CalendarPage() {
 
 export const CalendarPageContent = () => {
   const { isAdmin } = useAdmin();
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
   const isCalendarPage = pathname === "/calendar/";
 
   return (

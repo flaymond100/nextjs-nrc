@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@material-tailwind/react";
 import { BsInstagram } from "react-icons/bs";
 

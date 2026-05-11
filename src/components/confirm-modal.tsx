@@ -1,4 +1,3 @@
-"use client";
 import { XMarkIcon, ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { Button } from "@material-tailwind/react";
 import { Loader } from "./loader";

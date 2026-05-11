@@ -1,5 +1,3 @@
-"use client";
-
 export function Prices() {
   return (
     <section className="px-8 pt-10 pb-10" id="stripe-pricing">

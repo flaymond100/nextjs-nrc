@@ -1,4 +1,3 @@
-"use client";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { News } from "@/utils/types";
@@ -12,7 +11,7 @@ import {
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import toast from "react-hot-toast";
 import { ConfirmModal } from "./confirm-modal";
@@ -27,7 +26,7 @@ export function NewsDetail({ article }: NewsDetailProps) {
     ? format(new Date(article.published_at), "MMMM d, yyyy")
     : null;
   const { isAdmin } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -36,9 +35,9 @@ export function NewsDetail({ article }: NewsDetailProps) {
   // but this prevents non-admins from seeing it in the browser.
   useEffect(() => {
     if (!article.is_published && !isAdmin) {
-      router.push("/news");
+      navigate("/news");
     }
-  }, [article.is_published, isAdmin, router]);
+  }, [article.is_published, isAdmin, navigate]);
 
   // Don't render draft articles for non-admins
   if (!article.is_published && !isAdmin) {
@@ -70,7 +69,7 @@ export function NewsDetail({ article }: NewsDetailProps) {
         setShowDeleteModal(false);
         // Redirect to news list after a short delay
         setTimeout(() => {
-          router.push("/news");
+          navigate("/news");
         }, 1000);
       }
     } catch (err: any) {

@@ -1,23 +1,22 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { CreateRaceForm } from "@/components/create-race-form";
 import { useAdmin } from "@/hooks/use-admin";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
 
 export default function CreateRacePage() {
   const { isAdmin, loading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/calendar");
+      navigate("/calendar");
     }
-  }, [isAdmin, loading, router]);
+  }, [isAdmin, loading, navigate]);
 
   // Show loading while checking admin status
   if (loading) {

@@ -1,4 +1,3 @@
-"use client";
 // components
 import { Navbar, Footer, Loader } from "@/components";
 

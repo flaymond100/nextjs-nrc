@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -53,7 +52,7 @@ export const FormSection = () => {
                 duration: 40000,
               }
             );
-            // router.back();
+            // navigate(-1);
             setFormSubmitted(true);
             resetForm();
           },

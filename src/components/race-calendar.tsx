@@ -1,10 +1,9 @@
-"use client";
 import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "@/utils/supabase";
 import { RaceCalendar, Rider } from "@/utils/types";
 import { formatRaceType, getRaceTypeBadgeClasses } from "@/utils/race-types";
 import { Loader } from "./loader";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import {
   PlusIcon,
@@ -15,7 +14,6 @@ import {
 } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { NavigationLink } from "./navigation-link";
 import { useAdmin } from "@/hooks/use-admin";
 import { ConfirmModal } from "./confirm-modal";
@@ -131,7 +129,7 @@ export function RaceCalendarTable() {
   const [userRider, setUserRider] = useState<Rider | null>(null);
   const { user } = useAuth();
   const { isAdmin } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   // Filter and pagination state - preset to show upcoming races only
   const [filters, setFilters] = useState<FilterState>({
@@ -420,7 +418,7 @@ export function RaceCalendarTable() {
   const handleToggleRegistration = async (race: RaceCalendar) => {
     if (!user) {
       toast.error("Please log in to register for races");
-      router.push("/?login=true");
+      navigate("/?login=true");
       return;
     }
 
@@ -429,7 +427,7 @@ export function RaceCalendarTable() {
       toast.error(
         "Your account must be activated by an admin before you can register for races"
       );
-      router.push("/forbidden");
+      navigate("/forbidden");
       return;
     }
 

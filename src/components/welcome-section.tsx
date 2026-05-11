@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";

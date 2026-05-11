@@ -1,9 +1,6 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
 import {
   ArrowLeftIcon,
   CheckCircleIcon,
@@ -14,7 +11,7 @@ import { supabase } from "@/utils/supabase";
 import { Order, OrderItem } from "@/utils/types";
 
 export default function VittoriaOrderConfirmationPage() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const orderId = searchParams.get("orderId");
   const [order, setOrder] = useState<Order | null>(null);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);

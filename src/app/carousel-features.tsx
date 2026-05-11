@@ -1,5 +1,3 @@
-"use client";
-
 import { Typography, Rating } from "@material-tailwind/react";
 import Marquee from "react-fast-marquee";
 

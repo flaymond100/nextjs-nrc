@@ -1,23 +1,21 @@
-"use client";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link } from "react-router-dom";
 import { Navbar, Footer } from "@/components";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
-import { Link } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import { Loader } from "@/components/loader";
 
 export default function ConfirmEmailPage() {
   const { user, loading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // If user is not logged in, redirect to login
     // (This shouldn't happen in normal flow, but just in case)
     if (!loading && !user) {
-      router.push("/login");
+      navigate("/login");
     }
-  }, [user, loading, router]);
+  }, [user, loading, navigate]);
 
   if (loading) {
     return (

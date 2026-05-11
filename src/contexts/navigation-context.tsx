@@ -1,4 +1,3 @@
-"use client";
 import React, {
   createContext,
   useContext,
@@ -6,7 +5,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
 
 interface NavigationContextType {
   isNavigating: boolean;
@@ -23,7 +22,7 @@ export function NavigationProvider({
   children: React.ReactNode;
 }) {
   const [isNavigating, setIsNavigating] = useState(false);
-  const pathname = usePathname();
+  const pathname = useLocation().pathname;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {

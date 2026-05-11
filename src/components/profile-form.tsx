@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import * as Yup from "yup";
@@ -7,7 +6,7 @@ import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { NavigationLink } from "./navigation-link";
 import { DocumentUploadSection } from "./document-upload-section";
@@ -35,7 +34,7 @@ export const ProfileSection = () => {
   const [uploading, setUploading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const { user, loading: authLoading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const formik = useFormik<RiderData>({
     initialValues: {
@@ -50,7 +49,7 @@ export const ProfileSection = () => {
     onSubmit: async (values) => {
       if (!user) {
         toast.error("You must be logged in to update your profile");
-        router.push("/?login=true");
+        navigate("/?login=true");
         return;
       }
 
@@ -76,7 +75,7 @@ export const ProfileSection = () => {
           toast.error(error.message || "Failed to update profile");
         } else {
           toast.success("Profile updated successfully!");
-          router.push("/profile");
+          navigate("/profile");
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");
@@ -95,7 +94,7 @@ export const ProfileSection = () => {
 
     // Only redirect if auth has finished loading and user is still null
     if (!user) {
-      router.push("/?login=true");
+      navigate("/?login=true");
       return;
     }
 
@@ -129,7 +128,7 @@ export const ProfileSection = () => {
     }
 
     fetchRiderData();
-  }, [user, authLoading, router]);
+  }, [user, authLoading, navigate]);
 
   // Show loader while auth is loading or rider data is loading
   if (authLoading || loading) {

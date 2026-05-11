@@ -1,12 +1,10 @@
-"use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { ApparelStoreProduct } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { useAdmin } from "@/hooks/use-admin";
 import toast from "react-hot-toast";
-import { Link } from "react-router-dom";
 import {
   ArrowLeftIcon,
   PencilIcon,
@@ -21,7 +19,7 @@ export default function SocksStoreAdminPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [editForm, setEditForm] = useState<{
     price: string;
@@ -49,9 +47,9 @@ export default function SocksStoreAdminPage() {
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/dashboard/apparel-store");
+      navigate("/dashboard/apparel-store");
     }
-  }, [isAdmin, adminLoading, router]);
+  }, [isAdmin, adminLoading, navigate]);
 
   useEffect(() => {
     if (isAdmin) {

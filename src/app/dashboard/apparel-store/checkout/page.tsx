@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState } from "react";
 import { CartItem, Size, Gender } from "@/utils/types";
 import {
@@ -10,8 +9,7 @@ import {
 } from "@/utils/cart-storage";
 import { supabase } from "@/utils/supabase";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function SocksCheckoutPage() {
@@ -20,7 +18,7 @@ export default function SocksCheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { user } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadCart();
@@ -149,7 +147,7 @@ export default function SocksCheckoutPage() {
       window.dispatchEvent(new Event("orderSubmitted"));
 
       // Redirect to confirmation page with order ID
-      router.push(`/dashboard/apparel-store/confirmation?orderId=${order.id}`);
+      navigate(`/dashboard/apparel-store/confirmation?orderId=${order.id}`);
     } catch (error: any) {
       console.error("Error submitting order:", error);
       setSubmitError(
