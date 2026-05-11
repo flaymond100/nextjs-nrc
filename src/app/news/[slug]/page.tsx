@@ -8,8 +8,8 @@ import { notFound } from "next/navigation";
 export const dynamicParams = false;
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const anonKey = import.meta.env.VITE_SUPABASE_API_KEY;
 
   // Prefer service role key to bypass RLS and fetch ALL articles (including drafts)
   // Fall back to anon key but only fetch published articles (RLS will filter)
@@ -77,8 +77,8 @@ interface NewsDetailPageProps {
 }
 
 async function getNewsArticle(slug: string) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const anonKey = import.meta.env.VITE_SUPABASE_API_KEY;
 
   // Prefer service role key to bypass RLS and fetch any article (including drafts)
   // Fall back to anon key - RLS will only allow published articles
@@ -148,7 +148,7 @@ export async function generateMetadata({
     }
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || "https://www.nrc-team.com";
+      import.meta.env.VITE_BASE_URL || "https://www.nrc-team.com";
     const publishedDate = article.published_at
       ? new Date(article.published_at).toISOString()
       : undefined;

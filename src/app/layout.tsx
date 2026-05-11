@@ -132,7 +132,7 @@ export default function RootLayout({
             </Layout>
           </NavigationProvider>
         </AuthProvider>
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_MEASUREMENT_ID!} />
+        <GoogleAnalytics gaId={import.meta.env.VITE_MEASUREMENT_ID!} />
       </body>
     </html>
   );

@@ -34,10 +34,10 @@ function Modal() {
       setDisabled(true);
       emailjs
         .send(
-          process.env.NEXT_PUBLIC_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_TEMPLATE_ID!,
+          import.meta.env.VITE_SERVICE_ID!,
+          import.meta.env.VITE_TEMPLATE_ID!,
           values,
-          process.env.NEXT_PUBLIC_PUBLIC_KEY!
+          import.meta.env.VITE_PUBLIC_KEY!
         )
         .then(
           () => {

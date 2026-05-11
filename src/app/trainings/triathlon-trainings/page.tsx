@@ -27,7 +27,7 @@ const TraithlonTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_1.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_1.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -81,7 +81,7 @@ const TraithlonTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_2.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_2.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -143,7 +143,7 @@ const TraithlonTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_3.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_3.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />

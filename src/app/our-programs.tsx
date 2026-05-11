@@ -56,7 +56,7 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/8716_20230423_144655_274310037_original.webp`}
+            src={`${import.meta.env.VITE_BASE_URL}/image/8716_20230423_144655_274310037_original.webp`}
             alt={"/image/8716_20230423_144655_274310037_original.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -91,7 +91,7 @@ export function OurPrograms() {
           <Image
             width={768}
             height={768}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.webp`}
+            src={`${import.meta.env.VITE_BASE_URL}/image/France_Downhill_Kosta.webp`}
             alt={" /image/France_Downhill_Kosta.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />
@@ -130,7 +130,7 @@ export function OurPrograms() {
             width={768}
             height={768}
             style={{ left: "-10px" }}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/tri_1.webp`}
+            src={`${import.meta.env.VITE_BASE_URL}/image/tri_1.webp`}
             alt={" /image/tri_1.webp"}
             className="absolute inset-0 h-full w-full object-cover object-center"
           />

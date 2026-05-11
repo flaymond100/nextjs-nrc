@@ -72,7 +72,7 @@ const AboutUs = () => {
             width={500}
             height={600}
             src={`${
-              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+              import.meta.env.VITE_BASE_URL ?? ""
             }/image/about-us.webp`}
             className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""
@@ -96,7 +96,7 @@ const AboutUs = () => {
             width={500}
             height={600}
             src={`${
-              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+              import.meta.env.VITE_BASE_URL ?? ""
             }/image/ksu-running-min.webp`}
             className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""

@@ -2,8 +2,8 @@ import { createClient } from "@supabase/supabase-js";
 import EditRacePageClient from "./edit-client";
 
 export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase credentials not found, returning empty params");

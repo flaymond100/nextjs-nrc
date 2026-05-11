@@ -30,7 +30,7 @@ const CyclingTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_1.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_1.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -92,7 +92,7 @@ const CyclingTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_2.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_2.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -130,7 +130,7 @@ const CyclingTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_3.png`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_3.png`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />

@@ -21,7 +21,7 @@ export const PersonalCoaching: FC = () => {
             width={370}
             height={300}
             src={`${
-              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+              import.meta.env.VITE_BASE_URL ?? ""
             }/image/kosta-coach.webp`}
             className="animate-in slide-in-from-left duration-1000 "
             alt=""

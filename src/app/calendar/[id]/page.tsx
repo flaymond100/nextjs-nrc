@@ -6,8 +6,8 @@ import { createClient } from "@supabase/supabase-js";
 // Generate static params for existing races at build time
 // For new races created after build, we'll use a catch-all route approach
 export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_API_KEY;
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+  const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
 
   if (!supabaseUrl || !supabaseKey) {
     console.warn("Supabase credentials not found, returning empty params");

@@ -56,7 +56,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/8716_20230423_144655_274310037_original.webp`}
+        src={`${import.meta.env.VITE_BASE_URL}/image/8716_20230423_144655_274310037_original.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -159,7 +159,7 @@ const RunningTrainings = () => {
       <Image
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/tri_3.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/tri_3.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />

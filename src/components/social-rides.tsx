@@ -51,7 +51,7 @@ export const SocialRides = () => {
                 >
                   <Image
                     src={`${
-                      process.env.NEXT_PUBLIC_BASE_URL ?? ""
+                      import.meta.env.VITE_BASE_URL ?? ""
                     }/image/komoot.png`}
                     alt="Komoot"
                     width={20}
@@ -106,7 +106,7 @@ export const SocialRides = () => {
           width={300}
           height={400}
           src={`${
-            process.env.NEXT_PUBLIC_BASE_URL ?? ""
+            import.meta.env.VITE_BASE_URL ?? ""
           }/image/social-ride-specific.jpeg`}
           className="animate-in slide-in-from-right duration-1000 mb-6 w-80 rounded-lg shadow-lg dark:shadow-black/20  "
           alt=""

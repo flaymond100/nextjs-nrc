@@ -23,7 +23,7 @@ export function ChooseType() {
             <Image
               width={768}
               height={768}
-              src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.webp`}
+              src={`${import.meta.env.VITE_BASE_URL}/image/France_Downhill_Kosta.webp`}
               alt={" /image/France_Downhill_Kosta.webp"}
               className="absolute inset-0 h-full w-full object-cover object-center"
             />
@@ -49,7 +49,7 @@ export function ChooseType() {
           <Image
             width={768}
             height={768}
-            src={`${process.env.NEXT_PUBLIC_BASE_URL}/image/France_Downhill_Kosta.webp`}
+            src={`${import.meta.env.VITE_BASE_URL}/image/France_Downhill_Kosta.webp`}
             alt={" /image/France_Downhill_Kosta.webp"}
             className=" absolute inset-0  h-full w-full object-cover object-center"
           />

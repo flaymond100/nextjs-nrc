@@ -81,7 +81,7 @@ export function Trainers() {
                   objectPosition: "0 -33px",
                 }}
                 src={`${
-                  process.env.NEXT_PUBLIC_BASE_URL ?? ""
+                  import.meta.env.VITE_BASE_URL ?? ""
                 }/image/kosta-avatar.webp`}
                 className="w-44 h-44 lg:w-72 lg:h-72 mb-4 rounded-full shadow-lg"
                 alt=""
@@ -144,7 +144,7 @@ export function Trainers() {
                   objectPosition: "0 -33px",
                 }}
                 src={`${
-                  process.env.NEXT_PUBLIC_BASE_URL ?? ""
+                  import.meta.env.VITE_BASE_URL ?? ""
                 }/image/ksu-avatar.webp`}
                 className="w-44 h-44 lg:w-72 lg:h-72 mb-4 rounded-full shadow-lg"
                 alt=""

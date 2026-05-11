@@ -54,7 +54,7 @@ export const Sponsors = () => {
               <Image
                 width={300}
                 height={400}
-                src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}${
+                src={`${import.meta.env.VITE_BASE_URL ?? ""}${
                   sponsor.image
                 }`}
                 className="mb-6 w-80 rounded-lg "

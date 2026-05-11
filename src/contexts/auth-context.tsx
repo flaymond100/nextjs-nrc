@@ -172,7 +172,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       lastName?: string;
     }
   ) => {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.nrc-team.com";
+    const siteUrl = import.meta.env.VITE_SITE_URL || "https://www.nrc-team.com";
     const { data, error } = (await supabase.auth.signUp({
       email,
       password,

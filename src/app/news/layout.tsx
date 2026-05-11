@@ -8,12 +8,12 @@ export const metadata: Metadata = {
     title: "News | NRC International Team",
     description:
       "Stay updated with the latest news and updates from NRC International Team.",
-    url: `${process.env.NEXT_PUBLIC_BASE_URL || "https://www.nrc-team.com"}/news`,
+    url: `${import.meta.env.VITE_BASE_URL || "https://www.nrc-team.com"}/news`,
     siteName: "NRC International Team",
     type: "website",
   },
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_BASE_URL || "https://www.nrc-team.com"}/news`,
+    canonical: `${import.meta.env.VITE_BASE_URL || "https://www.nrc-team.com"}/news`,
   },
 };
 
