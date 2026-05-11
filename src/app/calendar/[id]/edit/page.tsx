@@ -1,46 +1,8 @@
-import { createClient } from "@supabase/supabase-js";
+import { useParams } from "react-router-dom";
 import EditRacePageClient from "./edit-client";
 
-export async function generateStaticParams(): Promise<{ id: string }[]> {
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const supabaseKey = import.meta.env.VITE_SUPABASE_API_KEY;
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.warn("Supabase credentials not found, returning empty params");
-    return [];
-  }
-
-  try {
-    const supabase = createClient(supabaseUrl, supabaseKey);
-    const { data: races, error } = await supabase
-      .from("race_calendar")
-      .select("id");
-
-    if (error) {
-      console.error("Error fetching races for static params:", error);
-      return [];
-    }
-
-    if (!races || races.length === 0) {
-      return [];
-    }
-
-    return races.map((race) => ({
-      id: race.id,
-    }));
-  } catch (error) {
-    console.error("Error generating static params:", error);
-    return [];
-  }
-}
-
-interface EditRacePageProps {
-  params: Promise<{
-    id: string;
-  }>;
-}
-
-export default async function EditRacePage({ params }: EditRacePageProps) {
-  const { id: raceId } = await params;
-  return <EditRacePageClient raceId={raceId} />;
+export default function EditRacePage() {
+  const { id } = useParams<{ id: string }>();
+  if (!id) return null;
+  return <EditRacePageClient raceId={id} />;
 }

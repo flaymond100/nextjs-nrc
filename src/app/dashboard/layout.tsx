@@ -1,6 +1,6 @@
 import { useAdmin } from "@/hooks/use-admin";
 import { useAuth } from "@/contexts/auth-context";
-import { useNavigate, Link, useLocation } from "react-router-dom";
+import { useNavigate, Link, useLocation, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
@@ -64,11 +64,7 @@ const STATIC_MENU_ITEMS: MenuItem[] = [
   },
 ];
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DashboardLayout() {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useAdmin();
   const navigate = useNavigate();
@@ -502,7 +498,9 @@ export default function DashboardLayout({
           </aside>
 
           {/* Main Content */}
-          <main className="flex-1 w-full md:w-auto md:p-8">{children}</main>
+          <main className="flex-1 w-full md:w-auto md:p-8">
+            <Outlet />
+          </main>
         </div>
       </div>
       <Footer />

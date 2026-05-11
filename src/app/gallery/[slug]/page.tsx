@@ -1,34 +1,51 @@
-import { Link } from "react-router-dom";
-import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Footer, Navbar } from "@/components";
-import { galleryEvents, getGalleryEventBySlug } from "@/utils/gallery-events";
-import { getGooglePhotosAlbum } from "@/utils/google-photos-album";
+import { getGalleryEventBySlug } from "@/utils/gallery-events";
+import {
+  getGooglePhotosAlbum,
+  type GooglePhotosAlbum,
+} from "@/utils/google-photos-album";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
+export default function GalleryAlbumPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const event = slug ? getGalleryEventBySlug(slug) : undefined;
+  const [album, setAlbum] = useState<GooglePhotosAlbum>({
+    coverImage: null,
+    images: [],
+  });
 
-export function generateStaticParams() {
-  return galleryEvents.map((event) => ({
-    slug: event.slug,
-  }));
-}
-
-export default async function GalleryAlbumPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const event = getGalleryEventBySlug(slug);
+  useEffect(() => {
+    if (!event) return;
+    let alive = true;
+    getGooglePhotosAlbum(event.shareUrl, event.title).then((next) => {
+      if (alive) setAlbum(next);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [event]);
 
   if (!event) {
-    notFound();
+    return (
+      <>
+        <Navbar />
+        <main className="container mx-auto px-4 py-20 text-center">
+          <h1 className="text-3xl font-bold mb-4">Gallery event not found</h1>
+          <Link
+            to="/gallery"
+            className="inline-flex items-center rounded-full bg-[#37007d] px-4 py-2 text-sm font-semibold text-white"
+          >
+            Back to events
+          </Link>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
-  const album = await getGooglePhotosAlbum(event.shareUrl, event.title);
   const coverImage = event.coverImage;
 
-  console.log(coverImage);
   return (
     <>
       <Navbar />
