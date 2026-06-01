@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import { GobikProduct, Size, Gender, CartItem } from "@/utils/types";
 import { addToCart } from "@/utils/cart-storage";

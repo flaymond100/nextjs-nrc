@@ -1,10 +1,9 @@
-"use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import { StoreManagement } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { getDashboardStoreHref } from "@/utils/store-routes";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { ShoppingBagIcon } from "@heroicons/react/24/outline";
 
 export default function DashboardPage() {
@@ -68,7 +67,7 @@ export default function DashboardPage() {
       {/* Quick Links */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         <Link
-          href="/dashboard/profile"
+          to="/dashboard/profile"
           className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
         >
           <div className="text-2xl mb-2">👤</div>
@@ -76,7 +75,7 @@ export default function DashboardPage() {
           <p className="text-sm text-gray-600">View and edit your profile</p>
         </Link>
         <Link
-          href="/dashboard/my-races"
+          to="/dashboard/my-races"
           className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
         >
           <div className="text-2xl mb-2">🏁</div>
@@ -86,7 +85,7 @@ export default function DashboardPage() {
         {openStores.map((store) => (
           <Link
             key={store.id}
-            href={getDashboardStoreHref(store.store_name)}
+            to={getDashboardStoreHref(store.store_name)}
             className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow border border-gray-200"
           >
             <div className="text-2xl mb-2">🛍️</div>

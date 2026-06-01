@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
@@ -6,9 +5,7 @@ import { useState, useEffect } from "react";
 import { Loader } from "@/components/loader";
 import { useAuth } from "@/contexts/auth-context";
 import { Navbar, Footer } from "@/components";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-
+import { Link, useNavigate } from "react-router-dom";
 const loginValidationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email")
@@ -21,14 +18,14 @@ const loginValidationSchema = Yup.object().shape({
 export default function LoginPage() {
   const [disabled, setDisabled] = useState(false);
   const { signIn, user, loading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Redirect if already logged in
     if (!loading && user) {
-      router.push("/");
+      navigate("/");
     }
-  }, [user, loading, router]);
+  }, [user, loading, navigate]);
 
   const formik = useFormik<{
     email: string;
@@ -47,7 +44,7 @@ export default function LoginPage() {
         } else {
           toast.success("Successfully logged in!");
           resetForm();
-          router.push("/");
+          navigate("/");
         }
       } catch (err: any) {
         toast.error("An unexpected error occurred");
@@ -158,13 +155,13 @@ export default function LoginPage() {
 
               <div className="text-center space-y-2">
                 <Link
-                  href="/register"
+                  to="/register"
                   className="block text-sm text-purple-600 hover:text-purple-800 hover:underline"
                 >
                   Don't have an account? Sign up
                 </Link>
                 <Link
-                  href="/"
+                  to="/"
                   className="block text-sm text-gray-600 hover:text-gray-800 hover:underline"
                 >
                   Back to Home

@@ -1,41 +1,58 @@
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 import { Footer, Navbar } from "@/components";
-import { galleryEvents, getGalleryEventBySlug } from "@/utils/gallery-events";
-import { getGooglePhotosAlbum } from "@/utils/google-photos-album";
+import { getGalleryEventBySlug } from "@/utils/gallery-events";
+import {
+  getGooglePhotosAlbum,
+  type GooglePhotosAlbum,
+} from "@/utils/google-photos-album";
 
-export const dynamic = "force-static";
-export const dynamicParams = false;
+export default function GalleryAlbumPage() {
+  const { slug } = useParams<{ slug: string }>();
+  const event = slug ? getGalleryEventBySlug(slug) : undefined;
+  const [album, setAlbum] = useState<GooglePhotosAlbum>({
+    coverImage: null,
+    images: [],
+  });
 
-export function generateStaticParams() {
-  return galleryEvents.map((event) => ({
-    slug: event.slug,
-  }));
-}
-
-export default async function GalleryAlbumPage({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const { slug } = await params;
-  const event = getGalleryEventBySlug(slug);
+  useEffect(() => {
+    if (!event) return;
+    let alive = true;
+    getGooglePhotosAlbum(event.shareUrl, event.title).then((next) => {
+      if (alive) setAlbum(next);
+    });
+    return () => {
+      alive = false;
+    };
+  }, [event]);
 
   if (!event) {
-    notFound();
+    return (
+      <>
+        <Navbar />
+        <main className="container mx-auto px-4 py-20 text-center">
+          <h1 className="text-3xl font-bold mb-4">Gallery event not found</h1>
+          <Link
+            to="/gallery"
+            className="inline-flex items-center rounded-full bg-[#37007d] px-4 py-2 text-sm font-semibold text-white"
+          >
+            Back to events
+          </Link>
+        </main>
+        <Footer />
+      </>
+    );
   }
 
-  const album = await getGooglePhotosAlbum(event.shareUrl, event.title);
   const coverImage = event.coverImage;
 
-  console.log(coverImage);
   return (
     <>
       <Navbar />
       <main className="bg-[linear-gradient(180deg,_#f8f5ff_0%,_#ffffff_34%,_#f8fafc_100%)]">
         <section className="container mx-auto px-4 pt-14 pb-10 sm:pt-20">
           <Link
-            href="/gallery"
+            to="/gallery"
             className="inline-flex items-center rounded-full border border-[#37007d]/20 bg-white px-4 py-2 text-sm font-semibold text-[#37007d] transition-colors hover:border-[#37007d]"
           >
             Back to events

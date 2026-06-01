@@ -1,13 +1,10 @@
-"use client";
-
 // components
 import { Navbar, Footer } from "@/components";
 
 // sections
 import Faq from "../../faq";
 import OurPrograms from "../../our-programs";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import CarouselFeatures from "@/app/carousel-features";
 import { CalendlyWidget } from "@/components/widget";
 
@@ -27,10 +24,10 @@ const CyclingTrainings = () => {
         from TrainingPeaks.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_1.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_1.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -61,7 +58,7 @@ const CyclingTrainings = () => {
         what we{" "}
         <Link
           style={{ textDecoration: "underline", fontWeight: "bold" }}
-          href="/coaching"
+          to="/coaching"
         >
           offer
         </Link>{" "}
@@ -89,10 +86,10 @@ const CyclingTrainings = () => {
         people consistent in their fitness routines, leading to better results.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_2.webp`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_2.webp`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />
@@ -127,10 +124,10 @@ const CyclingTrainings = () => {
         demotivated.
       </p>
 
-      <Image
+      <img
         width={500}
         height={600}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/image/cycling_3.png`}
+        src={`${import.meta.env.VITE_BASE_URL ?? ""}/image/cycling_3.png`}
         className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
         alt=""
       />

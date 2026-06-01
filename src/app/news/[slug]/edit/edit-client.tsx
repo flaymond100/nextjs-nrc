@@ -1,9 +1,8 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { EditNewsForm } from "@/components/edit-news-form";
 import { useAdmin } from "@/hooks/use-admin";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
@@ -15,16 +14,16 @@ interface EditNewsPageClientProps {
 
 export default function EditNewsPageClient({ slug }: EditNewsPageClientProps) {
   const { isAdmin, loading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [newsId, setNewsId] = useState<string | null>(null);
   const [loadingNews, setLoadingNews] = useState(true);
 
   useEffect(() => {
     if (!loading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push(`/news/${slug}`);
+      navigate(`/news/${slug}`);
     }
-  }, [isAdmin, loading, router, slug]);
+  }, [isAdmin, loading, navigate, slug]);
 
   useEffect(() => {
     async function fetchNewsId() {
@@ -39,14 +38,14 @@ export default function EditNewsPageClient({ slug }: EditNewsPageClientProps) {
 
         if (error || !data) {
           toast.error("News article not found");
-          router.push("/news");
+          navigate("/news");
           return;
         }
 
         setNewsId(data.id);
       } catch (err) {
         console.error("Error fetching news:", err);
-        router.push("/news");
+        navigate("/news");
       } finally {
         setLoadingNews(false);
       }
@@ -55,7 +54,7 @@ export default function EditNewsPageClient({ slug }: EditNewsPageClientProps) {
     if (!loading && isAdmin) {
       fetchNewsId();
     }
-  }, [slug, router, isAdmin, loading]);
+  }, [slug, navigate, isAdmin, loading]);
 
   // Show loading while checking admin status
   if (loading) {

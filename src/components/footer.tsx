@@ -1,6 +1,6 @@
 import { Typography, Button } from "@material-tailwind/react";
 import { BsStrava, BsInstagram, BsFacebook, BsTwitter } from "react-icons/bs";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { NAV_MENU } from "./navbar";
 
 const LINKS = [
@@ -45,7 +45,7 @@ export function Footer() {
               <Link
                 aria-label="Go to strava"
                 target="_blank"
-                href="https://www.strava.com/clubs/nrc-tri-team"
+                to="https://www.strava.com/clubs/nrc-tri-team"
               >
                 <Button
                   placeholder={""}
@@ -59,7 +59,7 @@ export function Footer() {
               <Link
                 aria-label="Go to instagram"
                 target="_blank"
-                href="https://www.instagram.com/nrc.int.team/"
+                to="https://www.instagram.com/nrc.int.team/"
               >
                 <Button
                   placeholder={""}
@@ -74,7 +74,7 @@ export function Footer() {
               <Link
                 aria-label="Go to facebook"
                 target="_blank"
-                href="https://www.facebook.com/nrcinternation"
+                to="https://www.facebook.com/nrcinternation"
               >
                 <Button
                   placeholder={""}
@@ -88,7 +88,7 @@ export function Footer() {
               <Link
                 aria-label="Go to twitter"
                 target="_blank"
-                href="https://twitter.com/nrc_tri_team"
+                to="https://twitter.com/nrc_tri_team"
               >
                 <Button
                   placeholder={""}

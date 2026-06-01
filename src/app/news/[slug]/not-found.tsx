@@ -1,4 +1,3 @@
-"use client";
 import { Navbar, Footer } from "@/components";
 import { NavigationLink } from "@/components/navigation-link";
 import { Button } from "@material-tailwind/react";

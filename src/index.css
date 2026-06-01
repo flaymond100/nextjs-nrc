@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body {
+  font-family:
+    "Bricolage Grotesque",
+    system-ui,
+    -apple-system,
+    Segoe UI,
+    Roboto,
+    sans-serif;
+}
+
+.flip-card-1 {
+  background-color: #36007d1a;
+}
+.flip-card-2 {
+  background-color: rgb(55 0 125 / 10%);
+}
+
+.flip-card-1:hover {
+  background-color: #36007d99;
+  cursor: pointer;
+}
+
+.flip-card-2:hover {
+  background-color: rgba(118, 14, 253, 0.83);
+  cursor: pointer;
+}
+
+.center-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(to bottom, #da22ff, #9733ee);
+  min-height: 100vh;
+}

@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState } from "react";
 import { CartItem, Size, Gender } from "@/utils/types";
 import {
@@ -10,8 +9,7 @@ import {
 } from "@/utils/cart-storage";
 import { supabase } from "@/utils/supabase";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useNavigate, Link } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 
 export default function SocksCheckoutPage() {
@@ -20,7 +18,7 @@ export default function SocksCheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { user } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadCart();
@@ -149,7 +147,7 @@ export default function SocksCheckoutPage() {
       window.dispatchEvent(new Event("orderSubmitted"));
 
       // Redirect to confirmation page with order ID
-      router.push(`/dashboard/apparel-store/confirmation?orderId=${order.id}`);
+      navigate(`/dashboard/apparel-store/confirmation?orderId=${order.id}`);
     } catch (error: any) {
       console.error("Error submitting order:", error);
       setSubmitError(
@@ -177,7 +175,7 @@ export default function SocksCheckoutPage() {
             Your cart is empty or contains no apparel products.
           </p>
           <Link
-            href="/dashboard/apparel-store"
+            to="/dashboard/apparel-store"
             className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             <ArrowLeftIcon className="h-5 w-5 mr-2" />
@@ -192,7 +190,7 @@ export default function SocksCheckoutPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <Link
-          href="/dashboard/apparel-store"
+          to="/dashboard/apparel-store"
           className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-4"
         >
           <ArrowLeftIcon className="h-5 w-5 mr-2" />

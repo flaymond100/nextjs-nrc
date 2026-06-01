@@ -1,8 +1,6 @@
-"use client";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { News } from "@/utils/types";
-import Image from "next/image";
 import { format } from "date-fns";
 import { NavigationLink } from "./navigation-link";
 import {
@@ -13,7 +11,7 @@ import {
 import { useAdmin } from "@/hooks/use-admin";
 import { Button } from "@material-tailwind/react";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import toast from "react-hot-toast";
 import { ConfirmModal } from "./confirm-modal";
@@ -28,7 +26,7 @@ export function NewsDetail({ article }: NewsDetailProps) {
     ? format(new Date(article.published_at), "MMMM d, yyyy")
     : null;
   const { isAdmin } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
 
@@ -37,9 +35,9 @@ export function NewsDetail({ article }: NewsDetailProps) {
   // but this prevents non-admins from seeing it in the browser.
   useEffect(() => {
     if (!article.is_published && !isAdmin) {
-      router.push("/news");
+      navigate("/news");
     }
-  }, [article.is_published, isAdmin, router]);
+  }, [article.is_published, isAdmin, navigate]);
 
   // Don't render draft articles for non-admins
   if (!article.is_published && !isAdmin) {
@@ -71,7 +69,7 @@ export function NewsDetail({ article }: NewsDetailProps) {
         setShowDeleteModal(false);
         // Redirect to news list after a short delay
         setTimeout(() => {
-          router.push("/news");
+          navigate("/news");
         }, 1000);
       }
     } catch (err: any) {
@@ -155,13 +153,10 @@ export function NewsDetail({ article }: NewsDetailProps) {
       {/* Main Image */}
       {article.main_image_url && (
         <div className="relative w-full h-64 md:h-96 lg:h-[500px] mb-8 md:mb-12 rounded-lg overflow-hidden">
-          <Image
+          <img
             src={article.main_image_url}
             alt={article.title}
-            fill
-            className="object-cover"
-            priority
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 896px"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         </div>
       )}

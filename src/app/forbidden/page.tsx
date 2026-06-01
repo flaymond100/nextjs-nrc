@@ -1,6 +1,5 @@
-"use client";
 import { Navbar, Footer } from "@/components";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 
 export default function ForbiddenPage() {
@@ -22,13 +21,13 @@ export default function ForbiddenPage() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/"
+              to="/"
               className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
             >
               Go to Home
             </Link>
             <Link
-              href="/contact"
+              to="/contact"
               className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
             >
               Contact Support

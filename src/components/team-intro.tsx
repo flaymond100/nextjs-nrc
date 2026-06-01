@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 
 export const TeamIntro = () => {
@@ -22,7 +22,7 @@ export const TeamIntro = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-          <Link target="_blank" href="/register/">
+          <Link target="_blank" to="/register/">
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}
@@ -33,7 +33,7 @@ export const TeamIntro = () => {
               Join Team
             </Button>
           </Link>
-          <Link href="/coaching">
+          <Link to="/coaching">
             <Button
               style={{ background: "#37007d" }}
               placeholder={""}
@@ -45,7 +45,7 @@ export const TeamIntro = () => {
           </Link>
           <Link
             target="_blank"
-            href="https://www.zwift.com/clubs/6a08d729-8add-4088-ad16-7af3316f440f/home"
+            to="https://www.zwift.com/clubs/6a08d729-8add-4088-ad16-7af3316f440f/home"
           >
             <Button
               style={{ background: "#f06723" }}

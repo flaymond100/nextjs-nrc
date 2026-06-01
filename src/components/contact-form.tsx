@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
@@ -39,10 +38,10 @@ export const FormSection = () => {
       setDisabled(true);
       emailjs
         .send(
-          process.env.NEXT_PUBLIC_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_TEMPLATE_ID!,
+          import.meta.env.VITE_SERVICE_ID!,
+          import.meta.env.VITE_TEMPLATE_ID!,
           values,
-          process.env.NEXT_PUBLIC_PUBLIC_KEY!
+          import.meta.env.VITE_PUBLIC_KEY!
         )
         .then(
           () => {
@@ -53,7 +52,7 @@ export const FormSection = () => {
                 duration: 40000,
               }
             );
-            // router.back();
+            // navigate(-1);
             setFormSubmitted(true);
             resetForm();
           },
@@ -180,17 +179,16 @@ export const FormSection = () => {
               )}
             </div>
             <div className="flex items-center justify-end mt-8">
-              <Button
+              <button
                 className={` ${
                   disabled && "bg-gray-500"
                 } text-black px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 shadow-lg`}
                 style={{ background: "#37007d", color: "white" }}
                 type="submit"
-                value="Submit"
                 disabled={disabled}
               >
                 {disabled ? <Loader /> : <>Submit</>}
-              </Button>{" "}
+              </button>{" "}
             </div>
           </form>
         </div>

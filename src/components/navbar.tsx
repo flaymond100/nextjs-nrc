@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import {
   Navbar as MTNavbar,
@@ -7,8 +6,7 @@ import {
   IconButton,
 } from "@material-tailwind/react";
 import { XMarkIcon, Bars3Icon } from "@heroicons/react/24/solid";
-import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/auth-context";
 import { useNavigation } from "@/contexts/navigation-context";
 import { AvatarDropdown } from "./avatar-dropdown";
@@ -79,7 +77,6 @@ function NavItem({ children, href, pathname }: NavItemProps) {
     <li>
       <NavigationLink
         href={href}
-        scroll={true}
         className={`flex items-center gap-2 text-lg text-black transition-colors ${
           isActive ? "underline decoration-2 underline-offset-4" : ""
         }`}
@@ -93,8 +90,8 @@ function NavItem({ children, href, pathname }: NavItemProps) {
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
   const [isActivated, setIsActivated] = React.useState<boolean | null>(null);
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = useLocation().pathname;
+  const navigate = useNavigate();
   const { user, signOut, loading } = useAuth();
   const { setNavigating } = useNavigation();
 
@@ -103,12 +100,12 @@ export function Navbar() {
   }
 
   const handleLogin = () => {
-    router.push("/login");
+    navigate("/login");
   };
 
   const handleSignUp = () => {
     setNavigating(true);
-    router.push("/register");
+    navigate("/register");
   };
 
   const handleLogout = async () => {
@@ -117,11 +114,11 @@ export function Navbar() {
       // Only set navigating if we're not already on the home page
       if (pathname !== "/") {
         setNavigating(true);
-        router.push("/");
+        navigate("/");
       } else {
         // If already on home, refresh to clear auth state
         // Don't set navigating since we're not changing routes
-        router.refresh();
+        window.location.reload();
       }
     } catch (error) {
       console.error("Error during logout:", error);
@@ -132,7 +129,7 @@ export function Navbar() {
 
   const handleProfile = () => {
     setNavigating(true);
-    router.push("/profile");
+    navigate("/profile");
   };
 
   React.useEffect(() => {
@@ -187,8 +184,8 @@ export function Navbar() {
       <div className="container mx-auto flex items-center justify-between relative">
         {/* Logo - Left */}
         <NavigationLink href="/" className="flex-shrink-0">
-          <Image
-            src={`${process.env.NEXT_PUBLIC_BASE_URL ?? ""}/NRC-2.png`}
+          <img
+            src={`${import.meta.env.VITE_BASE_URL ?? ""}/NRC-2.png`}
             alt="favicon Nrc Team"
             width={80}
             height={45}

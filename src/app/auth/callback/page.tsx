@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useState, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { Navbar, Footer } from "@/components";
 import { Loader } from "@/components/loader";
@@ -18,8 +17,8 @@ function parseHashParams(hash: string) {
 }
 
 function AuthCallbackContent() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [status, setStatus] = useState<"loading" | "error">("loading");
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -31,7 +30,7 @@ function AuthCallbackContent() {
         
         if (!hash) {
           // No hash parameters, redirect to login
-          router.replace("/login?error=missing_tokens");
+          navigate("/login?error=missing_tokens", { replace: true });
           return;
         }
 
@@ -42,7 +41,7 @@ function AuthCallbackContent() {
           setStatus("error");
           setErrorMessage("Missing authentication tokens. Please try again.");
           setTimeout(() => {
-            router.replace("/login?error=missing_tokens");
+            navigate("/login?error=missing_tokens", { replace: true });
           }, 3000);
           return;
         }
@@ -58,7 +57,7 @@ function AuthCallbackContent() {
           setStatus("error");
           setErrorMessage(error.message || "Failed to authenticate. Please try again.");
           setTimeout(() => {
-            router.replace("/login?error=invalid_link");
+            navigate("/login?error=invalid_link", { replace: true });
           }, 3000);
           return;
         }
@@ -81,24 +80,24 @@ function AuthCallbackContent() {
 
         // Redirect based on type
         if (type === "signup") {
-          router.replace("/confirm-email");
+          navigate("/confirm-email", { replace: true });
         } else {
           // For other types (email change, password reset, etc.), go to home
           const next = searchParams.get("next") || "/";
-          router.replace(next);
+          navigate(next, { replace: true });
         }
       } catch (err: any) {
         console.error("Unexpected error in auth callback:", err);
         setStatus("error");
         setErrorMessage("An unexpected error occurred. Please try again.");
         setTimeout(() => {
-          router.replace("/login?error=unexpected");
+          navigate("/login?error=unexpected", { replace: true });
         }, 3000);
       }
     };
 
     handleAuth();
-  }, [router, searchParams]);
+  }, [navigate, searchParams]);
 
   if (status === "error") {
     return (

@@ -1,4 +1,3 @@
-"use client";
 // components
 import { Footer, Navbar } from "@/components";
 import { TeamIntro } from "@/components/team-intro";

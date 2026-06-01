@@ -1,4 +1,3 @@
-"use client";
 import { useState, useEffect } from "react";
 import {
   FourEnduranceStoreProduct,
@@ -8,7 +7,6 @@ import {
 } from "@/utils/types";
 import { addToCart } from "@/utils/cart-storage";
 import toast from "react-hot-toast";
-import Image from "next/image";
 import { LinkIcon } from "@heroicons/react/24/outline";
 
 interface FourEnduranceProductCardProps {
@@ -115,7 +113,7 @@ export function FourEnduranceProductCard({
       {/* Product Image */}
       {currentProduct.img_reference && (
         <div className="relative w-full h-32 sm:h-40 md:h-48 bg-gray-100 flex-shrink-0">
-          <Image
+          <img
             src={currentProduct.img_reference}
             alt={currentProduct.name}
             fill

@@ -1,6 +1,5 @@
-"use client";
 import { useState, useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { Rider } from "@/utils/types";
 import { Loader } from "@/components/loader";
@@ -23,14 +22,14 @@ export default function MembersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/dashboard/profile");
+      navigate("/dashboard/profile");
     }
-  }, [isAdmin, adminLoading, router]);
+  }, [isAdmin, adminLoading, navigate]);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [memberToDelete, setMemberToDelete] = useState<Rider | null>(null);
   const [deleting, setDeleting] = useState(false);

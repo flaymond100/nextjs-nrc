@@ -1,23 +1,22 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { CreateNewsForm } from "@/components/create-news-form";
 import { useAdmin } from "@/hooks/use-admin";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Loader } from "@/components/loader";
 import toast from "react-hot-toast";
 
 export default function CreateNewsPage() {
   const { isAdmin, loading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/news");
+      navigate("/news");
     }
-  }, [isAdmin, loading, router]);
+  }, [isAdmin, loading, navigate]);
 
   // Show loading while checking admin status
   if (loading) {

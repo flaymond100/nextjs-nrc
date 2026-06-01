@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { Card, CardBody, Typography } from "@material-tailwind/react";
 
 interface CategoryCardProps {
@@ -15,10 +14,10 @@ function CategoryCard({ img, title, desc, icon: Icon }: CategoryCardProps) {
       placeholder={""}
       className="relative grid min-h-[12rem] w-full overflow-hidden"
     >
-      <Image
+      <img
         width={768}
         height={768}
-        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${img}`}
+        src={`${import.meta.env.VITE_BASE_URL}/${img}`}
         alt={title}
         className="absolute inset-0 h-full w-full object-cover object-center"
       />

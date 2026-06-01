@@ -1,19 +1,23 @@
-"use client";
-// components
-import { Navbar, Footer, Loader } from "@/components";
+import { useEffect } from "react";
 
-// sections
-import Prices, { StripePricingTable } from "../prices";
-import Faq from "../faq";
-import CarouselFeatures from "../carousel-features";
-import { CalendlyWidget } from "@/components/widget";
-import Image from "next/image";
-import { useFormik } from "formik";
-import { useState } from "react";
-import * as Yup from "yup";
-import toast from "react-hot-toast";
-import emailjs from "@emailjs/browser";
+const REDIRECT_URL = "https://ventrocycling.com/plans-and-pricing/";
 
-export default function PricingPage() {
-  return null;
+export default function PersonalCoachingRedirect() {
+  useEffect(() => {
+    window.location.replace(REDIRECT_URL);
+  }, []);
+
+  return (
+    <div className="min-h-screen flex items-center justify-center text-gray-600">
+      Redirecting to{" "}
+      <a
+        href={REDIRECT_URL}
+        className="underline ml-1"
+        rel="noopener noreferrer"
+      >
+        ventrocycling.com
+      </a>
+      …
+    </div>
+  );
 }

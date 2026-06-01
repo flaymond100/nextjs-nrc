@@ -1,6 +1,5 @@
-"use client";
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   ShoppingBagIcon,
@@ -576,7 +575,7 @@ export default function VittoriaStorePage() {
           </p>
           <div className="mt-8">
             <Link
-              href="/dashboard"
+              to="/dashboard"
               className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               Back to Dashboard
@@ -601,7 +600,7 @@ export default function VittoriaStorePage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard"
+              to="/dashboard"
               className="text-purple-600 hover:text-purple-700"
             >
               ← Back to Dashboard
@@ -611,7 +610,7 @@ export default function VittoriaStorePage() {
           <div className="flex items-center gap-2">
             {isAdmin && (
               <Link
-                href="/dashboard/vittoria-store/admin"
+                to="/dashboard/vittoria-store/admin"
                 className="flex items-center gap-2 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               >
                 <Cog6ToothIcon className="h-5 w-5" />
@@ -619,7 +618,7 @@ export default function VittoriaStorePage() {
               </Link>
             )}
             <Link
-              href="/dashboard/vittoria-store/checkout"
+              to="/dashboard/vittoria-store/checkout"
               className="relative flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
             >
               <ShoppingCartIcon className="h-5 w-5" />

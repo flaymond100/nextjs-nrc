@@ -1,9 +1,7 @@
-"use client";
 import { useState, useEffect } from "react";
 import { supabase } from "@/utils/supabase";
 import { News } from "@/utils/types";
 import { Loader } from "./loader";
-import Image from "next/image";
 import { NavigationLink } from "./navigation-link";
 import { format } from "date-fns";
 import { useAdmin } from "@/hooks/use-admin";
@@ -180,7 +178,7 @@ function NewsCard({ article, isPublished }: NewsCardProps) {
 
       {article.main_image_url && (
         <div className="relative w-full h-48 md:h-64 overflow-hidden">
-          <Image
+          <img
             src={article.main_image_url}
             alt={article.title}
             fill

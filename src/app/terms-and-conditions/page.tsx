@@ -4,8 +4,6 @@ import { Navbar, Footer } from "@/components";
 // sections
 import Prices from "../prices";
 import Faq from "../faq";
-import Image from "next/image";
-
 export default function TermsAndConditionsPage() {
   return (
     <>

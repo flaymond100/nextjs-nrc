@@ -1,12 +1,10 @@
-"use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { FourEnduranceStoreProduct } from "@/utils/types";
 import { Loader } from "@/components/loader";
 import { useAdmin } from "@/hooks/use-admin";
 import toast from "react-hot-toast";
-import Link from "next/link";
 import {
   ArrowLeftIcon,
   PencilIcon,
@@ -21,7 +19,7 @@ export default function StoreAdminPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [editingId, setEditingId] = useState<string | number | null>(null);
   const [editForm, setEditForm] = useState<{
     price: string;
@@ -49,9 +47,9 @@ export default function StoreAdminPage() {
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/dashboard/4endurance-store");
+      navigate("/dashboard/4endurance-store");
     }
-  }, [isAdmin, adminLoading, router]);
+  }, [isAdmin, adminLoading, navigate]);
 
   useEffect(() => {
     if (isAdmin) {
@@ -268,7 +266,7 @@ export default function StoreAdminPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard/4endurance-store"
+              to="/dashboard/4endurance-store"
               className="text-purple-600 hover:text-purple-700"
             >
               <ArrowLeftIcon className="h-6 w-6" />

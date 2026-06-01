@@ -1,6 +1,9 @@
-"use client";
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import Link from "next/link";
+import {
+  useSearchParams,
+  useLocation,
+  useNavigate,
+  Link,
+} from "react-router-dom";
 import { Field, FieldProps, Form, Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import emailjs from "@emailjs/browser";
@@ -16,10 +19,10 @@ const contactValidationSchema = Yup.object().shape({
 });
 
 function Modal() {
-  const searchParams = useSearchParams();
+  const [searchParams] = useSearchParams();
   const modal = searchParams.get("modal");
-  const pathname = usePathname();
-  const router = useRouter();
+  const pathname = useLocation().pathname;
+  const navigate = useNavigate();
   const [disabled, setDisabled] = React.useState(false);
 
   const formik = useFormik<{
@@ -34,10 +37,10 @@ function Modal() {
       setDisabled(true);
       emailjs
         .send(
-          process.env.NEXT_PUBLIC_SERVICE_ID!,
-          process.env.NEXT_PUBLIC_TEMPLATE_ID!,
+          import.meta.env.VITE_SERVICE_ID!,
+          import.meta.env.VITE_TEMPLATE_ID!,
           values,
-          process.env.NEXT_PUBLIC_PUBLIC_KEY!
+          import.meta.env.VITE_PUBLIC_KEY!
         )
         .then(
           () => {
@@ -45,7 +48,7 @@ function Modal() {
               style: { color: "white", background: "green" },
               duration: 4000,
             });
-            router.back();
+            navigate(-1);
             resetForm();
           },
           (error: { text: any }) => {
@@ -73,7 +76,7 @@ function Modal() {
                 <div className="flex justify-end">
                   <Link
                     className="inline-block align-baseline font-bold text-md text-gray-500 hover:text-gray-800"
-                    href={pathname}
+                    to={pathname}
                   >
                     <button type="button">X</button>
                   </Link>

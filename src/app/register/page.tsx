@@ -1,4 +1,3 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { RegisterSection } from "@/components/register-form";

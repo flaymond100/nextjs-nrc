@@ -1,18 +1,17 @@
-"use client";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/contexts/auth-context";
 import { useAdmin } from "@/hooks/use-admin";
 import { supabase } from "@/utils/supabase";
 import { Order, OrderItem } from "@/utils/types";
 import { Loader } from "@/components/loader";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/outline";
 
 export default function AllOrdersPage() {
   const { user, loading: authLoading } = useAuth();
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [orders, setOrders] = useState<(Order & { items: OrderItem[] })[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -21,9 +20,9 @@ export default function AllOrdersPage() {
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/dashboard");
+      navigate("/dashboard");
     }
-  }, [isAdmin, adminLoading, router]);
+  }, [isAdmin, adminLoading, navigate]);
 
   useEffect(() => {
     if (!authLoading && isAdmin) {

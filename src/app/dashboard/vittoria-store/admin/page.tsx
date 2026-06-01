@@ -1,7 +1,5 @@
-"use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
+import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
   ArrowLeftIcon,
@@ -21,7 +19,7 @@ export default function VittoriaStoreAdminPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { isAdmin, loading: adminLoading } = useAdmin();
-  const router = useRouter();
+  const navigate = useNavigate();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<{
     price: string;
@@ -53,9 +51,9 @@ export default function VittoriaStoreAdminPage() {
   useEffect(() => {
     if (!adminLoading && !isAdmin) {
       toast.error("Access denied. Admin privileges required.");
-      router.push("/dashboard/vittoria-store");
+      navigate("/dashboard/vittoria-store");
     }
-  }, [isAdmin, adminLoading, router]);
+  }, [isAdmin, adminLoading, navigate]);
 
   useEffect(() => {
     if (isAdmin) {
@@ -317,7 +315,7 @@ export default function VittoriaStoreAdminPage() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-4">
             <Link
-              href="/dashboard/vittoria-store"
+              to="/dashboard/vittoria-store"
               className="text-purple-600 hover:text-purple-700"
             >
               <ArrowLeftIcon className="h-6 w-6" />

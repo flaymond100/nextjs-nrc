@@ -1,14 +1,12 @@
-"use client";
 import { Navbar, Footer } from "@/components";
-import Link from "next/link";
+import { Link, useNavigate } from "react-router-dom";
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function RegisterSuccessPage() {
   const { user, loading } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Wait for auth to finish loading
@@ -18,9 +16,9 @@ export default function RegisterSuccessPage() {
 
     // If user is logged in, redirect to home
     if (user) {
-      router.push("/");
+      navigate("/");
     }
-  }, [user, loading, router]);
+  }, [user, loading, navigate]);
 
   // Don't render content if user is logged in (will redirect)
   if (loading || user) {
@@ -54,7 +52,7 @@ export default function RegisterSuccessPage() {
             </div>
             <p className="text-sm text-gray-500 mt-4">
               Didn't receive the email? Check your spam folder or{" "}
-              <Link href="/contact" className="text-purple-600 hover:underline">
+              <Link to="/contact" className="text-purple-600 hover:underline">
                 contact us
               </Link>
               .
@@ -62,13 +60,13 @@ export default function RegisterSuccessPage() {
           </div>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
-              href="/login"
+              to="/login"
               className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-semibold"
             >
               Go to Login
             </Link>
             <Link
-              href="/"
+              to="/"
               className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-semibold"
             >
               Back to Home

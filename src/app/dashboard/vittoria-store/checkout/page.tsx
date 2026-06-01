@@ -1,8 +1,5 @@
-"use client";
-
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeftIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
@@ -22,7 +19,7 @@ export default function VittoriaCheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const { user } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadCart();
@@ -306,7 +303,7 @@ export default function VittoriaCheckoutPage() {
 
       window.dispatchEvent(new Event("cartUpdated"));
       window.dispatchEvent(new Event("orderSubmitted"));
-      router.push(`/dashboard/vittoria-store/confirmation?orderId=${order.id}`);
+      navigate(`/dashboard/vittoria-store/confirmation?orderId=${order.id}`);
     } catch (err: any) {
       console.error("Error submitting Vittoria order:", err);
       setSubmitError(
@@ -328,7 +325,7 @@ export default function VittoriaCheckoutPage() {
             Your cart is empty or contains no Vittoria products.
           </p>
           <Link
-            href="/dashboard/vittoria-store"
+            to="/dashboard/vittoria-store"
             className="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             <ArrowLeftIcon className="h-5 w-5 mr-2" />
@@ -343,7 +340,7 @@ export default function VittoriaCheckoutPage() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8">
         <Link
-          href="/dashboard/vittoria-store"
+          to="/dashboard/vittoria-store"
           className="inline-flex items-center text-purple-600 hover:text-purple-700 mb-4"
         >
           <ArrowLeftIcon className="h-5 w-5 mr-2" />

@@ -1,4 +1,3 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { NewsList } from "@/components/news-list";

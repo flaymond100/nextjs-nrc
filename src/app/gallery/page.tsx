@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { Footer, Navbar } from "@/components";
 import { galleryEvents } from "@/utils/gallery-events";
 
@@ -30,7 +30,7 @@ export default function GalleryPage() {
             {galleryEvents.map((event) => (
               <Link
                 key={event.slug}
-                href={`/gallery/${event.slug}`}
+                to={`/gallery/${event.slug}`}
                 className="group overflow-hidden rounded-[28px] border border-black/5 bg-white shadow-[0_24px_80px_-32px_rgba(24,24,27,0.28)] transition-transform duration-300 hover:-translate-y-1"
               >
                 <div className="aspect-[4/3] overflow-hidden bg-[#ece7e1]">

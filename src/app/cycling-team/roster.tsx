@@ -1,4 +1,3 @@
-"use client";
 // components
 
 // sections
@@ -10,8 +9,7 @@ import {
   Button,
   CardFooter,
 } from "@material-tailwind/react";
-import Image from "next/image";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { BsInstagram, BsStrava } from "react-icons/bs";
 export const Roster = () => {
   const riders = [
@@ -20,7 +18,7 @@ export const Roster = () => {
       name: "Christoph",
       role: "Rouleur/All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Christoph.webp`,
       bio: "I love long, rolling courses and like putting pressure on for my team.",
       stravaUrl: "https://strava.app.link/xmg0DzbYzTb",
@@ -32,7 +30,7 @@ export const Roster = () => {
       name: "Erik",
       role: "Climber",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Erik.webp`,
       bio: "",
     },
@@ -41,7 +39,7 @@ export const Roster = () => {
       name: "Gabri",
       role: "Domestique/Puncheur",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Gabi.webp`,
       bio: "Always ready to help my teammates, but if I get the chance, I'm all about those uphill sprints!",
       stravaUrl: "https://www.strava.com/athletes/18142633",
@@ -52,7 +50,7 @@ export const Roster = () => {
       name: "Jan",
       role: "All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Jan_R.webp`,
       bio: "I love all surfaces! As a team member, I try to give my best for the team in every position.",
       stravaUrl: "https://www.strava.com/athletes/125166280",
@@ -63,7 +61,7 @@ export const Roster = () => {
       name: "Jan",
       role: "Coffee Ride Specialist",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Jan.webp`,
       bio: "Shocked to learn that I need to start in the masters category not because I’ve mastered cycling — it just means my knees now creak louder than my freehub. It's less “King of the Mountain” and more “Lord of the Ibuprofen.” I still love cycling - miles are my meditation.",
       stravaUrl: "https://www.strava.com/athletes/8125327",
@@ -73,7 +71,7 @@ export const Roster = () => {
       name: "Kosta",
       role: "All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Kosta.webp`,
       bio: "I love all terrains, especially with gradient. Also I like to help our sprinters to be in the best position at the finish.",
       stravaUrl: "https://www.strava.com/athletes/9059790",
@@ -84,7 +82,7 @@ export const Roster = () => {
       name: "Lisa",
       role: "Gravel Grinder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Lisa.webp`,
       bio: "Off-road addict with a soft spot for climbs, teammates, and gummy bears. Racing ultras, chasing dirt, and modeling hearts when I’m not riding mine out.",
       stravaUrl: "https://www.strava.com/athletes/38193512",
@@ -96,7 +94,7 @@ export const Roster = () => {
       name: "Paul",
       role: "All-rounder / Breakaway Specialist",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Paul.webp`,
       bio: "I'm a rider who loves all kinds of races. I want to create breakaways and help my teammates the best I can.",
       stravaUrl: "https://strava.app.link/AmKJhe1LHTb",
@@ -108,7 +106,7 @@ export const Roster = () => {
       name: "Robert",
       role: "Sprinter",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Robert.webp`,
       bio: "Crit lover with a need for speed and corners so tight they squeal. Full gas always, unless the road tilts up — then it’s survival mode. Built for watts, not altitude.",
       stravaUrl: "https://strava.app.link/33AFoyhoATb",
@@ -119,7 +117,7 @@ export const Roster = () => {
       name: "Simon",
       role: "All-rounder / Rouleur",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Simon.webp`,
       bio: "Challenging races and tactical battles - this is where I feel at home. I also enjoy cycling in the mountains.",
       stravaUrl: "https://strava.app.link/OoDLP06KHTb",
@@ -129,7 +127,7 @@ export const Roster = () => {
       name: "Silvio",
       role: "Sprinter",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Silvio.webp`,
       bio: "I’m the veteran of the team – the oldest rider, but still fired up and ready to roll. With experience, awareness, and team spirit, I aim to contribute more than just watts – I bring wisdom to the ride.",
       stravaUrl: "https://strava.app.link/5molBNZIBTb",
@@ -140,7 +138,7 @@ export const Roster = () => {
       name: "Sven",
       role: "All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Sven.webp`,
       bio: "All-rounder with a racing mindset. I combine tactical awareness with team commitment - driven by performance, Energy Drinks, sweets and loud music.",
       stravaUrl: "https://www.strava.com/athletes/100549976",
@@ -151,7 +149,7 @@ export const Roster = () => {
       name: "Tina",
       role: "All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Tina.webp`,
       bio: "Whether asphalt or gravel - the main thing is movement and freedom, where the team spirit isn’t neglected.",
       stravaUrl: "https://strava.app.link/PKBENRPEGTb",
@@ -162,7 +160,7 @@ export const Roster = () => {
       name: "Tony",
       role: "All-rounder / Rouleur",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Tony.webp`,
       bio: "`Business is like riding a bicycle, either you keep moving or you fall down.` ...So i stay tuned &  give everything I can",
       stravaUrl: "https://strava.app.link/ZHkCjFQXGTb",
@@ -175,7 +173,7 @@ export const Roster = () => {
       name: "Tristan",
       role: "Climber/All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Tristan.webp`,
       bio: "I'm a versatile rider who thrives on rolling terrain and long climbs, but I also enjoy flatter, punchy race profiles and doing the best I can for the Team.",
       stravaUrl: "https://strava.app.link/GAbtnRtpATb",
@@ -187,7 +185,7 @@ export const Roster = () => {
       name: "Noah",
       role: "Puncheur",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Noah.webp`,
       bio: "I love tackling short, steep climbs with explosive power and launching strong attacks to shake off my rivals and help my team.",
       stravaUrl: "https://strava.app.link/u0dNM7B5CTb",
@@ -198,7 +196,7 @@ export const Roster = () => {
       name: "Lion",
       role: "Rouleur/Sprinter",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Lion.webp`,
       bio: "Four corners and absolutely flat, that's my habitat, recently trying to get familiar with mountains.",
       stravaUrl: "https://strava.app.link/bEse6o9zGTb",
@@ -208,7 +206,7 @@ export const Roster = () => {
       name: "Lukas",
       role: "Sprinter",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Lukas.webp`,
       bio: "I'm a sprinter who favours flat and slightly undulating profiles. Always ready for town sign sprints.",
       stravaUrl: "https://strava.app.link/9URFuOzMGTb",
@@ -218,7 +216,7 @@ export const Roster = () => {
       name: "Martin",
       role: "Gravel & Bikepacking",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Martin.jpg`,
       bio: "I'm the hobby rider in the team. Some gucci gravel, small climbs, single trails in the forest and I'm happy.",
       stravaUrl: "https://www.strava.com/athletes/19424135",
@@ -230,7 +228,7 @@ export const Roster = () => {
       name: "Max",
       role: "All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Max.webp`,
       bio: "Formerly a soccer player and fitness enthusiast, I've been trying my luck with the bike since last year (2024).",
       stravaUrl: "https://www.strava.com/athletes/106788303",
@@ -241,7 +239,7 @@ export const Roster = () => {
       name: "Robin",
       role: "Puncheur",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Robin.jpeg`,
       bio: "The French! 🇫🇷",
       stravaUrl: "https://strava.app.link/66iVLAUuVWb",
@@ -254,7 +252,7 @@ export const Roster = () => {
       instagramUrl:
         "https://www.instagram.com/lisatreffur?igsh=MWlrbjZlanVtOXY5aQ==",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/lisa.jpeg`,
       bio: "Wether it's on a mountainbike, roadbike, fixed gear or in my running shoes - I love racing!",
     },
@@ -263,7 +261,7 @@ export const Roster = () => {
       name: "Oksana",
       role: "All-rounder",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Oksana.jpeg`,
       bio: "I’m a swimmer and triathlete who also competes in Ironman events. Cycling is a key part of my training — and thanks to my husband’s passion for the sport, it’s quickly becoming mine too.",
       stravaUrl: "https://www.strava.com/athletes/46189841",
@@ -274,7 +272,7 @@ export const Roster = () => {
       name: "Nick",
       role: "All-rounder/Puncheur",
       photoUrl: `${
-        process.env.NEXT_PUBLIC_BASE_URL ?? ""
+        import.meta.env.VITE_BASE_URL ?? ""
       }/image/team-pictures/Nick.webp`,
       bio: "Hills, long climbs, and short sprints — that's my thing. I can keep up the pace on flat stretches and ride tactically smart. Team spirit always included.",
       stravaUrl: "https://strava.app.link/vXsbwlYmYXb",
@@ -294,7 +292,7 @@ export const Roster = () => {
           <Card key={rider.id} className="shadow-lg mb-10  flex flex-col">
             {/* CardHeader for Rider Photo */}
             <CardHeader style={{ height: "27rem" }} className="relative">
-              <Image
+              <img
                 src={rider.photoUrl}
                 alt={rider.name}
                 fill
@@ -322,7 +320,7 @@ export const Roster = () => {
                   <Link
                     aria-label="Go to strava"
                     target="_blank"
-                    href={rider.stravaUrl}
+                    to={rider.stravaUrl}
                   >
                     <Button
                       placeholder={""}
@@ -340,7 +338,7 @@ export const Roster = () => {
                   <Link
                     aria-label="Go to komoot"
                     target="_blank"
-                    href={rider.komootUrl}
+                    to={rider.komootUrl}
                   >
                     <Button
                       placeholder={""}
@@ -350,9 +348,9 @@ export const Roster = () => {
                       style={{ background: "#447c00" }}
                       className="bg-gradient-to-tr from-#8acb3c via-#66ae0e to-#447c00 hover:from-yellow-600 hover:via-pink-700 hover:to-purple-800"
                     >
-                      <Image
+                      <img
                         src={`${
-                          process.env.NEXT_PUBLIC_BASE_URL ?? ""
+                          import.meta.env.VITE_BASE_URL ?? ""
                         }/image/komoot.png`}
                         alt="Komoot"
                         width={20}
@@ -365,7 +363,7 @@ export const Roster = () => {
                   <Link
                     aria-label="Go to instagram"
                     target="_blank"
-                    href={rider.instagramUrl}
+                    to={rider.instagramUrl}
                   >
                     <Button
                       placeholder={""}

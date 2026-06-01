@@ -1,10 +1,8 @@
-"use client";
 import { useEffect, useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { Order, OrderItem } from "@/utils/types";
 import { Loader } from "@/components/loader";
-import Link from "next/link";
 import {
   CheckCircleIcon,
   ArrowLeftIcon,
@@ -13,8 +11,8 @@ import {
 import toast from "react-hot-toast";
 
 export default function OrderConfirmationPage() {
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const orderId = searchParams.get("orderId");
   const [order, setOrder] = useState<Order | null>(null);
   const [orderItems, setOrderItems] = useState<OrderItem[]>([]);
@@ -91,7 +89,7 @@ export default function OrderConfirmationPage() {
     return (
       <div className="max-w-3xl mx-auto px-4 sm:px-6">
         <Link
-          href="/dashboard/4endurance-store"
+          to="/dashboard/4endurance-store"
           className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-4 sm:mb-6 text-sm sm:text-base"
         >
           <ArrowLeftIcon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -106,7 +104,7 @@ export default function OrderConfirmationPage() {
             {error || "We couldn't find the order you're looking for."}
           </p>
           <Link
-            href="/dashboard/4endurance-store"
+            to="/dashboard/4endurance-store"
             className="inline-block px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
           >
             Back to Store
@@ -119,7 +117,7 @@ export default function OrderConfirmationPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6">
       <Link
-        href="/dashboard/4endurance-store"
+        to="/dashboard/4endurance-store"
         className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 mb-4 sm:mb-6 text-sm sm:text-base"
       >
         <ArrowLeftIcon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -282,13 +280,13 @@ export default function OrderConfirmationPage() {
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <Link
-            href="/dashboard/4endurance-store"
+            to="/dashboard/4endurance-store"
             className="flex-1 text-center px-4 sm:px-6 py-2.5 sm:py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors font-medium text-sm sm:text-base"
           >
             Continue Shopping
           </Link>
           <Link
-            href="/dashboard/my-orders"
+            to="/dashboard/my-orders"
             className="flex-1 text-center px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium text-sm sm:text-base"
           >
             View My Orders

@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase";
 import {
@@ -13,7 +12,7 @@ import { getCartItemCount } from "@/utils/cart-storage";
 import { useAdmin } from "@/hooks/use-admin";
 import { useAuth } from "@/contexts/auth-context";
 import toast from "react-hot-toast";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import {
   ShoppingCartIcon,
   Cog6ToothIcon,
@@ -684,7 +683,7 @@ export default function FourEnduranceStorePage() {
           <div className="flex items-center gap-2 flex-shrink-0">
             {isAdmin && (
               <Link
-                href="/dashboard/4endurance-store/admin"
+                to="/dashboard/4endurance-store/admin"
                 className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm sm:text-base"
               >
                 <Cog6ToothIcon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -692,7 +691,7 @@ export default function FourEnduranceStorePage() {
               </Link>
             )}
             <Link
-              href="/dashboard/4endurance-store/checkout"
+              to="/dashboard/4endurance-store/checkout"
               className="relative flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm sm:text-base"
             >
               <ShoppingCartIcon className="h-4 w-4 sm:h-5 sm:w-5" />

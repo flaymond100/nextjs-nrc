@@ -1,5 +1,3 @@
-"use client";
-
 import { XMarkIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 import { Button } from "@material-tailwind/react";
 import ReactMarkdown from "react-markdown";

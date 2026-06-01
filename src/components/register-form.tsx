@@ -1,4 +1,3 @@
-"use client";
 import { useFormik } from "formik";
 import { useState, useMemo } from "react";
 import * as Yup from "yup";
@@ -6,9 +5,7 @@ import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { useAuth } from "@/contexts/auth-context";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-
+import { useNavigate, Link } from "react-router-dom";
 interface RegisterData {
   email: string;
   password: string;
@@ -59,7 +56,7 @@ const registerValidationSchema = (captchaAnswer: number) =>
 export const RegisterSection = () => {
   const [disabled, setDisabled] = useState(false);
   const { signUp } = useAuth();
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [captcha, setCaptcha] = useState(() => generateCaptcha());
 
@@ -112,7 +109,7 @@ export const RegisterSection = () => {
         }
 
         // Success - redirect to success page
-        router.push("/register/success");
+        navigate("/register/success");
       } catch (err: any) {
         toast.error("An unexpected error occurred");
         console.error(err);
@@ -136,7 +133,7 @@ export const RegisterSection = () => {
         </p>
         <p className="leter-spacing-1 text-sm text-gray-600 mt-2">
           Already have an account?{" "}
-          <Link href="/login" className="text-purple-600 hover:underline">
+          <Link to="/login" className="text-purple-600 hover:underline">
             Login here
           </Link>
         </p>

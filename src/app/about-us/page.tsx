@@ -2,7 +2,6 @@
 import { Navbar, Footer } from "@/components";
 
 // sections
-import Image from "next/image";
 import CarouselFeatures from "../carousel-features";
 import Prices from "../prices";
 
@@ -68,11 +67,11 @@ const AboutUs = () => {
             </p>
           </div>
 
-          <Image
+          <img
             width={500}
             height={600}
             src={`${
-              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+              import.meta.env.VITE_BASE_URL ?? ""
             }/image/about-us.webp`}
             className="animate-in slide-in-from-right duration-1000 mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""
@@ -92,11 +91,11 @@ const AboutUs = () => {
         </ul>
 
         <div className="container mx-auto mb-10 grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <Image
+          <img
             width={500}
             height={600}
             src={`${
-              process.env.NEXT_PUBLIC_BASE_URL ?? ""
+              import.meta.env.VITE_BASE_URL ?? ""
             }/image/ksu-running-min.webp`}
             className="mb-6 w-full rounded-lg shadow-lg dark:shadow-black/20"
             alt=""

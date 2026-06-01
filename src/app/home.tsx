@@ -1,7 +1,5 @@
-"use client";
 import { Button } from "@material-tailwind/react";
-import Link from "next/link";
-
+import { Link } from "react-router-dom";
 function Home() {
   return (
     <section className="mb-10 pt-24 flex px-8 pb-20 md:pb-0 bg-[url('/image/team-picture-white.webp')] bg-cover bg-center bg-no-repeat relative min-h-[calc(100vh-100px)] flex items-end">
@@ -23,7 +21,7 @@ function Home() {
             </p>
           </div>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-2 z-10">
-            <Link target="_blank" href="/register/">
+            <Link target="_blank" to="/register/">
               <Button
                 style={{ background: "#37007d" }}
                 placeholder={""}
@@ -37,7 +35,7 @@ function Home() {
 
             <Link
               target="_blank"
-              href="https://www.zwift.com/clubs/6a08d729-8add-4088-ad16-7af3316f440f/home"
+              to="https://www.zwift.com/clubs/6a08d729-8add-4088-ad16-7af3316f440f/home"
             >
               <Button
                 style={{ background: "#f06723" }}

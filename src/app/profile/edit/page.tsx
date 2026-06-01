@@ -1,4 +1,3 @@
-"use client";
 // components
 import { Navbar, Footer } from "@/components";
 import { ProfileSection } from "@/components/profile-form";

@@ -1,5 +1,3 @@
-"use client";
-
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
 import { useEffect, useRef, useState } from "react";
