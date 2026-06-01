@@ -179,17 +179,16 @@ export const FormSection = () => {
               )}
             </div>
             <div className="flex items-center justify-end mt-8">
-              <Button
+              <button
                 className={` ${
                   disabled && "bg-gray-500"
                 } text-black px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 shadow-lg`}
                 style={{ background: "#37007d", color: "white" }}
                 type="submit"
-                value="Submit"
                 disabled={disabled}
               >
                 {disabled ? <Loader /> : <>Submit</>}
-              </Button>{" "}
+              </button>{" "}
             </div>
           </form>
         </div>
