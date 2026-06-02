@@ -52,6 +52,7 @@ const RACE_GOALS = [
 ];
 
 const ATTACK_SQUAD = ["Anton", "Kosta", "Christoph", "Kevin", "Simon"];
+const SPRINTERS = ["Silvio", "Robert"];
 
 const RACE_PHASES = [
   {
@@ -1967,6 +1968,18 @@ function StrategyTab() {
           <span key={name} className="nsc-squad-badge">{name}</span>
         ))}
         <span className="nsc-squad-badge support">+ Rest of team in behind</span>
+      </div>
+
+      {/* Sprinters */}
+      <p className="nsc-section-label" style={{ marginTop: "1.75rem" }}>Sprint Option</p>
+      <p style={{ fontSize: "0.85rem", color: "#5A5550", marginBottom: "0.75rem", lineHeight: 1.6 }}>
+        If the race comes back together and ends in a bunch sprint, these are our cards to play.
+      </p>
+      <div className="nsc-squad-row">
+        {SPRINTERS.map((name) => (
+          <span key={name} className="nsc-squad-badge" style={{ background: "#7C3AED" }}>{name}</span>
+        ))}
+        <span className="nsc-squad-badge support">Lead-out if possible</span>
       </div>
 
       {/* Race phases */}
