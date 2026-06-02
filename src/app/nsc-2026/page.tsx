@@ -308,7 +308,7 @@ export default function NSC2026Page() {
   const navigate = useNavigate();
   const [accessGranted, setAccessGranted] = useState(false);
   const [checkingAccess, setCheckingAccess] = useState(true);
-  const [activeTab, setActiveTab] = useState("schedule");
+  const [activeTab, setActiveTab] = useState("overview");
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft);
   const [checked, setChecked] = useState<Set<string>>(() => {
     try {
