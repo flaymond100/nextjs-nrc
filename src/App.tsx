@@ -25,7 +25,7 @@ import GalleryIndexPage from "@/app/gallery/page";
 import GalleryAlbumPage from "@/app/gallery/[slug]/page";
 import GetStartedPage from "@/app/get-started/page";
 import LoginPage from "@/app/login/page";
-import NDuranceDay2026Page from "@/app/ndurance-day-2026/page";
+import NSC2026Page from "@/app/nsc-2026/page";
 import NewsIndexPage from "@/app/news/page";
 import NewsDetailPage from "@/app/news/[slug]/page";
 import EditNewsPage from "@/app/news/[slug]/edit/page";
@@ -117,7 +117,7 @@ export default function App() {
 
           <Route path="/get-started" element={<GetStartedPage />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/ndurance-day-2026" element={<NDuranceDay2026Page />} />
+          <Route path="/nsc-2026" element={<NSC2026Page />} />
 
           <Route path="/news" element={<NewsIndexPage />} />
           <Route path="/news/create" element={<CreateNewsPage />} />

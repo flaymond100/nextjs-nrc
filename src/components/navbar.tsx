@@ -19,8 +19,8 @@ export const NAV_MENU = [
     href: "/",
   },
   {
-    name: "NDURANCE DAY 2026",
-    href: "/ndurance-day-2026",
+    name: "NSC 2026",
+    href: "/nsc-2026",
   },
   {
     name: "Gallery",
