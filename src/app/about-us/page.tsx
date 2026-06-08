@@ -2,7 +2,6 @@
 import { Navbar, Footer } from "@/components";
 
 // sections
-import CarouselFeatures from "../carousel-features";
 import Prices from "../prices";
 
 const OFFERS = [

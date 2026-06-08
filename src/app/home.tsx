@@ -16,7 +16,7 @@ function Home() {
             </p>
             <p className="leter-spacing-1 text-xl max-w-3xl mb-5 text-center">
               To become part of the team, just fill out our short sign-up form
-              and we’ll get in touch with the next steps. Let’s ride stronger,
+              and we'll get in touch with the next steps. Let's ride stronger,
               together.
             </p>
           </div>
