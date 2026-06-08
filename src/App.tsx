@@ -9,8 +9,6 @@ import LoginModalWrapper from "@/components/login-modal-wrapper";
 import { DocumentUploadModal } from "@/components/document-upload-modal";
 
 import Campaign from "@/app/page";
-import HomePage from "@/app/home/page";
-import AboutUsPage from "@/app/about-us/page";
 import AuthCallbackPage from "@/app/auth/callback/page";
 import CalendarPage from "@/app/calendar/page";
 import RaceDetailPage from "@/app/calendar/[id]/page";
@@ -38,11 +36,6 @@ import RegisterPage from "@/app/register/page";
 import RegisterSuccessPage from "@/app/register/success/page";
 import SocialRidesPage from "@/app/social-rides/page";
 import TermsAndConditionsPage from "@/app/terms-and-conditions/page";
-import TrainersPage from "@/app/trainers/page";
-import TrainingsPage from "@/app/trainings/page";
-import CyclingTrainingsPage from "@/app/trainings/cycling-trainings/page";
-import RunningTrainingsPage from "@/app/trainings/running-trainings/page";
-import TriathlonTrainingsPage from "@/app/trainings/triathlon-trainings/page";
 
 import DashboardLayout from "@/app/dashboard/layout";
 import DashboardHomePage from "@/app/dashboard/page";
@@ -97,8 +90,6 @@ export default function App() {
         <Toaster position="top-right" />
         <Routes>
           <Route path="/" element={<Campaign />} />
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/about-us" element={<AboutUsPage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
 
           <Route path="/calendar" element={<CalendarPage />} />
@@ -137,21 +128,6 @@ export default function App() {
           <Route
             path="/terms-and-conditions"
             element={<TermsAndConditionsPage />}
-          />
-          <Route path="/trainers" element={<TrainersPage />} />
-
-          <Route path="/trainings" element={<TrainingsPage />} />
-          <Route
-            path="/trainings/cycling-trainings"
-            element={<CyclingTrainingsPage />}
-          />
-          <Route
-            path="/trainings/running-trainings"
-            element={<RunningTrainingsPage />}
-          />
-          <Route
-            path="/trainings/triathlon-trainings"
-            element={<TriathlonTrainingsPage />}
           />
 
           <Route path="/dashboard" element={<DashboardLayout />}>
