@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { Loader } from "@/components/loader";
@@ -55,8 +55,22 @@ const registerValidationSchema = (captchaAnswer: number) =>
 
 export const RegisterSection = () => {
   const [disabled, setDisabled] = useState(false);
+  const [geoBlocked, setGeoBlocked] = useState(false);
+  const [geoChecking, setGeoChecking] = useState(true);
   const { signUp } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("https://ipapi.co/json/")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.country_code === "NG") setGeoBlocked(true);
+      })
+      .catch(() => {
+        // fail open — don't block if the check itself fails
+      })
+      .finally(() => setGeoChecking(false));
+  }, []);
 
   const [captcha, setCaptcha] = useState(() => generateCaptcha());
 
@@ -121,6 +135,24 @@ export const RegisterSection = () => {
       }
     },
   });
+
+  if (geoChecking) {
+    return (
+      <section className="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+        <Loader />
+      </section>
+    );
+  }
+
+  if (geoBlocked) {
+    return (
+      <section className="container mx-auto px-4 py-12 min-h-screen flex items-center justify-center">
+        <div className="text-center max-w-md">
+          <h1 className="text-3xl font-bold mb-4">Registration Unavailable</h1>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="container mx-auto px-4 py-12 min-h-screen">
