@@ -16,6 +16,7 @@ import CalendarPage from "@/app/calendar/page";
 import RaceDetailPage from "@/app/calendar/[id]/page";
 import EditRacePage from "@/app/calendar/[id]/edit/page";
 import CreateRacePage from "@/app/calendar/create/page";
+import CalpeCamp2027Page from "@/app/calpe-camp-2027/page";
 import CoachingPage from "@/app/coaching/page";
 import ConfirmEmailPage from "@/app/confirm-email/page";
 import ContactPage from "@/app/contact/page";
@@ -106,6 +107,7 @@ export default function App() {
           <Route path="/calendar/:id" element={<RaceDetailPage />} />
           <Route path="/calendar/:id/edit" element={<EditRacePage />} />
 
+          <Route path="/calpe-camp-2027" element={<CalpeCamp2027Page />} />
           <Route path="/coaching" element={<CoachingPage />} />
           <Route path="/confirm-email" element={<ConfirmEmailPage />} />
           <Route path="/contact" element={<ContactPage />} />

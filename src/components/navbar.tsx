@@ -19,10 +19,6 @@ export const NAV_MENU = [
     href: "/",
   },
   {
-    name: "NSC 2026",
-    href: "/nsc-2026",
-  },
-  {
     name: "Gallery",
     href: "/gallery",
   },
@@ -200,6 +196,11 @@ export function Navbar() {
             </NavItem>
           ))}
           {user && isActivated && (
+            <NavItem href="/calpe-camp-2027" pathname={pathname}>
+              Calpe 2027
+            </NavItem>
+          )}
+          {user && isActivated && (
             <NavItem href="/dashboard/profile" pathname={pathname}>
               Dashboard
             </NavItem>
@@ -302,6 +303,11 @@ export function Navbar() {
                 {name}
               </NavItem>
             ))}
+            {user && isActivated && (
+              <NavItem href="/calpe-camp-2027" pathname={pathname}>
+                Calpe 2027
+              </NavItem>
+            )}
             {user && isActivated && (
               <NavItem href="/dashboard" pathname={pathname}>
                 Dashboard
