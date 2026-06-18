@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const CAMP_DATE = new Date("2027-02-19T09:00:00");
 
@@ -227,11 +228,72 @@ const DAY_SCHEDULE = [
   },
 ];
 
+// What every package includes (the price is all-in — no breakdown shown)
+const PACKAGE_INCLUDES = [
+  "4Endurance sports nutrition for the week",
+  "Camp edition jersey, cap & t-shirt",
+  "Bike transfer from/to Valencia airport",
+  "Structured 8-day training plan",
+  "Full daily programme & guided group rides",
+];
+
+type PackageId = "double" | "single";
+
+interface CampPackage {
+  id: PackageId;
+  name: string;
+  tagline: string;
+  hotelLine: string;
+  price: string;
+  deposit: string;
+  badge: string | null;
+  featured: boolean;
+}
+
+const PACKAGES: CampPackage[] = [
+  {
+    id: "double",
+    name: "Double Room",
+    tagline: "Shared double / twin room",
+    hotelLine: "8 nights at AR Roca Esmeralda — full board, double room",
+    price: "1.000",
+    deposit: "500",
+    badge: "Most popular",
+    featured: true,
+  },
+  {
+    id: "single",
+    name: "Single Room",
+    tagline: "Your own private room",
+    hotelLine: "8 nights at AR Roca Esmeralda — full board, single room",
+    price: "1.500",
+    deposit: "750",
+    badge: null,
+    featured: false,
+  },
+];
+
+// First deposit (50%) deadline — secures your place, first come first served.
+const DEPOSIT_DEADLINE = "19 August 2026";
+
+const GENDER_OPTIONS = [
+  { value: "male", label: "Male" },
+  { value: "female", label: "Female" },
+  { value: "binary", label: "Binary" },
+] as const;
+
 const TABS = [
   { id: "overview", label: "Camp Overview", icon: "🏔" },
   { id: "plan", label: "Training Plan", icon: "📋" },
   { id: "day", label: "A Day at Camp", icon: "🗓" },
+  { id: "prices", label: "Prices & Booking", icon: "🎟" },
 ];
+
+interface ReservationPrefill {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
 
 type TimeLeft = {
   days: number;
@@ -258,6 +320,12 @@ export default function CalpeCamp2027Page() {
   const [checkingAccess, setCheckingAccess] = useState(true);
   const [activeTab, setActiveTab] = useState("overview");
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(getTimeLeft);
+  const [reservePkg, setReservePkg] = useState<CampPackage | null>(null);
+  const [prefill, setPrefill] = useState<ReservationPrefill>({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   useEffect(() => {
     if (authLoading) return;
@@ -269,7 +337,7 @@ export default function CalpeCamp2027Page() {
     supabase
       .schema("private")
       .from("riders")
-      .select("isActivated")
+      .select("isActivated, firstName, lastName, email")
       .eq("uuid", user.id)
       .single()
       .then(({ data, error }) => {
@@ -277,6 +345,13 @@ export default function CalpeCamp2027Page() {
           navigate("/forbidden");
         } else {
           setAccessGranted(true);
+          // Prefill from the rider record, falling back to auth metadata.
+          const meta = user.user_metadata ?? {};
+          setPrefill({
+            firstName: data.firstName ?? meta.firstName ?? "",
+            lastName: data.lastName ?? meta.lastName ?? "",
+            email: data.email ?? user.email ?? "",
+          });
         }
         setCheckingAccess(false);
       });
@@ -827,6 +902,355 @@ export default function CalpeCamp2027Page() {
           line-height: 1.5;
         }
 
+        /* ── PRICES ─────────────────────────────────────────────── */
+        .calpe-price-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 1.5rem;
+          margin-top: 2rem;
+        }
+
+        @media (max-width: 720px) {
+          .calpe-price-grid { grid-template-columns: 1fr; }
+        }
+
+        .calpe-price-card {
+          position: relative;
+          border: 1px solid #EAE6F0;
+          padding: 2.25rem 2rem 2rem;
+          display: flex;
+          flex-direction: column;
+          background: #fff;
+          transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .calpe-price-card:hover {
+          box-shadow: 0 8px 34px rgba(66, 0, 135, 0.1);
+          transform: translateY(-2px);
+        }
+
+        .calpe-price-card.featured {
+          border: 1px solid #420087;
+          box-shadow: 0 8px 34px rgba(66, 0, 135, 0.12);
+        }
+
+        .calpe-price-badge {
+          position: absolute;
+          top: -11px;
+          left: 2rem;
+          font-family: 'DM Mono', monospace;
+          font-size: 0.58rem;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          background: #420087;
+          color: #fff;
+          padding: 4px 12px;
+          border-radius: 2px;
+        }
+
+        .calpe-price-name {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 2rem;
+          letter-spacing: 0.04em;
+          color: #111;
+          line-height: 1;
+        }
+
+        .calpe-price-room {
+          font-size: 0.82rem;
+          color: #8A8480;
+          margin-top: 0.35rem;
+        }
+
+        .calpe-price-amount {
+          display: flex;
+          align-items: baseline;
+          gap: 0.4rem;
+          margin: 1.5rem 0 0.25rem;
+        }
+
+        .calpe-price-value {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 3.6rem;
+          line-height: 1;
+          color: #420087;
+          letter-spacing: 0.02em;
+        }
+
+        .calpe-price-currency {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 1.6rem;
+          color: #420087;
+        }
+
+        .calpe-price-per {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.65rem;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: #8A8480;
+          margin-bottom: 1rem;
+        }
+
+        .calpe-price-deposit {
+          font-size: 0.78rem;
+          color: #420087;
+          background: #F5F0FF;
+          border: 1px solid #E4DAF6;
+          border-radius: 2px;
+          padding: 0.55rem 0.75rem;
+          line-height: 1.45;
+          margin-bottom: 1.4rem;
+        }
+
+        .calpe-price-list {
+          list-style: none;
+          padding: 0;
+          margin: 0 0 1.75rem;
+          border-top: 1px solid #F2EFF8;
+        }
+
+        .calpe-price-list li {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.6rem;
+          padding: 0.65rem 0;
+          border-bottom: 1px solid #F2EFF8;
+          font-size: 0.86rem;
+          color: #333;
+          line-height: 1.45;
+        }
+
+        .calpe-price-check {
+          color: #420087;
+          font-weight: 700;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+
+        .calpe-reserve-btn {
+          margin-top: auto;
+          width: 100%;
+          padding: 0.95rem 1rem;
+          font-family: 'DM Mono', monospace;
+          font-size: 0.74rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #fff;
+          background: #420087;
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+
+        .calpe-reserve-btn:hover { background: #5a00b5; }
+
+        .calpe-price-note {
+          font-size: 0.78rem;
+          color: #8A8480;
+          margin-top: 1.5rem;
+          line-height: 1.6;
+        }
+
+        /* ── RESERVATION MODAL ──────────────────────────────────── */
+        .calpe-modal-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 100;
+          background: rgba(13, 0, 32, 0.55);
+          backdrop-filter: blur(4px);
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding: 2rem 1rem;
+          overflow-y: auto;
+          animation: calpeOverlayIn 0.2s ease;
+        }
+
+        @keyframes calpeOverlayIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .calpe-modal {
+          position: relative;
+          width: 100%;
+          max-width: 520px;
+          background: #fff;
+          padding: 2.25rem 2.25rem 2.5rem;
+          margin: auto;
+          animation: calpeModalIn 0.25s ease;
+        }
+
+        @keyframes calpeModalIn {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: none; }
+        }
+
+        .calpe-modal-close {
+          position: absolute;
+          top: 1rem;
+          right: 1rem;
+          width: 34px;
+          height: 34px;
+          border: none;
+          background: #F2EFF8;
+          color: #420087;
+          font-size: 1.1rem;
+          line-height: 1;
+          cursor: pointer;
+          border-radius: 2px;
+          transition: background 0.2s;
+        }
+
+        .calpe-modal-close:hover { background: #E4DAF6; }
+
+        .calpe-modal-label {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.62rem;
+          letter-spacing: 0.24em;
+          text-transform: uppercase;
+          color: #420087;
+          margin-bottom: 0.4rem;
+        }
+
+        .calpe-modal-title {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 2.1rem;
+          line-height: 1;
+          letter-spacing: 0.03em;
+          color: #111;
+          margin-bottom: 0.4rem;
+        }
+
+        .calpe-modal-sub {
+          font-size: 0.85rem;
+          color: #8A8480;
+          margin-bottom: 1.75rem;
+        }
+
+        .calpe-modal-sub strong { color: #420087; }
+
+        .calpe-field { margin-bottom: 1.1rem; }
+
+        .calpe-field-row {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+
+        @media (max-width: 460px) {
+          .calpe-field-row { grid-template-columns: 1fr; }
+        }
+
+        .calpe-field-label {
+          display: block;
+          font-family: 'DM Mono', monospace;
+          font-size: 0.62rem;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: #777;
+          margin-bottom: 0.4rem;
+        }
+
+        .calpe-input {
+          width: 100%;
+          padding: 0.7rem 0.85rem;
+          font-family: 'Barlow', sans-serif;
+          font-size: 0.9rem;
+          color: #111;
+          background: #fff;
+          border: 1px solid #DDD6EA;
+          border-radius: 2px;
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .calpe-input:focus {
+          outline: none;
+          border-color: #420087;
+          box-shadow: 0 0 0 3px rgba(66, 0, 135, 0.1);
+        }
+
+        .calpe-gender-row {
+          display: flex;
+          gap: 0.6rem;
+          flex-wrap: wrap;
+        }
+
+        .calpe-gender-option {
+          flex: 1;
+          min-width: 90px;
+          text-align: center;
+          padding: 0.6rem 0.5rem;
+          font-size: 0.82rem;
+          color: #555;
+          background: #fff;
+          border: 1px solid #DDD6EA;
+          border-radius: 2px;
+          cursor: pointer;
+          transition: all 0.15s;
+          user-select: none;
+        }
+
+        .calpe-gender-option:hover { border-color: #b48bff; }
+
+        .calpe-gender-option.selected {
+          background: #420087;
+          border-color: #420087;
+          color: #fff;
+        }
+
+        .calpe-checkbox-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.65rem;
+          padding: 0.9rem 1rem;
+          background: #FAF8FF;
+          border: 1px solid #E0D8F0;
+          border-radius: 2px;
+          margin-top: 0.4rem;
+          cursor: pointer;
+        }
+
+        .calpe-checkbox-row input {
+          margin-top: 2px;
+          width: 16px;
+          height: 16px;
+          accent-color: #420087;
+          flex-shrink: 0;
+          cursor: pointer;
+        }
+
+        .calpe-checkbox-text {
+          font-size: 0.82rem;
+          color: #444;
+          line-height: 1.5;
+        }
+
+        .calpe-modal-submit {
+          width: 100%;
+          margin-top: 1.5rem;
+          padding: 1rem;
+          font-family: 'DM Mono', monospace;
+          font-size: 0.76rem;
+          letter-spacing: 0.18em;
+          text-transform: uppercase;
+          color: #fff;
+          background: #420087;
+          border: none;
+          border-radius: 2px;
+          cursor: pointer;
+          transition: background 0.2s;
+        }
+
+        .calpe-modal-submit:hover { background: #5a00b5; }
+
+        .calpe-modal-disclaimer {
+          font-size: 0.72rem;
+          color: #aaa;
+          text-align: center;
+          margin-top: 0.9rem;
+          line-height: 1.5;
+        }
+
         /* ── FADE ───────────────────────────────────────────────── */
         .calpe-fade {
           opacity: 0;
@@ -921,13 +1345,25 @@ export default function CalpeCamp2027Page() {
             </nav>
 
             <div key={activeTab} className="calpe-tab-panel">
-              {activeTab === "overview" && <OverviewTab />}
+              {activeTab === "overview" && (
+                <OverviewTab onReserve={setReservePkg} />
+              )}
               {activeTab === "plan" && <PlanTab />}
               {activeTab === "day" && <DayTab />}
+              {activeTab === "prices" && (
+                <PricesTab onReserve={setReservePkg} />
+              )}
             </div>
           </div>
         </section>
       </div>
+      {reservePkg && (
+        <ReservationModal
+          pkg={reservePkg}
+          prefill={prefill}
+          onClose={() => setReservePkg(null)}
+        />
+      )}
       <Footer />
     </>
   );
@@ -935,7 +1371,11 @@ export default function CalpeCamp2027Page() {
 
 /* ── TAB CONTENTS ─────────────────────────────────────────────── */
 
-function OverviewTab() {
+function OverviewTab({
+  onReserve,
+}: {
+  onReserve: (pkg: CampPackage) => void;
+}) {
   return (
     <div>
       <p className="calpe-section-label">The Camp</p>
@@ -1000,6 +1440,17 @@ function OverviewTab() {
           ))}
         </div>
       </div>
+
+      {/* Prices */}
+      <div style={{ marginTop: "4rem" }}>
+        <p className="calpe-section-label">All-in Package</p>
+        <h2 className="calpe-section-title">Prices</h2>
+        <p className="calpe-lead">
+          One simple package, two room options — the full all-in price per
+          person. See the full booking details in the Prices &amp; Booking tab.
+        </p>
+        <PriceCards onReserve={onReserve} />
+      </div>
     </div>
   );
 }
@@ -1058,6 +1509,333 @@ function DayTab() {
             <div className="calpe-tl-desc">{s.desc}</div>
           </div>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function PriceCards({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
+  return (
+    <div className="calpe-price-grid">
+      {PACKAGES.map((p) => (
+        <div
+          key={p.id}
+          className={`calpe-price-card${p.featured ? " featured" : ""}`}
+        >
+          {p.badge && <span className="calpe-price-badge">{p.badge}</span>}
+          <div className="calpe-price-name">{p.name}</div>
+          <div className="calpe-price-room">{p.tagline}</div>
+
+          <div className="calpe-price-amount">
+            <span className="calpe-price-value">{p.price}</span>
+            <span className="calpe-price-currency">EUR</span>
+          </div>
+          <div className="calpe-price-per">per person · all-in</div>
+
+          <div className="calpe-price-deposit">
+            50% deposit ({p.deposit} EUR) due by {DEPOSIT_DEADLINE} to secure
+            your place
+          </div>
+
+          <ul className="calpe-price-list">
+            <li>
+              <span className="calpe-price-check">✓</span>
+              {p.hotelLine}
+            </li>
+            {PACKAGE_INCLUDES.map((inc) => (
+              <li key={inc}>
+                <span className="calpe-price-check">✓</span>
+                {inc}
+              </li>
+            ))}
+          </ul>
+
+          <button className="calpe-reserve-btn" onClick={() => onReserve(p)}>
+            Reserve {p.name}
+          </button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PricesTab({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
+  return (
+    <div>
+      <p className="calpe-section-label">All-in Package</p>
+      <h2 className="calpe-section-title">Prices &amp; Booking</h2>
+      <p className="calpe-lead">
+        One simple package, two room options. The price below is the full,
+        all-in price per person — everything you see is included.
+      </p>
+
+      <PriceCards onReserve={onReserve} />
+
+      <div className="calpe-note-box">
+        <div className="calpe-note-title">Deposit & First Come, First Served</div>
+        <div className="calpe-note-item">
+          <span>—</span>A first deposit of 50% of the price must be paid by{" "}
+          {DEPOSIT_DEADLINE} to secure your place.
+        </div>
+        <div className="calpe-note-item">
+          <span>—</span>Places are booked first come, first served — your spot is
+          only confirmed once your deposit is received.
+        </div>
+        <div className="calpe-note-item">
+          <span>—</span>There are only 15 places. If 15 deposits come in before{" "}
+          {DEPOSIT_DEADLINE}, the camp is full and no further places are
+          available.
+        </div>
+        <div className="calpe-note-item">
+          <span>—</span>Exceptions may apply for single rooms.
+        </div>
+      </div>
+
+      <p className="calpe-price-note">
+        Flights and individual travel to / from Valencia airport are not
+        included.
+      </p>
+    </div>
+  );
+}
+
+/* ── RESERVATION MODAL ────────────────────────────────────────── */
+
+interface ReservationForm {
+  firstName: string;
+  lastName: string;
+  dob: string;
+  email: string;
+  gender: string;
+  roommate: string;
+  autoAllocate: boolean;
+}
+
+function ReservationModal({
+  pkg,
+  prefill,
+  onClose,
+}: {
+  pkg: CampPackage;
+  prefill: ReservationPrefill;
+  onClose: () => void;
+}) {
+  const { user } = useAuth();
+  const [form, setForm] = useState<ReservationForm>({
+    firstName: prefill.firstName,
+    lastName: prefill.lastName,
+    dob: "",
+    email: prefill.email,
+    gender: "",
+    roommate: "",
+    autoAllocate: false,
+  });
+  const [submitting, setSubmitting] = useState(false);
+
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  const set = <K extends keyof ReservationForm>(
+    key: K,
+    value: ReservationForm[K]
+  ) => setForm((f) => ({ ...f, [key]: value }));
+
+  const isDouble = pkg.id === "double";
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.gender) {
+      toast.error("Please select your gender.");
+      return;
+    }
+    if (!user) {
+      toast.error("You need to be logged in to reserve a place.");
+      return;
+    }
+    setSubmitting(true);
+
+    // "1.000" / "1.500" / "500" -> 1000 / 1500 / 500
+    const eurToInt = (s: string) => Number(s.replace(/\./g, ""));
+
+    const { error } = await supabase.from("camp_reservations").insert({
+      user_id: user.id,
+      first_name: form.firstName.trim(),
+      last_name: form.lastName.trim(),
+      date_of_birth: form.dob || null,
+      email: form.email.trim(),
+      gender: form.gender,
+      package_id: pkg.id,
+      price_eur: eurToInt(pkg.price),
+      deposit_eur: eurToInt(pkg.deposit),
+      roommate_preference: isDouble ? form.roommate.trim() || null : null,
+      auto_allocate_by_gender: isDouble ? form.autoAllocate : false,
+      status: "pending",
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      if (error.message?.includes("row-level security") || error.code === "42501") {
+        toast.error(
+          "Permission denied — please make sure your account is activated."
+        );
+      } else {
+        toast.error(error.message || "Failed to submit reservation.");
+      }
+      console.error("Reservation insert error:", error);
+      return;
+    }
+
+    toast.success("Reservation request received — we'll be in touch soon!");
+    onClose();
+  };
+
+  return (
+    <div
+      className="calpe-modal-overlay"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="calpe-modal" role="dialog" aria-modal="true">
+        <button
+          className="calpe-modal-close"
+          onClick={onClose}
+          aria-label="Close"
+        >
+          ✕
+        </button>
+
+        <p className="calpe-modal-label">Reservation</p>
+        <h3 className="calpe-modal-title">Calpe Camp 2027</h3>
+        <p className="calpe-modal-sub">
+          {pkg.name} · <strong>{pkg.price} EUR</strong> per person — all-in
+        </p>
+
+        <form onSubmit={handleSubmit}>
+          <div className="calpe-field-row">
+            <div className="calpe-field">
+              <label className="calpe-field-label" htmlFor="firstName">
+                First name
+              </label>
+              <input
+                id="firstName"
+                className="calpe-input"
+                type="text"
+                required
+                value={form.firstName}
+                onChange={(e) => set("firstName", e.target.value)}
+              />
+            </div>
+            <div className="calpe-field">
+              <label className="calpe-field-label" htmlFor="lastName">
+                Last name
+              </label>
+              <input
+                id="lastName"
+                className="calpe-input"
+                type="text"
+                required
+                value={form.lastName}
+                onChange={(e) => set("lastName", e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="calpe-field-row">
+            <div className="calpe-field">
+              <label className="calpe-field-label" htmlFor="dob">
+                Date of birth
+              </label>
+              <input
+                id="dob"
+                className="calpe-input"
+                type="date"
+                required
+                value={form.dob}
+                onChange={(e) => set("dob", e.target.value)}
+              />
+            </div>
+            <div className="calpe-field">
+              <label className="calpe-field-label" htmlFor="email">
+                Email
+              </label>
+              <input
+                id="email"
+                className="calpe-input"
+                type="email"
+                required
+                value={form.email}
+                onChange={(e) => set("email", e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div className="calpe-field">
+            <label className="calpe-field-label">Gender</label>
+            <div className="calpe-gender-row">
+              {GENDER_OPTIONS.map((g) => (
+                <div
+                  key={g.value}
+                  className={`calpe-gender-option${
+                    form.gender === g.value ? " selected" : ""
+                  }`}
+                  onClick={() => set("gender", g.value)}
+                >
+                  {g.label}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {isDouble && (
+            <>
+              <div className="calpe-field">
+                <label className="calpe-field-label" htmlFor="roommate">
+                  Room sharing (optional)
+                </label>
+                <input
+                  id="roommate"
+                  className="calpe-input"
+                  type="text"
+                  placeholder="If you already have an arrangement, who would you share with?"
+                  value={form.roommate}
+                  onChange={(e) => set("roommate", e.target.value)}
+                />
+              </div>
+
+              <label className="calpe-checkbox-row">
+                <input
+                  type="checkbox"
+                  checked={form.autoAllocate}
+                  onChange={(e) => set("autoAllocate", e.target.checked)}
+                />
+                <span className="calpe-checkbox-text">
+                  Allocation will happen in the system automatically by gender
+                </span>
+              </label>
+            </>
+          )}
+
+          <button
+            className="calpe-modal-submit"
+            type="submit"
+            disabled={submitting}
+          >
+            {submitting ? "Sending…" : "Submit Reservation"}
+          </button>
+          <p className="calpe-modal-disclaimer">
+            First come, first served. Your place is secured once a 50% deposit
+            ({pkg.deposit} EUR) is paid by {DEPOSIT_DEADLINE}. This sends a
+            reservation request — payment details follow by email.
+          </p>
+        </form>
       </div>
     </div>
   );

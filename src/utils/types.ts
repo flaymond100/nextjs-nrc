@@ -257,3 +257,29 @@ export interface Order {
   user_last_name?: string | null;
   items?: OrderItem[];
 }
+
+export type CampReservationStatus =
+  | "pending"
+  | "confirmed"
+  | "waitlisted"
+  | "cancelled";
+
+export interface CampReservation {
+  id: number;
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  date_of_birth: string | null;
+  email: string;
+  gender: "male" | "female" | "binary" | null;
+  package_id: "double" | "single";
+  price_eur: number;
+  deposit_eur: number;
+  roommate_preference: string | null;
+  auto_allocate_by_gender: boolean;
+  status: CampReservationStatus;
+  deposit_paid: boolean;
+  deposit_paid_at: string | null;
+  created_at: string;
+  updated_at: string;
+}

@@ -51,6 +51,12 @@ const STATIC_MENU_ITEMS: MenuItem[] = [
     adminOnly: true,
   },
   {
+    name: "Camp 2027",
+    href: "/dashboard/camp-reservations",
+    icon: "🏔️",
+    adminOnly: true,
+  },
+  {
     name: "Payments",
     href: "/dashboard/payments",
     icon: "💳",

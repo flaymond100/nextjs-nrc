@@ -52,6 +52,7 @@ import DashboardMyRacesPage from "@/app/dashboard/my-races/page";
 import DashboardMyOrdersPage from "@/app/dashboard/my-orders/page";
 import DashboardAllOrdersPage from "@/app/dashboard/all-orders/page";
 import DashboardMembersPage from "@/app/dashboard/members/page";
+import DashboardCampReservationsPage from "@/app/dashboard/camp-reservations/page";
 import DashboardPaymentsPage from "@/app/dashboard/payments/page";
 import DashboardStoresPage from "@/app/dashboard/stores/page";
 import VittoriaStorePage from "@/app/dashboard/vittoria-store/page";
@@ -163,6 +164,10 @@ export default function App() {
             <Route path="my-orders" element={<DashboardMyOrdersPage />} />
             <Route path="all-orders" element={<DashboardAllOrdersPage />} />
             <Route path="members" element={<DashboardMembersPage />} />
+            <Route
+              path="camp-reservations"
+              element={<DashboardCampReservationsPage />}
+            />
             <Route path="payments" element={<DashboardPaymentsPage />} />
             <Route path="stores" element={<DashboardStoresPage />} />
 
