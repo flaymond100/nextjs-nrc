@@ -125,7 +125,7 @@ export default function Campaign() {
         {/* Left Banner - visible at lg+ */}
         <div className="hidden lg:flex flex-col items-center justify-start sticky top-24 self-start flex-1 max-w-[180px] xl:max-w-[280px] shrink-0 py-8">
           <a
-            href="https://www.roadclassics.cz/en/propozice/palava"
+            href="https://revolution-crit.de/calendar/d71c1d76-d4be-49d7-9661-62817a5bb21e/register"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -145,7 +145,7 @@ export default function Campaign() {
         {/* Right Banner - visible at lg+ */}
         <div className="hidden lg:flex flex-col items-center justify-start sticky top-24 self-start flex-1 max-w-[180px] xl:max-w-[280px] shrink-0 py-8">
           <a
-            href="https://www.roadclassics.cz/en/propozice/palava"
+            href="https://revolution-crit.de/calendar/d71c1d76-d4be-49d7-9661-62817a5bb21e/register"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -167,7 +167,7 @@ export default function Campaign() {
             }`}
           >
             <a
-              href="https://www.roadclassics.cz/en/propozice/palava"
+              href="https://revolution-crit.de/calendar/d71c1d76-d4be-49d7-9661-62817a5bb21e/register"
               target="_blank"
               rel="noopener noreferrer"
             >
