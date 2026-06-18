@@ -278,10 +278,9 @@ const DEPOSIT_DEADLINE = "19 August 2026";
 
 // Bank details for the deposit / balance transfer.
 const PAYMENT_DETAILS = {
-  accountHolder: "NRC Team",
   iban: "DE70 8306 5408 0006 8964 56",
   bic: "GENODEF1SLR",
-  bank: "NRC INTERNATIONAL TEAM e.V.",
+  accountHolder: "NRC INTERNATIONAL TEAM e.V.",
 };
 
 const GENDER_OPTIONS = [
@@ -1941,10 +1940,7 @@ function ReservationModal({
                 <dt>BIC</dt>
                 <dd>{PAYMENT_DETAILS.bic}</dd>
               </div>
-              <div>
-                <dt>Bank</dt>
-                <dd>{PAYMENT_DETAILS.bank}</dd>
-              </div>
+              
               <div>
                 <dt>Reference</dt>
                 <dd>Calpe Camp 2027</dd>

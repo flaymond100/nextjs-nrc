@@ -19,7 +19,7 @@ export function Footer() {
         <div className="flex flex-wrap items-end justify-center gap-8 md:justify-between">
           <div className="text-center md:text-left">
             <Typography as="a" href="/" variant="h4" className="mb-6">
-              NRC Team
+              NRC International Team e.V.
             </Typography>
             <ul className="flex flex-wrap items-center justify-center md:justify-start">
               {LINKS.map((data, idx) => (
@@ -104,7 +104,7 @@ export function Footer() {
         </div>
         <div className="mt-16 flex flex-wrap items-center justify-center gap-y-4 gap-x-8 border-t border-blue-gray-50 py-6 md:justify-between">
           <p className="text-center font-normal !text-gray-700">
-            &copy; {CURRENT_YEAR} NRC Team
+            &copy; {CURRENT_YEAR} NRC International Team e.V.
           </p>
         </div>
       </div>
