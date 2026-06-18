@@ -1947,10 +1947,7 @@ function ReservationModal({
               </div>
               <div>
                 <dt>Reference</dt>
-                <dd>
-                  Calpe Camp 2027 — {form.firstName || "First"}{" "}
-                  {form.lastName || "Last"}
-                </dd>
+                <dd>Calpe Camp 2027</dd>
               </div>
             </dl>
           </div>
