@@ -277,6 +277,8 @@ export interface CampReservation {
   deposit_eur: number;
   roommate_preference: string | null;
   auto_allocate_by_gender: boolean;
+  rent_bike: boolean;
+  needs_airport_transfer: boolean;
   status: CampReservationStatus;
   deposit_paid: boolean;
   deposit_paid_at: string | null;

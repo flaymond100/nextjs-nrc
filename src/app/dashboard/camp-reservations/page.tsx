@@ -287,6 +287,18 @@ export default function CampReservationsPage() {
                             )}
                           </div>
                         )}
+                        <div className="flex flex-wrap gap-1.5 mt-2">
+                          {r.needs_airport_transfer && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-blue-100 text-blue-800">
+                              ✈️ Airport transfer
+                            </span>
+                          )}
+                          {r.rent_bike && (
+                            <span className="px-2 py-0.5 text-xs rounded-full bg-amber-100 text-amber-800">
+                              🚲 Bike rental (Luka)
+                            </span>
+                          )}
+                        </div>
                       </td>
 
                       {/* Room */}

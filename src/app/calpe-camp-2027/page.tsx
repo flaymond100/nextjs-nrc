@@ -276,6 +276,14 @@ const PACKAGES: CampPackage[] = [
 // First deposit (50%) deadline — secures your place, first come first served.
 const DEPOSIT_DEADLINE = "19 August 2026";
 
+// Bank details for the deposit / balance transfer.
+const PAYMENT_DETAILS = {
+  accountHolder: "NRC Team",
+  iban: "DE70 8306 5408 0006 8964 56",
+  bic: "GENODEF1SLR",
+  bank: "NRC INTERNATIONAL TEAM e.V.",
+};
+
 const GENDER_OPTIONS = [
   { value: "male", label: "Male" },
   { value: "female", label: "Female" },
@@ -1225,6 +1233,65 @@ export default function CalpeCamp2027Page() {
           line-height: 1.5;
         }
 
+        .calpe-payment-box {
+          margin-top: 1.5rem;
+          padding: 1.1rem 1.25rem;
+          background: #0f0f0f;
+          border-radius: 2px;
+          color: #fff;
+        }
+
+        .calpe-payment-title {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.62rem;
+          letter-spacing: 0.2em;
+          text-transform: uppercase;
+          color: #b575ff;
+          margin-bottom: 0.6rem;
+        }
+
+        .calpe-payment-intro {
+          font-size: 0.8rem;
+          color: rgba(255,255,255,0.65);
+          line-height: 1.5;
+          margin-bottom: 0.9rem;
+        }
+
+        .calpe-payment-rows {
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+        }
+
+        .calpe-payment-rows > div {
+          display: flex;
+          justify-content: space-between;
+          align-items: baseline;
+          gap: 1rem;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
+          padding-bottom: 0.5rem;
+        }
+
+        .calpe-payment-rows > div:last-child { border-bottom: none; padding-bottom: 0; }
+
+        .calpe-payment-rows dt {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.62rem;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.4);
+          flex-shrink: 0;
+        }
+
+        .calpe-payment-rows dd {
+          margin: 0;
+          font-size: 0.86rem;
+          color: #fff;
+          text-align: right;
+          word-break: break-word;
+        }
+
         .calpe-modal-submit {
           width: 100%;
           margin-top: 1.5rem;
@@ -1371,11 +1438,7 @@ export default function CalpeCamp2027Page() {
 
 /* ── TAB CONTENTS ─────────────────────────────────────────────── */
 
-function OverviewTab({
-  onReserve,
-}: {
-  onReserve: (pkg: CampPackage) => void;
-}) {
+function OverviewTab({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
   return (
     <div>
       <p className="calpe-section-label">The Camp</p>
@@ -1572,14 +1635,16 @@ function PricesTab({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
       <PriceCards onReserve={onReserve} />
 
       <div className="calpe-note-box">
-        <div className="calpe-note-title">Deposit & First Come, First Served</div>
+        <div className="calpe-note-title">
+          Deposit & First Come, First Served
+        </div>
         <div className="calpe-note-item">
           <span>—</span>A first deposit of 50% of the price must be paid by{" "}
           {DEPOSIT_DEADLINE} to secure your place.
         </div>
         <div className="calpe-note-item">
-          <span>—</span>Places are booked first come, first served — your spot is
-          only confirmed once your deposit is received.
+          <span>—</span>Places are booked first come, first served — your spot
+          is only confirmed once your deposit is received.
         </div>
         <div className="calpe-note-item">
           <span>—</span>There are only 15 places. If 15 deposits come in before{" "}
@@ -1609,6 +1674,8 @@ interface ReservationForm {
   gender: string;
   roommate: string;
   autoAllocate: boolean;
+  rentBike: boolean;
+  needsTransfer: boolean;
 }
 
 function ReservationModal({
@@ -1629,6 +1696,8 @@ function ReservationModal({
     gender: "",
     roommate: "",
     autoAllocate: false,
+    rentBike: false,
+    needsTransfer: false,
   });
   const [submitting, setSubmitting] = useState(false);
 
@@ -1675,13 +1744,18 @@ function ReservationModal({
       deposit_eur: eurToInt(pkg.deposit),
       roommate_preference: isDouble ? form.roommate.trim() || null : null,
       auto_allocate_by_gender: isDouble ? form.autoAllocate : false,
+      rent_bike: form.rentBike,
+      needs_airport_transfer: form.needsTransfer,
       status: "pending",
     });
 
     setSubmitting(false);
 
     if (error) {
-      if (error.message?.includes("row-level security") || error.code === "42501") {
+      if (
+        error.message?.includes("row-level security") ||
+        error.code === "42501"
+      ) {
         toast.error(
           "Permission denied — please make sure your account is activated."
         );
@@ -1823,6 +1897,64 @@ function ReservationModal({
             </>
           )}
 
+          <label className="calpe-checkbox-row">
+            <input
+              type="checkbox"
+              checked={form.rentBike}
+              onChange={(e) => set("rentBike", e.target.checked)}
+            />
+            <span className="calpe-checkbox-text">
+              I'd like to rent a bike on site. We partner with{" "}
+              <strong>Luka Bike</strong> and can reserve one for you —{" "}
+              <em>paid separately, directly with the rental.</em>
+            </span>
+          </label>
+
+          <label className="calpe-checkbox-row">
+            <input
+              type="checkbox"
+              checked={form.needsTransfer}
+              onChange={(e) => set("needsTransfer", e.target.checked)}
+            />
+            <span className="calpe-checkbox-text">
+              I need the transfer from / to <strong>Valencia airport</strong>{" "}
+              (included in the package).
+            </span>
+          </label>
+
+          <div className="calpe-payment-box">
+            <div className="calpe-payment-title">Where to pay your deposit</div>
+            <p className="calpe-payment-intro">
+              Once you've submitted, transfer the 50% deposit ({pkg.deposit}{" "}
+              EUR) by {DEPOSIT_DEADLINE} to secure your place:
+            </p>
+            <dl className="calpe-payment-rows">
+              <div>
+                <dt>Account holder</dt>
+                <dd>{PAYMENT_DETAILS.accountHolder}</dd>
+              </div>
+              <div>
+                <dt>IBAN</dt>
+                <dd>{PAYMENT_DETAILS.iban}</dd>
+              </div>
+              <div>
+                <dt>BIC</dt>
+                <dd>{PAYMENT_DETAILS.bic}</dd>
+              </div>
+              <div>
+                <dt>Bank</dt>
+                <dd>{PAYMENT_DETAILS.bank}</dd>
+              </div>
+              <div>
+                <dt>Reference</dt>
+                <dd>
+                  Calpe Camp 2027 — {form.firstName || "First"}{" "}
+                  {form.lastName || "Last"}
+                </dd>
+              </div>
+            </dl>
+          </div>
+
           <button
             className="calpe-modal-submit"
             type="submit"
@@ -1831,8 +1963,8 @@ function ReservationModal({
             {submitting ? "Sending…" : "Submit Reservation"}
           </button>
           <p className="calpe-modal-disclaimer">
-            First come, first served. Your place is secured once a 50% deposit
-            ({pkg.deposit} EUR) is paid by {DEPOSIT_DEADLINE}. This sends a
+            First come, first served. Your place is secured once a 50% deposit (
+            {pkg.deposit} EUR) is paid by {DEPOSIT_DEADLINE}. This sends a
             reservation request — payment details follow by email.
           </p>
         </form>
