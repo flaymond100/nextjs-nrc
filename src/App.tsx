@@ -25,6 +25,7 @@ import ForbiddenPage from "@/app/forbidden/page";
 import GalleryIndexPage from "@/app/gallery/page";
 import GalleryAlbumPage from "@/app/gallery/[slug]/page";
 import GetStartedPage from "@/app/get-started/page";
+import ImpressumPage from "@/app/impressum/page";
 import LoginPage from "@/app/login/page";
 import NSC2026Page from "@/app/nsc-2026/page";
 import NewsIndexPage from "@/app/news/page";
@@ -119,6 +120,7 @@ export default function App() {
           <Route path="/gallery/:slug" element={<GalleryAlbumPage />} />
 
           <Route path="/get-started" element={<GetStartedPage />} />
+          <Route path="/impressum" element={<ImpressumPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/nsc-2026" element={<NSC2026Page />} />
 

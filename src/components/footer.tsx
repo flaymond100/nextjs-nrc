@@ -9,6 +9,7 @@ const LINKS = [
     link: item.href,
   })),
   { title: "Terms", link: "/terms-and-conditions" },
+  { title: "Impressum", link: "/impressum" },
 ];
 const CURRENT_YEAR = new Date().getFullYear();
 
