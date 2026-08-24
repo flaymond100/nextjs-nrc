@@ -251,7 +251,7 @@ export default function DashboardLayout() {
       return {
         name: displayName,
         href,
-        icon: displayName === "Vittoria Store" ? "🛞" : "🍩",
+        icon: displayName === "Store" ? "🛞" : "🍩",
         store_name: store.store_name,
       };
     }),

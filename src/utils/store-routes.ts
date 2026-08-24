@@ -5,7 +5,7 @@ export function getDashboardStoreHref(storeName: string): string {
     case "socks_store":
       return "/dashboard/apparel-store";
     case "vittoria_store":
-      return "/dashboard/vittoria-store";
+      return "/dashboard/store";
     default:
       return `/dashboard/store?store=${storeName}`;
   }

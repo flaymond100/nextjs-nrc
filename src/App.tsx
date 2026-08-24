@@ -56,10 +56,10 @@ import DashboardMembersPage from "@/app/dashboard/members/page";
 import DashboardCampReservationsPage from "@/app/dashboard/camp-reservations/page";
 import DashboardPaymentsPage from "@/app/dashboard/payments/page";
 import DashboardStoresPage from "@/app/dashboard/stores/page";
-import VittoriaStorePage from "@/app/dashboard/vittoria-store/page";
-import VittoriaStoreAdminPage from "@/app/dashboard/vittoria-store/admin/page";
-import VittoriaStoreCheckoutPage from "@/app/dashboard/vittoria-store/checkout/page";
-import VittoriaStoreConfirmationPage from "@/app/dashboard/vittoria-store/confirmation/page";
+import StorePage from "@/app/dashboard/store/page";
+import StoreAdminPage from "@/app/dashboard/store/admin/page";
+import StoreCheckoutPage from "@/app/dashboard/store/checkout/page";
+import StoreConfirmationPage from "@/app/dashboard/store/confirmation/page";
 import FourEnduranceStorePage from "@/app/dashboard/4endurance-store/page";
 import FourEnduranceStoreAdminPage from "@/app/dashboard/4endurance-store/admin/page";
 import FourEnduranceStoreCheckoutPage from "@/app/dashboard/4endurance-store/checkout/page";
@@ -173,18 +173,12 @@ export default function App() {
             <Route path="payments" element={<DashboardPaymentsPage />} />
             <Route path="stores" element={<DashboardStoresPage />} />
 
-            <Route path="vittoria-store" element={<VittoriaStorePage />} />
+            <Route path="store" element={<StorePage />} />
+            <Route path="store/admin" element={<StoreAdminPage />} />
+            <Route path="store/checkout" element={<StoreCheckoutPage />} />
             <Route
-              path="vittoria-store/admin"
-              element={<VittoriaStoreAdminPage />}
-            />
-            <Route
-              path="vittoria-store/checkout"
-              element={<VittoriaStoreCheckoutPage />}
-            />
-            <Route
-              path="vittoria-store/confirmation"
-              element={<VittoriaStoreConfirmationPage />}
+              path="store/confirmation"
+              element={<StoreConfirmationPage />}
             />
 
             <Route

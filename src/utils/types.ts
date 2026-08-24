@@ -190,7 +190,7 @@ export interface StoreManagement {
   updated_at: string;
 }
 
-export interface VittoriaStoreOrderRow {
+export interface StoreOrderRow {
   id: number;
   store_id: number | null;
   order_id: number | null;
@@ -202,7 +202,7 @@ export interface VittoriaStoreOrderRow {
   name: string | null;
 }
 
-export interface VittoriaStoreProduct {
+export interface StoreProduct {
   id: number;
   store_id: number | null;
   order_id: number | null;
