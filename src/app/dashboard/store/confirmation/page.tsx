@@ -165,6 +165,24 @@ export default function OrderConfirmationPage() {
             </div>
           </div>
 
+          <div className="mt-4 sm:mt-6">
+            <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3">
+              Delivery:
+            </h3>
+            {order.delivery_requested ? (
+              <div className="text-sm sm:text-base text-gray-700">
+                <p className="font-medium">{order.delivery_name}</p>
+                <p className="text-gray-600 whitespace-pre-line">
+                  {order.delivery_address}
+                </p>
+              </div>
+            ) : (
+              <p className="text-sm sm:text-base text-gray-600">
+                Pickup in person (no delivery).
+              </p>
+            )}
+          </div>
+
           {orderItems.length > 0 && (
             <div className="mt-4 sm:mt-6">
               <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3">
@@ -199,12 +217,19 @@ export default function OrderConfirmationPage() {
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
               <span>Subtotal:</span>
               <span>
-                {(order.total_price - 6).toFixed(2)} {order.currency}
+                {(order.total_price - (order.delivery_requested ? 6 : 0)).toFixed(
+                  2
+                )}{" "}
+                {order.currency}
               </span>
             </div>
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
               <span>Delivery:</span>
-              <span>6.00 {order.currency}</span>
+              <span>
+                {order.delivery_requested
+                  ? `6.00 ${order.currency}`
+                  : "Pickup"}
+              </span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-gray-200">
               <span className="text-lg sm:text-xl font-bold text-gray-800">

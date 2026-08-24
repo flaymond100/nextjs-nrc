@@ -18,6 +18,9 @@ export default function CheckoutPage() {
   const [cartItems, setCartItems] = useState<StoreCartItem[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [deliveryRequested, setDeliveryRequested] = useState(false);
+  const [deliveryName, setDeliveryName] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -102,9 +105,11 @@ export default function CheckoutPage() {
     [cartItems]
   );
 
+  const deliveryFee = deliveryRequested ? DELIVERY_FEE : 0;
+
   const storeTotal = useMemo(
-    () => storeSubtotal + DELIVERY_FEE,
-    [storeSubtotal]
+    () => storeSubtotal + deliveryFee,
+    [storeSubtotal, deliveryFee]
   );
 
   const handleSubmitOrder = async () => {
@@ -115,6 +120,13 @@ export default function CheckoutPage() {
 
     if (cartItems.length === 0) {
       setSubmitError("Your cart is empty.");
+      return;
+    }
+
+    if (deliveryRequested && (!deliveryName.trim() || !deliveryAddress.trim())) {
+      setSubmitError(
+        "Please provide a name and full address for delivery, or turn delivery off to pick up in person."
+      );
       return;
     }
 
@@ -187,6 +199,9 @@ export default function CheckoutPage() {
           total_price: storeTotal,
           currency: "EUR",
           status: "pending",
+          delivery_requested: deliveryRequested,
+          delivery_name: deliveryRequested ? deliveryName.trim() : null,
+          delivery_address: deliveryRequested ? deliveryAddress.trim() : null,
         })
         .select()
         .single();
@@ -441,7 +456,9 @@ export default function CheckoutPage() {
           </div>
           <div className="flex justify-between items-center text-gray-600">
             <span>Delivery:</span>
-            <span>€{DELIVERY_FEE.toFixed(2)}</span>
+            <span>
+              {deliveryRequested ? `€${deliveryFee.toFixed(2)}` : "Pickup"}
+            </span>
           </div>
           <div className="flex justify-between items-center pt-2 border-t border-gray-200">
             <span className="text-lg font-bold text-gray-800">Total:</span>
@@ -453,6 +470,54 @@ export default function CheckoutPage() {
             Price already includes VAT
           </p>
         </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Delivery</h2>
+
+        <label className="flex items-start gap-3 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={deliveryRequested}
+            onChange={(e) => setDeliveryRequested(e.target.checked)}
+            className="mt-1 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+          />
+          <span className="text-sm text-gray-700">
+            Deliver to an address (+€{DELIVERY_FEE.toFixed(2)}). Leave this
+            unchecked to pick up in person for free.
+          </span>
+        </label>
+
+        {deliveryRequested && (
+          <div className="mt-4 space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Full Name *
+              </label>
+              <input
+                type="text"
+                value={deliveryName}
+                onChange={(e) => setDeliveryName(e.target.value)}
+                required
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Jane Doe"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Full Address *
+              </label>
+              <textarea
+                value={deliveryAddress}
+                onChange={(e) => setDeliveryAddress(e.target.value)}
+                required
+                rows={3}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                placeholder="Street, house number, postal code, city, country"
+              />
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6 mb-6">

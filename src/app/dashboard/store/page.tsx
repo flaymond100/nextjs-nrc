@@ -31,6 +31,9 @@ type StoreOrderRowExpanded = StoreOrderRow & {
     status: OrderStatus;
     created_at: string;
     updated_at: string;
+    delivery_requested: boolean;
+    delivery_name: string | null;
+    delivery_address: string | null;
   } | null;
   order_items?: {
     id: number;
@@ -93,6 +96,9 @@ function buildOrders(rows: StoreOrderRowExpanded[]): StoreOrder[] {
         status: orderData.status,
         created_at: orderData.created_at,
         updated_at: orderData.updated_at,
+        delivery_requested: orderData.delivery_requested === true,
+        delivery_name: orderData.delivery_name ?? null,
+        delivery_address: orderData.delivery_address ?? null,
         items: [],
       });
     }
@@ -303,7 +309,7 @@ export default function StorePage() {
     let query = supabase
       .from("vittoria_store")
       .select(
-        "id, store_id, order_id, order_item_id, created_at, updated_at, price, quantity, name, orders!inner(id, user_id, total_price, currency, status, created_at, updated_at), order_items(id, order_id, variant_id, product_name, quantity, price_at_time, currency, created_at, size, gender)"
+        "id, store_id, order_id, order_item_id, created_at, updated_at, price, quantity, name, orders!inner(id, user_id, total_price, currency, status, created_at, updated_at, delivery_requested, delivery_name, delivery_address), order_items(id, order_id, variant_id, product_name, quantity, price_at_time, currency, created_at, size, gender)"
       )
       .order("created_at", { ascending: false });
 
@@ -862,6 +868,26 @@ export default function StorePage() {
                       </button>
                     )}
                   </div>
+                </div>
+
+                <div className="mb-4 rounded-lg border border-gray-200 p-3 bg-gray-50">
+                  {order.delivery_requested ? (
+                    <>
+                      <p className="text-sm font-semibold text-gray-800">
+                        🚚 Delivery requested
+                      </p>
+                      <p className="text-sm text-gray-700 mt-1">
+                        {order.delivery_name}
+                      </p>
+                      <p className="text-sm text-gray-600 whitespace-pre-line">
+                        {order.delivery_address}
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-sm text-gray-600">
+                      🏠 Pickup in person (no delivery)
+                    </p>
+                  )}
                 </div>
 
                 <div className="overflow-x-auto">

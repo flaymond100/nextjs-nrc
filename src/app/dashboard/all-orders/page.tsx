@@ -272,6 +272,20 @@ export default function AllOrdersPage() {
                 {/* Order Items (Expandable) */}
                 {isExpanded && (
                   <div className="border-t border-gray-200 p-4 sm:p-6 bg-gray-50">
+                    {order.delivery_requested && (
+                      <div className="mb-4 rounded-lg border border-gray-200 bg-white p-3">
+                        <p className="text-sm font-semibold text-gray-800">
+                          🚚 Delivery requested
+                        </p>
+                        <p className="text-sm text-gray-700 mt-1">
+                          {order.delivery_name}
+                        </p>
+                        <p className="text-sm text-gray-600 whitespace-pre-line">
+                          {order.delivery_address}
+                        </p>
+                      </div>
+                    )}
+
                     <h4 className="text-lg font-semibold text-gray-800 mb-4">
                       Order Items
                     </h4>

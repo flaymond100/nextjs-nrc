@@ -251,6 +251,9 @@ export interface Order {
   status: OrderStatus;
   created_at: string;
   updated_at: string;
+  delivery_requested: boolean;
+  delivery_name: string | null;
+  delivery_address: string | null;
   // Joined data (optional, for admin views)
   user_email?: string | null;
   user_first_name?: string | null;
