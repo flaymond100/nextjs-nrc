@@ -275,13 +275,17 @@ export default function AllOrdersPage() {
                     {order.delivery_requested && (
                       <div className="mb-4 rounded-lg border border-gray-200 bg-white p-3">
                         <p className="text-sm font-semibold text-gray-800">
-                          🚚 Delivery requested
+                          📦 Self-shipped — customer prints their own label
                         </p>
                         <p className="text-sm text-gray-700 mt-1">
                           {order.delivery_name}
                         </p>
                         <p className="text-sm text-gray-600 whitespace-pre-line">
                           {order.delivery_address}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          Shipping label will be sent to Jan Wagebach via
+                          WhatsApp.
                         </p>
                       </div>
                     )}

@@ -167,18 +167,27 @@ export default function OrderConfirmationPage() {
 
           <div className="mt-4 sm:mt-6">
             <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-2 sm:mb-3">
-              Delivery:
+              Shipping:
             </h3>
             {order.delivery_requested ? (
-              <div className="text-sm sm:text-base text-gray-700">
-                <p className="font-medium">{order.delivery_name}</p>
-                <p className="text-gray-600 whitespace-pre-line">
-                  {order.delivery_address}
-                </p>
-              </div>
+              <>
+                <div className="text-sm sm:text-base text-gray-700">
+                  <p className="font-medium">{order.delivery_name}</p>
+                  <p className="text-gray-600 whitespace-pre-line">
+                    {order.delivery_address}
+                  </p>
+                </div>
+                <div className="mt-3 rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+                  <p className="text-xs sm:text-sm text-yellow-800">
+                    📦 Please print your own prepaid shipping label for this
+                    address and send it to <strong>Jan Wagebach</strong> via
+                    WhatsApp so your order can be shipped.
+                  </p>
+                </div>
+              </>
             ) : (
               <p className="text-sm sm:text-base text-gray-600">
-                Pickup in person (no delivery).
+                Pickup in person (no shipping).
               </p>
             )}
           </div>
@@ -217,19 +226,12 @@ export default function OrderConfirmationPage() {
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
               <span>Subtotal:</span>
               <span>
-                {(order.total_price - (order.delivery_requested ? 6 : 0)).toFixed(
-                  2
-                )}{" "}
-                {order.currency}
+                {order.total_price.toFixed(2)} {order.currency}
               </span>
             </div>
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
-              <span>Delivery:</span>
-              <span>
-                {order.delivery_requested
-                  ? `6.00 ${order.currency}`
-                  : "Pickup"}
-              </span>
+              <span>Shipping:</span>
+              <span>{order.delivery_requested ? "Self-shipped" : "Pickup"}</span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-gray-200">
               <span className="text-lg sm:text-xl font-bold text-gray-800">

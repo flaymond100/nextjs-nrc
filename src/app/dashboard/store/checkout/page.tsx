@@ -94,8 +94,6 @@ export default function CheckoutPage() {
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  const DELIVERY_FEE = 6;
-
   const storeSubtotal = useMemo(
     () =>
       cartItems.reduce(
@@ -105,12 +103,9 @@ export default function CheckoutPage() {
     [cartItems]
   );
 
-  const deliveryFee = deliveryRequested ? DELIVERY_FEE : 0;
-
-  const storeTotal = useMemo(
-    () => storeSubtotal + deliveryFee,
-    [storeSubtotal, deliveryFee]
-  );
+  // Shipping no longer costs anything through the club — customers who want
+  // their order shipped provide their own prepaid label.
+  const storeTotal = storeSubtotal;
 
   const handleSubmitOrder = async () => {
     if (!user) {
@@ -125,7 +120,7 @@ export default function CheckoutPage() {
 
     if (deliveryRequested && (!deliveryName.trim() || !deliveryAddress.trim())) {
       setSubmitError(
-        "Please provide a name and full address for delivery, or turn delivery off to pick up in person."
+        "Please provide a name and full address for shipping, or turn shipping off to pick up in person."
       );
       return;
     }
@@ -455,10 +450,8 @@ export default function CheckoutPage() {
             <span>€{storeSubtotal.toFixed(2)}</span>
           </div>
           <div className="flex justify-between items-center text-gray-600">
-            <span>Delivery:</span>
-            <span>
-              {deliveryRequested ? `€${deliveryFee.toFixed(2)}` : "Pickup"}
-            </span>
+            <span>Shipping:</span>
+            <span>{deliveryRequested ? "Self-shipped" : "Pickup"}</span>
           </div>
           <div className="flex justify-between items-center pt-2 border-t border-gray-200">
             <span className="text-lg font-bold text-gray-800">Total:</span>
@@ -473,20 +466,32 @@ export default function CheckoutPage() {
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-        <h2 className="text-xl font-bold text-gray-800 mb-4">Delivery</h2>
+        <h2 className="text-xl font-bold text-gray-800 mb-4">Shipping</h2>
 
-        <label className="flex items-start gap-3 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={deliveryRequested}
-            onChange={(e) => setDeliveryRequested(e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
-          />
-          <span className="text-sm text-gray-700">
-            Deliver to an address (+€{DELIVERY_FEE.toFixed(2)}). Leave this
-            unchecked to pick up in person for free.
-          </span>
-        </label>
+        <div className="space-y-3">
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="radio"
+              name="fulfillment-method"
+              checked={!deliveryRequested}
+              onChange={() => setDeliveryRequested(false)}
+              className="mt-1 h-4 w-4 border-gray-300 text-purple-600 focus:ring-purple-500"
+            />
+            <span className="text-sm text-gray-700">Picking up in person</span>
+          </label>
+          <label className="flex items-start gap-3 cursor-pointer">
+            <input
+              type="radio"
+              name="fulfillment-method"
+              checked={deliveryRequested}
+              onChange={() => setDeliveryRequested(true)}
+              className="mt-1 h-4 w-4 border-gray-300 text-purple-600 focus:ring-purple-500"
+            />
+            <span className="text-sm text-gray-700">
+              Shipping — I'll print my own shipping label
+            </span>
+          </label>
+        </div>
 
         {deliveryRequested && (
           <div className="mt-4 space-y-4">
@@ -515,6 +520,14 @@ export default function CheckoutPage() {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 placeholder="Street, house number, postal code, city, country"
               />
+            </div>
+            <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-3">
+              <p className="text-sm text-yellow-800">
+                📦 You'll need to arrange and print your own prepaid shipping
+                label for this address. Once you have it, send it to{" "}
+                <strong>Jan Wagebach</strong> via WhatsApp so your order can be
+                shipped.
+              </p>
             </div>
           </div>
         )}

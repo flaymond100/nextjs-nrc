@@ -874,7 +874,7 @@ export default function StorePage() {
                   {order.delivery_requested ? (
                     <>
                       <p className="text-sm font-semibold text-gray-800">
-                        🚚 Delivery requested
+                        📦 Self-shipped — customer prints their own label
                       </p>
                       <p className="text-sm text-gray-700 mt-1">
                         {order.delivery_name}
@@ -882,10 +882,14 @@ export default function StorePage() {
                       <p className="text-sm text-gray-600 whitespace-pre-line">
                         {order.delivery_address}
                       </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        Shipping label will be sent to Jan Wagebach via
+                        WhatsApp.
+                      </p>
                     </>
                   ) : (
                     <p className="text-sm text-gray-600">
-                      🏠 Pickup in person (no delivery)
+                      🏠 Pickup in person (no shipping)
                     </p>
                   )}
                 </div>
