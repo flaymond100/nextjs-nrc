@@ -6,6 +6,9 @@ import {
   ShoppingCartIcon,
   TrashIcon,
   Cog6ToothIcon,
+  PencilIcon,
+  CheckIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Loader } from "@/components/loader";
 import { ConfirmModal } from "@/components/confirm-modal";
@@ -179,6 +182,11 @@ export default function StorePage() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [orderToDelete, setOrderToDelete] = useState<Order | null>(null);
   const [deleting, setDeleting] = useState(false);
+  const [editingOrderId, setEditingOrderId] = useState<number | null>(null);
+  const [editOrderQuantities, setEditOrderQuantities] = useState<
+    Record<number, number>
+  >({});
+  const [savingOrderItems, setSavingOrderItems] = useState(false);
 
   const totalRevenue = useMemo(
     () =>
@@ -468,6 +476,31 @@ export default function StorePage() {
 
     setDeleting(true);
     try {
+      // vittoria_store rows reference this order (and its order_items) via
+      // foreign keys with no cascade, so they must be cleared out first or
+      // the delete on "orders" below is rejected with a FK violation.
+      const { error: deleteStoreRowsError } = await supabase
+        .from("vittoria_store")
+        .delete()
+        .eq("order_id", orderToDelete.id);
+
+      if (deleteStoreRowsError) {
+        toast.error(
+          deleteStoreRowsError.message || "Failed to delete order"
+        );
+        return;
+      }
+
+      const { error: deleteItemsError } = await supabase
+        .from("order_items")
+        .delete()
+        .eq("order_id", orderToDelete.id);
+
+      if (deleteItemsError) {
+        toast.error(deleteItemsError.message || "Failed to delete order");
+        return;
+      }
+
       const { error: deleteError } = await supabase
         .from("orders")
         .delete()
@@ -492,6 +525,105 @@ export default function StorePage() {
       toast.error("Failed to delete order");
     } finally {
       setDeleting(false);
+    }
+  };
+
+  const handleEditOrderItems = (order: StoreOrder) => {
+    const quantities: Record<number, number> = {};
+    order.items.forEach((item) => {
+      quantities[item.id] = item.quantity;
+    });
+    setEditingOrderId(order.id);
+    setEditOrderQuantities(quantities);
+  };
+
+  const handleCancelEditOrderItems = () => {
+    setEditingOrderId(null);
+    setEditOrderQuantities({});
+  };
+
+  const handleOrderItemQuantityChange = (itemId: number, quantity: number) => {
+    setEditOrderQuantities((prev) => ({
+      ...prev,
+      [itemId]: Math.max(0, quantity),
+    }));
+  };
+
+  const handleSaveOrderItems = async (order: StoreOrder) => {
+    if (!isAdmin) return;
+
+    const remainingItems = order.items.filter(
+      (item) => (editOrderQuantities[item.id] ?? item.quantity) > 0
+    );
+
+    if (remainingItems.length === 0) {
+      toast.error(
+        "An order needs at least one item. Delete the order instead if you want to remove it entirely."
+      );
+      return;
+    }
+
+    setSavingOrderItems(true);
+    try {
+      await Promise.all(
+        order.items.map(async (item) => {
+          const newQuantity = editOrderQuantities[item.id] ?? item.quantity;
+
+          if (newQuantity <= 0) {
+            const { error: deleteItemError } = await supabase
+              .from("order_items")
+              .delete()
+              .eq("id", item.id);
+            if (deleteItemError) throw deleteItemError;
+
+            const { error: deleteStoreRowError } = await supabase
+              .from("vittoria_store")
+              .delete()
+              .eq("order_item_id", item.id);
+            if (deleteStoreRowError) throw deleteStoreRowError;
+            return;
+          }
+
+          if (newQuantity === item.quantity) {
+            return;
+          }
+
+          const { error: updateItemError } = await supabase
+            .from("order_items")
+            .update({ quantity: newQuantity })
+            .eq("id", item.id);
+          if (updateItemError) throw updateItemError;
+
+          const { error: updateStoreRowError } = await supabase
+            .from("vittoria_store")
+            .update({ quantity: newQuantity })
+            .eq("order_item_id", item.id);
+          if (updateStoreRowError) throw updateStoreRowError;
+        })
+      );
+
+      const newTotal = remainingItems.reduce((sum, item) => {
+        const quantity = editOrderQuantities[item.id] ?? item.quantity;
+        return sum + Number(item.price_at_time) * quantity;
+      }, 0);
+
+      const { error: updateOrderError } = await supabase
+        .from("orders")
+        .update({ total_price: newTotal })
+        .eq("id", order.id);
+
+      if (updateOrderError) throw updateOrderError;
+
+      toast.success("Order items updated successfully");
+      setEditingOrderId(null);
+      setEditOrderQuantities({});
+      fetchOrders();
+      fetchAllOrdersForSummary();
+    } catch (err: any) {
+      console.error("Error updating order items:", err);
+      toast.error(err.message || "Failed to update order items");
+    } finally {
+      setSavingOrderItems(false);
     }
   };
 
@@ -846,7 +978,19 @@ export default function StorePage() {
           <p className="text-gray-600">No store orders yet.</p>
         ) : (
           <div className="space-y-4">
-            {orders.map((order) => (
+            {orders.map((order) => {
+              const isEditingItems = isAdmin && editingOrderId === order.id;
+              const liveOrderTotal = isEditingItems
+                ? order.items.reduce(
+                    (sum, item) =>
+                      sum +
+                      Number(item.price_at_time) *
+                        (editOrderQuantities[item.id] ?? item.quantity),
+                    0
+                  )
+                : Number(order.total_price);
+
+              return (
               <div
                 key={order.id}
                 className="border border-gray-200 rounded-lg p-4"
@@ -902,6 +1046,36 @@ export default function StorePage() {
                       </span>
                     )}
 
+                    {isAdmin &&
+                      (isEditingItems ? (
+                        <>
+                          <button
+                            onClick={() => handleSaveOrderItems(order)}
+                            disabled={savingOrderItems}
+                            className="inline-flex items-center gap-2 px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 transition-colors text-sm"
+                          >
+                            <CheckIcon className="h-4 w-4" />
+                            {savingOrderItems ? "Saving..." : "Save"}
+                          </button>
+                          <button
+                            onClick={handleCancelEditOrderItems}
+                            disabled={savingOrderItems}
+                            className="inline-flex items-center gap-2 px-3 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 transition-colors text-sm"
+                          >
+                            <XMarkIcon className="h-4 w-4" />
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          onClick={() => handleEditOrderItems(order)}
+                          className="inline-flex items-center gap-2 px-3 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors text-sm"
+                        >
+                          <PencilIcon className="h-4 w-4" />
+                          Edit Items
+                        </button>
+                      ))}
+
                     {isAdmin && (
                       <button
                         onClick={() => handleDeleteClick(order)}
@@ -946,32 +1120,80 @@ export default function StorePage() {
                         <th className="py-3 pr-4">Quantity</th>
                         <th className="py-3 pr-4">Unit Price</th>
                         <th className="py-3">Total</th>
+                        {isEditingItems && <th className="py-3 pl-4" />}
                       </tr>
                     </thead>
                     <tbody>
-                      {order.items.map((item) => (
-                        <tr
-                          key={item.id}
-                          className="border-b border-gray-100 last:border-b-0"
-                        >
-                          <td className="py-3 pr-4 text-gray-800 font-medium">
-                            {item.product_name}
-                          </td>
-                          <td className="py-3 pr-4 text-gray-600">
-                            {item.quantity}
-                          </td>
-                          <td className="py-3 pr-4 text-gray-600">
-                            {Number(item.price_at_time).toFixed(2)}{" "}
-                            {item.currency}
-                          </td>
-                          <td className="py-3 text-gray-800 font-semibold">
-                            {(
-                              Number(item.price_at_time) * item.quantity
-                            ).toFixed(2)}{" "}
-                            {item.currency}
-                          </td>
-                        </tr>
-                      ))}
+                      {order.items.map((item) => {
+                        const editedQuantity =
+                          editOrderQuantities[item.id] ?? item.quantity;
+                        const markedForRemoval = editedQuantity <= 0;
+
+                        return (
+                          <tr
+                            key={item.id}
+                            className={`border-b border-gray-100 last:border-b-0 ${
+                              markedForRemoval ? "opacity-50" : ""
+                            }`}
+                          >
+                            <td
+                              className={`py-3 pr-4 text-gray-800 font-medium ${
+                                markedForRemoval ? "line-through" : ""
+                              }`}
+                            >
+                              {item.product_name}
+                            </td>
+                            <td className="py-3 pr-4 text-gray-600">
+                              {isEditingItems ? (
+                                <input
+                                  type="number"
+                                  min="0"
+                                  value={editedQuantity}
+                                  onChange={(e) =>
+                                    handleOrderItemQuantityChange(
+                                      item.id,
+                                      parseInt(e.target.value, 10) || 0
+                                    )
+                                  }
+                                  className="w-16 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                />
+                              ) : (
+                                item.quantity
+                              )}
+                            </td>
+                            <td className="py-3 pr-4 text-gray-600">
+                              {Number(item.price_at_time).toFixed(2)}{" "}
+                              {item.currency}
+                            </td>
+                            <td className="py-3 text-gray-800 font-semibold">
+                              {(
+                                Number(item.price_at_time) * editedQuantity
+                              ).toFixed(2)}{" "}
+                              {item.currency}
+                            </td>
+                            {isEditingItems && (
+                              <td className="py-3 pl-4">
+                                <button
+                                  onClick={() =>
+                                    handleOrderItemQuantityChange(
+                                      item.id,
+                                      markedForRemoval ? item.quantity : 0
+                                    )
+                                  }
+                                  className="text-red-600 hover:text-red-900"
+                                  title={
+                                    markedForRemoval
+                                      ? "Restore item"
+                                      : "Remove item"
+                                  }
+                                >
+                                  <TrashIcon className="h-4 w-4" />
+                                </button>
+                              </td>
+                            )}
+                          </tr>
+                        );
+                      })}
                     </tbody>
                     <tfoot>
                       <tr>
@@ -982,15 +1204,16 @@ export default function StorePage() {
                           Order Total
                         </td>
                         <td className="pt-4 font-bold text-gray-900">
-                          {Number(order.total_price).toFixed(2)}{" "}
-                          {order.currency}
+                          {liveOrderTotal.toFixed(2)} {order.currency}
                         </td>
+                        {isEditingItems && <td className="pt-4" />}
                       </tr>
                     </tfoot>
                   </table>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -1007,7 +1230,7 @@ export default function StorePage() {
         title="Delete Order"
         message={
           orderToDelete
-            ? `Delete order #${orderToDelete.id}? This also removes the linked store order rows through the foreign-key cascade on orders/order_items.`
+            ? `Delete order #${orderToDelete.id}? This also removes its linked store rows and order items.`
             : "Delete this order?"
         }
         confirmText={deleting ? "Deleting..." : "Delete"}

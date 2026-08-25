@@ -22,9 +22,13 @@ export default function StoreAdminPage() {
   const navigate = useNavigate();
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editForm, setEditForm] = useState<{
+    name: string;
     price: string;
     quantity: string;
     available_bool: boolean;
+    img_reference: string;
+    product_url: string;
+    product_item_info: string;
   } | null>(null);
   const [saving, setSaving] = useState(false);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -114,9 +118,13 @@ export default function StoreAdminPage() {
   const handleEdit = (product: StoreProduct) => {
     setEditingId(product.id);
     setEditForm({
+      name: product.name || "",
       price: product.price?.toString() || "0",
       quantity: product.quantity?.toString() || "",
       available_bool: product.available_bool === true,
+      img_reference: product.img_reference || "",
+      product_url: product.product_url || "",
+      product_item_info: product.product_item_info || "",
     });
   };
 
@@ -130,10 +138,16 @@ export default function StoreAdminPage() {
 
     try {
       setSaving(true);
+      const name = editForm.name.trim();
       const price = parseFloat(editForm.price);
       const parsedQuantity = editForm.quantity.trim()
         ? parseInt(editForm.quantity, 10)
         : null;
+
+      if (!name) {
+        toast.error("Product name is required");
+        return;
+      }
 
       if (isNaN(price) || price < 0) {
         toast.error("Please enter a valid price");
@@ -151,9 +165,13 @@ export default function StoreAdminPage() {
       const { error: updateError } = await supabase
         .from("vittoria_store")
         .update({
+          name,
           price,
           quantity: parsedQuantity,
           available_bool: editForm.available_bool,
+          img_reference: editForm.img_reference.trim() || null,
+          product_url: editForm.product_url.trim() || null,
+          product_item_info: editForm.product_item_info.trim() || null,
         })
         .eq("id", product.id);
 
@@ -541,30 +559,83 @@ export default function StoreAdminPage() {
                   return (
                     <tr key={product.id}>
                       <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          {product.img_reference && (
-                            <img
-                              src={product.img_reference}
-                              alt={product.name || "Product"}
-                              className="w-12 h-12 object-cover rounded-lg mr-3"
+                        {isEditing ? (
+                          <div className="space-y-2 min-w-[220px]">
+                            <input
+                              type="text"
+                              value={editForm?.name || ""}
+                              onChange={(e) =>
+                                setEditForm({
+                                  ...editForm!,
+                                  name: e.target.value,
+                                })
+                              }
+                              className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              placeholder="Product name"
                             />
-                          )}
-                          <div>
-                            <div className="text-sm font-medium text-gray-900">
-                              {product.name}
-                            </div>
-                            {product.product_item_info && (
-                              <div className="text-xs text-gray-500">
-                                {product.product_item_info}
-                              </div>
-                            )}
-                            {product.sku && (
-                              <div className="text-xs text-gray-400">
-                                SKU: {product.sku}
-                              </div>
-                            )}
+                            <input
+                              type="url"
+                              value={editForm?.img_reference || ""}
+                              onChange={(e) =>
+                                setEditForm({
+                                  ...editForm!,
+                                  img_reference: e.target.value,
+                                })
+                              }
+                              className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              placeholder="Image URL"
+                            />
+                            <input
+                              type="url"
+                              value={editForm?.product_url || ""}
+                              onChange={(e) =>
+                                setEditForm({
+                                  ...editForm!,
+                                  product_url: e.target.value,
+                                })
+                              }
+                              className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              placeholder="Product URL"
+                            />
+                            <textarea
+                              value={editForm?.product_item_info || ""}
+                              onChange={(e) =>
+                                setEditForm({
+                                  ...editForm!,
+                                  product_item_info: e.target.value,
+                                })
+                              }
+                              rows={2}
+                              className="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-purple-500"
+                              placeholder="Product info"
+                            />
                           </div>
-                        </div>
+                        ) : (
+                          <div className="flex items-center">
+                            {product.img_reference && (
+                              <img
+                                src={product.img_reference}
+                                alt={product.name || "Product"}
+                                className="w-12 h-12 object-cover rounded-lg mr-3"
+                              />
+                            )}
+                            <div>
+                              <div className="text-sm font-medium text-gray-900">
+                                {product.name}
+                              </div>
+                              {product.product_item_info && (
+                                <div className="text-xs text-gray-500">
+                                  {product.product_item_info}
+                                </div>
+                              )}
+                              {product.sku && (
+                                <div className="text-xs text-gray-400">
+                                  SKU: {product.sku}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        )}
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         {isEditing ? (
