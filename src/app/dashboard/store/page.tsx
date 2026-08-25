@@ -115,6 +115,39 @@ function buildOrders(rows: StoreOrderRowExpanded[]): StoreOrder[] {
   );
 }
 
+async function attachCustomerInfo(orders: StoreOrder[]): Promise<StoreOrder[]> {
+  if (orders.length === 0) {
+    return orders;
+  }
+
+  const userIds = Array.from(new Set(orders.map((order) => order.user_id)));
+
+  const { data: ridersData, error: ridersError } = await supabase
+    .schema("private")
+    .from("riders")
+    .select("uuid, email, firstName, lastName")
+    .in("uuid", userIds);
+
+  if (ridersError) {
+    console.error("Error fetching customer info:", ridersError);
+    return orders;
+  }
+
+  const ridersMap = new Map(
+    (ridersData || []).map((rider) => [rider.uuid, rider])
+  );
+
+  return orders.map((order) => {
+    const rider = ridersMap.get(order.user_id);
+    return {
+      ...order,
+      user_email: rider?.email ?? null,
+      user_first_name: rider?.firstName ?? null,
+      user_last_name: rider?.lastName ?? null,
+    };
+  });
+}
+
 export default function StorePage() {
   const { isAdmin } = useAdmin();
   const { user } = useAuth();
@@ -362,7 +395,8 @@ export default function StorePage() {
       setOrdersLoading(true);
       setError(null);
       const rows = await fetchStoreRows(isAdmin ? undefined : user.id);
-      setOrders(buildOrders(rows));
+      const builtOrders = buildOrders(rows);
+      setOrders(isAdmin ? await attachCustomerInfo(builtOrders) : builtOrders);
     } catch (err: any) {
       console.error("Error fetching orders:", err);
       setError(err.message || "Failed to load store orders");
@@ -379,7 +413,7 @@ export default function StorePage() {
     try {
       setSummaryLoading(true);
       const rows = await fetchStoreRows();
-      setAllOrdersForSummary(buildOrders(rows));
+      setAllOrdersForSummary(await attachCustomerInfo(buildOrders(rows)));
     } catch (err) {
       console.error("Error fetching all orders:", err);
     } finally {
@@ -825,9 +859,19 @@ export default function StorePage() {
                     <p className="text-sm text-gray-500">
                       {new Date(order.created_at).toLocaleString()}
                     </p>
-                    {isAdmin && order.user_email && (
+                    {isAdmin && (
                       <p className="text-sm text-gray-600 mt-1">
-                        {order.user_email}
+                        {order.user_first_name || order.user_last_name
+                          ? `${order.user_first_name || ""} ${
+                              order.user_last_name || ""
+                            }`.trim()
+                          : "Unknown user"}
+                        {order.user_email && (
+                          <span className="text-gray-400">
+                            {" "}
+                            ({order.user_email})
+                          </span>
+                        )}
                       </p>
                     )}
                   </div>
