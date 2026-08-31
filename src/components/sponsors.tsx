@@ -1,17 +1,24 @@
 import { Link } from "react-router-dom";
 const sponsors = [
   {
+    name: "Magene",
+    image: "/sponsors/magene.png",
+    description:
+      "Our technical sposnor for 2026-2027 season. Magene is a tech-fitness company that specializes in Cycling Power meters, GPS bike computer, cycling tail lights.",
+    url: "https://www.magene.com/",
+  },
+  {
     name: "Vittoria Tyres",
     image: "/sponsors/vittoria.webp",
     description:
       "Vittoria Tyres is a leading manufacturer of high-performance cycling tires, providing superior grip, durability, and performance for cyclists of all levels.",
-    url: "https://www.vittoria.com",
+    url: "https://www.vittoria.com/",
   },
   {
     name: "4Endurance",
     image: "/sponsors/4endurance-logo.png",
     description:
-      "4 ndurance provides you with everything you need for cycling, running, swimming, and other sports: energy gels, isotonic sports drinks, recovery drinks!",
+      "4ndurance provides you with everything you need for cycling, running, swimming, and other sports: energy gels, isotonic sports drinks, recovery drinks!",
     url: "https://4endurance.de/",
   },
   {
@@ -52,9 +59,7 @@ export const Sponsors = () => {
               <img
                 width={300}
                 height={400}
-                src={`${import.meta.env.VITE_BASE_URL ?? ""}${
-                  sponsor.image
-                }`}
+                src={`${import.meta.env.VITE_BASE_URL ?? ""}${sponsor.image}`}
                 className="mb-6 w-80 rounded-lg "
                 alt=""
               />
