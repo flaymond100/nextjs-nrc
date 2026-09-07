@@ -1603,8 +1603,7 @@ function PriceCards({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
           <div className="calpe-price-per">per person · all-in</div>
 
           <div className="calpe-price-deposit">
-            50% deposit ({p.deposit} EUR) due by {DEPOSIT_DEADLINE} to secure
-            your place
+            50% deposit ({p.deposit} EUR) to secure your place
           </div>
 
           <ul className="calpe-price-list">
@@ -1952,7 +1951,7 @@ function ReservationModal({
                 <dt>BIC</dt>
                 <dd>{PAYMENT_DETAILS.bic}</dd>
               </div>
-              
+
               <div>
                 <dt>Reference</dt>
                 <dd>Calpe Camp 2027</dd>
