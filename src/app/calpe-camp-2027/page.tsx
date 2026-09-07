@@ -1053,6 +1053,14 @@ export default function CalpeCamp2027Page() {
 
         .calpe-reserve-btn:hover { background: #5a00b5; }
 
+        .calpe-reserve-btn:disabled {
+          background: #ccc;
+          color: #777;
+          cursor: not-allowed;
+        }
+
+        .calpe-reserve-btn:disabled:hover { background: #ccc; }
+
         .calpe-price-note {
           font-size: 0.78rem;
           color: #8A8480;
@@ -1612,7 +1620,11 @@ function PriceCards({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
             ))}
           </ul>
 
-          <button className="calpe-reserve-btn" onClick={() => onReserve(p)}>
+          <button
+            className="calpe-reserve-btn"
+            onClick={() => onReserve(p)}
+            disabled={p.id === "double"}
+          >
             Reserve {p.name}
           </button>
         </div>
