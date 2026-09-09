@@ -248,6 +248,7 @@ interface CampPackage {
   deposit: string;
   badge: string | null;
   featured: boolean;
+  availabilityNote: string | null;
 }
 
 const PACKAGES: CampPackage[] = [
@@ -260,6 +261,7 @@ const PACKAGES: CampPackage[] = [
     deposit: "500",
     badge: "Most popular",
     featured: true,
+    availabilityNote: null,
   },
   {
     id: "single",
@@ -270,6 +272,7 @@ const PACKAGES: CampPackage[] = [
     deposit: "750",
     badge: null,
     featured: false,
+    availabilityNote: "1 place left",
   },
 ];
 
@@ -955,6 +958,21 @@ export default function CalpeCamp2027Page() {
           border-radius: 2px;
         }
 
+        .calpe-price-availability {
+          position: absolute;
+          top: -14px;
+          right: 1.5rem;
+          font-family: 'DM Mono', monospace;
+          font-size: 0.82rem;
+          font-weight: 700;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          background: #C74A00;
+          color: #fff;
+          padding: 7px 16px;
+          border-radius: 2px;
+        }
+
         .calpe-price-name {
           font-family: 'Bebas Neue', sans-serif;
           font-size: 2rem;
@@ -1593,6 +1611,11 @@ function PriceCards({ onReserve }: { onReserve: (pkg: CampPackage) => void }) {
           className={`calpe-price-card${p.featured ? " featured" : ""}`}
         >
           {p.badge && <span className="calpe-price-badge">{p.badge}</span>}
+          {p.availabilityNote && (
+            <span className="calpe-price-availability">
+              {p.availabilityNote}
+            </span>
+          )}
           <div className="calpe-price-name">{p.name}</div>
           <div className="calpe-price-room">{p.tagline}</div>
 
