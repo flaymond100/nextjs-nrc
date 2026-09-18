@@ -248,10 +248,17 @@ export default function DashboardLayout() {
           ? `${store.display_name} (Closed)`
           : store.display_name;
 
+      const icon =
+        displayName === "Store"
+          ? "🛞"
+          : store.store_name === "socks_store"
+          ? "👕"
+          : "🍩";
+
       return {
         name: displayName,
         href,
-        icon: displayName === "Store" ? "🛞" : "🍩",
+        icon,
         store_name: store.store_name,
       };
     }),
