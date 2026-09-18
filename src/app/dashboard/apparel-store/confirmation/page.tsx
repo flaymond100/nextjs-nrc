@@ -3,12 +3,7 @@ import { useSearchParams, useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/utils/supabase";
 import { Order, OrderItem } from "@/utils/types";
 import { Loader } from "@/components/loader";
-import {
-  CheckCircleIcon,
-  ArrowLeftIcon,
-  ClipboardIcon,
-} from "@heroicons/react/24/outline";
-import toast from "react-hot-toast";
+import { CheckCircleIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 
 export default function SocksOrderConfirmationPage() {
   const [searchParams] = useSearchParams();
@@ -70,11 +65,6 @@ export default function SocksOrderConfirmationPage() {
     }
   };
 
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast.success("Copied to clipboard!");
-  };
-
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto">
@@ -134,8 +124,7 @@ export default function SocksOrderConfirmationPage() {
             Order Confirmed!
           </h1>
           <p className="text-sm sm:text-base text-gray-600">
-            Thank you for your order. Please complete the payment to finalize
-            your purchase.
+            Thank you for your order.
           </p>
         </div>
 
@@ -218,52 +207,10 @@ export default function SocksOrderConfirmationPage() {
           <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">
             Payment Instructions
           </h2>
-          <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4">
-            To complete your purchase, please transfer the total amount to the
-            following bank account:
+          <p className="text-sm sm:text-base text-gray-700">
+            You will receive an invoice via WhatsApp. Please pay the total
+            amount according to the invoice once you receive it.
           </p>
-
-          <div className="bg-white rounded-lg p-3 sm:p-4 border border-purple-200">
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs sm:text-sm font-medium text-gray-600">
-                  Account Holder:
-                </label>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <p className="text-base sm:text-lg font-semibold text-gray-800 break-all">
-                    NRC INTERNATIONAL TEAM e.V.
-                  </p>
-                  <button
-                    onClick={() =>
-                      copyToClipboard("NRC INTERNATIONAL TEAM e.V.")
-                    }
-                    className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
-                    title="Copy to clipboard"
-                  >
-                    <ClipboardIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs sm:text-sm font-medium text-gray-600">
-                  IBAN:
-                </label>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <p className="text-sm sm:text-base md:text-lg font-mono font-semibold text-gray-800 break-all">
-                    DE70 8306 5408 0006 8964 56
-                  </p>
-                  <button
-                    onClick={() => copyToClipboard("DE70830654080006896456")}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
-                    title="Copy to clipboard"
-                  >
-                    <ClipboardIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Next Steps */}
@@ -272,8 +219,13 @@ export default function SocksOrderConfirmationPage() {
             What happens next?
           </h3>
           <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-gray-700">
-            <li>Complete the bank transfer with the amount shown above</li>
-            <li>Once payment is received, your order status will be updated</li>
+            <li>
+              NRC will collect all orders to see if minimum number of items
+              of Gobik is met.
+            </li>
+            <li>Items that do not meet minimum number will be removed from the order.</li>
+            <li>Invoice will be provided with final items and amount.</li>
+            <li>Invoice is to be payed after it has been received.</li>
           </ul>
         </div>
 
