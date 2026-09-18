@@ -40,12 +40,13 @@ export default function SocksCheckoutPage() {
     size: Size,
     gender: Gender,
     newQuantity: number,
-    variant?: string | null
+    variant?: string | null,
+    bibsLength?: string
   ) => {
     if (newQuantity <= 0) {
-      handleRemoveItem(productId, size, gender, variant);
+      handleRemoveItem(productId, size, gender, variant, bibsLength);
     } else {
-      updateCartItem(productId, size, gender, newQuantity, variant);
+      updateCartItem(productId, size, gender, newQuantity, variant, bibsLength);
       loadCart();
       // Dispatch event to update cart count in other components
       window.dispatchEvent(new Event("cartUpdated"));
@@ -56,9 +57,10 @@ export default function SocksCheckoutPage() {
     productId: number,
     size: Size,
     gender: Gender,
-    variant?: string | null
+    variant?: string | null,
+    bibsLength?: string
   ) => {
-    removeFromCart(productId, size, gender, variant);
+    removeFromCart(productId, size, gender, variant, bibsLength);
     loadCart();
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -127,6 +129,7 @@ export default function SocksCheckoutPage() {
         currency: item.currency || "EUR",
         size: item.size,
         gender: item.gender,
+        bibs_length: item.bibs_length || null,
       }));
 
       const { error: itemsError } = await supabase
@@ -163,7 +166,6 @@ export default function SocksCheckoutPage() {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-
   if (apparelItems.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -217,7 +219,7 @@ export default function SocksCheckoutPage() {
             >
               <div className="flex-1">
                 <h3 className="font-medium text-gray-900">
-                  {item.productName}
+                  {item.product_item_info}
                 </h3>
                 <div className="flex flex-wrap gap-2 mt-1">
                   {item.size && (
@@ -228,6 +230,11 @@ export default function SocksCheckoutPage() {
                   {item.gender && (
                     <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
                       {item.gender}
+                    </span>
+                  )}
+                  {item.bibs_length && (
+                    <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                      Length: {item.bibs_length}
                     </span>
                   )}
                 </div>
@@ -244,7 +251,8 @@ export default function SocksCheckoutPage() {
                         item.size,
                         item.gender,
                         item.quantity - 1,
-                        item.variant
+                        item.variant,
+                        item.bibs_length
                       )
                     }
                     className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm transition-colors"
@@ -261,7 +269,8 @@ export default function SocksCheckoutPage() {
                         item.size,
                         item.gender,
                         item.quantity + 1,
-                        item.variant
+                        item.variant,
+                        item.bibs_length
                       )
                     }
                     className="w-8 h-8 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-sm transition-colors"
@@ -278,7 +287,8 @@ export default function SocksCheckoutPage() {
                       item.productId,
                       item.size,
                       item.gender,
-                      item.variant
+                      item.variant,
+                      item.bibs_length
                     )
                   }
                   className="text-red-600 hover:text-red-900 ml-4"

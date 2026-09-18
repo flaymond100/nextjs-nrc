@@ -47,6 +47,10 @@ export function addToCart(item: CartItem): void {
   // For 4endurance products, use variant field if available for matching
   // Otherwise, match by productId, size, and gender
   const existingIndex = cart.items.findIndex((i) => {
+    if (i.bibs_length !== item.bibs_length) {
+      // Different bibs length selections must stay as separate cart lines
+      return false;
+    }
     if (item.variant && i.variant) {
       // Both have variant (4endurance products) - match by variant
       return i.variant === item.variant;
@@ -78,7 +82,8 @@ export function updateCartItem(
   size: string,
   gender: string,
   quantity: number,
-  variant?: string | null
+  variant?: string | null,
+  bibsLength?: string
 ): void {
   const cart = getCart();
   if (!cart) {
@@ -86,6 +91,9 @@ export function updateCartItem(
   }
 
   const itemIndex = cart.items.findIndex((i) => {
+    if (i.bibs_length !== bibsLength) {
+      return false;
+    }
     if (variant && i.variant) {
       // Both have variant (4endurance products) - match by variant
       return i.variant === variant;
@@ -116,7 +124,8 @@ export function removeFromCart(
   productId: number,
   size: string,
   gender: string,
-  variant?: string | null
+  variant?: string | null,
+  bibsLength?: string
 ): void {
   const cart = getCart();
   if (!cart) {
@@ -124,6 +133,9 @@ export function removeFromCart(
   }
 
   cart.items = cart.items.filter((i) => {
+    if (i.bibs_length !== bibsLength) {
+      return true;
+    }
     if (variant && i.variant) {
       // Both have variant (4endurance products) - match by variant
       return i.variant !== variant;

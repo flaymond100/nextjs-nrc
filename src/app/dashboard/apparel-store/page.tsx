@@ -724,7 +724,6 @@ export default function SocksStorePage() {
             >
               ← Back to Dashboard
             </Link>
-            <h1 className="text-3xl font-bold text-gray-800">Apparel Store</h1>
           </div>
           <div className="flex items-center gap-4">
             {isAdmin && (
@@ -750,6 +749,7 @@ export default function SocksStorePage() {
             </Link>
           </div>
         </div>
+        <h1 className="text-3xl font-bold text-gray-800">Apparel Store</h1>
         <p className="text-gray-600">Browse and purchase team apparel.</p>
         {closingDate && timeRemaining && (
           <div className="mt-4 bg-yellow-50 border border-yellow-200 rounded-lg p-4 max-w-md">
@@ -775,11 +775,6 @@ export default function SocksStorePage() {
 
       {/* Products Grid */}
       <div className="mb-12">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-800">
-            Available Products
-          </h2>
-        </div>
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader />

@@ -274,6 +274,14 @@ export default function MyOrdersPage() {
                                       {item.gender}
                                     </span>
                                   )}
+                                  {item.bibs_length && (
+                                    <span>
+                                      <span className="font-medium">
+                                        Bibs Length:
+                                      </span>{" "}
+                                      {item.bibs_length}
+                                    </span>
+                                  )}
                                 </div>
                               </div>
                               <div className="text-right">

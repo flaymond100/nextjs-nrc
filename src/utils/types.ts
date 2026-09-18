@@ -139,7 +139,9 @@ export interface CartItem {
   currency: string;
   quantity: number;
   size: Size;
+  product_item_info: string;
   gender: Gender;
+  bibs_length?: string;
 }
 
 export interface Cart {
@@ -241,6 +243,7 @@ export interface OrderItem {
   created_at: string;
   size?: string;
   gender?: string;
+  bibs_length?: string;
 }
 
 export interface Order {

@@ -4,6 +4,10 @@ import { addToCart } from "@/utils/cart-storage";
 import toast from "react-hot-toast";
 import { LinkIcon } from "@heroicons/react/24/outline";
 
+const BIBS_LENGTH_PRODUCT_ID = 53;
+const BIBS_LENGTH_OPTIONS = ["-2cm", "0cm (standart)", "+2cm", "+4cm", "+6cm"];
+const BIBS_LENGTH_DEFAULT = "0cm (standart)";
+
 interface SocksProductCardProps {
   product: ApparelStoreProduct;
   variants?: ApparelStoreProduct[];
@@ -18,6 +22,9 @@ export function SocksProductCard({
     useState<ApparelStoreProduct>(product);
   const [selectedSize, setSelectedSize] = useState<Size>("M");
   const [selectedGender, setSelectedGender] = useState<Gender>("Men");
+  const [selectedBibsLength, setSelectedBibsLength] = useState<string>(
+    BIBS_LENGTH_DEFAULT
+  );
 
   const normalizeGender = (value?: string | null): Gender => {
     if (!value) return "Men";
@@ -78,13 +85,17 @@ export function SocksProductCard({
       variant: variantToAdd.variant_id?.toString() || null,
       price: Number(variantToAdd.price || 0),
       currency: variantToAdd.currency || "EUR",
+      product_item_info: variantToAdd.product_item_info || "",
       quantity,
       size: selectedSize,
       gender: selectedGender,
+      ...(variantToAdd.product_id === BIBS_LENGTH_PRODUCT_ID
+        ? { bibs_length: selectedBibsLength }
+        : {}),
     };
 
     addToCart(cartItem);
-    toast.success(`${variantToAdd.name} added to cart!`);
+    toast.success(`${variantToAdd.product_item_info} added to cart!`);
     // Dispatch event to update cart count in other components
     window.dispatchEvent(new Event("cartUpdated"));
   };
@@ -107,6 +118,8 @@ export function SocksProductCard({
   const hasMultipleVariants = variants.length > 1;
   const availableSizes = currentProduct.sizes || [];
   const availableGenders = currentProduct.gender || [];
+  const isBibsLengthProduct =
+    currentProduct.product_id === BIBS_LENGTH_PRODUCT_ID;
 
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
@@ -116,7 +129,6 @@ export function SocksProductCard({
           <img
             src={currentProduct.img_reference}
             alt={currentProduct.name}
-            fill
             className="object-cover"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
@@ -136,13 +148,9 @@ export function SocksProductCard({
           )}
         </div>
         <h3 className="text-sm sm:text-base font-bold text-gray-800 mb-2 line-clamp-3">
-          {currentProduct.name}
+          {currentProduct.product_item_info}
         </h3>
-        {currentProduct.product_item_info && (
-          <p className="text-xs sm:text-sm text-gray-600 mb-3 line-clamp-3">
-            {currentProduct.product_item_info}
-          </p>
-        )}
+
         <div className="mb-2 sm:mb-3">
           <p className="text-base sm:text-lg font-bold text-purple-700">
             {Number(currentProduct.price || 0).toFixed(2)}{" "}
@@ -212,6 +220,24 @@ export function SocksProductCard({
                   </option>
                 );
               })}
+            </select>
+          </div>
+        )}
+        {isBibsLengthProduct && (
+          <div className="mb-3">
+            <label className="block text-xs font-medium text-gray-700 mb-1">
+              Length
+            </label>
+            <select
+              value={selectedBibsLength}
+              onChange={(e) => setSelectedBibsLength(e.target.value)}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
+            >
+              {BIBS_LENGTH_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
             </select>
           </div>
         )}
