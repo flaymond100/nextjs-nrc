@@ -11,6 +11,16 @@ This reuses `RESEND_API_KEY`, `WEBHOOK_SECRET`, and `NOTIFICATION_FROM_EMAIL`
 already set up for `notify-mitgliedsantrag-upload` — no need to set those
 again unless you want a different sender/secret for this function.
 
+## 0. Add the user_email column
+
+The checkout pages now write the logged-in user's email directly onto the
+order row (avoids the edge function needing access to the `private` schema).
+Run this once in the SQL Editor:
+
+```sql
+alter table public.orders add column if not exists user_email text;
+```
+
 ## 1. Set the recipients (optional)
 
 Defaults to `jan.wagebach@nrc-team.com,info@nrc-team.com` if not set:

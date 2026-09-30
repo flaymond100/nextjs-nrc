@@ -5,10 +5,13 @@
 // the shared public.orders table).
 //
 // Triggered by a Supabase Database Webhook on INSERT of public.orders. The
-// order_items rows are inserted by the client in a second, separate
-// statement right after the order itself, so they may not exist yet when
-// this function runs — it makes a best-effort fetch and just notes it if
-// none are found yet, rather than blocking on them.
+// checkout pages write the logged-in user's email straight onto the order
+// row (user_email column) so this function doesn't need to join against
+// private.riders (that schema isn't granted to the service_role by
+// default). The order_items rows are inserted by the client in a second,
+// separate statement right after the order itself, so they may not exist
+// yet when this function runs — it makes a best-effort fetch and just
+// notes it if none are found yet, rather than blocking on them.
 //
 // Setup (see supabase/sql/notify-order-placed-webhook.md for the full
 // walkthrough):
@@ -31,6 +34,7 @@ const DEFAULT_RECIPIENTS = [
 interface OrderRecord {
   id?: number;
   user_id?: string;
+  user_email?: string | null;
   total_price?: number | null;
   currency?: string | null;
   status?: string | null;
@@ -100,22 +104,16 @@ Deno.serve(async (req: Request) => {
     Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
   );
 
-  const [{ data: rider }, { data: items }] = await Promise.all([
-    supabase
-      .schema("private")
-      .from("riders")
-      .select("email, firstName, lastName")
-      .eq("uuid", order.user_id)
-      .maybeSingle(),
-    supabase
-      .from("order_items")
-      .select("product_name, quantity, price_at_time, currency, size, gender")
-      .eq("order_id", order.id),
-  ]);
+  const { data: items, error: itemsError } = await supabase
+    .from("order_items")
+    .select("product_name, quantity, price_at_time, currency, size, gender")
+    .eq("order_id", order.id);
 
-  const riderName =
-    [rider?.firstName, rider?.lastName].filter(Boolean).join(" ") ||
-    "A rider";
+  if (itemsError) {
+    console.error("order_items lookup error:", JSON.stringify(itemsError));
+  }
+
+  const customerLabel = order.user_email || "unknown email";
 
   const fromEmail =
     Deno.env.get("NOTIFICATION_FROM_EMAIL") ?? "noreply@nrc-team.com";
@@ -137,9 +135,9 @@ Deno.serve(async (req: Request) => {
           .join("")}</ul>`
       : "<p><em>Items not attached yet — check the admin dashboard.</em></p>";
 
-  const subject = `New order #${order.id} placed - ${riderName}`;
+  const subject = `New order #${order.id} placed - ${customerLabel}`;
   const html = `
-    <p>${riderName} (${rider?.email ?? "unknown email"}) just placed order #${order.id}.</p>
+    <p>${customerLabel} just placed order #${order.id}.</p>
     <p>Total: ${order.total_price ?? "?"} ${order.currency ?? ""}</p>
     ${
       order.delivery_requested

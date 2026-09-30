@@ -108,6 +108,7 @@ export default function CheckoutPage() {
         .from("orders")
         .insert({
           user_id: user.id,
+          user_email: user.email,
           total_price: orderTotal,
           currency: "EUR",
           status: "pending",
