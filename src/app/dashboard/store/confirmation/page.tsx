@@ -231,7 +231,9 @@ export default function OrderConfirmationPage() {
             </div>
             <div className="flex justify-between items-center text-sm sm:text-base text-gray-600">
               <span>Shipping:</span>
-              <span>{order.delivery_requested ? "Self-shipped" : "Pickup"}</span>
+              <span>
+                {order.delivery_requested ? "Self-shipped" : "Pickup"}
+              </span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-gray-200">
               <span className="text-lg sm:text-xl font-bold text-gray-800">
@@ -247,94 +249,15 @@ export default function OrderConfirmationPage() {
           </div>
         </div>
 
+        {/* Payment Instructions */}
         <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
           <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">
             Payment Instructions
           </h2>
-          <p className="text-sm sm:text-base text-gray-700 mb-3 sm:mb-4">
-            To complete your purchase, please transfer the total amount to the
-            following bank account:
+          <p className="text-sm sm:text-base text-gray-700">
+            You will receive an invoice via WhatsApp. Please pay the total
+            amount according to the invoice once you receive it.
           </p>
-
-          <div className="bg-white rounded-lg p-3 sm:p-4 border border-purple-200">
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs sm:text-sm font-medium text-gray-600">
-                  Account Holder:
-                </label>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <p className="text-base sm:text-lg font-semibold text-gray-800 break-all">
-                    NRC INTERNATIONAL TEAM e.V.
-                  </p>
-                  <button
-                    onClick={() =>
-                      copyToClipboard("NRC INTERNATIONAL TEAM e.V.")
-                    }
-                    className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
-                    title="Copy to clipboard"
-                  >
-                    <ClipboardIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs sm:text-sm font-medium text-gray-600">
-                  IBAN:
-                </label>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <p className="text-sm sm:text-base md:text-lg font-mono font-semibold text-gray-800 break-all">
-                    DE70 8306 5408 0006 8964 56
-                  </p>
-                  <button
-                    onClick={() => copyToClipboard("DE70830654080006896456")}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
-                    title="Copy to clipboard"
-                  >
-                    <ClipboardIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs sm:text-sm font-medium text-gray-600">
-                  BIC:
-                </label>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <p className="text-sm sm:text-base font-mono font-semibold text-gray-800">
-                    GENODEF1SLR
-                  </p>
-                  <button
-                    onClick={() => copyToClipboard("GENODEF1SLR")}
-                    className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
-                    title="Copy to clipboard"
-                  >
-                    <ClipboardIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs sm:text-sm font-medium text-gray-600">
-                  Reference:
-                </label>
-                <div className="flex items-center gap-2 mt-1 flex-wrap">
-                  <p className="text-sm sm:text-base font-semibold text-gray-800 break-all">
-                    Order #{order.id}
-                  </p>
-                  <button
-                    onClick={() =>
-                      copyToClipboard(`Order #${order.id}`)
-                    }
-                    className="p-1 hover:bg-gray-100 rounded transition-colors flex-shrink-0"
-                    title="Copy to clipboard"
-                  >
-                    <ClipboardIcon className="h-4 w-4 text-gray-600" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="text-center">
