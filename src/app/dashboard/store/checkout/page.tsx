@@ -36,9 +36,7 @@ export default function CheckoutPage() {
     }
 
     setCartItems(
-      cart.items.filter(
-        (item) => item.category === "Store"
-      ) as StoreCartItem[]
+      cart.items.filter((item) => item.category === "Store") as StoreCartItem[]
     );
   };
 
@@ -118,7 +116,10 @@ export default function CheckoutPage() {
       return;
     }
 
-    if (deliveryRequested && (!deliveryName.trim() || !deliveryAddress.trim())) {
+    if (
+      deliveryRequested &&
+      (!deliveryName.trim() || !deliveryAddress.trim())
+    ) {
       setSubmitError(
         "Please provide a name and full address for shipping, or turn shipping off to pick up in person."
       );
@@ -328,9 +329,7 @@ export default function CheckoutPage() {
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-800 mb-4">
-            Checkout
-          </h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-4">Checkout</h1>
           <p className="text-gray-600 mb-6">
             Your cart is empty or contains no store products.
           </p>
@@ -533,30 +532,26 @@ export default function CheckoutPage() {
         )}
       </div>
 
-      <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-6 mb-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-3">
+      {/* Payment Instructions */}
+      <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-4 sm:p-6 mb-6 sm:mb-8">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-800 mb-3 sm:mb-4">
           Payment Instructions
         </h2>
-        <p className="text-sm text-gray-700 mb-4">
-          After submitting your order, please transfer the total amount to the
-          team bank account:
+        <p className="text-sm sm:text-base text-gray-700">
+          You will receive an invoice via WhatsApp. Please pay the total amount
+          according to the invoice once you receive it.
         </p>
-        <div className="bg-white rounded-lg p-4 border border-purple-200 space-y-3">
-          <div>
-            <label className="text-sm font-medium text-gray-600">
-              Account Holder:
-            </label>
-            <p className="text-base font-semibold text-gray-800 mt-1">
-              NRC INTERNATIONAL TEAM e.V.
-            </p>
-          </div>
-          <div>
-            <label className="text-sm font-medium text-gray-600">IBAN:</label>
-            <p className="text-base font-mono font-semibold text-gray-800 mt-1 break-all">
-              DE70 8306 5408 0006 8964 56
-            </p>
-          </div>
-        </div>
+      </div>
+
+      {/* Next Steps */}
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+        <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">
+          What happens next?
+        </h3>
+        <ul className="list-disc list-inside space-y-1 text-xs sm:text-sm text-gray-700">
+          <li>Invoice will be provided with final items and amount.</li>
+          <li>Invoice is to be payed after it has been received.</li>
+        </ul>
       </div>
 
       <div className="flex justify-between items-center">
