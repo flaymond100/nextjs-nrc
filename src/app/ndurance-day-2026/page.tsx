@@ -11,7 +11,7 @@ const KOMOOT_ROUTE_URL =
 
 // ─── Replace with your actual event image path ───────────────────────────────
 const EVENT_IMAGE =
-  "https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/images/Untitled.png";
+  "/image/ndurance-day-2026.jpg";
 
 const SPONSORS = ["Vittoria", "4Endurance", "ventro", "GOBIK"];
 

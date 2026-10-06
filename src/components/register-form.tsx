@@ -334,7 +334,7 @@ export const RegisterSection = () => {
             </p>
             <div className="space-y-2">
               <a
-                href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Mitgliedsantrag_NRC.pdf"
+                href="/documents/Mitgliedsantrag_NRC.pdf"
                 target="_blank"
                 download
                 className="flex items-center gap-2 text-blue-600 hover:text-blue-800 hover:underline text-sm"
@@ -359,7 +359,7 @@ export const RegisterSection = () => {
                 <label htmlFor="acceptsTerms" className="text-sm text-gray-700">
                   By accepting this I confirm that I read and agree with{" "}
                   <a
-                    href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Satzung%20NRC%20eV.pdf"
+                    href="/documents/Satzung_NRC_eV.pdf"
                     target="_blank"
                     download
                     className="font-medium text-gray-700 underline hover:text-gray-900"
@@ -368,7 +368,7 @@ export const RegisterSection = () => {
                   </a>{" "}
                   and{" "}
                   <a
-                    href="https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/docs/Beitragsordnung.pdf"
+                    href="/documents/Beitragsordnung.pdf"
                     target="_blank"
                     download
                     className="font-medium text-gray-700 underline hover:text-gray-900"

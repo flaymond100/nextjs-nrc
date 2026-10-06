@@ -1,4 +1,5 @@
 import { supabase } from "./supabase";
+import { resizeImage } from "./image-resize";
 
 /**
  * Uploads an image file to Supabase Storage
@@ -13,6 +14,8 @@ export async function uploadAvatar(
   bucketName: string = "avatars"
 ): Promise<string | null> {
   try {
+    file = await resizeImage(file, 512);
+
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
       throw new Error("Image size must be less than 5MB");
@@ -31,7 +34,7 @@ export async function uploadAvatar(
     const { error: uploadError } = await supabase.storage
       .from(bucketName)
       .upload(filePath, file, {
-        cacheControl: "3600",
+        cacheControl: "31536000",
         upsert: false,
       });
 
@@ -94,6 +97,8 @@ export async function uploadNewsImage(
   bucketName: string = "news-images"
 ): Promise<string | null> {
   try {
+    file = await resizeImage(file, 1600);
+
     // Validate file size (max 10MB for news images)
     if (file.size > 10 * 1024 * 1024) {
       throw new Error("Image size must be less than 10MB");
@@ -115,7 +120,7 @@ export async function uploadNewsImage(
     const { error } = await supabase.storage
       .from(bucketName)
       .upload(filePath, file, {
-        cacheControl: "3600",
+        cacheControl: "31536000",
         upsert: false,
       });
 
@@ -131,7 +136,7 @@ export async function uploadNewsImage(
       const { error: fallbackError } = await supabase.storage
         .from("avatars")
         .upload(filePath, file, {
-          cacheControl: "3600",
+          cacheControl: "31536000",
           upsert: false,
         });
 
@@ -177,6 +182,8 @@ export async function uploadSeriesImage(
   bucketName: string = "series-images"
 ): Promise<string | null> {
   try {
+    file = await resizeImage(file, 1600);
+
     // Validate file size (max 5MB for series images)
     if (file.size > 5 * 1024 * 1024) {
       throw new Error("Image size must be less than 5MB");
@@ -198,7 +205,7 @@ export async function uploadSeriesImage(
     const { error } = await supabase.storage
       .from(bucketName)
       .upload(filePath, file, {
-        cacheControl: "3600",
+        cacheControl: "31536000",
         upsert: false,
       });
 
@@ -214,7 +221,7 @@ export async function uploadSeriesImage(
       const { error: fallbackError } = await supabase.storage
         .from("avatars")
         .upload(filePath, file, {
-          cacheControl: "3600",
+          cacheControl: "31536000",
           upsert: false,
         });
 

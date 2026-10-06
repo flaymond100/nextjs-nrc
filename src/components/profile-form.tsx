@@ -6,6 +6,7 @@ import { Loader } from "@/components/loader";
 import { Button } from "@material-tailwind/react";
 import { useAuth } from "@/contexts/auth-context";
 import { supabase } from "@/utils/supabase";
+import { resizeImage } from "@/utils/image-resize";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeftIcon } from "@heroicons/react/24/solid";
 import { NavigationLink } from "./navigation-link";
@@ -256,7 +257,8 @@ export const ProfileSection = () => {
                     }
                   }
 
-                  const fileExt = file.name.split(".").pop();
+                  const resized = await resizeImage(file, 512);
+                  const fileExt = resized.name.split(".").pop();
                   const fileName = `${user.id}-${Date.now()}.${fileExt}`;
                   // Path is relative to bucket root, so just use the filename
                   const filePath = fileName;
@@ -264,8 +266,8 @@ export const ProfileSection = () => {
                   // Upload file
                   const { error: uploadError } = await supabase.storage
                     .from("avatars")
-                    .upload(filePath, file, {
-                      cacheControl: "3600",
+                    .upload(filePath, resized, {
+                      cacheControl: "31536000",
                       upsert: false,
                     });
 

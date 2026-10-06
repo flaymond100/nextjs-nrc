@@ -19,7 +19,7 @@ export const galleryEvents: GalleryEvent[] = [
     shareUrl:
       "https://photos.google.com/share/AF1QipPn1tnGNOFWTvhVgii13i_kpmq2MI8Yz3ih06TO2UxYFEYQnPU98-uveLJMRv9wNw?pli=1&key=SWdZS1JVZHk0REtfeDBrNGgwNHRuYjFIRm5Cdmx3",
     coverImage:
-      "https://osefawvokdseqiosdivb.supabase.co/storage/v1/object/public/images/2026_03_29_NRC_Alte_Messe_%20-%209.jpg",
+      "/image/gallery-alte-messe-2026.jpg",
   },
 ];
 
