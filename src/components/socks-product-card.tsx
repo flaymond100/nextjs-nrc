@@ -125,11 +125,12 @@ export function SocksProductCard({
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow flex flex-col h-full">
       {/* Product Image */}
       {currentProduct.img_reference && (
-        <div className="relative w-full h-[300px] bg-gray-100 flex-shrink-0">
+        <div className="relative w-full h-[300px] bg-gray-100 flex-shrink-0 overflow-hidden">
           <img
             src={currentProduct.img_reference}
             alt={currentProduct.name}
-            className="object-cover"
+            loading="lazy"
+            className="absolute inset-0 w-full h-full object-contain"
             sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
         </div>
